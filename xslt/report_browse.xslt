@@ -24,8 +24,8 @@
 
   <xsl:template match="/">
     <script>
-      loadScript('OPHContent/themes/<xsl:value-of select="sqroot/header/info/themeFolder"/>/scripts/daterangepicker/daterangepicker.js');
-      loadScript('OPHContent/themes/<xsl:value-of select="sqroot/header/info/themeFolder"/>/scripts/select2/select2.full.min.js');
+      loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
+      loadScript('OPHContent/cdn/select2/select2.full.min.js');
       var deferreds = [];
     </script>
     
@@ -54,14 +54,14 @@
       <xsl:if test="sqroot/body/bodyContent/query/queryPages/queryPage/querySections/querySection">
         <xsl:apply-templates select="sqroot/body/bodyContent/query/queryPages/queryPage/querySections/querySection"/>
       </xsl:if>
-      <div class="row">
+      <div class="row" id="reportButton">
         <div class="col-md-12" style="margin-bottom:30px;margin-top:30px">
           <div style="text-align:left">
             <xsl:if test="$isPDF = 1">
-              <button class="btn btn-orange-a" onclick="genReport('{$code}','{$par}', 1,'{$sql}','{$reportName}');">SHOW PDF</button>&#160;
+              <button id="btnPDF" class="btn btn-orange-a" onclick="genReport('{$code}','{$par}', 1,'{$sql}','{$reportName}');">SHOW PDF</button>&#160;
             </xsl:if>
             <xsl:if test="$isXLS = 1">
-              <button class="btn btn-orange-a" onclick="genReport('{$code}','{$par}', 0,'{$sql}','{$reportName}');">SHOW XLS</button>&#160;
+              <button id="btnXLS" class="btn btn-orange-a" onclick="genReport('{$code}','{$par}', 0,'{$sql}','{$reportName}');">SHOW XLS</button>&#160;
             </xsl:if>
           </div>
         </div>
@@ -102,7 +102,7 @@
   </xsl:template>
 
   <xsl:template match="sqroot/body/bodyContent/query/queryPages/queryPage/querySections/querySection">
-    <div class="row">
+    <div class="row" id="reportParameter">
       <div class="col-md-12">
         <xsl:if test="@rowTitle">
           <h2>

@@ -11,8 +11,8 @@
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
     <script>
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder"/>/scripts/daterangepicker/daterangepicker.js');
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder"/>/scripts/select2/select2.full.min.js');
+      loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
+      loadScript('OPHContent/cdn/select2/select2.full.min.js');
 
       var xmldoc = ""
       var xsldoc = "OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder"/>/xslt/" + getPage();
@@ -62,21 +62,15 @@
       radioClass: 'iradio_flat-green'
       });
 
-      <!--//Colorpicker--><!--
-    $(".my-colorpicker1").colorpicker();
-    --><!--//color picker with addon--><!--
-    $(".my-colorpicker2").colorpicker();
 
-    --><!--//Timepicker--><!--
-    $(".timepicker").timepicker({
-    showInputs: false
-    });-->
       });
 
       $.when.apply($, deferreds).done(function() {
       preview('1', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
       });
 
+      var c='<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>';
+      getHash(c);
     </script>
 
     <xsl:variable name="settingmode">
@@ -142,11 +136,11 @@
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
               <li class="active">
-                <a href="#tab_1" data-toggle="tab">Header</a>
+                <a href="#tab_1" data-toggle="tab"  onclick="storeHash('{/sqroot/body/bodyContent/form/info/code/.}', '');">Header</a>
               </li>
               <xsl:for-each select="sqroot/body/bodyContent/form/children/child">
                 <li>
-                  <a href="#tab_{code}" data-toggle="tab">
+                  <a href="#tab_{code}" data-toggle="tab" onclick="storeHash('{/sqroot/body/bodyContent/form/info/code/.}', '#tab_{code}');">
                     <xsl:value-of select="childTitle"/>
                   </a>
                 </li>
@@ -539,9 +533,9 @@
       <div class="input-group-addon">
         <ix class="fa fa-calendar"></ix>
       </div>
-      
 
-      
+
+
       <input type="text" class="form-control pull-right datepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" data-type="dateBox" data-old="{value}"
         onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" >
         <xsl:if test="../@isEditable=0">
@@ -886,8 +880,8 @@
         var code='<xsl:value-of select ="code/."/>';
         var parentKey='<xsl:value-of select ="parentkey/."/>';
         var GUID='<xsl:value-of select ="/sqroot/body/bodyContent/form/info/GUID/."/>';
-
-        loadChild(code, parentKey, GUID);
+        var browsemode='<xsl:value-of select ="browseMode/."/>';
+        loadChild(code, parentKey, GUID, null, browsemode);
       </script>
 
 

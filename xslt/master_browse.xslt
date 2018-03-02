@@ -18,7 +18,7 @@
 
   <xsl:template match="/">
     <script>
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder"/>/scripts/select2/select2.full.min.js');
+      loadScript('OPHContent/cdn/select2/select2.full.min.js');
     </script>
 
     <xsl:if test="/sqroot/header/info/isBrowsable = 0">
@@ -111,6 +111,7 @@
           <div class=" browse-dropdown-status">
             <div class="dropdown">
               <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" >
+              <!--Issue in IE
                 <ix class="icon-doc-draft">
                   <span class="path1"></span>
                   <span class="path2"></span>
@@ -127,8 +128,9 @@
                   <span class="path13"></span>
                   <span class="path14"></span>
                   <span class="path15"></span>
-                </ix>&#160;
-                <span>
+                </ix>&#160;-->
+                <ix class="fa fa-file-text-o" aria-hidden="true"></ix>&#160;
+                <span style="font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif; font-weight:bold; font-size:smaller">
                   <xsl:value-of select="translate(sqroot/body/bodyContent/browse/info/curState/@substateName, $smallcase, $uppercase)"/>
                 </span>
                 &#160;
@@ -141,7 +143,7 @@
           </div>
           <div class="box-tools">
             <xsl:if test="sqroot/body/bodyContent/browse/info/permission/allowExport = 1">
-              <button type="button" style="margin-top:10px;" class="btn btn-success" onclick="window.location='?code={sqroot/header/info/code/id}&amp;mode=export'">
+              <button id="btnExport" type="button" style="margin-top:10px;" class="btn btn-success" data-clicked="0" onclick="window.location='?code={sqroot/header/info/code/id}&amp;mode=export'">
                 <strong>EXPORT DATA</strong>
               </button>
             </xsl:if>
@@ -188,8 +190,8 @@
       <div class="row visible-phone">
         <div class="col-md-12">
           <div class="box" style="border:0px none white;box-shadow:none;">
-            <table class="table table-condensed strip-table-browse browse-table-an" style="border-collapse:collapse; margin:auto;">
-              <thead>
+            <table id="tblBrowse" class="table table-condensed strip-table-browse browse-table-an" style="border-collapse:collapse; margin:auto;">
+              <thead id="browseHead">
                 <tr>
                   <xsl:apply-templates select="sqroot/body/bodyContent/browse/header/column[@mandatory=1]" />
                   <th>
@@ -410,7 +412,7 @@
     <th width="10" title="{$title}">
       <table class="fixed-table">
         <tr>
-          <td>
+          <td onclick="sortBrowse(this, 'header', '{../../info/code}', '{@fieldName}')" data-order="{@order}">
             <xsl:value-of select="$title"/>
           </td>
         </tr>
@@ -439,7 +441,7 @@
         <xsl:if test="count(fields/field[@mandatory=0])>0">
           <table class="fixed-table">
             <tr>
-              <td id="summary{@GUID}">
+              <td id="summary{@GUID}" name="summary">
                 <xsl:apply-templates select="fields/field[@mandatory=0]" />&#160;
               </td>
             </tr>
@@ -631,35 +633,37 @@
                   </xsl:if>
 
                   <!--Talks-->
-                  <xsl:variable name="talkDisplay">
-                    <xsl:if test="not(talks/talk)">
-                      collapsed-box
-                    </xsl:if>
-                  </xsl:variable>
-                  <div class="box box-danger box-solid direct-chat direct-chat-danger {$talkDisplay}" style="max-width:300px;float:left;margin: 10px 10px 10px 10px;">
-                    <div class="box-header with-border">
-                      <h3 class="box-title">Document Talk</h3>
-                      <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse">
-                          <ix class="fa fa-plus"></ix>
-                        </button>
+                  <xsl:if test="talks/talk">
+                    <xsl:variable name="talkDisplay">
+                      <xsl:if test="not(talks/talk)">
+                        collapsed-box
+                      </xsl:if>
+                    </xsl:variable>
+                    <div class="box box-danger box-solid direct-chat direct-chat-danger {$talkDisplay}" style="max-width:300px;float:left;margin: 10px 10px 10px 10px;">
+                      <div class="box-header with-border">
+                        <h3 class="box-title">Document Talk</h3>
+                        <div class="box-tools pull-right">
+                          <button class="btn btn-box-tool" data-widget="collapse">
+                            <ix class="fa fa-plus"></ix>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="box-body">
+                        <div class="direct-chat-messages" id="chatMessages{@GUID}" >
+                          <xsl:apply-templates select="talks/talk"/>
+                        </div>
+                      </div>
+                      <div class="box-footer">
+                        <div class="input-group">
+                          <input type="text" id="message{@GUID}" name="message" placeholder="Type Message ..." class="form-control" onkeypress="javascript:enterTalk('{@GUID}', event, '10')"/>
+                          <span class="input-group-btn">
+                            <button type="button" class="btn btn-danger btn-flat" onclick="javascript:submitTalk('{@GUID}', '10')">Send</button>
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div class="box-body">
-                      <div class="direct-chat-messages" id="chatMessages{@GUID}" >
-                        <xsl:apply-templates select="talks/talk"/>
-                      </div>
-                    </div>
-                    <div class="box-footer">
-                      <div class="input-group">
-                        <input type="text" id="message{@GUID}" name="message" placeholder="Type Message ..." class="form-control" onkeypress="javascript:enterTalk('{@GUID}', event, '10')"/>
-                        <span class="input-group-btn">
-                          <button type="button" class="btn btn-danger btn-flat" onclick="javascript:submitTalk('{@GUID}', '10')">Send</button>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
+                  </xsl:if>
+                
                 </div>
               </div>
             </div>

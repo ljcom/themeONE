@@ -11,8 +11,8 @@
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
     <script>
-      <!--loadScript('OPHContent/themes/<xsl:value-of select="sqroot/header/info/themeFolder"/>/scripts/daterangepicker/daterangepicker.js');
-      loadScript('OPHContent/themes/<xsl:value-of select="sqroot/header/info/themeFolder"/>/scripts/select2/select2.full.min.js');-->
+      <!--loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
+      loadScript('OPHContent/cdn/select2/select2.full.min.js');-->
 
       <!--var xmldoc = ""
       var--> <!--xsldoc = "OPHContent/themes/<xsl:value-of select="sqroot/header/info/themeFolder"/>/xslt/" + getPage();-->
@@ -33,39 +33,25 @@
       defaultTime: false
       });
 
-      $(function() {
+      upload_init(code, function(data) {
+      var err=''; s=0;
+      $(data).find("sqroot").find("message").each(function (i) {
+      var item=$(data).find("sqroot").find("message").eq(i);
+      if ($(item).text()!='') err += $(item).text()+' ';
+      })
 
-      // We can attach the `fileselect` event to all file inputs on the page
-      $(document).on('change', ':file', function() {
-      var input = $(this),
-      numFiles = input.get(0).files ? input.get(0).files.length : 1,
-      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-      input.trigger('fileselect', [numFiles, label]);
+      $(data).find("sqroot").find("guid").each(function (i) {
+      var sn=$(data).find("sqroot").find("guid").eq(i);
+      if (sn!='') s++;
+      })
+      var msg='Upload Status: Success: '+s+(err==''?'':' Error: '+err);
+      showMessage(msg);
+      //setTimeout(function() {location.reload()}, 5000);
 
-      //var file = this.files[0];
-      //if (file.size > 1024 {
-      //alert('max upload size is 1k')
-      //}
-      });
-
-      // We can watch for our custom `fileselect` event like this
-      $(document).ready( function() {
-      $(':file').on('fileselect', function(event, numFiles, label) {
-
-      var input = $(this).parents('.input-group').find(':text'),
-      //log = numFiles > 1 ? numFiles + ' files selected' : label;
-      log = label;
-      if( input.length ) {
-      input.val(log);
-      } else {
-      //if( log ) alert(log);
-      }
+      var code='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>';
+      loadChild(code);
 
       });
-      });
-
-      });
-
 
       $(function () {
 
@@ -147,7 +133,7 @@
             <!--location: 0 header; 1 child; 2 browse
               location: browse:10, header form:20, browse anak:30, browse form:40-->
 
-            <xsl:if test="/sqroot/body/bodyContent/form/info/permission/allowAddSave = 1">
+            <xsl:if test="/sqroot/body/bodyContent/form/info/permission/allowAdd = 1">
               <button id="child_button_addSave" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 41, 'form{sqroot/body/bodyContent/form/info/code/.}');">SAVE &amp; ADD NEW</button>&#160;
             </xsl:if>
             
@@ -799,6 +785,7 @@
   </xsl:template>
 
   <xsl:template match="child">
+    
     <input type="hidden" id="CPKID" value="gchild{code/.}"/>
     <input type="hidden" id="childKey{code/.}" value="{parentkey/.}"/>
     <input type="hidden" id="filter{code/.}" value="{parentkey/.}='{/sqroot/body/bodyContent/form/info/GUID/.}'"/>
@@ -811,8 +798,8 @@
       var code='<xsl:value-of select ="code/."/>';
       var parentKey='<xsl:value-of select ="parentkey/."/>';
       var GUID='<xsl:value-of select ="/sqroot/body/bodyContent/form/info/GUID/."/>';
-
-      loadChild(code, parentKey, GUID);
+      var browsemode='<xsl:value-of select ="browseMode/."/>';
+      loadChild(code, parentKey, GUID, null, browsemode);
     </script>
 
     <!--div class="col-md-12">
@@ -823,8 +810,8 @@
           </h3>
         </div>
       </div-->
-    <div class="box box-solid box-default visible-phone" style="box-shadow:0px;border:none;" id="child{code/.}{/sqroot/body/bodyContent/form/info/GUID/.}">
-      &#160;
+    <div class="box box-solid box-default visible-phone" style="box-shadow:0px;border:none;" id="child{code/.}{/sqroot/body/bodyContent/form/info/GUID/.}" data-parentguid="{/sqroot/body/bodyContent/form/info/GUID/.}">
+    &#160;
     </div>
     <!--/div-->
   </xsl:template>

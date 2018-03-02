@@ -19,6 +19,15 @@
     <div style="display:none" id="themeName">&#xA0;</div>
 
     <script>
+      Sideshow.config.language = "oph";
+      if(getMode() == 'export') {
+        Sideshow.config.autoSkipIntro = true;
+      }
+      else {
+        Sideshow.config.autoSkipIntro = false;
+      }
+      Sideshow.init();
+      
       var meta = document.createElement('meta');
       meta.charset = "UTF-8";
       loadMeta(meta);
@@ -39,44 +48,8 @@
       $("body").addClass("sidebar-mini");
       $("body").addClass("fixed");
 
-
-      <!--loadStyle('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/bootstrap/css/bootstrap.min.css');
-      loadStyle('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/styles/font-awesome-4.7.0/css/font-awesome.min.css');
-
-      loadStyle('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/daterangepicker/daterangepicker.css');
-
-      loadStyle('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/datepicker/datepicker3.css');
-      loadStyle('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/iCheck/all.css');
-      loadStyle('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/colorpicker/bootstrap-colorpicker.min.css');
-      loadStyle('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/loopj-jquery-tokeninput/styles/token-input-facebook.css');
-      loadStyle('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/loopj-jquery-tokeninput/styles/token-input-mac.css');
-
-      loadStyle('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/timepicker/bootstrap-timepicker.min.css');
-      loadStyle('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/select2/select2.min.css');
-      loadStyle('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/admin-LTE/css/AdminLTE.min.css');
-      loadStyle('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/admin-LTE/css/skins/_all-skins.min.css');
-      loadStyle('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/styles/custom-me.css');
-
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/jQuery/jquery-2.2.3.min.js');
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/bootstrap/js/bootstrap.min.js');
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/input-mask/jquery.inputmask.js');
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/input-mask/jquery.inputmask.date.extensions.js');
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/input-mask/jquery.inputmask.extensions.js');
-      loadScript('https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js');
-
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/datepicker/bootstrap-datepicker.js');
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/colorpicker/bootstrap-colorpicker.min.js');
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/timepicker/bootstrap-timepicker.min.js');
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/loopj-jquery-tokeninput/src/jquery.tokeninput.js');
-
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/slimScroll/jquery.slimscroll.min.js');
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/iCheck/icheck.min.js');
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/fastclick/fastclick.js');
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/upclick/upclick-min.js');
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/custom-me.js');-->
-      loadScript('OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder" />/scripts/admin-LTE/js/app.min.js');
-
-
+      loadScript('OPHContent/cdn/admin-LTE/js/app.min.js');
+      
       document.getElementById("pageName").innerHTML = getCookie('page');
       document.getElementById("themeName").innerHTML = getCookie('themeFolder');
 
@@ -89,6 +62,231 @@
       setCookie('userName', '<xsl:value-of select="sqroot/header/info/user/userName"/>', 7);
       //setCookie('userId', '<xsl:value-of select="sqroot/header/info/user/userId"/>', 7);
       changeSkinColor;
+      
+      <!--EXPORT BUTTON-->
+      Sideshow.registerWizard({
+        name: "ss_exportData",
+        title: "How to Use Export Data Button?",
+        description: "We would like to help you how to use this export data button.",
+        estimatedTime: "5 Minutes",
+        affects: [
+  		    function(){
+            if ($('#btnExport').length == 1 &amp;&amp; getMode() == 'browse')
+			        return true;
+		      }
+        ]
+      }).storyLine({
+        showStepPosition: true,
+        steps: [
+          {
+	          title: "Let's Go to Export Data Page First!",
+	          text: "Please click EXPORT DATA button to continue",
+            subject: "#btnExport",
+            autoContinue: true,
+            completingConditions: [
+		    	    function(){
+		    		    return $('#uploadBox').data('clicked') > 0
+		    	    }
+		        ],
+            listeners:{
+              beforeStep: function() { 
+                $('#btnExport').attr('onclick', "window.location='?code=MaQALO&amp;mode=export&amp;help=1'")
+              }
+            }
+          }
+	      ]
+      });
+      
+      <!--EXPORT PAGE-->
+      Sideshow.registerWizard({
+        name: "ss_exportPage",
+        title: "Help Me to Use Export Page",
+        description: "We would like to help you how to use this export page.",
+        estimatedTime: "10 Minutes",
+        affects: [
+  		    function(){
+            if (getMode() == 'export')
+			        return true;
+		      }
+        ]
+      }).storyLine({
+        showStepPosition: true,
+        steps: [
+    	    {
+		        title: "Welcome to Export Data \"<xsl:value-of select="/sqroot/header/info/title"/>\"",
+		        text: "Hello \"<xsl:value-of select="sqroot/header/info/user/userName"/>\", are you ready to go? Please click next then."
+          },
+    	    {
+		        title: "Download Template",
+		        text: "First of all, before you can use an export mode you have to download a formatted template (Always in Excel) by clicking that button.",
+          },
+          {
+	          title: "Downloading a Template",
+	          text: "Now, let's try downloading your template. Click that Download Template button.",
+	          subject: "#btn_imp",
+            targets: "#btn_imp",
+            listeners: {
+		    	    beforeStep: function(){        
+                if($('#exportNavTab').length == 1)
+                  $('#exportNavTab').children('ul').children('li').eq(0).children('a').click();
+		    	    }
+		        }	
+          },
+    	    {
+		        title: "Input Data into File",
+		        text: "After the downloaded template is complete, you need to input data into that file and than save it. Before it file is ready to export.",
+            listeners: {
+		    	    afterStep: function(){
+                if($('#exportNavTab').length == 0) Sideshow.gotoStep("expTemplate")
+		    	    }
+		        }	            
+          },
+          {
+	          title: "Export Template",
+	          text: "In this tab you can export your downloaded template file.",
+	          subject: "#exportNavTab",
+            lockSubject:true,
+            listeners: {
+		    	    beforeStep: function(){
+                if($('#exportNavTab').length == 1)
+                  $('#exportNavTab').children('ul').children('li').eq(1).children('a').click();
+		    	    }
+		        }	
+          },
+          {
+	          title: "Export Parameters",
+	          text: "Before you can export <xsl:value-of select="/sqroot/header/info/title"/> template, you have to set this parameters. Each of parameter is always affected the result of your exported data. So, you better ask your administrator about the use of this parameters.",
+	          subject: "#formExport",
+            targets: "#formExport input, #formExport select",
+            lockSubject:true
+          },
+          {
+            name: "expTemplate",
+	          title: "Export Template",
+	          text: "Now to exporting your data, you need to click this button then select the downloaded template file that located in your computer.",
+	          subject: "#btn_exp",
+            lockSubject:true,
+            listeners: {
+		    	    beforeStep: function(){
+                if($('#exportNavTab').length == 1)
+                  $('#exportNavTab').children('ul').children('li').eq(1).children('a').click();
+		    	    }
+		        }	
+          },
+          {
+	          title: "Export Status",
+	          text: "You can see your export status here.",
+	          subject: "#exportStatus",
+            lockSubject:true,
+            skipIf: function() {
+		    	      return $("#exportStatus").length == 0;
+			      },
+          },
+    	    {
+		        title: "Remember!",
+		        text: "Each time you want to use export mode, you have to always download a new template.",
+	          subject: "#btn_imp",
+            targets: "#btn_imp",
+            lockSubject:true,
+            listeners: {
+		    	    beforeStep: function() {        
+                if($('#exportNavTab').length == 1)
+                  $('#exportNavTab').children('ul').children('li').eq(0).children('a').click();
+		    	    }
+		        }
+          },
+          {
+	          title: "Finish",
+	          text: "That's all <xsl:value-of select="sqroot/header/info/user/userName"/>, it's the end of my help guide. Thank you for let me help you. See you again :) ",
+          }
+	      ]
+      });
+      $( document ).ready(function() {
+        if(getQueryVariable('help')==1) Sideshow.start();
+      });
+      
+      <!--BROWSE PAGE-->
+      Sideshow.registerWizard({
+        name: "ss_browse",
+        title: "Help Me to Use This Browse Page",
+        description: "We would like to help you how to use this Browse page.",
+        estimatedTime: "15 Minutes",
+        affects: [
+  		    function(){
+            if (getMode() == 'browse')
+			        return true;
+		      }
+        ]
+      }).storyLine({
+        showStepPosition: true,
+        steps: [
+    	    {
+		        title: "Welcome to \"<xsl:value-of select="/sqroot/header/info/title"/>\"",
+		        text: "Hello \"<xsl:value-of select="sqroot/header/info/user/userName"/>\", welcome to \"<xsl:value-of select="/sqroot/header/info/title"/>\". Please click next then."
+          },
+          {
+	          title: "Table Browse",
+	          text: "Here is your table browse. In this table browse you can see your data. Try scroll the page up adn down if you dont see the highlight.",
+	          subject: "#tblBrowse",
+            lockSubject:true
+          },
+          {
+	          title: "Sorting The Data",
+	          text: "To sort your data, you can click it's field title except for Summary and Action fields. Try scroll the page up and down if you dont see the highlight.",
+	          subject: "#browseHead",
+            targets: "td[onclick*='sort']"
+          },
+          {
+	          title: "Summary",
+	          text: "If you click the summary, you can view the detail will be expanded. Try Click under the red marked arrow to see the differents.",
+	          subject: "#browseContent",
+            targets: "td[id^='summary']", 
+            autoContinue: true,
+            completingConditions: [
+		    	    function(){
+		    		    return $("div[id^='brodeta']").is(':visible');
+		    	    }
+		        ]              
+          },
+          {
+	          title: "Summary Content",
+	          text: "In this summary content box you can see the detail of summary content it self.",
+	          subject: "div[id^='brodeta']:visible",
+            lockSubjects:true
+          },
+          {
+	          title: "Action Button Inactive",
+	          text: "This button function is to make one of your data becomes incative",
+	          subject: "td[class='browse-action-button']:eq(0)",
+            lockSubject:true,
+            targets: "a[href*='inactivate']:eq(0)"
+          },
+          {
+	          title: "Action Button Edit",
+	          text: "This button function is to modify one of your data or you can just view what is the more detail that this data has.",
+	          subject: "td[class='browse-action-button']:eq(0)",
+            lockSubject:true,
+            targets: "a[id^='edit']:eq(0)"
+          },
+          {
+	          title: "Page Numbers",
+	          text: "This is the page number. You can switch between the page by clikcing the number you want.",
+	          subject: "#pagenumbers",
+            lockSubject:true,
+            skipIf: function() {
+		    	      return $("#pagenumbers").children().length == 0;
+			      },
+          },
+          {
+	          title: "Finish",
+	          text: "That's all <xsl:value-of select="sqroot/header/info/user/userName"/>, it's the end of my help guide. Thank you for let me help you. See you again :) ",
+          }
+	      ]
+      });
+      
+
+
+          
     </script>
     <!-- Page script -->
 
@@ -123,7 +321,7 @@
         </div>
         <div class="accordian-body collapse top-menu-div" id="mobilemenupanel" style="color:white; position:absolute; background:#222D32; z-index:100; width:100%; right:0px; top:50px; ">
           <div class="input-group sidebar-form">
-            <input type="text" id="searchBox" name="searchBox" class="form-control" placeholder="Search..." onkeypress="return searchText(event,this.value);" value="" />
+            <!--<input type="text" id="searchBox" name="searchBox" class="form-control" placeholder="Search..." onkeypress="return searchText(event,this.value);" value="" />-->
             <span class="input-group-btn">
               <button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="searchText(event);">
                 <ix class="fa fa-search" aria-hidden="true"></ix>
@@ -136,6 +334,11 @@
         </div>
         <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
+            <li>
+              <a style="cursor:pointer;" onclick="Sideshow.start();" data-toggle="tooltip" data-placement="bottom" title="Help?">
+                <ix class="fa fa-question-circle fa-lg"></ix>
+              </a>
+            </li>
             <li class="dropdown user user-menu">
               <xsl:choose>
                 <xsl:when test="not(sqroot/header/info/user/userId)">
