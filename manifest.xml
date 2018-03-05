@@ -37,6 +37,7 @@
     <jsFile>OPHContent/cdn/sideshow/distr/dependencies/jazz.min.js</jsFile>
     <jsFile>OPHContent/cdn/sideshow/distr/dependencies/pagedown.min.js</jsFile>
     <jsFile>OPHContent/cdn/sideshow/distr/sideshow.js</jsFile>
+	<jsFile>OPHContent/cdn/chartjs/chart.bundle.min.js</jsFile>
     <cssFile>OPHContent/themes/themeONE/styles/icomoon/style.css</cssFile>
     <jsFile>OPHContent/themes/themeONE/custom-me.js</jsFile>
     <cssFile>OPHContent/themes/themeONE/custom-me.css</cssFile>
