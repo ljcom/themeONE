@@ -208,8 +208,8 @@
       <!--BROWSE PAGE-->
       Sideshow.registerWizard({
         name: "ss_browse",
-        title: "Help Me to Use This Browse Page",
-        description: "We would like to help you how to use this Browse page.",
+        title: "Help Me to Use \"<xsl:value-of select="/sqroot/header/info/title"/>\" Page",
+        description: "We would like to help you how to use \"<xsl:value-of select="/sqroot/header/info/title"/>\" page.",
         estimatedTime: "15 Minutes",
         affects: [
   		    function(){
@@ -228,13 +228,31 @@
 	          title: "Table Browse",
 	          text: "Here is your table browse. In this table browse you can see your data. Try scroll the page up adn down if you dont see the highlight.",
 	          subject: "#tblBrowse",
+            lockSubject:true,
+            skipIf: function() {
+                return $("#noData").length == 0;
+			      },
+            listeners:{
+              afterStep: function() { 
+                if($("#noData").length == 1) Sideshow.gotoStep("statusFilter");
+              }
+            }
+          },
+          {
+            name: "tblBrowse",
+	          title: "Table Browse",
+	          text: "Here is your table browse. In this table browse you can see your data. Try scroll the page up adn down if you dont see the highlight.",
+	          subject: "#tblBrowse",
             lockSubject:true
           },
           {
 	          title: "Sorting The Data",
 	          text: "To sort your data, you can click it's field title except for Summary and Action fields. Try scroll the page up and down if you dont see the highlight.",
 	          subject: "#browseHead",
-            targets: "td[onclick*='sort']"
+            targets: "td[onclick*='sort']",
+            skipIf: function() {
+		    	      return $("td[onclick*='sort']").length == 0;
+			      },
           },
           {
 	          title: "Summary",
@@ -259,14 +277,20 @@
 	          text: "This button function is to make one of your data becomes incative",
 	          subject: "td[class='browse-action-button']:eq(0)",
             lockSubject:true,
-            targets: "a[href*='inactivate']:eq(0)"
+            targets: "a[href*='inactivate']:eq(0)",
+            skipIf: function() {
+		    	      return $("a[href*='inactivate']:eq(0)").length == 0;
+			      }
           },
           {
 	          title: "Action Button Edit",
 	          text: "This button function is to modify one of your data or you can just view what is the more detail that this data has.",
 	          subject: "td[class='browse-action-button']:eq(0)",
             lockSubject:true,
-            targets: "a[id^='edit']:eq(0)"
+            targets: "a[id^='edit']:eq(0)",
+            skipIf: function() {
+		    	      return $("a[id^='edit']:eq(0)").length == 0;
+			      }
           },
           {
 	          title: "Page Numbers",
@@ -275,7 +299,83 @@
             lockSubject:true,
             skipIf: function() {
 		    	      return $("#pagenumbers").children().length == 0;
-			      },
+			      }
+          },
+          {
+            name: "statusFilter",
+	          title: "Filter Status",
+	          text: "This is the filter status for this browse. Try click the menu to see its content",
+	          subject: "#statusFilter",
+	          targets: "#statusFilter",
+            autoContinue: true,
+            completingConditions: [
+		    	    function(){
+		    		    return $("#statusFilter").attr("aria-expanded")
+		    	    }
+		        ]              
+          },
+          {
+	          title: "Filter Status",
+	          text: "This is the content for filter status that available for this browse. Each action do different filter that affect the data.",
+	          subject: "#statusContent",
+	          targets: "#statusContent",
+            lockSubject: true,
+            listeners:{
+              beforeStep: function() { 
+                $("#statusContent").show();
+              },
+              afterStep: function() { 
+                $("#statusContent").hide();
+              }
+            }
+          },
+          {
+	          title: "Advanced Filters",
+	          subject: "#bfBox",
+	          text: "This is the Advanced Filter box, contain many specified data filter. Click the red marked arrow to open the box.",
+	          targets: "#statusContent",
+            autoContinue: true, completingConditions: [
+		    	    function(){
+		    		    return $("#bfBox div.box-body").is(":visible")
+		    	    }
+		        ], 
+            listeners:{
+              beforeStep: function() { 
+                if($('#bfBox').length == 0) Sideshow.gotoStep('newdoc')
+              }
+            }
+          },
+          {
+	          title: "Form Filters",
+	          subject: "#bfBox",
+	          text: "This is the available filter. Each of them do the specific filter.",
+	          targets: "#formFilter span.select2"
+          },
+          {
+	          title: "Apply Filters",
+	          subject: "#btnFilter",
+	          text: "After you done with selecting the filters, now its time to applying them. With this button you can apply the filters.",
+	          targets: "#btnFilter",
+            lockSubject: true
+          },
+          {
+	          title: "Reset Filters",
+	          subject: "#btnResetFilter",
+	          text: "This button function is to reset the filters. Each time you want to reset the active filters, just click this button instead.",
+	          targets: "#btnResetFilter",
+            lockSubject: true,
+            listeners:{
+              afterStep: function() { 
+                $("#btnAdvancedFilter").click();
+              }
+            }
+          },
+          {
+            name: "newdoc",
+	          title: "New Document",
+	          subject: "#newdoc",
+	          text: "This button function is for creating a new document. Each time you want to create a new document, just click this button.",
+            lockSubject: true
           },
           {
 	          title: "Finish",
@@ -283,10 +383,6 @@
           }
 	      ]
       });
-      
-
-
-          
     </script>
     <!-- Page script -->
 

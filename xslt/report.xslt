@@ -96,12 +96,7 @@
 	          subject: "#btnPDF",
             skipIf: function() {
 		    	      return $("#btnPDF").length == 0;
-			      },
-            listeners:{
-              afterStep: function() { 
-                if ($("#btnPDF").length == 1) Sideshow.gotoStep("finish");
-              }
-            }
+			      }
           },          
           {
 	          title: "Download Report",

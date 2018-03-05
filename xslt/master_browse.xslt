@@ -110,7 +110,7 @@
         <div class="box-header full-width-a">
           <div class=" browse-dropdown-status">
             <div class="dropdown">
-              <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" >
+              <button id="statusFilter" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" >
               <!--Issue in IE
                 <ix class="icon-doc-draft">
                   <span class="path1"></span>
@@ -136,7 +136,7 @@
                 &#160;
                 <span class="caret"></span>
               </button>
-              <ul class="dropdown-menu browse-dropdown-content">
+              <ul id="statusContent" class="dropdown-menu browse-dropdown-content">
                 <xsl:apply-templates select="sqroot/body/bodyContent/browse/info/states/state/substate" />
               </ul>
             </div>
@@ -164,7 +164,7 @@
         <div class="col-md-12 full-width-a" style="margin:0px;">
           <div id="bfBox" class="box box-default collapsed-box">
             <div class="box-header with-border">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse">
+              <button id="btnAdvancedFilter" type="button" class="btn btn-box-tool" data-widget="collapse">
                 <ix class="fa fa-plus" aria-hidden="true">&#160; Advanced Filters</ix>
               </button>
             </div>
@@ -249,7 +249,7 @@
                 <xsl:when test="not(sqroot/body/bodyContent/browse/content/row) and $state=0">
                   <tr>
                     <td colspan="100" align="center">
-                      <div class="alert alert-warning">There is no data available. Create a new one?</div>
+                      <div id="noData" class="alert alert-warning">There is no data available. Create a new one?</div>
                     </td>
                   </tr>
                 </xsl:when>
