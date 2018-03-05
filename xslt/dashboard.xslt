@@ -58,11 +58,7 @@
       <!-- Morris.js charts -->
       //loadScript('https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js');
       //loadScript('OPHContent/cdn/morris/morris.min.js');
-<<<<<<< HEAD
       //loadScript('OPHContent/cdn/chartjs/Chart.bundle.js');
-=======
-      loadScript('../../OPHContent/cdn/chartjs/Chart.bundle.js');
->>>>>>> 94cba608c93f13fce8e538c99f0845d134ae45b9
       <!-- Sparkline -->
       //loadScript('OPHContent/cdn/sparkline/jquery.sparkline.min.js');
       <!-- jvectormap -->
