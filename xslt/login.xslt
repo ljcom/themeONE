@@ -120,8 +120,18 @@
                 <button id="btn_submitLogin" class="btn btn-orange-a">SUBMIT</button>&#160;
                 <button class="btn btn-gray-a" onclick="clearLoginText();">CLEAR</button>
               </div>
+              <br/>
+              <!--<div>
+                <div>
+                  <a href="">Register as a new user?</a>
+                </div>
+                <div>
+                  <a href="">Forgot your password?</a>
+                </div>
+              </div>-->
             </div>
-            <div class="col-md-5">
+
+            <!--<div class="col-md-5">
               
               <h3>Use another services to sign in</h3>
 
@@ -129,7 +139,7 @@
                 <span class="g-signin2" data-onsuccess="signInGConnect"></span>
               </div>
 
-            </div>
+            </div>-->
             <!--<div class="col-md-6">
               <div style="margin-top:100px;"></div>
               <h3>FORGOT PASSWORD</h3>

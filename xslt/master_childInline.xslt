@@ -39,7 +39,7 @@
 
       });
 
-      var columns_<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>='';
+      var columns_<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>=[];
 
     </script>
     <xsl:apply-templates select="sqroot/body/bodyContent/browse/children" />
@@ -109,7 +109,7 @@
 
                   <!--<button type="button" class="buttonCream" id="download" name="download" onclick="javascript:PrintDirect('{/sqroot/body/bodyContent/browse/info/code}', '', 3, '', '', '');">DOWNLOAD</button>
                   <button type="button" class="buttonCream" id="upload" name="upload" onclick="javascript:showSubBrowseView('{/sqroot/body/bodyContent/browse/info/code}','',1,'');">UPLOAD</button>-->
-                  <input id ="import_hidden" name="import_hidden" type="file" style="visibility: hidden; width: 0; height: 0;" multiple="" />
+                  <input id ="import_hidden" name="import_hidden" type="file" data-code="{/sqroot/body/bodyContent/browse/info/code}" style="visibility: hidden; width: 0; height: 0;" multiple="" />
                 </xsl:if>                
                 <xsl:if test="/sqroot/body/bodyContent/browse/info/nbPages > 1">
                   <ul class="pagination pagination-sm no-margin pull-right" id="childPageNo"></ul>
@@ -147,10 +147,6 @@
 
   </xsl:template>
   <xsl:template match="sqroot/body/bodyContent/browse/header">
-    <script>
-      var columns_<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>=[];
-    </script>
-
     <xsl:apply-templates select="column"/>
   </xsl:template>
 
