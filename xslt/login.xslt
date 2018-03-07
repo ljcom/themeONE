@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl" >
-  
+
   <xsl:template match="/">
-   
+
     <script>
 
       var meta = document.createElement('meta');
@@ -40,16 +40,10 @@
       }
 
       document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
-      
-      function onSignIn(googleUser) {
-      var profile = googleUser.getBasicProfile();
-      console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-      console.log('Name: ' + profile.getName());
-      console.log('Image URL: ' + profile.getImageUrl());
-      console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-      }
+
+
     </script>
-    
+
     <div class="wrapper" style="background: rgba(38, 44, 44, 0.1);">
 
       <header class="main-header">
@@ -61,10 +55,10 @@
             <a href="#" style="color:white;">
               <span>
                 <img width="30" style="margin-top:-9px;" alt="Logo Image" id="logoimg"/>
-              <script>
-                $("#logoimg").attr("src","OPHContent/themes/"+loadThemeFolder()+"/images/oph4_logo.png");
-              </script>
-                </span>
+                <script>
+                  $("#logoimg").attr("src","OPHContent/themes/"+loadThemeFolder()+"/images/oph4_logo.png");
+                </script>
+              </span>
               <span style="font-size:25px;">
                 <xsl:value-of select="sqroot/header/info/company"/>
               </span>
@@ -92,21 +86,23 @@
         </div>
       </div>
       <!-- *** NOTIFICATION MODAL END -->
-      
+
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper" style="background:white">
         <section class="content">
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
               <h1 style="font-size:40px; font-weight:bold">
                 WELCOME TO <br/>
                 <xsl:value-of select="sqroot/header/info/company"/>&#160;<xsl:value-of select="sqroot/header/info/productName"/>
               </h1>
-              <h3>SIGN IN</h3>
-              <!--<div style="text-align:center">
-             <button class="btn btn-orange-a">WINDOWS CONNECT</button><br><br>
-             <span> or </span>
-          </div><br>-->
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-7">
+              <h3>Use a local account to sign in</h3>
+
               <h4 style="color:gray">Please enter your username and password</h4>
               <form id="formlogin" onsubmit ="return signIn(1);">
                 <div class="form-group enabled-input">
@@ -118,13 +114,20 @@
                   <input type="password" class="form-control" name ="pwd" id ="pwd" onkeypress="return checkenter(event)"/>
                 </div>
                 <div class="g-recaptcha" data-sitekey="6Ld9Qi8UAAAAAJKicrf2JhrOH3k5LkqxyCodIOWm"></div>
-                <br/>                
+                <br/>
               </form>
               <div style="text-align:center">
                 <button id="btn_submitLogin" class="btn btn-orange-a">SUBMIT</button>&#160;
                 <button class="btn btn-gray-a" onclick="clearLoginText();">CLEAR</button>
               </div>
-              <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            </div>
+            <div class="col-md-5">
+              
+              <h3>Use another services to sign in</h3>
+
+              <div>
+                <span class="g-signin2" data-onsuccess="signInGConnect"></span>
+              </div>
 
             </div>
             <!--<div class="col-md-6">
@@ -153,9 +156,8 @@
           <b>Version</b> 4.0
         </div>
         <strong>
-          Copyright &#169; 2017 <a href="#">Operahouse</a>.
-        </strong> All rights
-        reserved.
+          Copyright &#169; 2018 <a href="#">OPERAHOUSE</a>.
+        </strong> All rights reserved.
       </footer>
     </div>
 
@@ -163,21 +165,21 @@
     <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script>
       if (getCookie('isWhiteAddress') == '1') {
-        $('#formlogin .g-recaptcha').remove();
-        $('#btn_submitLogin').attr('onclick', 'signIn(0)')
+      $('#formlogin .g-recaptcha').remove();
+      $('#btn_submitLogin').attr('onclick', 'signIn(0)')
       } else {
-        $('#btn_submitLogin').attr('onclick', 'signIn(1)')
+      $('#btn_submitLogin').attr('onclick', 'signIn(1)')
       }
 
       function checkenter(e) {
-        if (e.keyCode == 13) {
-          if (getCookie('isWhiteAddress') == '1') {
-            signIn(0);
-          }
-          else {
-            signIn(1);
-          }
-        }
+      if (e.keyCode == 13) {
+      if (getCookie('isWhiteAddress') == '1') {
+      signIn(0);
+      }
+      else {
+      signIn(1);
+      }
+      }
       }
 
       <!--function checklogin()
@@ -228,6 +230,6 @@
       // alert("goToALL");
       }
     </script>
-    
+
   </xsl:template>
 </xsl:stylesheet>
