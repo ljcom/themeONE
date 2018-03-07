@@ -3,6 +3,7 @@
     xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl" >
   
   <xsl:template match="/">
+   
     <script>
 
       var meta = document.createElement('meta');
@@ -35,8 +36,7 @@
       if (getCookie('isWhiteAddress') == '0' || getCookie('isWhiteAddress') == undefined || getCookie('isWhiteAddress') == '') {
       loadScript('https://www.google.com/recaptcha/api.js');
       loadScript('https://apis.google.com/js/platform.js');
-      
-      
+
       }
 
       document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
@@ -123,8 +123,9 @@
               <div style="text-align:center">
                 <button id="btn_submitLogin" class="btn btn-orange-a">SUBMIT</button>&#160;
                 <button class="btn btn-gray-a" onclick="clearLoginText();">CLEAR</button>
-                <div class="g-signin2" data-onsuccess="onSignIn"></div>
               </div>
+              <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
             </div>
             <!--<div class="col-md-6">
               <div style="margin-top:100px;"></div>
