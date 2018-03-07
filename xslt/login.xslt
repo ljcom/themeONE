@@ -4,6 +4,7 @@
   
   <xsl:template match="/">
     <script>
+
       var meta = document.createElement('meta');
       meta.charset = "UTF-8";
       loadMeta(meta);
@@ -18,6 +19,11 @@
       meta.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
       loadMeta(meta);
 
+      var meta = document.createElement('meta');
+      meta.name = "google-signin-client_id";
+      meta.content = "234818231644-j4feqpc6c3gg0iks95808eg5nutlfquu.apps.googleusercontent.com";
+      loadMeta(meta);
+
       changeSkinColor();
       //$("body").addClass("skin-blue");
       $("body").addClass("hold-transition");
@@ -28,10 +34,20 @@
 
       if (getCookie('isWhiteAddress') == '0' || getCookie('isWhiteAddress') == undefined || getCookie('isWhiteAddress') == '') {
       loadScript('https://www.google.com/recaptcha/api.js');
+      loadScript('https://apis.google.com/js/platform.js');
+      
+      
       }
 
       document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
-
+      
+      function onSignIn(googleUser) {
+      var profile = googleUser.getBasicProfile();
+      console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+      console.log('Name: ' + profile.getName());
+      console.log('Image URL: ' + profile.getImageUrl());
+      console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+      }
     </script>
     
     <div class="wrapper" style="background: rgba(38, 44, 44, 0.1);">
@@ -107,6 +123,7 @@
               <div style="text-align:center">
                 <button id="btn_submitLogin" class="btn btn-orange-a">SUBMIT</button>&#160;
                 <button class="btn btn-gray-a" onclick="clearLoginText();">CLEAR</button>
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
               </div>
             </div>
             <!--<div class="col-md-6">
@@ -210,40 +227,6 @@
       // alert("goToALL");
       }
     </script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <!--<script>
-      $.widget.bridge('uibutton', $.ui.button);
-    </script>-->
-    <!-- Bootstrap 3.3.6 -->
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    <!-- Morris.js charts -->
-    <script src="OPHContent/cdn/raphael/raphael-min.js"></script>
-    <script src="plugins/morris/morris.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparkline/jquery.sparkline.min.js"></script>
-    <!-- jvectormap -->
-    <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-    <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="plugins/knob/jquery.knob.js"></script>
-    <!-- daterangepicker -->
-    <script src="OPHContent/cdn/moment/moment.min.js"></script>
-    <script src="plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- datepicker -->
-    <script src="plugins/datepicker/bootstrap-datepicker.js"></script>
-    <!-- Bootstrap WYSIHTML5 -->
-    <script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-    <!-- Slimscroll -->
-    <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
-    <!-- FastClick -->
-    <script src="plugins/fastclick/fastclick.js"></script>
-    <!-- AdminLTE App -->
-    <script src="dist/js/app.min.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
+    
   </xsl:template>
 </xsl:stylesheet>
