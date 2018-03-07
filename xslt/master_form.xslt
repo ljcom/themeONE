@@ -711,31 +711,28 @@
             </div>
             <script>
               if ($('body').children('#addNew<xsl:value-of select="../@fieldName"/>').length == 1) {
-              $('body').children('#addNew<xsl:value-of select="../@fieldName"/>').remove();
+                $('body').children('#addNew<xsl:value-of select="../@fieldName"/>').remove();
               }
               $('#addNew<xsl:value-of select="../@fieldName"/>').appendTo("body");
-              $('#addNew<xsl:value-of select="../@fieldName"/>')
-              .on('show.bs.modal', function (event) {
-              $('#<xsl:value-of select="../@fieldName"/>').select2('close');
-              $('#modalForm<xsl:value-of select="../@fieldName"/>').append('<div class="col-md-12"></div>');
-              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').append('<div style="float:left;"></div>');
-              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').append('<div style="float:left; margin-left:10px;font-size:20px;">Please wait...</div>');
-              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').children('div:first').append('<ix class="fa fa-spinner fa-pulse fa-2x fa-fw"></ix>');
-              })
-              .on('shown.bs.modal', function (event) {
-              if (isGuid($('#<xsl:value-of select="../@fieldName"/>').val()) &amp;&amp; $(event.relatedTarget).data('action') == 'edit' ) {
-              loadModalForm('modalForm<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="@comboCode"/>', $('#<xsl:value-of select="../@fieldName"/>').val());
-              }
-              else {
-              loadModalForm('modalForm<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="@comboCode"/>', '00000000-0000-0000-0000-000000000000');
-              }
-              })
-              .on('hide.bs.modal', function(event){
-              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('div').remove();
-              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('form').remove();
-              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('button').remove();
-              $('#addNew<xsl:value-of select="../@fieldName"/> .modal-footer').children('button[id*="btn_save"]').remove();
-              $('#modalForm<xsl:value-of select="../@fieldName"/>').text('&#160;');
+              $('#addNew<xsl:value-of select="../@fieldName"/>').on('show.bs.modal', function (event) {
+                $('#<xsl:value-of select="../@fieldName"/>').select2('close');
+                $('#modalForm<xsl:value-of select="../@fieldName"/>').append('<div class="col-md-12"></div>');
+                $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').append('<div style="float:left;"></div>');
+                $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').append('<div style="float:left; margin-left:10px;font-size:20px;">Please wait...</div>');
+                $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').children('div:first').append('<ix class="fa fa-spinner fa-pulse fa-2x fa-fw"></ix>');
+              }).on('shown.bs.modal', function (event) {
+                if (isGuid($('#<xsl:value-of select="../@fieldName"/>').val()) &amp;&amp; $(event.relatedTarget).data('action') == 'edit' ) {
+                  loadModalForm('modalForm<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="@comboCode"/>', $('#<xsl:value-of select="../@fieldName"/>').val());
+                }
+                else {
+                  loadModalForm('modalForm<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="@comboCode"/>', '00000000-0000-0000-0000-000000000000');
+                }
+              }).on('hide.bs.modal', function(event){
+                $('#modalForm<xsl:value-of select="../@fieldName"/>').children('div').remove();
+                $('#modalForm<xsl:value-of select="../@fieldName"/>').children('form').remove();
+                $('#modalForm<xsl:value-of select="../@fieldName"/>').children('button').remove();
+                $('#addNew<xsl:value-of select="../@fieldName"/> .modal-footer').children('button[id*="btn_save"]').remove();
+                $('#modalForm<xsl:value-of select="../@fieldName"/>').text('&#160;');
               });
             </script>
             <div class="modal-footer">
@@ -757,11 +754,11 @@
         </span>
         <script>
           $("#<xsl:value-of select="../@fieldName"/>").on("select2:open", function(e) {
-          var s2id = $("span[class*='select2-dropdown select2-dropdown']").children('.select2-results').children().attr('id');
-          s2id = s2id.split('select2-').join('').split('-results').join('');
-          if (s2id == '<xsl:value-of select="../@fieldName"/>') {
-          $('#select2-<xsl:value-of select="../@fieldName"/>-addNew').appendTo("span[class*='select2-dropdown select2-dropdown']").show();
-          }
+            var s2id = $("span[class*='select2-dropdown select2-dropdown']").children('.select2-results').children().attr('id');
+            s2id = s2id.split('select2-').join('').split('-results').join('');
+            if (s2id == '<xsl:value-of select="../@fieldName"/>') {
+              $('#select2-<xsl:value-of select="../@fieldName"/>-addNew').appendTo("span[class*='select2-dropdown select2-dropdown']").show();
+            }
           });
         </script>
       </xsl:if>
@@ -773,14 +770,13 @@
         </span >
         <script>
           $("#<xsl:value-of select="../@fieldName"/>").on("select2:select", function(e) {
-          $selection = $('#select2-<xsl:value-of select="../@fieldName"/>-container').parents('.selection');
-          if ($selection.children('#editForm<xsl:value-of select="../@fieldName"/>').length == 0) {
-          $('#editForm<xsl:value-of select="../@fieldName"/>').appendTo($selection).show();
-          }
+            $selection = $('#select2-<xsl:value-of select="../@fieldName"/>-container').parents('.selection');
+            if ($selection.children('#editForm<xsl:value-of select="../@fieldName"/>').length == 0) {
+              $('#editForm<xsl:value-of select="../@fieldName"/>').appendTo($selection).show();
+            }
           });
         </script>
       </xsl:if>
-
     </xsl:if>
 
     <script>

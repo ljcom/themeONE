@@ -4,8 +4,7 @@
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
-  <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
-  
+  <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" /> 
   <xsl:variable name="code" select="/sqroot/body/bodyContent/info/code" />
   <xsl:variable name="desc" select="/sqroot/body/bodyContent/info/description" />
   <xsl:variable name="exportMode">
@@ -33,61 +32,9 @@
           var withParam = 0;
         </xsl:otherwise>
       </xsl:choose>
-      
+
       //UPLOAD FUNCTIONS
-      $(function () {
-        $(document).on('change', ':file', function () {
-          if(withParam == 0) $('#btn_imp').attr('disabled', 'disabled');
-          $('#btn_exp').button('loading');
-          $("body").css("cursor", "progress");
-
-          var input = $(this), numFiles = input.get(0).files ? input.get(0).files.length : 1, label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-          input.trigger('fileselect', [numFiles, label]);
-          var file = this.files[0];
-            
-          if (file.size > 1024000) {
-            showMessage('Maximum file size is 1 Mb / 1000 Kb ->');
-            $('#btn_exp').button('reset');
-            $('#btn_imp').removeAttr('disabled');
-            $("body").css("cursor", "default");
-          } 
-          else {
-            var file = $(this)[0].files[0];
-            var upload = new Upload(file);
-            var code = '<xsl:value-of select="$code"/>';
-            var exportMode = <xsl:value-of select="$exportMode"/>;
-            var parameter = '<xsl:value-of select="$parameter" />';
-            var xmlParameter = '<xsl:value-of select="$xmlParameter" />';
-            var fields = parameter.split(",");
-                
-            for (var i = 0; i &lt; fields.length; i++) {
-              var value = $('#' + fields[i]).val()
-              value = (value &amp;&amp; value != '') ? value : 'NULL';
-              xmlParameter = xmlParameter.split('#' + fields[i] + '#').join(value);
-            }
-            xmlParameter = xmlParameter.split('&lt;').join('ss3css').split('&gt;').join('ss3ess');
-            xmlParameter = xmlParameter.split('&amp;lt;').join('ss3css').split('&amp;gt;').join('ss3ess');
-            xmlParameter = xmlParameter.split('=').join('ss3dss').split('/').join('ss2fss').split('"').join('ss84ss');
-
-            var url = 'OPHCore/api/default.aspx?mode=upload&amp;header=true&amp;code=' + code + '&amp;exportMode=' + exportMode + '&amp;xmlParameter=' + xmlParameter;
-            //$('code').text(file.name);
-            //$('#progressBox').show(); 
-            //$('#exportProgress').animate({ width: "90%" }, 100000);
-            
-            upload.doUpload(url, 
-              function (data) {
-                //$('#exportProgress').animate({ width: "+=100%" }, 3000, function() {
-                  location.reload()
-                //});
-              },
-              function (error) {
-                showMessage(error);
-              }
-            );
-            
-          }
-        });
-      });    
+      export_init('<xsl:value-of select="$code"/>', withParam, '<xsl:value-of select="$exportMode"/>', '<xsl:value-of select="$parameter" />', '<xsl:value-of select="$xmlParameter" />');
     </script>
     
     <section class="content-header visible-phone">

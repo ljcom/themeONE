@@ -74,7 +74,7 @@
     </section>
     <script>
       $(function () {
-      $('.datepicker').datepicker({
+      $('.datepicker').datepicker({ 
       autoclose: true
       });
 

@@ -40,61 +40,18 @@
       $("body").addClass("sidebar-mini");
       $("body").addClass("fixed");
 
-
-      <!-- Ionicons -->
-      //loadStyle('https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css');
-      <!-- Morris chart -->
-      //loadStyle('OPHContent/cdn/morris/morris.css');
-      <!-- jvectormap -->
-      //loadStyle('OPHContent/cdn/jvectormap/jquery-jvectormap-1.2.2.css');
-      <!-- Daterange picker -->
-      //loadStyle('OPHContent/cdn/daterangepicker/daterangepicker.css');
-      <!-- bootstrap wysihtml5 - text editor -->
-      //loadStyle('OPHContent/cdn/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css');
-
-      <!-- jQuery UI 1.11.4 -->
-      //loadScript('https://code.jquery.com/ui/1.11.4/jquery-ui.min.js');
-      <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-      <!-- Morris.js charts -->
-      //loadScript('https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js');
-      //loadScript('OPHContent/cdn/morris/morris.min.js');
-      //loadScript('OPHContent/cdn/chartjs/Chart.bundle.js');
-      <!-- Sparkline -->
-      //loadScript('OPHContent/cdn/sparkline/jquery.sparkline.min.js');
-      <!-- jvectormap -->
-      //loadScript('OPHContent/cdn/jvectormap/jquery-jvectormap-1.2.2.min.js');
-      //loadScript('OPHContent/cdn/jvectormap/jquery-jvectormap-world-mill-en.js');
-      <!-- jQuery Knob Chart -->
-      //loadScript('OPHContent/cdn/knob/jquery.knob.js');
-      <!-- daterangepicker -->
-      //loadScript('OPHContent/cdn/moment/moment.min.js');
-      //loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
-      <!-- datepicker -->
-      //loadScript('OPHContent/cdn/datepicker/bootstrap-datepicker.js');
-      <!-- Bootstrap WYSIHTML5 -->
-      //loadScript('OPHContent/cdn/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js');
-      <!-- Slimscroll -->
-      //loadScript('OPHContent/cdn/slimScroll/jquery.slimscroll.min.js');
-      <!-- FastClick -->
-      //loadScript('OPHContent/cdn/fastclick/fastclick.js');
-      <!-- AdminLTE App -->
-      //loadScript('dist/js/adminlte.min.js');
-      //loadScript('OPHContent/cdn/admin-LTE/js/app.min.js');
-
-      <!--$.widget.bridge('uibutton', $.ui.button);-->
+      loadScript('OPHContent/cdn/admin-LTE/js/app.min.js');
 
       document.getElementById("pageName").innerHTML = getCookie('page');
       document.getElementById("themeName").innerHTML = getCookie('themeFolder');
 
       document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
 
-      //resetBrowseCookies();
-
       loadDashboard();
 
       setCookie('userURL', 'OPHContent/documents/<xsl:value-of select="sqroot/header/info/account" />/<xsl:value-of select="sqroot/header/info/user/userURL"/>', 7);
       setCookie('userName', '<xsl:value-of select="sqroot/header/info/user/userName"/>', 7);
-      //setCookie('userId', '<xsl:value-of select="sqroot/header/info/user/userId"/>', 7);
+      
 
     </script>
     <!-- Page script -->
