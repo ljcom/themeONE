@@ -19,6 +19,10 @@
   <xsl:template match="/">
     <script>
       loadScript('OPHContent/cdn/select2/select2.full.min.js');
+      <xsl:if test="sqroot/body/bodyContent/browse/info/buttons">
+      buttons=<xsl:value-of select="sqroot/body/bodyContent/browse/info/buttons"/>;
+        loadExtraButton(buttons, 'browse-action-button');
+      </xsl:if>
     </script>
 
     <xsl:if test="/sqroot/header/info/isBrowsable = 0">
@@ -438,7 +442,7 @@
         <xsl:if test="not(docDelegate)">
           <xsl:attribute name="colspan">2</xsl:attribute>
         </xsl:if>
-        <xsl:if test="count(fields/field[@mandatory=0])>0">
+        <!--<xsl:if test="count(fields/field[@mandatory=0])>0">-->
           <table class="fixed-table">
             <tr>
               <td id="summary{@GUID}" name="summary">
@@ -446,7 +450,7 @@
               </td>
             </tr>
           </table>
-        </xsl:if>
+        <!--</xsl:if>-->
       </td>
 
       <xsl:if test="docDelegate">
@@ -473,6 +477,7 @@
       
       <xsl:if test="/sqroot/body/bodyContent/browse/info/isDelegator = 0">
         <td class="browse-action-button" style="white-space: nowrap;">
+          
           <!--approval icons-->
           <xsl:if test="substring(/sqroot/header/info/code/id, 1, 1) = 'T'">
             <xsl:choose>
@@ -681,7 +686,7 @@
       m+="<xsl:value-of select="." />";
       $('#mandatory<xsl:value-of select="../../@GUID"/>').val(m);
     </script>
-    <td id="mandatory{../../@GUID}" class="expand-td" data-toggle="collapse" data-target="#{../@GUID}" data-parent="#{../@GUID}">
+    <td id="mandatory{../../@GUID}" class="expand-td" data-toggle="collapse" data-target="#{../@GUID}" data-parent="#{../@GUID}" data-field="{@caption}">
       <xsl:value-of select="." />
     </td>
   </xsl:template>
@@ -707,15 +712,26 @@
         <xsl:otherwise>
           <xsl:value-of select="."/>
         </xsl:otherwise>
-      </xsl:choose>&#160;
+      </xsl:choose>
     </xsl:variable>
     <xsl:if test=". != ''">
       <span style="font-weight:bold;">
         <xsl:value-of select="@title" />
       </span>
       &#160;:&#160;
-      <xsl:value-of select="$tbContent" />
-      &#160;·&#160;
+      <span data-field="{@caption}">
+      <xsl:choose>
+        <xsl:when test="@editor='anchor'">
+          <a href="{$tbContent}">
+            <xsl:value-of select="$tbContent" />
+          </a>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$tbContent" />
+          &#160;·&#160;
+        </xsl:otherwise>
+      </xsl:choose>
+      </span>
     </xsl:if>
   </xsl:template>
 

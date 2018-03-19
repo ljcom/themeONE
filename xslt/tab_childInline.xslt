@@ -159,6 +159,10 @@
         x.push('fieldname=<xsl:value-of select="@fieldName"/>');
         x.push('preview=<xsl:value-of select="@preview"/>');
         x.push('defaultValue=<xsl:value-of select="@defaultValue"/>');
+        x.push('wf1=<xsl:value-of select="@wf1"/>');
+        x.push('wf2=<xsl:value-of select="@wf2"/>');
+        x.push('wf2=<xsl:value-of select="@align"/>');
+        x.push('wf2=<xsl:value-of select="@digit"/>');
         columns_<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>.push(x);
       </script>
     </th>
@@ -210,12 +214,26 @@
     </xsl:variable>
     <xsl:choose>
       <xsl:when test="@editor">
-        <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}">
+        <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}">
+          <xsl:attribute name="align">
+            <xsl:choose>
+              <xsl:when test="@align=0">left</xsl:when>
+              <xsl:when test="@align=1">center</xsl:when>
+              <xsl:when test="@align=2">right</xsl:when>
+            </xsl:choose>
+          </xsl:attribute>
         <xsl:value-of select="$tbContent"/>
         </td>
       </xsl:when>
       <xsl:otherwise>
         <td class="cell" data-id="{@id}" data-field="{@caption}">
+          <xsl:attribute name="align">
+            <xsl:choose>
+              <xsl:when test="@align=0">left</xsl:when>
+              <xsl:when test="@align=1">center</xsl:when>
+              <xsl:when test="@align=2">right</xsl:when>
+            </xsl:choose>
+          </xsl:attribute>
           <xsl:value-of select="$tbContent"/>
         </td>
       </xsl:otherwise>

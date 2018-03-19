@@ -608,3 +608,16 @@ function changeSkinColor() {
         var bodyClass = 'skin-blue';
     $('body').addClass(bodyClass);
 }
+
+function loadExtraButton(buttons, location)
+{
+    buttons.forEach(function (i) {
+        x = "<a href=\"" + i.url + "\"><ix class='fa " + i.icon + "' title='" + i.caption + "'></ix></a>";
+        $('td.' + location).each(function (n) {
+            txt = i.url.match(/\w+(?=%)/g);
+            txt2 = $(this).parent().find("[data-field='" + txt[0] + "']").html()
+            x2 = x.split('%' + txt[0] + '%').join(txt2);
+            $(this).append(x2);
+        })
+    })
+}

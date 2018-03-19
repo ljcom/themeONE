@@ -257,12 +257,18 @@
                     <li class="user-footer">
                       <div class="pull-left">
                         <a href="?code=profile" class="btn btn-default btn-flat">
-                          <ix class="fa fa-user"></ix>&#160;Profile
+                          <span>
+                            <ix class="fa fa-user"></ix>
+                          </span>
+                          <span>Profile</span>
                         </a>
                       </div>
                       <div class="pull-right">
                         <a href="javascript:signOut()" class="btn btn-default btn-flat">
-                          <ix class="fa fa-power-off"></ix>&#160;Sign out
+                          <span>
+                            <ix class="fa fa-power-off"></ix>
+                          </span>
+                          <span>Sign out</span>
                         </a>
                       </div>
                     </li>

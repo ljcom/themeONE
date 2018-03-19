@@ -60,14 +60,10 @@
     );-->
 
       <!--//Date picker-->
-      $('.datepicker').datepicker({
-      autoclose: true
-      });
+      $('.datepicker').datepicker({autoclose: true});
 
       <!--//Date time picker-->
-      $('.datetimepicker').datetimepicker({
-
-      });
+      $('.datetimepicker').datetimepicker({});
 
       $(".timepicker").timepicker({
       minuteStep: 15,
@@ -142,8 +138,6 @@
       preview('1', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
       });
 
-
-
     </script>
 
     <xsl:variable name="settingmode">
@@ -179,7 +173,7 @@
         <li>
           <a href="javascript: loadBrowse('{sqroot/body/bodyContent/form/info/code/.}');">
             <span>
-              <ix class="fa fa-file-o"></ix>
+              <ix class="fa fa-file-text-o"></ix>
             </span>&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/Description/."/>
           </a>
         </li>
@@ -196,6 +190,16 @@
             </xsl:otherwise>
           </xsl:choose>
         </li>
+        <xsl:if test="sqroot/body/bodyContent/form/info/GUID!='00000000-0000-0000-0000-000000000000'">
+          <li>
+            <a style="color:blue" href="?code={sqroot/body/bodyContent/form/info/code/.}&amp;guid=00000000-0000-0000-0000-000000000000">
+              <span>
+                <ix class="fa fa-plus-square"></ix>
+              </span>
+              Create New <!--<xsl:value-of select="sqroot/body/bodyContent/form/info/Description/."/>-->
+            </a>
+          </li>
+        </xsl:if>
       </ol>
     </section>
 
@@ -368,7 +372,6 @@
 
   <xsl:template match="formRow ">
     <xsl:apply-templates select="fields"/>
-
   </xsl:template>
 
   <xsl:template match="fields">
@@ -746,7 +749,7 @@
         <span class="select2-search select2-box--dropdown" id="select2-{../@fieldName}-addNew" style="display:none;">
           <ul class="select2-results__options" role="tree" aria-expanded="true" aria-hidden="false">
             <li class="select2-results__option" role="treeitem" aria-selected="false">
-              <a href="#" data-toggle="modal" data-target="#addNew{../@fieldName}" data-backdrop="static" data-action="new">
+              <a data-toggle="modal" data-target="#addNew{../@fieldName}" data-backdrop="static" data-action="new">
                 Add New <xsl:value-of select="titlecaption"/>
               </a>
             </li>
@@ -777,6 +780,7 @@
           });
         </script>
       </xsl:if>
+    
     </xsl:if>
 
     <script>
