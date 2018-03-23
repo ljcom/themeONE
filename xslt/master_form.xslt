@@ -658,26 +658,14 @@
     <xsl:if test="../@isNullable = 0">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
-    <div>
-      <xsl:if test="button">
-        <xsl:attribute name="class">input-group</xsl:attribute>
+    <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}" data-type="selectBox"
+      data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}" 
+        onchange="autosuggest_onchange(this, '{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}', 'formheader');" >        
+      <xsl:if test="../@isEditable=0">
+        <xsl:attribute name="disabled">disabled</xsl:attribute>
       </xsl:if>
-      <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}" data-type="selectBox"
-        data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}" 
-          onchange="autosuggest_onchange(this, '{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}', 'formheader');" >        
-        <xsl:if test="../@isEditable=0">
-          <xsl:attribute name="disabled">disabled</xsl:attribute>
-        </xsl:if>
-        <option></option>
-      </select>
-      <xsl:if test="button">
-        <span class="input-group-btn">
-          <button class="btn btn-default" type="button" data-select2-open="multi-append">
-            <span class="fa fa-plus"></span>
-          </button>
-        </span>
-      </xsl:if>
-    </div>
+      <option></option>
+    </select>
 
     <!--AutoSuggest Add New Form Modal-->
     <xsl:if test="(@allowAdd=1 or @allowEdit=1) and ../@isEditable=1">
