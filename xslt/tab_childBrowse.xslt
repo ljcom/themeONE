@@ -35,7 +35,10 @@
       loadChild(code);
       });
 
-
+      $(document).ready(function(){
+        if($('th[data-order="DESC"]').length == 1) $('th[data-order="DESC"]').append(' &lt;ix class="fa fa-sort-alpha-desc" /&gt;');
+        else if($('th[data-order="ASC"]').length == 1) $('th[data-order="ASC"]').append(' &lt;ix class="fa fa-sort-alpha-asc" /&gt;');
+      });
 
     </script>
     <div class="row">
@@ -129,13 +132,12 @@
   </xsl:template>
 
   <xsl:template match="column">
-    <th>
+    <th style="cursor:pointer;" onclick="sortBrowse(this, 'child', '{../../info/code}', '{@fieldName}')" data-order="{@order}">
       <xsl:value-of select="."/>
     </th>
   </xsl:template>
-
+  
   <xsl:template match="sqroot/body/bodyContent/browse/content/row">
-
     <tr id="tr1_{$lowerCode}{@GUID}" data-code="{$lowerCode}" data-guid="{@GUID}"
         onmouseover="this.bgColor='lavender';this.style.cursor='pointer';" onmouseout="this.bgColor='white'">
       <td class="cell-recordSelector"></td>

@@ -63,8 +63,8 @@
           isShow = (getCookie(cname) == null || getCookie(cname) == undefined || getCookie(cname) == '') ? 1 : 0;
           if (isShow == 1) {
             $('#delegatorModal').modal({ backdrop: "static" });
-          }
-        });
+          }          
+        });                    
       </script>
     </xsl:if>
 
@@ -422,6 +422,25 @@
         </tr>
       </table>
     </th>
+
+    <script>
+      $(document).ready(function(){
+        if($('td[data-order="DESC"]').length == 1) {
+          var colName = $.trim($('td[data-order="DESC"]').text()) + ' &lt;ix class="fa fa-sort-alpha-desc" /&gt;';
+          $('td[data-order="DESC"]').html(colName);
+          var title = $('td[data-order="DESC"]').parents('th').attr('title');
+          var len = $('td[data-order="DESC"]').text().length * 17;
+          $('th[title="'+title+'"]').attr('width', len);
+        }
+        else if($('td[data-order="ASC"]').length == 1) {
+          var colName = $.trim($('td[data-order="ASC"]').text()) + ' &lt;ix class="fa fa-sort-alpha-asc" /&gt;';
+          $('td[data-order="ASC"]').html(colName);
+          var title = $('td[data-order="ASC"]').parents('th').attr('title');
+          var len = $('td[data-order="ASC"]').text().length * 17;
+          $('th[title="'+title+'"]').attr('width', len);
+        }
+      });
+    </script>
   </xsl:template>
 
   <xsl:template match="sqroot/body/bodyContent/browse/header/column[@docStatus=1]">

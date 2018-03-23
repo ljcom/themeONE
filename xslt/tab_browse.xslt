@@ -224,6 +224,26 @@
 
     </section>
     <!-- /.content -->
+  
+    <script>
+      $(document).ready(function(){
+        if($('td[data-order="DESC"]').length == 1) {
+          var colName = $.trim($('td[data-order="DESC"]').text()) + ' &lt;ix class="fa fa-sort-alpha-desc" /&gt;';
+          $('td[data-order="DESC"]').html(colName);
+          var title = $('td[data-order="DESC"]').parents('th').attr('title');
+          var len = $('td[data-order="DESC"]').text().length * 17;
+          $('th[title="'+title+'"]').attr('width', len);
+        }
+        else if($('td[data-order="ASC"]').length == 1) {
+          var colName = $.trim($('td[data-order="ASC"]').text()) + ' &lt;ix class="fa fa-sort-alpha-asc" /&gt;';
+          $('td[data-order="ASC"]').html(colName);
+          var title = $('td[data-order="ASC"]').parents('th').attr('title');
+          var len = $('td[data-order="ASC"]').text().length * 17;
+          $('th[title="'+title+'"]').attr('width', len);
+        }
+      });
+    </script>
+
   </xsl:template>
 
   <xsl:template match="sqroot/header/menus/menu[@code='newdocument']/submenus/submenu">
@@ -251,10 +271,10 @@
   </xsl:template>
 
   <xsl:template match="sqroot/body/bodyContent/browse/header/column[@mandatory=1]">
-    <th width="10">
+    <th width="10" title="{@fieldName}">
       <table class="fixed-table">
         <tr>
-          <td>
+          <td onclick="sortBrowse(this, 'header', '{../../info/code}', '{@fieldName}')" data-order="{@order}">
             <xsl:choose>
               <xsl:when test=".!=''">
                 <xsl:value-of select="translate(., $smallcase, $uppercase)" />
