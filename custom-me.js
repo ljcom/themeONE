@@ -615,9 +615,16 @@ function loadExtraButton(buttons, location)
         x = "<a href=\"" + i.url + "\"><ix class='fa " + i.icon + "' title='" + i.caption + "'></ix></a>";
         $('td.' + location).each(function (n) {
             txt = i.url.match(/\w+(?=%)/g);
-            txt2 = $(this).parent().find("[data-field='" + txt[0] + "']").html()
-            x2 = x.split('%' + txt[0] + '%').join(txt2);
-            $(this).append(x2);
+            if (txt == null) {
+                $(this).append(x);
+            }
+            else {
+                txt2 = $(this).parent().find("[data-field='" + txt[0] + "']").html()
+                x2 = x.split('%' + txt[0] + '%').join(txt2);
+                $(this).append(x2);
+            }
+           
+            
         })
     })
 }

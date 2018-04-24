@@ -90,7 +90,7 @@
 		        ],
             listeners:{
               beforeStep: function() { 
-                $('#btnExport').attr('onclick', "window.location='?code=MaQALO&amp;mode=export&amp;help=1'")
+                $('#btnExport').attr('onclick', "window.location='?code="+getCode()+"&amp;mode=export&amp;help=1'")
               }
             }
           }
@@ -252,7 +252,7 @@
             targets: "td[onclick*='sort']",
             skipIf: function() {
 		    	      return $("td[onclick*='sort']").length == 0;
-			      },
+			      }
           },
           {
 	          title: "Summary",
@@ -264,13 +264,19 @@
 		    	    function(){
 		    		    return $("div[id^='brodeta']").is(':visible');
 		    	    }
-		        ]              
+		        ],
+            skipIf: function() {
+		    	      return $("td[id^='summary']").length == 0;
+			      },
           },
           {
 	          title: "Summary Content",
 	          text: "In this summary content box you can see the detail of summary content it self.",
 	          subject: "div[id^='brodeta']:visible",
-            lockSubjects:true
+            lockSubjects:true,
+            skipIf: function() {
+		    	      return $("div[id^='brodeta']:visible").length == 0;
+			      }
           },
           {
 	          title: "Action Button Inactive",
@@ -380,6 +386,225 @@
           }
 	      ]
       });
+      
+      <!--FORM PAGE-->
+      Sideshow.registerWizard({
+        name: "ss_newDoc",
+        title: "How to Save a New <xsl:value-of select="/sqroot/header/info/title"/> Document?",
+        description: "We would like to help you to create or save this document.",
+        estimatedTime: "5 Minutes",
+        affects: [
+  		    function(){
+            if (getMode() == 'form' &amp;&amp; getQueryVariable('GUID') == '00000000-0000-0000-0000-000000000000')
+			        return true;
+		      }
+        ]
+      }).storyLine({
+        showStepPosition: true,
+        steps: [
+    	    {
+		        title: "Welcome to \"<xsl:value-of select="/sqroot/header/info/title"/>\" Form",
+		        text: "Hello \"<xsl:value-of select="sqroot/header/info/user/userName"/>\", welcome to \"<xsl:value-of select="/sqroot/header/info/title"/>\" form. If you ready for this tutorial, Please click next then."
+          },
+    	    {
+		        title: "Section",
+		        text: "This is called Section that contain form.",
+	          subject: "#section_1",
+            skipIf: function() {
+              return $("#section_1").length == 0;
+            }
+          },
+    	    {
+		        title: "Editable Field",
+		        text: "This is where you can fill any information that needed. This is optional.",
+	          subject: ".form-group.enabled-input:eq(0)",
+            targets: ".form-group.enabled-input:eq(0) input:text:enabled:eq(0)",
+            skipIf: function() {
+              return $(".form-group.enabled-input:eq(0)").length == 0;
+            },
+            listeners:{
+              beforeStep: function() {
+                $("span[id^='rfm']:eq(0)").hide();
+              },
+              afterStep: function() { 
+                $("span[id^='rfm']:eq(0)").show();
+              }
+            }
+          },
+    	    {
+		        title: "Required Field",
+		        text: 'This is where YOU HAVE to fill in. This field is required to be filled. Marked by red text("required field")',
+	          subject: ".form-group.enabled-input:has([id^='rfm']):eq(0)",
+            targets: ".form-group.enabled-input:has([id^='rfm']):eq(0) input:text:enabled:eq(0), [id^='rfm']:eq(0)",
+            skipIf: function() {
+              return $("span[id^='rfm']:eq(0)").length == 0 ;
+            }
+          },
+    	    {
+		        title: "Not Editable Field",
+		        text: "This is the field which you can not edit. The box is bordered boldly",
+	          subject: ".form-group.disabled-input:eq(0)",
+            targets: ".form-group.disabled-input:eq(0) input:text:disabled:eq(0)",
+            skipIf: function() {
+              return $(".form-group.disabled-input:eq(0)").length == 0 ;
+            }
+          },
+    	    {
+		        title: "Save or Cancel",
+		        text: "This is the button that functioned for saving your document or just cancel it.",
+	          subject: "div:has(#button_save):last",
+            targets: "#button_save, #button_cancel",
+            lockSubject: true
+          },
+          {
+	          title: "Finish",
+	          text: "That's all <xsl:value-of select="sqroot/header/info/user/userName"/>, it's the end of my help guide. Thank you for let me help you. See you again :) ",
+          }
+	      ]
+      });
+      
+      Sideshow.registerWizard({
+        name: "ss_formInfo",
+        title: "Tell me about <xsl:value-of select="/sqroot/header/info/title"/> form",
+        description: "We would like to tell you how to read information about this form.",
+        estimatedTime: "5 Minutes",
+        affects: [
+  		    function(){
+            if (getMode() == 'form' &amp;&amp; isGuid(getQueryVariable('GUID')))
+			        return true;
+		      }
+        ]
+      }).storyLine({
+        showStepPosition: true,
+        steps: [
+    	    {
+		        title: "Welcome to \"<xsl:value-of select="/sqroot/header/info/title"/>\" Form",
+		        text: "Hello \"<xsl:value-of select="sqroot/header/info/user/userName"/>\", welcome to \"<xsl:value-of select="/sqroot/header/info/title"/>\" form. If you ready for this tutorial, Please click next then."
+          },
+    	    {
+		        title: "Document Panel",
+		        text: "In this panel you can see your document No and document Ref No",
+            subject: ".user-panel",
+            targets: ".user-panel",
+            lockSubject: true,
+            skipIf: function() {
+              return $(".user-panel:visible").length == 0;
+            }
+          },
+    	    {
+		        title: "Search Panel",
+		        text: "In this panel you can search something.",
+            subject: "div:has(#searchBox):last()",
+            targets: "div:has(#searchBox):last()",
+            lockSubject: true,
+            skipIf: function() {
+              return $("#searchBox").length == 0;
+            }
+          },
+    	    {
+		        title: "Go To Panel",
+		        text: "In this panel you quick navigating between header and child.",
+            subject: "#gotoPanel",
+            targets: "#gotoPanel",
+            lockSubject: true,
+            skipIf: function() {
+              return $("#gotoPanel").length == 0;
+            }, 
+            listeners:{
+              beforeStep: function() { 
+                if($("#gotoPanel.active").length == 0)
+                    $("#gotoPanel a").click();
+              }
+            }
+          },
+    	    {
+		        title: "Document Information Panel",
+		        text: "In this panel you can see any information such as created user, created date etc.",
+            subject: "#docInfoPanel",
+            targets: "#docInfoPanel",
+            lockSubject: true,
+            skipIf: function() {
+              return $("#docInfoPanel").length == 0;
+            }, 
+            listeners:{
+              beforeStep: function() { 
+                if($("#docInfoPanel.active").length == 0)
+                    $("#docInfoPanel a").click();
+              }
+            }
+          },
+    	    {
+		        title: "Document Talk Panel",
+		        text: "In this panel you can see any comment for this document or you can post your comment here.",
+            subject: "#docTalkPanel",
+            targets: "#docTalkPanel",
+            lockSubject: true,
+            skipIf: function() {
+              return $("#docTalkPanel").length == 0;
+            }, 
+            listeners:{
+              beforeStep: function() { 
+                if($("#docTalkPanel.active").length == 0)
+                    $("#docTalkPanel a").click();
+              }
+            }
+          },
+    	    {
+		        title: "Approval Panel",
+		        text: "In this panel you can see any approval user list for this document only.",
+            subject: "#aprvPanel",
+            targets: "#aprvPanel",
+            lockSubject: true,
+            skipIf: function() {
+              return $("#aprvPanel").length == 0;
+            }, 
+            listeners:{
+              beforeStep: function() { 
+                if($("#aprvPanel.active").length == 0)
+                    $("#aprvPanel a").click();
+              }
+            }
+          },
+    	    {
+		        title: "Report Panel",
+		        text: "In this panel you can see any report or document that belong this document only.",
+            subject: "#reportPanel",
+            targets: "#reportPanel",
+            lockSubject: true,
+            skipIf: function() {
+              return $("#reportPanel").length == 0;
+            }, 
+            listeners:{
+              beforeStep: function() { 
+                if($("#reportPanel.active").length == 0)
+                    $("#reportPanel a").click();
+              }
+            }
+          },
+    	    {
+		        title: "Child",
+		        text: "This is the child of the header. Sometimes you need to fill all header's child.",
+            subject: "div[id^='child']:eq(0)",
+            targets: "div[id^='child']:eq(0)",
+            lockSubject: true,
+            skipIf: function() {
+              return $("div[id^='child']:eq(0)").length == 0;
+            }            
+          },
+    	    {
+		        title: "Create New",
+		        text: "If you want to directly create a new form, you can click this link.",
+            subject: ".breadcrumb",
+            targets: ".breadcrumb>li:last()",
+            lockSubject: true
+          },
+          {
+	          title: "Finish",
+	          text: "That's all <xsl:value-of select="sqroot/header/info/user/userName"/>, it's the end of my help guide. Thank you for let me help you. See you again :) ",
+          }
+	      ]
+      });      
+
     </script>
     <!-- Page script -->
 

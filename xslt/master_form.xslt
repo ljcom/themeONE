@@ -196,7 +196,7 @@
               <span>
                 <ix class="fa fa-plus-square"></ix>
               </span>
-              Create New <!--<xsl:value-of select="sqroot/body/bodyContent/form/info/Description/."/>-->
+              Create New
             </a>
           </li>
         </xsl:if>
@@ -242,6 +242,9 @@
                 <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
                 <button id="button_close" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'force', 1, 20)">CLOSE</button>&#160;
+              </xsl:when>
+              <xsl:when test="($documentstatus) &gt;= 500 and ($documentstatus) &lt;= 899">
+                <button id="button_reopen" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'reopen', 1, 20)">REOPEN</button>&#160;
               </xsl:when>
               <xsl:otherwise>
                 &#160;
@@ -492,19 +495,19 @@
     <xsl:variable name="tbContent">
       <xsl:choose>
         <xsl:when test="digit = 0 and value!=''">
-          <xsl:value-of select="format-number(value, '#,##0', 'dot-dec')"/>
+          <xsl:value-of select="format-number(value, '###,###,###,##0', 'dot-dec')"/>
         </xsl:when>
         <xsl:when test="digit  = 1 and value!=''">
-          <xsl:value-of select="format-number(value, '#,##0.0', 'dot-dec')"/>
+          <xsl:value-of select="format-number(value, '###,###,###,##0.0', 'dot-dec')"/>
         </xsl:when>
         <xsl:when test="digit  = 2 and value!=''">
-          <xsl:value-of select="format-number(value, '#,##0.00', 'dot-dec')"/>
+          <xsl:value-of select="format-number(value, '###,###,###,##0.00', 'dot-dec')"/>
         </xsl:when>
         <xsl:when test="digit  = 3 and value!=''">
-          <xsl:value-of select="format-number(value, '#,##0.000', 'dot-dec')"/>
+          <xsl:value-of select="format-number(value, '###,###,###,##0.000', 'dot-dec')"/>
         </xsl:when>
         <xsl:when test="digit  = 4 and value!=''">
-          <xsl:value-of select="format-number(value, '#,##0.0000', 'dot-dec')"/>
+          <xsl:value-of select="format-number(value, '###,###,###,##0.0000', 'dot-dec')"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="value"/>
@@ -583,7 +586,8 @@
         <ix class="fa fa-calendar"></ix>
       </div>
       <input type="text" class="form-control pull-right datepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" data-type="dateBox" data-old="{value}"
-        onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" >
+        onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" 
+        onchange="checkChanges(this)" >
         <xsl:if test="../@isEditable=0">
           <xsl:attribute name="disabled">disabled</xsl:attribute>
         </xsl:if>

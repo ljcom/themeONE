@@ -123,6 +123,16 @@
             </xsl:otherwise>
           </xsl:choose>
         </li>
+        <xsl:if test="sqroot/body/bodyContent/form/info/GUID!='00000000-0000-0000-0000-000000000000'">
+          <li>
+            <a style="color:blue" href="?code={sqroot/body/bodyContent/form/info/code/.}&amp;guid=00000000-0000-0000-0000-000000000000">
+              <span>
+                <ix class="fa fa-plus-square"></ix>
+              </span>
+              Create New
+            </a>
+          </li>
+        </xsl:if>
       </ol>
     </section>
 
@@ -498,19 +508,19 @@
     <xsl:variable name="tbContent">
       <xsl:choose>
         <xsl:when test="digit = 0 and value!=''">
-          <xsl:value-of select="format-number(value, '#,##0', 'dot-dec')"/>
+          <xsl:value-of select="format-number(., '###,###,###,##0', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="digit  = 1 and value!=''">
-          <xsl:value-of select="format-number(value, '#,##0.0', 'dot-dec')"/>
+        <xsl:when test="@digit  = 1 and .!=''">
+          <xsl:value-of select="format-number(., '###,###,###,##0.0', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="digit  = 2 and value!=''">
-          <xsl:value-of select="format-number(value, '#,##0.00', 'dot-dec')"/>
+        <xsl:when test="@digit  = 2 and .!=''">
+          <xsl:value-of select="format-number(., '###,###,###,##0.00', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="digit  = 3 and value!=''">
-          <xsl:value-of select="format-number(value, '#,##0.000', 'dot-dec')"/>
+        <xsl:when test="@digit  = 3 and .!=''">
+          <xsl:value-of select="format-number(., '###,###,###,##0.000', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="digit  = 4 and value!=''">
-          <xsl:value-of select="format-number(value, '#,##0.0000', 'dot-dec')"/>
+        <xsl:when test="@digit  = 4 and .!=''">
+          <xsl:value-of select="format-number(., '###,###,###,##0.0000', 'dot-dec')"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="value"/>

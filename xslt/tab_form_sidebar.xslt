@@ -88,7 +88,7 @@
     <!-- search form -->
     <form action="#" method="get" class="sidebar-form">
       <div class="input-group">
-        <input type="text" name="q" class="form-control" placeholder="Search..." />
+        <input type="text" id="searchBox" name="q" class="form-control" placeholder="Search..." />
         <span class="input-group-btn">
           <button type="submit" name="search" id="search-btn" class="btn btn-flat">
             <ix class="fa fa-search" aria-hidden="true"></ix>
@@ -98,9 +98,8 @@
     </form>
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
-      <!-- <li class="header">MAIN NAVIGATION</li> -->
       <xsl:if test="(sqroot/body/bodyContent/form/children) and (sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000'">
-        <li class="treeview {$gotoActive}">
+        <li class="treeview" id ="gotoPanel">
           <a href="#">
             <span>
               <ix class="fa  fa-arrow-circle-right"></ix>
@@ -112,7 +111,7 @@
           </a>
           <ul class="treeview-menu view-left-sidebar">
             <li>
-              <a href="#header_title">
+              <a href="#" onclick="$(&quot;a[href='#tab_1']&quot;).click()">
                 <span>
                   <ix class="fa fa-header"></ix>
                 </span>&#160;HEADER
@@ -121,12 +120,11 @@
             <li>
               <xsl:apply-templates select="sqroot/body/bodyContent/form/children"/>
             </li>
-            <!-- <li><a href="browse.html"><ix class="fa fa-list-alt"></ix> CHILD 2</a></li> -->
           </ul>
         </li>
       </xsl:if>
 
-      <li class="treeview">
+      <li class="treeview" id="docInfoPanel">
         <a href="#">
           <span>
             <ix class="fa fa-info-circle"></ix>
@@ -150,7 +148,7 @@
         <xsl:variable name ="isXLS" select="allowXLS" />
         <xsl:variable name ="qsql" select="querySQL" />
         <!--<xsl:if test="$docStatus = $qstate">-->
-        <li class="treeview">
+        <li class="treeview" id="reportPanel">
           <xsl:if test="$isPDF = 1 and $isXLS = 0" >
             <a href="javascript:genReport('{$qcode}','{$qpar}', 1,'{$qsql}','{$qname}');">
               <span>
@@ -177,7 +175,7 @@
 
       <!--Approvals-->
       <xsl:if test="sqroot/body/bodyContent/form/approvals/approval" >
-        <li class="treeview">
+        <li class="treeview" id="aprvPanel">
           <a href="#">
             <span>
               <ix class="fa fa-users"></ix>
@@ -229,46 +227,12 @@
         </li>
       </xsl:if>
 
-      <!--<xsl:if test="substring(sqroot/body/bodyContent/form/info/code, 1, 1) = 't'">
-        <li class="treeview">
-          <a href="#">
-            <span>
-              <ix class="fa fa-users"></ix>
-            </span>
-            <span>&#160;APPROVAL</span>
-            <span class="pull-right-container">
-              <ix class="fa fa-angle-left pull-right"></ix>
-            </span>
-          </a>
-
-          <xsl:apply-templates select="sqroot/body/bodyContent/form/approvals"/>
-          <ul class="treeview-menu view-left-sidebar">
-            <li>
-              <dl id="approval-info">
-                <dt>
-                  <ix class="fa  fa-check-circle"></ix> Mikaela Grace
-                </dt>
-                <dd style="margin-left:15px;">1 hours ago</dd>
-                <dt>
-                  <ix class="fa   fa-check-circle"></ix> SHEDEA Maria Onawa
-                </dt>
-                <dd style="margin-left:15px;">1 minutes ago</dd>
-                <dt>
-                  <ix class="fa  fa-minus-circle"></ix> SUSILA Yitna
-                </dt>
-              </dl>
-            </li>
-          </ul>
-        </li>
-      </xsl:if>-->
-
       <xsl:if test="$settingmode!='C'">
         <script>
           setTimeout(function () { refreshTalk('<xsl:value-of select="sqroot/body/bodyContent/form/info/GUID" />', '', 20); }, 1000 * 60);
-
         </script>
 
-        <li class="treeview {$chatActive}">
+        <li class="treeview" id="docTalkPanel">
           <a href="#">
             <span>
               <ix class="fa fa-comments"></ix>
@@ -436,13 +400,12 @@
   </xsl:template>
 
   <xsl:template match="child">
-    <a href="#child{code/.}">
+    <a href="#" onclick="$(&quot;a[href='#tab_{code/.}']&quot;).click()" >
       <span>
         <ix class="fa fa-list-alt"></ix>
       </span>&#160;
       <xsl:value-of select="childTitle"/>
     </a>
-
   </xsl:template>
 
 </xsl:stylesheet>

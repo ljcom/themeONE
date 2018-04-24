@@ -30,6 +30,7 @@
     <jsFile>OPHContent/cdn/iCheck/icheck.min.js</jsFile>
     <jsFile>OPHContent/cdn/fastclick/fastclick.js</jsFile>
     <jsFile>OPHContent/cdn/upclick/upclick-min.js</jsFile>
+    <jsFile>OPHContent/cdn/select2/select2.full.min.js</jsFile>
     <jsFile>OPHContent/cdn/ckeditor/ckeditor.js</jsFile>
     <jsFile>OPHContent/cdn/ophelements/celljs/cell.js</jsFile>
     <jsFile>OPHContent/cdn/ophelements/ophupload/ophupload.js</jsFile>

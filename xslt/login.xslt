@@ -80,7 +80,7 @@
               <p>Some text in the modal.</p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button id="notiBtn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>

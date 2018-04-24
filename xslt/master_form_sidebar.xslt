@@ -102,9 +102,8 @@
     </form>-->
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
-      <!-- <li class="header">MAIN NAVIGATION</li> -->
       <xsl:if test="(sqroot/body/bodyContent/form/children) and (sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000'">
-        <li class="treeview">
+        <li class="treeview" id ="gotoPanel">
           <a href="#">
             <span>
               <ix class="fa  fa-arrow-circle-right"></ix>
@@ -130,7 +129,7 @@
       </xsl:if>
 
       <!--Document Information-->
-      <li class="treeview active">
+      <li class="treeview active" id="docInfoPanel">
         <a href="#">
           <span>
             <ix class="fa fa-info-circle"></ix>
@@ -154,7 +153,7 @@
         <xsl:variable name ="isXLS" select="allowXLS" />
         <xsl:variable name ="qsql" select="querySQL" />
         <!--<xsl:if test="$docStatus = $qstate">-->
-        <li class="treeview">
+        <li class="treeview" id="reportPanel">
           <xsl:if test="$isPDF = 1 and $isXLS = 0" >
             <a href="javascript:genReport('{$qcode}','{$qpar}', 1,'{$qsql}','{$qname}');">
               <span>
@@ -181,7 +180,7 @@
 
       <!--Approvals-->
       <xsl:if test="sqroot/body/bodyContent/form/approvals/approval" >
-        <li class="treeview">
+        <li class="treeview" id="aprvPanel">
           <a href="#">
             <span>
               <ix class="fa fa-users"></ix>
@@ -241,10 +240,9 @@
       <xsl:if test="$settingmode!='C'">
         <script>
           setTimeout(function () { refreshTalk('<xsl:value-of select="sqroot/body/bodyContent/form/info/GUID" />', '', 20); }, 1000 * 60);
-
         </script>
 
-        <li class="treeview">
+        <li class="treeview" id="docTalkPanel">
           <a href="#">
             <span>
               <ix class="fa fa-comments"></ix>

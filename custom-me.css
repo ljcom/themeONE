@@ -327,10 +327,9 @@ td.expand-table-an {
         width: 100px;
     }
 
-    /*.expand-table-an table .colname-an tr:hover {
+    .expand-table-an table .colname-an tr:hover {
         cursor:default;
-        background-color:white;
-    }*/
+    }
 
     .expand-table-an table .colname-an2 {
         width: 10px;
@@ -866,3 +865,41 @@ ul.pending-task-module li {
         border-radius: 0;
     }
 
+.pinned:before {
+    visibility: visible;
+    cursor: pointer;
+    color:skyblue;
+}
+.pinned:checked:before {
+    content: "\f08d";
+    color: gray;
+    position: relative;
+    animation: pinnedDown 0.5s
+}
+.pinned.header:before {
+    visibility: visible;
+    cursor: pointer;
+    color: gray;
+    vertical-align:inherit;
+    position: relative;
+    bottom: 8px;
+}
+.pinned.header:checked:before {
+    content: "\f08d";
+    color: black;
+    position: relative;
+    animation: pinnedDown 0.5s
+}
+input[type=checkbox].pinned {
+    visibility: hidden;
+}
+@keyframes pinnedDown {
+    from {
+        top: -8px;
+        opacity: 0;
+    }
+    to {
+        top: 4px;
+        opacity: 1;
+    }
+}

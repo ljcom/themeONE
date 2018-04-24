@@ -75,7 +75,7 @@
                 <table class="table table-condensed strip-table-browse" style="border-collapse:collapse;">
                   <thead>
                     <tr style="background:#3C8DBC; color:white">
-                      <th style="width:28px;"></th>
+                      <th class="cell-recordSelectors" style="width:28px;"></th>
                       <xsl:apply-templates select="sqroot/body/bodyContent/browse/header"/>
                     </tr>
                   </thead>
@@ -100,7 +100,7 @@
                           onclick="showChildForm('{$lowerCode}','00000000-0000-0000-0000-000000000000')">ADD</button>&#160;
                 </xsl:if>
                 <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and (/sqroot/body/bodyContent/browse/info/curState/@substateCode &lt; 500 or /sqroot/header/info/code/settingMode/. != 'T')">
-                  <button class="btn btn-gray-a" onclick="cell_delete('{$lowerCode}, this')">DELETE</button>&#160;
+                  <button class="btn btn-gray-a" onclick="cell_delete('{$lowerCode}', this)">DELETE</button>&#160;
                 </xsl:if>
                 <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)=1 and (/sqroot/body/bodyContent/browse/info/permission/allowExport/.)=1" >
                   <button class="btn btn-gray-a"
@@ -142,7 +142,7 @@
 
     <tr id="tr1_{$lowerCode}{@GUID}" data-parent="#{$lowerCode}" data-target="#{$lowerCode}{@GUID}" data-code="{$lowerCode}" data-guid="{@GUID}"
         class="accordion-toggle cell"
-        onclick="showChildForm('{$lowerCode}','{@GUID}', '{$lowerCode}')" onmouseover="this.bgColor='lavender';this.style.cursor='pointer';" onmouseout="this.bgColor='white'">
+        onmouseover="this.bgColor='lavender';this.style.cursor='pointer';" onmouseout="this.bgColor='white'">
       <td class="cell-recordSelector"></td>
       <xsl:apply-templates select="fields/field"/>
     </tr>
@@ -181,7 +181,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <td>
+    <td onclick="showChildForm('{$lowerCode}','{../../@GUID}', '{$lowerCode}')" >
       <xsl:value-of select="$tbContent"/>&#160;
     </td>
 
