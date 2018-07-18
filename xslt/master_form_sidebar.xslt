@@ -19,7 +19,58 @@
     </xsl:variable>
 
     <div class="user-panel">
-      <div class="pull-left image image-envi data-logo" style="padding:2px; margin-left:7px; margin-top:0px; border:2px inset grey;">
+      <table>
+        <tr>
+          <td rowspan="2" >
+            <div class="image image-envi data-logo">
+              <xsl:choose>
+                <xsl:when test="sqroot/header/info/code/shortName != ''">
+                  <span>
+                    <xsl:value-of select="translate(substring(sqroot/header/info/code/shortName, 1, 2), $smallcase, $uppercase)" />
+                    <br />
+                    <xsl:value-of select="translate(substring(sqroot/header/info/code/shortName, 3, 2), $smallcase, $uppercase)" />
+                  </span>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:choose>
+                    <xsl:when test="sqroot/header/info/code/settingMode = 't' or sqroot/header/info/code/settingMode = 'T'">
+                      <span>
+                        <xsl:value-of select="translate(substring(sqroot/header/info/code/id, 3, 2), $smallcase, $uppercase)" />
+                        <br />
+                        <xsl:value-of select="translate(substring(sqroot/header/info/code/id, 5, 2), $smallcase, $uppercase)" />
+                      </span>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <span >
+                        <xsl:value-of select="translate(substring(sqroot/header/info/code/id, 1, 2), $smallcase, $uppercase)" />
+                        <br />
+                        <xsl:value-of select="translate(substring(sqroot/header/info/code/id, 3, 2), $smallcase, $uppercase)" />
+                      </span>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:otherwise>
+              </xsl:choose>
+            </div>
+          </td>
+          <td>
+            <div class="dn-panel" data-toggle="tooltip" title="Doc Number" data-placement="right">
+              <xsl:if test="$settingmode='T'">
+                <xsl:value-of select="sqroot/body/bodyContent/form/info/docNo"/>
+              </xsl:if>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="rn-panel" data-toggle="tooltip" title="Ref Number" data-placement="right">
+              <xsl:if test="$settingmode='T'">
+                <xsl:value-of select="sqroot/body/bodyContent/form/info/refNo"/>
+              </xsl:if>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <!--<div class="pull-left image image-envi data-logo" style="padding:2px; margin-left:7px; margin-top:0px; border:2px inset grey;">
         <xsl:choose>
           <xsl:when test="sqroot/header/info/code/shortName != ''">
             <span>
@@ -47,39 +98,39 @@
             </xsl:choose>
           </xsl:otherwise>
         </xsl:choose>
-      </div>
-      <div class="pull-left info menu-environtment doc-type-f" style="padding:3px;margin-left:5px;">
+      </div>-->
+      <!--<div class="pull-left info menu-environtment doc-type-f" style="padding:3px;margin-left:5px;">
         <span>
-          <span style="font-size:10pt;">
+          <span style="font-size:10pt;" data-toggle="tooltip" title="Document Number" data-placement="right">
             <xsl:choose>
               <xsl:when test="$settingmode='T'">
                 <xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
               </xsl:when>
               <xsl:otherwise>
-                <!--xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/-->
+                xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/
               </xsl:otherwise>
             </xsl:choose>
           </span>
-          <span style="font-size:14pt;">
+          <span style="font-size:14pt;" data-toggle="tooltip" title="Ref Number" data-placement="right">
             <table class="fixed-table">
               <tr>
                 <td id="summary{@GUID}">
                   <xsl:choose>
                     <xsl:when test="$settingmode='T'">
-                      <xsl:value-of select="sqroot/body/bodyContent/form/info/refNo/."/>
+                      <span data-toggle="tooltip" title="Ref Number" data-placement="right">
+                        RefNO<xsl:value-of select="sqroot/body/bodyContent/form/info/refNo/."/>
+                      </span>
                     </xsl:when>
                     <xsl:otherwise>
-                      <!--<xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>-->
+                      <xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
                     </xsl:otherwise>
                   </xsl:choose>
                 </td>
               </tr>
             </table>
-
-            <!--xsl:value-of select="sqroot/body/bodyContent/form/info/Description/."/-->
           </span>
         </span>
-      </div>
+      </div>-->
     </div>
     <!-- search form -->
     <div class="input-group sidebar-form">
@@ -185,53 +236,48 @@
             <span>
               <ix class="fa fa-users"></ix>
             </span>
-            <span>&#160;APPROVALS</span>
+            <span>&#160;APPROVAL LIST</span>
             <span class="pull-right-container">
               <ix class="fa fa-angle-left pull-right"></ix>
             </span>
           </a>
           <ul class="treeview-menu view-left-sidebar">
             <li>
-              <dl id="approval-info">
-                <xsl:for-each select="sqroot/body/bodyContent/form/approvals/approval/.">
-                  <xsl:variable name="aprvstat">
-                    <xsl:choose>
-                      <xsl:when test="@status = 400">
-                        Approved
-                      </xsl:when>
-                      <xsl:when test="@status = 300">
-                        Rejected   
-                      </xsl:when>
-                      <xsl:otherwise>
-                        Not Yet Approved
-                      </xsl:otherwise>
-                    </xsl:choose>                  
-                  </xsl:variable>
-                  <dt style="margin: 10px 0 0 0;" data-toggle="tooltip" title="{$aprvstat}">
-                    <xsl:choose>
-                      <xsl:when test="@status = 400">
-                        <div style="float:left">
-                          <ix class="fa fa-check-circle"></ix>
-                        </div>
-                      </xsl:when>
-                      <xsl:when test="@status = 300">
-                        <div style="float:left">
-                          <ix class="fa fa-times-circle"></ix>
-                        </div>
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <div style="float:left">
-                          <ix class="fa fa-minus-circle"></ix>
-                        </div>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                    &#160;<xsl:value-of select="name"/>
-                  </dt>
-                  <dd style="margin-left:15px;">
-                    <xsl:value-of select="date"/>
-                  </dd>
-                </xsl:for-each>
-              </dl>
+              <div id="approval-info">
+                <table class="fixed-table">
+                  <xsl:for-each select="sqroot/body/bodyContent/form/approvals/approval/.">
+                    <xsl:variable name="aprvstat">
+                      <xsl:choose>
+                        <xsl:when test="@status = 400">Approved</xsl:when>
+                        <xsl:when test="@status = 300">Rejected</xsl:when>
+                        <xsl:otherwise>Not Yet Approved</xsl:otherwise>
+                      </xsl:choose>                  
+                    </xsl:variable>
+                    <tr data-toggle="tooltip" title="{$aprvstat}">
+                      <td width="25px" valign="bottom" style="padding-bottom:5px">
+                        <xsl:choose>
+                          <xsl:when test="@status = 400"><ix class="fa fa-check-circle fa-lg" /></xsl:when>
+                          <xsl:when test="@status = 300"><ix class="fa fa-times-circle fa-lg" style="color:orangered" /></xsl:when>
+                          <xsl:otherwise><ix class="fa fa-minus-circle fa-lg" style="color:darkgray" /></xsl:otherwise>
+                        </xsl:choose>
+                      </td>
+                      <td valign="bottom" style="padding-bottom:5px">
+                        <xsl:if test="date">
+                          <span class="pull-right" style="font-size:11px">
+                            <xsl:value-of select="date" />&#160;<ix class="fa fa-clock-o fa-fw" />
+                          </span>                                
+                        </xsl:if>
+                        <span class="pull-left">
+                          <xsl:choose>
+                            <xsl:when test="date"><strong><xsl:value-of select="name"/></strong></xsl:when>
+                            <xsl:otherwise><xsl:value-of select="name"/></xsl:otherwise>                          
+                          </xsl:choose>          
+                        </span>
+                      </td>
+                    </tr>
+                  </xsl:for-each>
+                </table>
+              </div>
             </li>
           </ul>
         </li>
@@ -457,7 +503,7 @@
   </xsl:template>
 
   <xsl:template match="child">
-    <a href="#child{code/.}">
+    <a href="#child{code/.}{/sqroot/body/bodyContent/form/info/GUID/.}">
       <span>
         <ix class="fa fa-list-alt"></ix>
       </span>&#160;

@@ -125,7 +125,7 @@
       <!-- title -->
 
       <xsl:apply-templates select="sqroot/body/bodyContent"/>
-
+      
       <!-- view header -->
       <div class="row" style="box-shadow:0px;border:0;">
         <div class="col-md-12" style="margin-bottom:50px;">
@@ -594,9 +594,9 @@
       }
       });
       <xsl:if test="value!=''">
-        deferreds.push(
-        autosuggestSetValue('<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
-        );
+        //deferreds.push(
+        autosuggestSetValue(deferreds, '<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
+        //);
       </xsl:if>
     </script>
   </xsl:template>

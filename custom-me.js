@@ -609,22 +609,81 @@ function changeSkinColor() {
     $('body').addClass(bodyClass);
 }
 
-function loadExtraButton(buttons, location)
-{
-    buttons.forEach(function (i) {
-        x = "<a href=\"" + i.url + "\"><ix class='fa " + i.icon + "' title='" + i.caption + "'></ix></a>";
-        $('td.' + location).each(function (n) {
-            txt = i.url.match(/\w+(?=%)/g);
-            if (txt == null) {
-                $(this).append(x);
+function loadExtraButton(buttons, location) {
+    $('td.' + location).each(function (i, td) {
+        var a, bstate;
+        buttons.forEach(function (v) {
+            var url = v.url;
+            var arurl = url.match(/%+\w+(?:%)/g);
+            if (arurl) {
+                arurl.forEach(function (val) {
+                    val = val.split('%').join('');
+
+                    if (val == 'guid') {
+                        var cval = $(td).parent().data(val);
+                    } else {
+                        var cval = $(td).parent().find("[data-field='" + val + "']").html();
+                    }
+
+                    if (cval) {
+                        url = url.split('%' + val + '%').join(cval);
+                    }
+
+                });
             }
-            else {
-                txt2 = $(this).parent().find("[data-field='" + txt[0] + "']").html()
-                x2 = x.split('%' + txt[0] + '%').join(txt2);
-                $(this).append(x2);
+            a = "<a href=\"" + url + "\"><ix class='fa " + v.icon + "' data-toggle=\"tooltip\" title='" + v.caption + "'/></a>";
+            bstate = v.state
+            if (bstate) {
+                bstate = bstate.split(' ').join('');
+                bstate = bstate.split(',');
+                for (var i = 0; i < bstate.length; i++) {
+                    var gstate = (getState() == "") ? "0" : getState();
+                    if (gstate == bstate[i]) {
+                        $(td).append(a);
+                        return;
+                    }
+                }
+            } else {
+                $(td).append(a);
             }
-           
-            
-        })
-    })
+        });
+    });
+
+}
+
+//checkbox pinned
+function checkedBox(ini) {
+    var cbID = ini.id;
+
+    if (cbID == 'pinnedAll') {
+        $('input:checkbox').not(ini).prop('checked', ini.checked);
+
+        if (ini.checked && $("input:checked").not(ini).length > 0) {
+            $("#actionHeader span").hide();
+            $("#actionHeader div").show();
+        } else {
+            $("#actionHeader span").show();
+            $("#actionHeader div").hide();
+        }
+    } else {
+        var odd = $(ini).parents(".odd-tr");
+        var even = $(odd).next();
+
+        if (ini.checked) {
+            $("#actionHeader span").hide();
+            $("#actionHeader div").show();
+
+            if ($("input:checkbox").not("#pinnedAll").length == $("input:checked").not("#pinnedAll").length)
+                $("#pinnedAll").prop('checked', 'checked');
+        }
+        else {
+            if ($("input:checked").not("#pinnedAll").length != $("input:checkbox").not("#pinnedAll").length)
+                $("#pinnedAll").prop('checked', false);
+        }
+
+        if ($("input:checked").not("#pinnedAll").length == 0) {
+            $("#actionHeader span").show();
+            $("#actionHeader div").hide();
+        }
+    }
 }

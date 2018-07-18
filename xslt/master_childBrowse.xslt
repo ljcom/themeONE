@@ -10,6 +10,7 @@
   <xsl:variable name="lowerCode">
     <xsl:value-of select="translate(/sqroot/body/bodyContent/browse/info/code, $uppercase, $smallcase)"/>
   </xsl:variable>
+  <xsl:variable name="parentState" select="/sqroot/body/bodyContent/browse/info/parentState" />
 
   <xsl:template match="/">
     <script>
@@ -26,7 +27,8 @@
       var sn=$(data).find("sqroot").find("guid").eq(i);
       if (sn!='') s++;
       })
-      var msg='Upload Status: Success: '+s+(err==''?'':' Error: '+err);
+      
+      var msg= (err != '') ? 'Upload Error : ' + err : 'Upload Data Success'      
       showMessage(msg);
       //setTimeout(function() {location.reload()}, 5000);
 
@@ -34,13 +36,6 @@
       loadChild(code);
 
       });
-
-      $(document).ready(function(){
-        if($('th[data-order="DESC"]').length == 1) $('th[data-order="DESC"]').append(' &lt;ix class="fa fa-sort-alpha-desc" /&gt;');
-        else if($('th[data-order="ASC"]').length == 1) $('th[data-order="ASC"]').append(' &lt;ix class="fa fa-sort-alpha-asc" /&gt;');
-      });
-
-
     </script>
     <div class="row">
       <div class="col-md-12">
@@ -93,34 +88,36 @@
                 </table>
               </div>
               <!-- /.box-body -->
-              <div class="box-footer clearfix">
-                <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='1' and (/sqroot/body/bodyContent/browse/info/curState/@substateCode &lt; 500 or /sqroot/header/info/code/settingMode/. != 'T')">
-                  <button class="btn btn-orange-a accordion-toggle" data-toggle="collapse"
-                          data-target="#{$lowerCode}00000000-0000-0000-0000-000000000000"
-                          onclick="showChildForm('{$lowerCode}','00000000-0000-0000-0000-000000000000')">ADD</button>&#160;
-                </xsl:if>
-                <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and (/sqroot/body/bodyContent/browse/info/curState/@substateCode &lt; 500 or /sqroot/header/info/code/settingMode/. != 'T')">
-                  <button class="btn btn-gray-a" onclick="cell_delete('{$lowerCode}', this)">DELETE</button>&#160;
-                </xsl:if>
-                <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)=1 and (/sqroot/body/bodyContent/browse/info/permission/allowExport/.)=1" >
-                  <button class="btn btn-gray-a"
-                          onclick="downloadChild('{$lowerCode}', '')">DOWNLOAD</button>&#160;
-                  <button class="btn btn-gray-a" onclick="javascript:$('#import_hidden').click();">UPLOAD...</button>&#160;
+              <!--xsl:if test="$parentState &lt; 400"-->
+                <div class="box-footer clearfix">
+                  <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='1' and (/sqroot/body/bodyContent/browse/info/curState/@substateCode &lt; 500)">
+                    <button class="btn btn-orange-a accordion-toggle" data-toggle="collapse"
+                            data-target="#{$lowerCode}00000000-0000-0000-0000-000000000000"
+                            onclick="showChildForm('{$lowerCode}','00000000-0000-0000-0000-000000000000')">ADD</button>&#160;
+                  </xsl:if>
+                  <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and (/sqroot/body/bodyContent/browse/info/curState/@substateCode &lt; 500)">
+                    <button class="btn btn-gray-a" onclick="cell_delete('{$lowerCode}', this)">DELETE</button>&#160;
+                  </xsl:if>
+                  <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)=1 and (/sqroot/body/bodyContent/browse/info/permission/allowExport/.)=1" >
+                    <button class="btn btn-gray-a"
+                            onclick="downloadChild('{$lowerCode}', '')">DOWNLOAD</button>&#160;
+                    <button class="btn btn-gray-a" onclick="javascript:$('#import_hidden').click();">UPLOAD...</button>&#160;
 
-                  <!--<button type="button" class="buttonCream" id="download" name="download" onclick="javascript:PrintDirect('{$lowerCode}', '', 3, '', '', '');">DOWNLOAD</button>
+                    <!--<button type="button" class="buttonCream" id="download" name="download" onclick="javascript:PrintDirect('{$lowerCode}', '', 3, '', '', '');">DOWNLOAD</button>
                   <button type="button" class="buttonCream" id="upload" name="upload" onclick="javascript:showSubBrowseView('{$lowerCode}','',1,'');">UPLOAD</button>-->
-                  <input id ="import_hidden" name="import_hidden" type="file" data-code="{$lowerCode}" style="visibility: hidden; width: 0; height: 0;" multiple="" />
-                </xsl:if>
-                <xsl:if test="/sqroot/body/bodyContent/browse/info/nbPages > 1">
-                  <ul class="pagination pagination-sm no-margin pull-right" id="childPageNo"></ul>
-                  <script>
-                    var code='<xsl:value-of select ="$lowerCode"/>';
-                    var pageNo = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/pageNo"/>';
-                    var nbPages = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/nbPages"/>';
-                    childPageNo('childPageNo', code, pageNo, nbPages);
-                  </script>
-                </xsl:if>
-              </div>
+                    <input id ="import_hidden" name="import_hidden" type="file" data-code="{$lowerCode}" style="visibility: hidden; width: 0; height: 0;" multiple="" />
+                  </xsl:if>
+                  <xsl:if test="/sqroot/body/bodyContent/browse/info/nbPages > 1">
+                    <ul class="pagination pagination-sm no-margin pull-right" id="childPageNo"></ul>
+                    <script>
+                      var code='<xsl:value-of select ="$lowerCode"/>';
+                      var pageNo = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/pageNo"/>';
+                      var nbPages = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/nbPages"/>';
+                      childPageNo('childPageNo', code, pageNo, nbPages);
+                    </script>
+                  </xsl:if>
+                </div>
+              <!--/xsl:if-->
             </div>
           </div>
         </div>
@@ -135,6 +132,9 @@
   <xsl:template match="column">
     <th style="cursor:pointer;" onclick="sortBrowse(this, 'child', '{../../info/code}', '{@fieldName}')" data-order="{@order}">
       <xsl:value-of select="."/>
+      <xsl:if test="@order">
+        &amp;nbsp;<ix class="fa fa-sort-alpha-{translate(@order, $uppercase, $smallcase)}" />
+      </xsl:if>
     </th>
   </xsl:template>
 
@@ -147,7 +147,6 @@
       <xsl:apply-templates select="fields/field"/>
     </tr>
     <tr id="tr2_{$lowerCode}{@GUID}">
-
       <td colspan="7" style="padding:0;">
         <div class="browse-data accordian-body collapse" id="{$lowerCode}{@GUID}" aria-expanded="false">
           Please Wait...
@@ -181,9 +180,20 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <td onclick="showChildForm('{$lowerCode}','{../../@GUID}', '{$lowerCode}')" >
-      <xsl:value-of select="$tbContent"/>&#160;
-    </td>
+    <xsl:choose>
+      <xsl:when test="@editor='mediabox'">
+        <td>
+          <a class="text-muted" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={@caption}&#38;code={../../@code}&#38;GUID={../../@GUID}');">
+            Download Attachment
+          </a>
+        </td>
+      </xsl:when>
+      <xsl:otherwise>
+        <td onclick="showChildForm('{$lowerCode}','{../../@GUID}', '{$lowerCode}');">
+          <xsl:value-of select="$tbContent"/>&#160;
+        </td>
+      </xsl:otherwise>    
+    </xsl:choose>
 
   </xsl:template>
 

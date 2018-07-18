@@ -13,7 +13,7 @@
       <xsl:otherwise>4</xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
-
+ 
   <xsl:template match="/">
     <div style="display:none" id="pageName">&#xA0;</div>
     <div style="display:none" id="themeName">&#xA0;</div>
@@ -281,7 +281,7 @@
           {
 	          title: "Action Button Inactive",
 	          text: "This button function is to make one of your data becomes incative",
-	          subject: "td[class='browse-action-button']:eq(0)",
+	          subject: "td[class^='browse-action-button']:eq(0)",
             lockSubject:true,
             targets: "a[href*='inactivate']:eq(0)",
             skipIf: function() {
@@ -291,7 +291,7 @@
           {
 	          title: "Action Button Edit",
 	          text: "This button function is to modify one of your data or you can just view what is the more detail that this data has.",
-	          subject: "td[class='browse-action-button']:eq(0)",
+	          subject: "td[class^='browse-action-button']:eq(0)",
             lockSubject:true,
             targets: "a[id^='edit']:eq(0)",
             skipIf: function() {
@@ -328,7 +328,7 @@
             lockSubject: true,
             listeners:{
               afterStep: function() { 
-                $("#statusFilter").click();
+                $("#statusFilter").parent().removeClass('open');
               }
             }
           },
@@ -607,8 +607,43 @@
 
     </script>
     <!-- Page script -->
+	<xsl:apply-templates select="sqroot" />
 
-    <header class="main-header">
+    <script>
+      $(document).ready(function(){
+      $("#button-menu-phone").click(function(){
+      $('#right-menu-phone').removeClass("in");
+
+      });
+      $("#button-menu-phone2").click(function(){
+      $('#mobilemenupanel').removeClass("in");
+
+
+      });
+      $('.expand-td').click(function(){
+      var target = $(this).attr('data-target');
+      // alert(target);
+      var ids = $('.browse-data').map(function() {
+      var id = this.id;
+      if ('#'+id != target){
+      // alert(id);
+      $('#'+id).attr('class', 'browse-data accordian-body collapse');
+      }
+      // this.id.removeClass(in)
+      // alert(this.id);
+      })
+
+      // alert(ids); // Result: a,b,c,d
+      });
+      });
+    </script>
+
+  </xsl:template>
+
+ <!--xsl:include href="ophcontent/themes/themeone/xslt/template_main.xslt"/-->
+  
+  <xsl:template match="sqroot">
+      <header class="main-header">
       <!-- Logo -->
       <a href="javascript:goHome();" class="logo visible-phone" style="text-align:left;">
         <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -702,13 +737,16 @@
                     <li class="user-footer">
                       <div class="pull-left">
                         <a href="?code=profile" class="btn btn-default btn-flat">
-                          <span><ix class="fa fa-user"></ix>
-                          </span><span>Profile</span>
+                          <span>
+						  <ix class="fa fa-user"></ix>
+                          </span>
+						  <span>Profile</span>
                         </a>
                       </div>
                       <div class="pull-right">
                         <a href="javascript:signOut()" class="btn btn-default btn-flat">
-                          <span><ix class="fa fa-power-off"></ix>
+                          <span>
+						  <ix class="fa fa-power-off"></ix>
                           </span>
                           <span>Sign out</span>
                         </a>
@@ -838,41 +876,12 @@
     <!-- /.control-sidebar -->
     <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
-    <div class="control-sidebar-bg"></div>
+    <div class="control-sidebar-bg">&#160;</div>
 
     <!-- ./wrapper -->
-    <script>
-      $(document).ready(function(){
-      $("#button-menu-phone").click(function(){
-      $('#right-menu-phone').removeClass("in");
-
-      });
-      $("#button-menu-phone2").click(function(){
-      $('#mobilemenupanel').removeClass("in");
-
-
-      });
-      $('.expand-td').click(function(){
-      var target = $(this).attr('data-target');
-      // alert(target);
-      var ids = $('.browse-data').map(function() {
-      var id = this.id;
-      if ('#'+id != target){
-      // alert(id);
-      $('#'+id).attr('class', 'browse-data accordian-body collapse');
-      }
-      // this.id.removeClass(in)
-      // alert(this.id);
-      })
-
-      // alert(ids); // Result: a,b,c,d
-      });
-      });
-    </script>
-
   </xsl:template>
-
-  <xsl:template match="sqroot/header/menus/menu[@code='sidebar']/submenus/submenu">
+  
+	 <xsl:template match="sqroot/header/menus/menu[@code='sidebar']/submenus/submenu">
     <div class="panel top-menu-onphone">
       <a class="top-envi" data-toggle="collapse" data-parent="#accordion2" href="#{@idMenu}">
         <xsl:value-of select="caption/." />&#160;<span class="caret"></span>
@@ -927,5 +936,6 @@
       </xsl:if>
     </a>
   </xsl:template>
+ 
 
 </xsl:stylesheet>

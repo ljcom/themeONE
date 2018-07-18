@@ -85,6 +85,8 @@
       $("#actionHeader div").hide();
       }
       });
+
+      setCookie('stateid','<xsl:value-of select="$state" />');
     </script>
 
     <!--Delegator Action Modal-->
@@ -542,7 +544,7 @@
                   <ix class="fa fa-check" title="Approve"></ix>
                 </a>
               </xsl:when>
-              <xsl:when test="$allowForce = 1 and $state &lt; 500">
+              <xsl:when test="$allowForce = 1 and $state &gt;= 400 and $state &lt; 500">
                 <a href="javascript:btn_function('{@code}', '{@GUID}', 'force', '{$pageNo}', 10)">
                   <ix class="fa fa-archive" title="Close"></ix>
                 </a>

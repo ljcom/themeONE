@@ -275,7 +275,7 @@
           {
 	          title: "Action Button Inactive",
 	          text: "This button function is to make one of your data becomes incative",
-	          subject: "td[class='browse-action-button']:eq(0)",
+	          subject: "td[class^='browse-action-button']:eq(0)",
             lockSubject:true,
             targets: "a[href*='inactivate']:eq(0)",
             skipIf: function() {
@@ -285,7 +285,7 @@
           {
 	          title: "Action Button Edit",
 	          text: "This button function is to modify one of your data or you can just view what is the more detail that this data has.",
-	          subject: "td[class='browse-action-button']:eq(0)",
+	          subject: "td[class^='browse-action-button']:eq(0)",
             lockSubject:true,
             targets: "a[id^='edit']:eq(0)",
             skipIf: function() {

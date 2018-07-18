@@ -2,6 +2,7 @@
   <manifest>
     <cssFile>OPHContent/cdn/bootstrap/css/bootstrap.min.css</cssFile>
     <cssFile>OPHContent/cdn/font-awesome-4.7.0/css/font-awesome.min.css</cssFile>
+    <!--<cssFile>OPHContent/cdn/fontawesome-pro-5.0.13/web-fonts-with-css/css/fontawesome-all.min.css</cssFile>-->
     <cssFile>OPHContent/cdn/daterangepicker/daterangepicker.css</cssFile>
     <cssFile>OPHContent/cdn/datepicker/datepicker3.css</cssFile>
     <cssFile>OPHContent/cdn/iCheck/all.css</cssFile>

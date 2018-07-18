@@ -63,11 +63,23 @@
             <span>
               <xsl:value-of select="caption/." />
             </span>
-            <xsl:if test="(@type)='treeroot'">
-              <span class="pull-right-container">
-                <ix class="fa fa-angle-left pull-right"></ix>
-              </span>
-            </xsl:if>
+            <xsl:choose>
+              <xsl:when test="(@type)='treeroot'">
+                <span class="pull-right-container">
+                  <ix class="fa fa-angle-left pull-right"></ix>
+                </span>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:if test="tCount/.>0">
+                  <span class="pull-right-container">
+                    <span class="label label-primary pull-right">
+                      <xsl:value-of select="tCount/." />
+                    </span>
+                  </span>
+                </xsl:if>
+
+              </xsl:otherwise>
+            </xsl:choose>
           </a>
           <xsl:if test="(@type)='treeroot'">
             <ul class="treeview-menu browse-left-sidebar">
@@ -77,7 +89,16 @@
           </xsl:if>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="caption/." />&#160;
+          <span>
+            <xsl:value-of select="caption/." />
+          </span>
+          <xsl:if test="tCount/.>0">
+          <span class="pull-right-container">
+            <span class="label label-primary pull-right">
+              <xsl:value-of select="tCount/." />
+            </span>
+          </span>
+          </xsl:if>
         </xsl:otherwise>
       </xsl:choose>
     </li>
@@ -91,7 +112,9 @@
           <xsl:if test="(icon/fa/.)!=''">
             <ix class="fa {icon/fa/.}"></ix>&#160;
           </xsl:if>
-          <xsl:value-of select="caption/." />&#160;
+          <span>
+            <xsl:value-of select="caption/." />
+          </span>
         </span>
         <span class="pull-right-container">
           <ix class="fa fa-angle-left pull-right"></ix>
@@ -106,14 +129,23 @@
   </xsl:template>
 
   <xsl:template match="submenus/submenu[@type='label']">
-    <script>//label</script>    
+    <script>//label</script>
     <li>
       <a href="{translate(pageURL/., $uppercase, $smallcase)}">
         <span>
           <xsl:if test="(icon/fa/.)!=''">
             <ix class="fa {icon/fa/.}"></ix>&#160;
           </xsl:if>
-          <xsl:value-of select="caption/." />&#160;
+          <span>
+            <xsl:value-of select="caption/." />
+          </span>
+          <xsl:if test="tCount/.>0">
+            <span class="pull-right-container">
+              <span class="label label-primary pull-right">
+                <xsl:value-of select="tCount/." />
+              </span>
+            </span>
+          </xsl:if>
         </span>
         &#160;
         <xsl:if test="isPending &gt; 0">
@@ -138,7 +170,16 @@
           <xsl:value-of select="translate(substring(code/.,3,2), $smallcase, $uppercase)" />&#160;
         </h4>
         <p style="width:150px">
-          <xsl:value-of select="caption/." />&#160;
+          <span>
+            <xsl:value-of select="caption/." />
+          </span>
+          <xsl:if test="tCount/.>0">
+            <span class="pull-right-container">
+              <span class="label label-primary pull-right">
+                <xsl:value-of select="tCount/." />
+              </span>
+            </span>
+          </xsl:if>
         </p>
       </a>
     </li>

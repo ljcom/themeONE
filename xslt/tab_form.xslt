@@ -24,7 +24,7 @@
       </xsl:if>
 
       var deferreds = [];
-
+	  cell_defer(deferreds);
       $(function () {
 
       <!--//Date picker-->
@@ -71,6 +71,8 @@
 
       var c='<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>';
       getHash(c);
+	  setCookie('<xsl:value-of select="translate(/sqroot/body/bodyContent/form/info/code/., $uppercase, $smallcase)"/>_curstateid', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/state/status/."/>');
+	  
     </script>
 
     <xsl:variable name="settingmode">
@@ -508,19 +510,19 @@
     <xsl:variable name="tbContent">
       <xsl:choose>
         <xsl:when test="digit = 0 and value!=''">
-          <xsl:value-of select="format-number(., '###,###,###,##0', 'dot-dec')"/>
+          <xsl:value-of select="format-number(value, '###,###,###,##0', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="@digit  = 1 and .!=''">
-          <xsl:value-of select="format-number(., '###,###,###,##0.0', 'dot-dec')"/>
+        <xsl:when test="digit  = 1 and .!=''">
+          <xsl:value-of select="format-number(value, '###,###,###,##0.0', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="@digit  = 2 and .!=''">
-          <xsl:value-of select="format-number(., '###,###,###,##0.00', 'dot-dec')"/>
+        <xsl:when test="digit  = 2 and .!=''">
+          <xsl:value-of select="format-number(value, '###,###,###,##0.00', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="@digit  = 3 and .!=''">
-          <xsl:value-of select="format-number(., '###,###,###,##0.000', 'dot-dec')"/>
+        <xsl:when test="digit  = 3 and .!=''">
+          <xsl:value-of select="format-number(value, '###,###,###,##0.000', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="@digit  = 4 and .!=''">
-          <xsl:value-of select="format-number(., '###,###,###,##0.0000', 'dot-dec')"/>
+        <xsl:when test="digit  = 4 and .!=''">
+          <xsl:value-of select="format-number(value, '###,###,###,##0.0000', 'dot-dec')"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="value"/>
@@ -781,9 +783,9 @@
         }        
       });
       <xsl:if test="value!=''">
-        deferreds.push(
-        autosuggest_setValue('<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
-        );
+        //deferreds.push(
+        autosuggest_setValue(deferreds, '<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
+        //);
       </xsl:if>
     </script>
   </xsl:template>

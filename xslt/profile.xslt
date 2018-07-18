@@ -14,16 +14,10 @@
     </xsl:choose>
   </xsl:variable>
 
-  <xsl:variable name="nbAccountMenu">
-    <xsl:choose>
-      <xsl:when test="count(sqroot/header/menus/menu[@code='primaryback']/submenus/submenu)>0">
-        <xsl:value-of select="12 div count(sqroot/header/menus/menu[@code='primaryback']/submenus/submenu)" />
-      </xsl:when>
-      <xsl:otherwise>0</xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
-  
+ 
   <xsl:template match="/">
+    <div style="display:none" id="pageName">&#xA0;</div>
+    <div style="display:none" id="themeName">&#xA0;</div>											
     <script>
       Sideshow.config.language = "oph";
       Sideshow.init();
@@ -49,9 +43,17 @@
 
       loadScript('OPHContent/cdn/admin-LTE/js/app.min.js');
 
+      document.getElementById("pageName").innerHTML = getCookie('page');
+      document.getElementById("themeName").innerHTML = getCookie('themeFolder');
+
+      document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
+
+      resetBrowseCookies();
+      loadContent(1);																
       setCookie('userURL', 'OPHContent/documents/<xsl:value-of select="sqroot/header/info/account" />/<xsl:value-of select="sqroot/header/info/user/userURL"/>', 7);
       setCookie('userName', '<xsl:value-of select="sqroot/header/info/user/userName"/>', 7);
       //setCookie('userId', '<xsl:value-of select="sqroot/header/info/user/userId"/>', 7);
+      changeSkinColor;				  
 
       Sideshow.registerWizard({
           name: "ss_profile",
@@ -175,7 +177,7 @@
           <div class="pull-left" style="margin-right:10px;">
             <img width="30" style="margin-top:-9px;" src="OPHContent/themes/{/sqroot/header/info/themeFolder}/images/oph4_logo.png" alt="Logo Image" />
           </div>
-          <xsl:value-of select="sqroot/header/info/account/." />
+          <xsl:value-of select="sqroot/header/info/company" />
         </span>
       </a>
       <!-- Header Navbar: style can be found in header.less -->
@@ -194,7 +196,7 @@
         </div>
         <div class="accordian-body collapse top-menu-div" id="mobilemenupanel" style="color:white; position:absolute; background:#222D32; z-index:100; width:100%; right:0px; top:50px; ">
           <div class="input-group sidebar-form">
-            <input type="text" id="searchBox" name="searchBox" class="form-control" placeholder="Search..." onkeypress="return searchText(event,this.value);" value="" />
+            <!--<input type="text" id="searchBox" name="searchBox" class="form-control" placeholder="Search..." onkeypress="return searchText(event,this.value);" value="" />-->
             <span class="input-group-btn">
               <button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="searchText(event);">
                 <ix class="fa fa-search" aria-hidden="true"></ix>
@@ -208,7 +210,7 @@
         <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
             <li>
-              <a href="#help" style="cursor:pointer;" onclick="Sideshow.start();" data-toggle="tooltip" data-placement="bottom" title="Help?">
+              <a style="cursor:pointer;" onclick="Sideshow.start();" data-toggle="tooltip" data-placement="bottom" title="Help?">
                 <ix class="fa fa-question-circle fa-lg"></ix>
               </a>
             </li>
@@ -281,23 +283,51 @@
       </nav>
     </header>
 
-    <!-- *** MODAL SECTION ***-->
-    <div class="modal fade" id="allModal" role="dialog" >
-      <div class="modal-dialog" role="document">
+    <!-- *** LOGIN MODAL ***-->
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="signinLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm" role="document">
+
         <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&#215;</button>
-            <h4 class="modal-title">&#160;</h4>
-          </div>
-          <div class="modal-body">&#160;</div>
-          <div class="modal-footer">
-            <button class="btn btn-default" id="modal-btn-close" data-dismiss="modal">Close</button>
-            <button class="btn btn-default" id="modal-btn-cancel" data-dismiss="modal">Cancel</button>
-            <button class="btn btn-primary" id="modal-btn-confirm" data-loading-text="Processing...">Confirm</button>
-          </div>
+          <form id="signinForm" method="post">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&#215;</button>
+              <h4 class="modal-title" id="signinLabel">Sign in</h4>
+            </div>
+
+            <div class="modal-body">
+              <div class="form-group">
+                <input type="text" class="form-control" id="userid" placeholder="user id" />
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" id="pwd" placeholder="password" />
+              </div>
+
+              <p class="text-center text-muted">Not registered yet?</p>
+              <p class="text-center text-muted">
+                <a href="customer-register.html">
+                  <strong>Register now</strong>
+                </a>! It is easy and done in 1&#160;minute and gives you access to special discounts and much more!
+              </p>
+
+            </div>
+											  
+            <div class="modal-footer">
+
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <a href="javascript: signIn();">
+                <button type="button" class="btn btn-primary">
+                  <span>
+                    <ix class="fa fa-sign-in"></ix>&#160;
+                  </span>Sign In
+                </button>
+              </a>
+
+            </div>
+          </form>
         </div>
       </div>
     </div>
+    <!-- *** LOGIN MODAL END *** -->				
     
     <!-- *** NOTIFICATION MODAL -->
     <div id="notiModal" class="modal fade" role="dialog">
@@ -658,7 +688,7 @@
         <b>Version</b> 4.0
       </div>
       <strong>
-        Copyright &#169; 2016 <a href="#">Operahouse</a>.
+        Copyright &#169; 2017 <a href="#">Operahouse</a>.
       </strong> All rights reserved.
     </footer>
 

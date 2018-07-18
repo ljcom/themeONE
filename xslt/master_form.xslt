@@ -8,6 +8,22 @@
   <xsl:decimal-format name="comma-dec" decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
 
+  <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/browse/info/permission/allowAccess" />
+  <xsl:variable name="allowForce" select="/sqroot/body/bodyContent/browse/info/permission/allowForce" />
+  <xsl:variable name="allowDelete" select="/sqroot/body/bodyContent/browse/info/permission/allowDelete" />
+  <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/browse/info/permission/allowWipe" />
+  <xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/browse/info/permission/allowOnOff" />
+  <xsl:variable name="settingmode" select="/sqroot/body/bodyContent/form/info/settingMode/." />
+  <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/status/."/>
+  <xsl:variable name="isRequester" select="/sqroot/body/bodyContent/form/info/document/isRequester"/>
+
+  <xsl:variable name="allowEdit">
+    <xsl:choose>
+      <xsl:when test="$docState=0 or $docState=300">1</xsl:when>
+      <xsl:otherwise>0</xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
     <script>
@@ -26,39 +42,9 @@
       </xsl:if>
 
       var deferreds = [];
+      cell_defer(deferreds);
 
       $(function () {
-
-      <!--//Datemask dd/mm/yyyy--><!--
-    $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
-    --><!--//Datemask2 mm/dd/yyyy--><!--
-    $("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
-    --><!--//Money Euro--><!--
-    $("[data-mask]").inputmask();
-
-    --><!--//Date range picker--><!--
-    $('#reservation').daterangepicker();
-    --><!--//Date range picker with time picker--><!--
-    $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
-    --><!--//Date range as a button--><!--
-    $('#daterange-btn').daterangepicker(
-        {
-          ranges: {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-          },
-          startDate: moment().subtract(29, 'days'),
-          endDate: moment()
-        },
-        function (start, end) {
-          $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-        }
-    );-->
-
       <!--//Date picker-->
       $('.datepicker').datepicker({autoclose: true});
 
@@ -122,7 +108,7 @@
       checkboxClass: 'icheckbox_flat-green',
       radioClass: 'iradio_flat-green'
       });
-    
+
       <!--//Colorpicker--><!--
     $(".my-colorpicker1").colorpicker();
     --><!--//color picker with addon--><!--
@@ -133,19 +119,8 @@
     showInputs: false
     });-->
       });
-
-      $.when.apply($, deferreds).done(function() {
-      preview('1', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
-      });
-
+      setCookie('<xsl:value-of select="translate(/sqroot/body/bodyContent/form/info/code/., $uppercase, $smallcase)"/>_curstateid', '<xsl:value-of select="$docState"/>');
     </script>
-
-    <xsl:variable name="settingmode">
-      <xsl:value-of select="/sqroot/body/bodyContent/form/info/settingMode/."/>
-    </xsl:variable>
-    <xsl:variable name="documentstatus">
-      <xsl:value-of select="/sqroot/body/bodyContent/form/info/state/status/."/>
-    </xsl:variable>
 
     <section class="content-header">
       <h1 data-toggle="collapse" data-target="#header" id="header_title">
@@ -206,44 +181,54 @@
     <!-- Main content -->
     <section class="content">
       <xsl:apply-templates select="sqroot/body/bodyContent"/>
+      <script>
+        $.when.apply($, deferreds).done(function() {
+        preview('1', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
+        });
+      </script>
 
       <div class="row">
         <div class="col-md-12 device-sm visible-sm device-md visible-md device-lg visible-lg" style="margin-bottom:50px;">
           <div style="text-align:left">
             <xsl:choose>
+              <!--location: 0 header; 1 child; 2 browse location: browse:10, header form:20, browse anak:30, browse form:40-->
               <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
                 <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
               </xsl:when>
-              <xsl:when test="($documentstatus) = 0 or ($documentstatus) = ''">
+              <xsl:when test="/sqroot/body/bodyContent/form/info/state/status/. = 0 or /sqroot/body/bodyContent/form/info/state/status/. = ''">
                 <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
                 <xsl:if test="(/sqroot/body/bodyContent/form/info/permission/allowDelete/.)=1">
                   <button id="button_save" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
-                  <!--location: 0 header; 1 child; 2 browse
-              location: browse:10, header form:20, browse anak:30, browse form:40-->
-
                 </xsl:if>
-                <xsl:if test="($settingmode)='T' and ($documentstatus) &lt; 400 ">
+                <xsl:if test="($settingmode)='T' and ($docState) &lt; 400 ">
                   <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">SUBMIT</button>
                 </xsl:if>
               </xsl:when>
-              <xsl:when test="($documentstatus) &gt; 99 and ($documentstatus) &lt; 199">
+              <xsl:when test="($docState) &gt;= 100 and ($docState) &lt; 300">
                 <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                <button id="button_approve" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">APPROVE</button>
+                <xsl:if test="$isRequester=0">
+                  <button id="button_approve" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">APPROVE</button>&#160;
+                  <button id="button_reject" class="btn btn-orange-a" onclick="rejectPopup('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'force', 1, 20)">REJECT</button>
+                </xsl:if>
               </xsl:when>
-              <xsl:when test="($documentstatus) = 300">
+              <xsl:when test="($docState) = 300">
                 <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                <button id="button_reject" class="btn btn-orange-a">REJECT</button>&#160;
+                <xsl:if test="$isRequester=1">
+                  <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">RE-SUBMIT</button>
+                </xsl:if>
               </xsl:when>
-              <xsl:when test="($documentstatus) &gt;= 400 and ($documentstatus) &lt;= 499">
+              <xsl:when test="($docState) &gt;= 400 and ($docState) &lt;= 499">
                 <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                <button id="button_close" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'force', 1, 20)">CLOSE</button>&#160;
+                <xsl:if test="$allowForce=1">
+                  <button id="button_close" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'force', 1, 20)">CLOSE</button>&#160;
+                </xsl:if>
               </xsl:when>
-              <xsl:when test="($documentstatus) &gt;= 500 and ($documentstatus) &lt;= 899">
+              <xsl:when test="($docState) &gt;= 500 and ($docState) &lt;= 899">
                 <button id="button_reopen" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'reopen', 1, 20)">REOPEN</button>&#160;
               </xsl:when>
               <xsl:otherwise>
@@ -260,27 +245,29 @@
                 <button id="button_save2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'save', 1, 20);">SAVE</button>&#160;
                 <button id="button_cancel2" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
               </xsl:when>
-              <xsl:when test="($documentstatus) = 0 or ($documentstatus) = ''">
+              <xsl:when test="($docState) = 0 or ($docState) = ''">
                 <button id="button_save2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'save', 1, 20);">SAVE</button>&#160;
                 <button id="button_cancel2" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                <xsl:if test="($settingmode)='T' and ($documentstatus) &lt; 400 ">
+                <xsl:if test="($settingmode)='T' and ($docState) &lt; 400 ">
                   <button id="button_submit2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">SUBMIT</button>
                 </xsl:if>
               </xsl:when>
-              <xsl:when test="($documentstatus) &gt; 99 and ($documentstatus) &lt; 199">
+              <xsl:when test="($docState) &gt; 99 and ($docState) &lt; 199">
                 <button id="button_save2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'save', 1, 20);">SAVE</button>&#160;
                 <button id="button_cancel2" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
                 <button id="button_approve2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">APPROVE</button>
               </xsl:when>
-              <xsl:when test="($documentstatus) = 300">
+              <xsl:when test="($docState) = 300">
                 <button id="button_save2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'save', 1, 20);">SAVE</button>&#160;
                 <button id="button_cancel2" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
                 <button id="button_reject2" class="btn btn-orange-a">REJECT</button>&#160;
               </xsl:when>
-              <xsl:when test="($documentstatus) &gt;= 400 and ($documentstatus) &lt;= 499">
+              <xsl:when test="($docState) &gt;= 400 and ($docState) &lt;= 499">
                 <button id="button_save2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'save', 1, 20);">SAVE</button>&#160;
                 <button id="button_cancel2" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                <button id="button_close2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'force', 1, 20)">CLOSE</button>&#160;
+                <xsl:if test="$allowForce=1">
+                  <button id="button_close2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'force', 1, 20)">CLOSE</button>&#160;
+                </xsl:if>
               </xsl:when>
               <xsl:otherwise>
                 &#160;
@@ -296,7 +283,29 @@
       </xsl:if>
       <!-- browse for phone/tablet max width 768 -->
     </section>
+    
+    <!--reject modal-->
+    <div id="rejectModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&#215;</button>
+            <h4 class="modal-title" id="rejectTitle">Reject Reason</h4>
+          </div>
+          <div class="modal-body" id="rejectContent">
+            <p>Please mention your reject reason: (required)</p>
+            <textarea id="rejectComment" placeholder="Enter your reject reason." class="form-control">&#160;</textarea>
+          </div>
+          <div class="modal-footer">
+            <button id="rejectBtn" type="button" class="btn btn-secondary" data-dismiss="modal" style="visibility:hidden">Reject</button>
+            <button id="rejectCancelBtn" type="button" class="btn btn-primary btn-default" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- /.content -->
+
   </xsl:template>
 
   <xsl:template match="sqroot/body/bodyContent">
@@ -433,7 +442,7 @@
         <xsl:attribute name="disabled">disabled</xsl:attribute>
       </xsl:if>
     </input>
-    
+
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
@@ -553,15 +562,15 @@
         <xsl:otherwise>
           <xsl:choose>
             <xsl:when test="value and value != ''">
-              <xsl:value-of select="value"/>            
+              <xsl:value-of select="value"/>
             </xsl:when>
             <xsl:otherwise>&#160;</xsl:otherwise>
-          </xsl:choose>          
+          </xsl:choose>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    
-    <textarea class="form-control" placeholder="input text..." name="{../@fieldName}" id ="{../@fieldName}" data-type="textArea" style="max-width:100%; min-width:100%; min-height:55px;" 
+
+    <textarea class="form-control" placeholder="input text..." name="{../@fieldName}" id ="{../@fieldName}" data-type="textArea" style="max-width:100%; min-width:100%; min-height:55px;"
       onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" oninput="javascript:checkChanges(this)" >
       <xsl:if test="../@isEditable=0 or (../@isEditable=2 and (/sqroot/body/bodyContent/form/info/GUID/. != '00000000-0000-0000-0000-000000000000')) or (/sqroot/body/bodyContent/form/info/permission/allowEdit/.)!='1'">
         <xsl:attribute name="disabled">disabled</xsl:attribute>
@@ -571,7 +580,7 @@
     <script>
       $('#<xsl:value-of select="../@fieldName"/>').val($.trim($('#<xsl:value-of select="../@fieldName"/>').val()));
     </script>
- 
+
   </xsl:template>
 
   <xsl:template match="dateBox">
@@ -586,7 +595,7 @@
         <ix class="fa fa-calendar"></ix>
       </div>
       <input type="text" class="form-control pull-right datepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" data-type="dateBox" data-old="{value}"
-        onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" 
+        onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);"
         onchange="checkChanges(this)" >
         <xsl:if test="../@isEditable=0">
           <xsl:attribute name="disabled">disabled</xsl:attribute>
@@ -663,8 +672,8 @@
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
     <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}" data-type="selectBox"
-      data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}" 
-        onchange="autosuggest_onchange(this, '{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}', 'formheader');" >        
+      data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}"
+        onchange="autosuggest_onchange(this, '{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}', 'formheader');" >
       <xsl:if test="../@isEditable=0">
         <xsl:attribute name="disabled">disabled</xsl:attribute>
       </xsl:if>
@@ -706,28 +715,28 @@
             </div>
             <script>
               if ($('body').children('#addNew<xsl:value-of select="../@fieldName"/>').length == 1) {
-                $('body').children('#addNew<xsl:value-of select="../@fieldName"/>').remove();
+              $('body').children('#addNew<xsl:value-of select="../@fieldName"/>').remove();
               }
               $('#addNew<xsl:value-of select="../@fieldName"/>').appendTo("body");
               $('#addNew<xsl:value-of select="../@fieldName"/>').on('show.bs.modal', function (event) {
-                $('#<xsl:value-of select="../@fieldName"/>').select2('close');
-                $('#modalForm<xsl:value-of select="../@fieldName"/>').append('<div class="col-md-12"></div>');
-                $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').append('<div style="float:left;"></div>');
-                $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').append('<div style="float:left; margin-left:10px;font-size:20px;">Please wait...</div>');
-                $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').children('div:first').append('<ix class="fa fa-spinner fa-pulse fa-2x fa-fw"></ix>');
+              $('#<xsl:value-of select="../@fieldName"/>').select2('close');
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').append('<div class="col-md-12"></div>');
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').append('<div style="float:left;"></div>');
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').append('<div style="float:left; margin-left:10px;font-size:20px;">Please wait...</div>');
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').children('div:first').append('<ix class="fa fa-spinner fa-pulse fa-2x fa-fw"></ix>');
               }).on('shown.bs.modal', function (event) {
-                if (isGuid($('#<xsl:value-of select="../@fieldName"/>').val()) &amp;&amp; $(event.relatedTarget).data('action') == 'edit' ) {
-                  loadModalForm('modalForm<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="@comboCode"/>', $('#<xsl:value-of select="../@fieldName"/>').val());
-                }
-                else {
-                  loadModalForm('modalForm<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="@comboCode"/>', '00000000-0000-0000-0000-000000000000');
-                }
+              if (isGuid($('#<xsl:value-of select="../@fieldName"/>').val()) &amp;&amp; $(event.relatedTarget).data('action') == 'edit' ) {
+              loadModalForm('modalForm<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="@comboCode"/>', $('#<xsl:value-of select="../@fieldName"/>').val());
+              }
+              else {
+              loadModalForm('modalForm<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="@comboCode"/>', '00000000-0000-0000-0000-000000000000');
+              }
               }).on('hide.bs.modal', function(event){
-                $('#modalForm<xsl:value-of select="../@fieldName"/>').children('div').remove();
-                $('#modalForm<xsl:value-of select="../@fieldName"/>').children('form').remove();
-                $('#modalForm<xsl:value-of select="../@fieldName"/>').children('button').remove();
-                $('#addNew<xsl:value-of select="../@fieldName"/> .modal-footer').children('button[id*="btn_save"]').remove();
-                $('#modalForm<xsl:value-of select="../@fieldName"/>').text('&#160;');
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('div').remove();
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('form').remove();
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('button').remove();
+              $('#addNew<xsl:value-of select="../@fieldName"/> .modal-footer').children('button[id*="btn_save"]').remove();
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').text('&#160;');
               });
             </script>
             <div class="modal-footer">
@@ -749,11 +758,11 @@
         </span>
         <script>
           $("#<xsl:value-of select="../@fieldName"/>").on("select2:open", function(e) {
-            var s2id = $("span[class*='select2-dropdown select2-dropdown']").children('.select2-results').children().attr('id');
-            s2id = s2id.split('select2-').join('').split('-results').join('');
-            if (s2id == '<xsl:value-of select="../@fieldName"/>') {
-              $('#select2-<xsl:value-of select="../@fieldName"/>-addNew').appendTo("span[class*='select2-dropdown select2-dropdown']").show();
-            }
+          var s2id = $("span[class*='select2-dropdown select2-dropdown']").children('.select2-results').children().attr('id');
+          s2id = s2id.split('select2-').join('').split('-results').join('');
+          if (s2id == '<xsl:value-of select="../@fieldName"/>') {
+          $('#select2-<xsl:value-of select="../@fieldName"/>-addNew').appendTo("span[class*='select2-dropdown select2-dropdown']").show();
+          }
           });
         </script>
       </xsl:if>
@@ -765,46 +774,46 @@
         </span >
         <script>
           $("#<xsl:value-of select="../@fieldName"/>").on("select2:select", function(e) {
-            $selection = $('#select2-<xsl:value-of select="../@fieldName"/>-container').parents('.selection');
-            if ($selection.children('#editForm<xsl:value-of select="../@fieldName"/>').length == 0) {
-              $('#editForm<xsl:value-of select="../@fieldName"/>').appendTo($selection).show();
-            }
+          $selection = $('#select2-<xsl:value-of select="../@fieldName"/>-container').parents('.selection');
+          if ($selection.children('#editForm<xsl:value-of select="../@fieldName"/>').length == 0) {
+          $('#editForm<xsl:value-of select="../@fieldName"/>').appendTo($selection).show();
+          }
           });
         </script>
       </xsl:if>
-    
+
     </xsl:if>
 
     <script>
       $("#<xsl:value-of select="../@fieldName"/>").select2({
-        placeholder: 'Select <xsl:value-of select="titlecaption"/>',
-        onAdd: function(x) {
-          preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
-        },
-        onDelete: function(x) {
-          preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
-        },        
-        ajax: {
-          url:"OPHCORE/api/msg_autosuggest.aspx",
-          delay : 0,
-          data: function (params) {
-            var query = {
-              code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
-              colkey:"<xsl:value-of select="../@fieldName"/>",
-              search: params.term,
-              wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
-              wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
-              page: params.page
-            }
-            return query;
-          },
-          dataType: 'json', 
-        }        
+      placeholder: 'Select <xsl:value-of select="titlecaption"/>',
+      onAdd: function(x) {
+      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
+      },
+      onDelete: function(x) {
+      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
+      },
+      ajax: {
+      url:"OPHCORE/api/msg_autosuggest.aspx",
+      delay : 0,
+      data: function (params) {
+      var query = {
+      code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
+      colkey:"<xsl:value-of select="../@fieldName"/>",
+      search: params.term,
+      wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
+      wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
+      page: params.page
+      }
+      return query;
+      },
+      dataType: 'json',
+      }
       });
       <xsl:if test="value!=''">
-        deferreds.push(
-        autosuggest_setValue('<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
-        );
+        //deferreds.push(
+        autosuggest_setValue(deferreds, '<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
+        //);
       </xsl:if>
     </script>
   </xsl:template>
@@ -820,29 +829,29 @@
 
       $(document).ready(function(){
       $.ajax({
-        url: cURL<xsl:value-of select="../@fieldName"/>,
-        dataType: 'json',
-        success: function(data){
-        if (noPrepopulate<xsl:value-of select="../@fieldName"/>==1) data='';
-        $("#<xsl:value-of select="../@fieldName"/>").tokenInput(
-        sURL<xsl:value-of select="../@fieldName"/>,
-        {
-          hintText: "please type...",
-          searchingText: "Searching...",
-          preventDuplicates: true,
-          allowCustomEntry: true,
-          highlightDuplicates: false,
-          tokenDelimiter: "*",
-          theme:"facebook",
-          prePopulate: data,
-          onReady: function(x) {
-        },
-        onAdd: function(x) {
-          preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
-        },
-        onDelete: function(x) {
-          preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
-        }
+      url: cURL<xsl:value-of select="../@fieldName"/>,
+      dataType: 'json',
+      success: function(data){
+      if (noPrepopulate<xsl:value-of select="../@fieldName"/>==1) data='';
+      $("#<xsl:value-of select="../@fieldName"/>").tokenInput(
+      sURL<xsl:value-of select="../@fieldName"/>,
+      {
+      hintText: "please type...",
+      searchingText: "Searching...",
+      preventDuplicates: true,
+      allowCustomEntry: true,
+      highlightDuplicates: false,
+      tokenDelimiter: "*",
+      theme:"facebook",
+      prePopulate: data,
+      onReady: function(x) {
+      },
+      onAdd: function(x) {
+      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
+      },
+      onDelete: function(x) {
+      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
+      }
       }
       );
       }
@@ -1026,9 +1035,6 @@
       <input type="hidden" id="parent{code/.}" value="{parentkey/.}"/>
       <input type="hidden" id="PKName" value="{parentkey/.}"/>
       <script>
-
-        //xmldoc = "OPHCORE/api/default.aspx?code=<xsl:value-of select ="code/."/>&amp;mode=browse&amp;sqlFilter=<xsl:value-of select ="parentkey/."/>='<xsl:value-of select ="/sqroot/body/bodyContent/form/info/GUID/."/>'"
-        //showXML('child<xsl:value-of select ="code/."/>', xmldoc, xsldoc + "_childBrowse.xslt", true, true, function () {});
 
         var code='<xsl:value-of select ="code/."/>';
         var parentKey='<xsl:value-of select ="parentkey/."/>';

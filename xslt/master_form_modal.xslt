@@ -24,6 +24,7 @@
       </xsl:if>
 
       var deferreds = [];
+	  cell_defer(deferreds);
 
       $(function () {
 

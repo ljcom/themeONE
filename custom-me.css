@@ -131,6 +131,11 @@ ul.user-setting-menu {
 .image-envi {
     /*background: red;
 	margin-right: 0 !important;*/
+    border-width: 2px;
+    border-style: outset;
+    padding: 3px;
+    border-top: none;
+    border-left: none;
 }
 
 .menu-environtment {
@@ -399,6 +404,22 @@ div.browse-phone {
         background: white;
     }
 /*-------------------------------------------------------- VIEW*/
+
+.dn-panel {
+    font-size: 10pt;
+    font-family: arial;
+    color: white;
+    padding: 3px 0px 0px 7px;
+}
+
+.rn-panel {
+    font-size: 14pt;
+    font-family: arial;
+    color: white;
+    padding: 0px 0px 3px 7px;
+}
+
+
 .enabled-input .select2-selection, .enabled-input input {
     background: #c7e3fc;
     /*color: black;*/
@@ -893,6 +914,7 @@ ul.pending-task-module li {
 input[type=checkbox].pinned {
     visibility: hidden;
 }
+
 @keyframes pinnedDown {
     from {
         top: -8px;
@@ -901,5 +923,13 @@ input[type=checkbox].pinned {
     to {
         top: 4px;
         opacity: 1;
+    }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    input[type=checkbox].pinned {
+        visibility: visible;
+        cursor: pointer;
+        color: skyblue;
     }
 }

@@ -23,7 +23,7 @@
       loadScript('OPHContent/cdn/select2/select2.full.min.js');
       $('.datepicker').datepicker({autoclose: true});
       var deferreds = [];
-      
+      cell_defer(deferreds);
       <xsl:choose>
         <xsl:when test="sqroot/body/bodyContent/form/rows/row/fields/field">
           var withParam = 1;

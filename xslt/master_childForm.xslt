@@ -41,7 +41,8 @@
       numFiles = input.get(0).files ? input.get(0).files.length : 1,
       label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
       input.trigger('fileselect', [numFiles, label]);
-
+      
+  
       //var file = this.files[0];
       //if (file.size > 1024 {
       //alert('max upload size is 1k')
@@ -94,16 +95,20 @@
 
       });
 
-      preview(1, '<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','form<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', this);
+      <!--$.when($, deferreds).done(function() {
+        preview(1, '<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','form<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', this);
+      });-->
 
     </script>
 
     <!-- Main content -->
     <section class="content">
-
-      <!-- title -->
-
       <xsl:apply-templates select="sqroot/body/bodyContent"/>
+      <script>
+        $.when.apply($, deferreds).done(function() {
+          preview(1, '<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','form<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', this);
+        });
+      </script>
 
       <!-- view header -->
       <div class="row" style="box-shadow:0px;border:0;">
@@ -127,9 +132,7 @@
             </xsl:if>
             <xsl:if test="(/sqroot/body/bodyContent/form/info/GUID/.)!='00000000-0000-0000-0000-000000000000'">
               <script>
-                <xsl:if test="/sqroot/body/bodyContent/form/info/permission/allowAddSave = 1 and /sqroot/body/bodyContent/form/info/code = 'tadedudocm'">
-                  $('#child_button_addSave').hide();
-                </xsl:if>
+                $('#child_button_addSave').hide();
                 $('#child_button_save').hide();
                 $('#child_button_cancel').hide();
               </script>
@@ -167,11 +170,12 @@
     <div class="col-md-12" id="child">
       <form role="form" id="form{info/code/.}">
         <input type="hidden" name="{info/parentKey/.}" id="PK{info/code/.}" value=""/>
-        <script>
-          var childCode = 'child' + code;
-          var parentGUID = $("div[id*='" + childCode + "']").attr('id')
-          parentGUID = parentGUID.replace(childCode, '');
-          $('#PK'+code).val(parentGUID);
+        <script>	
+			//cannot use cid because grandchildren not using cid as parent
+			var childCode = 'child' + code;
+			var parentGUID = $("div[id*='" + childCode + "']").attr('id')
+			parentGUID = parentGUID.replace(childCode, '');
+			$('#PK'+code).val(parentGUID);
         </script>
         <xsl:apply-templates select="formPages/formPage[@pageNo&lt;9]"/>
       </form>
@@ -260,6 +264,7 @@
     <div class="form-group {$fieldEnabled}-input">
       <xsl:apply-templates select="textBox"/>
       <xsl:apply-templates select="textEditor"/>
+      <xsl:apply-templates select="textArea"/>
       <xsl:apply-templates select="dateBox"/>
       <xsl:apply-templates select="dateTimeBox"/>
       <xsl:apply-templates select="timeBox"/>
@@ -394,7 +399,45 @@
       });
     </script>
 </xsl:template>
-  
+
+  <xsl:template match="textArea">
+    <label id="{../@fieldName}caption">
+      <xsl:value-of select="titlecaption"/>
+    </label>
+    <xsl:if test="../@isNullable = 0">
+      <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
+    </xsl:if>
+
+    <!--default value-->
+    <xsl:variable name="thisValue">
+      <xsl:choose>
+        <xsl:when  test="/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000' and defaultvalue != ''">
+          <xsl:value-of select="defaultvalue/." />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:choose>
+            <xsl:when test="value and value != ''">
+              <xsl:value-of select="value"/>
+            </xsl:when>
+            <xsl:otherwise>&#160;</xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <textarea class="form-control" placeholder="input text..." name="{../@fieldName}" id ="{../@fieldName}" data-type="textArea" style="max-width:100%; min-width:100%; min-height:55px;"
+      onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" oninput="javascript:checkChanges(this)" >
+      <xsl:if test="../@isEditable=0 or (../@isEditable=2 and (/sqroot/body/bodyContent/form/info/GUID/. != '00000000-0000-0000-0000-000000000000')) or (/sqroot/body/bodyContent/form/info/permission/allowEdit/.)!='1'">
+        <xsl:attribute name="disabled">disabled</xsl:attribute>
+      </xsl:if>
+      <xsl:value-of select="$thisValue"/>
+    </textarea>
+    <script>
+      $('#<xsl:value-of select="../@fieldName"/>').val($.trim($('#<xsl:value-of select="../@fieldName"/>').val()));
+    </script>
+
+  </xsl:template>
+
   <xsl:template match="dateBox">
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
@@ -505,95 +548,53 @@
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
-
     <xsl:if test="../@isNullable = 0">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
-    </xsl:if>
-    
-    <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}"
-      data-type="selectBox" data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}" data-child="Y"
+    </xsl:if>    
+    <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}" data-type="selectBox" 
+      data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}" data-child="Y"
         onchange="autosuggest_onchange(this, '{preview/.}', '{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}','form{/sqroot/body/bodyContent/form/info/code/.}', this);">
-      <xsl:choose>
-        <xsl:when test ="../@isEditable=1 or (../@isEditable=2 and (/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))"></xsl:when>
-        <xsl:otherwise>
-          <xsl:attribute name="disabled">disabled</xsl:attribute>
-        </xsl:otherwise>
-      </xsl:choose>
-
-      <option value="NULL">-----Select-----</option>
+      <xsl:if test="../@isEditable=0">
+        <xsl:attribute name="disabled">disabled</xsl:attribute>
+      </xsl:if>
+      <option></option>
     </select>
 
     <script>
-
-      <!--$("#<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/><xsl:value-of select="../@fieldName"/>").select2({-->
       $("#<xsl:value-of select="../@fieldName"/>").select2({
-      ajax: {
-
-      url:"OPHCORE/api/msg_autosuggest.aspx",
-      data: function (params) {
-      var query = {
-      search: params.term,
-      wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
-      wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
-      page: params.page,
-      code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
-      colkey:"<xsl:value-of select="../@fieldName"/>"
-      }
-
-      return query;
-      },
-      dataType: 'json',
-      //delay: 500
-      }
+        placeholder: 'Select <xsl:value-of select="titlecaption"/>',
+        onAdd: function(x) {
+          preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
+        },
+        onDelete: function(x) {
+          preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
+        },        
+        ajax: {
+          url:"OPHCORE/api/msg_autosuggest.aspx",
+          delay : 0,
+          data: function (params) {
+            var query = {
+              code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
+              colkey:"<xsl:value-of select="../@fieldName"/>",
+              search: params.term,
+              wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
+              wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
+              page: params.page
+            }
+            return query;
+          },
+          dataType: 'json',
+        }
       });
       <xsl:if test="value!=''">
-        deferreds.push(
-        autosuggestSetValue('<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
-        );
+        //deferreds.push(
+        autosuggest_setValue(deferreds, '<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
+        //);
       </xsl:if>
     </script>
   </xsl:template>
 
   <xsl:template match="tokenBox">
-    <!--<script type="text/javascript">
-      var sURL<xsl:value-of select="../@fieldName"/><xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>='OPHCore/api/msg_autosuggest.aspx?mode=token&amp;code=<xsl:value-of select="code/."/>&amp;key=<xsl:value-of select="../@fieldName"/>&amp;colkey=<xsl:value-of select="../@fieldName"/>'
-      var noPrepopulate<xsl:value-of select="../@fieldName"/><xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>=1;
-      <xsl:if test="value">
-        noPrepopulate<xsl:value-of select="../@fieldName"/><xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>=0;
-      </xsl:if>
-      var cURL<xsl:value-of select="../@fieldName"/><xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>='OPHCore/api/msg_autosuggest.aspx?mode=token&amp;code=<xsl:value-of select="code/."/>&amp;key=<xsl:value-of select="../@fieldName"/>&amp;colkey=<xsl:value-of select="../@fieldName"/>&amp;search=<xsl:value-of select="value"/>'
-
-      $(document).ready(function(){
-      $.ajax({
-      url: cURL<xsl:value-of select="../@fieldName"/><xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>,
-      dataType: 'json',
-      success: function(data){
-      if (noPrepopulate<xsl:value-of select="../@fieldName"/><xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>==1) data='';
-      $("#<xsl:value-of select="../@fieldName"/><xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>").tokenInput(
-      sURL<xsl:value-of select="../@fieldName"/><xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>,
-      {
-      hintText: "please type...",
-      searchingText: "Searching...",
-      preventDuplicates: true,
-      allowCustomEntry: true,
-      highlightDuplicates: false,
-      tokenDelimiter: "*",
-      theme:"facebook",
-      prePopulate: data,
-      onReady: function(x) {
-      },
-      onAdd: function(x) {
-      preview('<xsl:value-of select="preview/."/>', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','form<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', this);
-      },
-      onDelete: function(x) {
-      preview('<xsl:value-of select="preview/."/>', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','form<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', this);
-      }
-      }
-      );
-      }
-      });
-      });
-    </script>-->
     
     <script type="text/javascript">   
       var sURL<xsl:value-of select="../@fieldName"/>='OPHCore/api/msg_autosuggest.aspx?mode=token&amp;code=<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>&amp;colkey=<xsl:value-of select="../@fieldName"/>'

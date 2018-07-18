@@ -27,6 +27,7 @@
       loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
       loadScript('OPHContent/cdn/select2/select2.full.min.js');
       var deferreds = [];
+	  cell_defer(deferreds);
     </script>
     
     <section class="content-header visible-phone">

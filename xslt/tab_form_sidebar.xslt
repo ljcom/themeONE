@@ -172,7 +172,8 @@
         </li>
         <!--</xsl:if>-->
       </xsl:for-each>
-
+	  
+	
       <!--Approvals-->
       <xsl:if test="sqroot/body/bodyContent/form/approvals/approval" >
         <li class="treeview" id="aprvPanel">
@@ -194,12 +195,24 @@
                       <xsl:when test="@status = 400">
                         <ix class="fa fa-check-circle"></ix>
                       </xsl:when>
-                      <xsl:otherwise>
+                      <xsl:otherwise>                       
                         <ix class="fa fa-minus-circle"></ix>
                       </xsl:otherwise>
                     </xsl:choose>
                     &#160;<xsl:value-of select="name"/><!--(Lv. <xsl:value-of select="@level"/>)-->
+					          <br/>
+                    <xsl:if test="@status =0">&#160;
+                    
+					            <div class="input-group">
+                            <input type="password" id="txtpwd" name="message" placeholder="Type Password ..." class="form-control" />
+                              <span class="input-group-btn">
+                              <button type="button" class="btn btn-primary btn-flat" style="color:white;background-color: #ff9900" onclick="javascript:executeFunction('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}','execute','21','{aprvUserGUID}', txtpwd.value)">Approve</button>
+                            </span>
+                      </div>
+	                
+					        </xsl:if> 
                   </dt>
+				  
                   <dd style="margin-left:15px;">
                     <xsl:value-of select="date"/>
                   </dd>
