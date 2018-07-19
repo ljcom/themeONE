@@ -1,11 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl"
->
+    xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
   <xsl:output method="xml" indent="yes"/>
   <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
-
 
   <xsl:template match="/">
     <script>
@@ -67,11 +65,23 @@
             <span>
               <xsl:value-of select="caption/." />
             </span>
-            <xsl:if test="(@type)='treeroot'">
-              <span class="pull-right-container">
-                <ix class="fa fa-angle-left pull-right"></ix>
-              </span>
-            </xsl:if>
+            <xsl:choose>
+              <xsl:when test="(@type)='treeroot'">
+                <span class="pull-right-container">
+                  <ix class="fa fa-angle-left pull-right"></ix>
+                </span>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:if test="tCount/.>0">
+                  <span class="pull-right-container">
+                    <span class="label label-primary pull-right">
+                      <xsl:value-of select="tCount/." />
+                    </span>
+                  </span>
+                </xsl:if>
+
+              </xsl:otherwise>
+            </xsl:choose>
           </a>
           <xsl:if test="(@type)='treeroot'">
             <ul class="treeview-menu browse-left-sidebar">
@@ -81,7 +91,16 @@
           </xsl:if>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="caption/." />&#160;
+          <span>
+            <xsl:value-of select="caption/." />
+          </span>
+          <xsl:if test="tCount/.>0">
+          <span class="pull-right-container">
+            <span class="label label-primary pull-right">
+              <xsl:value-of select="tCount/." />
+            </span>
+          </span>
+          </xsl:if>
         </xsl:otherwise>
       </xsl:choose>
     </li>
@@ -95,7 +114,9 @@
           <xsl:if test="(icon/fa/.)!=''">
             <ix class="fa {icon/fa/.}"></ix>&#160;
           </xsl:if>
-          <xsl:value-of select="caption/." />&#160;
+          <span>
+            <xsl:value-of select="caption/." />
+          </span>
         </span>
         <span class="pull-right-container">
           <ix class="fa fa-angle-left pull-right"></ix>
@@ -117,8 +138,26 @@
           <xsl:if test="(icon/fa/.)!=''">
             <ix class="fa {icon/fa/.}"></ix>&#160;
           </xsl:if>
-          <xsl:value-of select="caption/." />&#160;
+          <span>
+            <xsl:value-of select="caption/." />
+          </span>
+          <xsl:if test="tCount/.>0">
+            <span class="pull-right-container">
+              <span class="label label-primary pull-right">
+                <xsl:value-of select="tCount/." />
+              </span>
+            </span>
+          </xsl:if>
         </span>
+        &#160;
+        <xsl:if test="isPending &gt; 0">
+          <ix class="fa fa-asterisk" aria-hidden="true" style="font-size: 8px; position: absolute;"></ix>
+        </xsl:if>
+        <!--<xsl:if test="tRecord &gt; 0">
+          <span class="label label-default">
+            <xsl:value-of select="tRecord"/>
+          </span>
+        </xsl:if>-->
       </a>
     </li>
   </xsl:template>
@@ -133,7 +172,16 @@
           <xsl:value-of select="translate(substring(code/.,3,2), $smallcase, $uppercase)" />&#160;
         </h4>
         <p style="width:150px">
-          <xsl:value-of select="caption/." />&#160;
+          <span>
+            <xsl:value-of select="caption/." />
+          </span>
+          <xsl:if test="tCount/.>0">
+            <span class="pull-right-container">
+              <span class="label label-primary pull-right">
+                <xsl:value-of select="tCount/." />
+              </span>
+            </span>
+          </xsl:if>
         </p>
       </a>
     </li>

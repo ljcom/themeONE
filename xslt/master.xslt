@@ -639,42 +639,34 @@
     </script>
 
   </xsl:template>
-
- <!--xsl:include href="ophcontent/themes/themeone/xslt/template_main.xslt"/-->
   
   <xsl:template match="sqroot">
       <header class="main-header">
-      <!-- Logo -->
       <a href="javascript:goHome();" class="logo visible-phone" style="text-align:left;">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini" style="font-size:9px; text-align:center">
-          <img width="30" src="OPHContent/themes/{/sqroot/header/info/themeFolder}/images/oph4_logo.png" alt="Logo Image" />
+          <img width="30" src="OPHContent/themes/{header/info/themeFolder}/images/oph4_logo.png" alt="Logo Image" />
         </span>
-        <!-- logo for regular state and mobile devices -->
         <span class="logo-lg" style="font-size:22px;">
           <div class="pull-left" style="margin-right:10px;">
-            <img width="30" style="margin-top:-9px;" src="OPHContent/themes/{/sqroot/header/info/themeFolder}/images/oph4_logo.png" alt="Logo Image" />
+            <img width="30" style="margin-top:-9px;" src="OPHContent/themes/{header/info/themeFolder}/images/oph4_logo.png" alt="Logo Image" />
           </div>
-          <xsl:value-of select="sqroot/header/info/company" />
+          <xsl:value-of select="header/info/company" />
         </span>
       </a>
-      <!-- Header Navbar: style can be found in header.less -->
       <nav class="navbar navbar-static-top">
-        <!-- Sidebar toggle button-->
         <a href="#" class="sidebar-toggle visible-phone" data-toggle="offcanvas" role="button" >
           <span class="sr-only">Toggle navigation</span>
         </a>
         <div id ="button-menu-phone" class="unvisible-phone" style="color:white;  margin:0; display:inline-table; margin-top:15px; margin-left:10px" data-toggle="collapse" data-target="#mobilemenupanel">
           <a href="#" style="color:white;">
             <span>
-              <img width="30" style="margin-top:-9px;" src="OPHContent/themes/{/sqroot/header/info/themeFolder}/images/oph4_logo.png" alt="Logo Image" />
+              <img width="30" style="margin-top:-9px;" src="OPHContent/themes/{header/info/themeFolder}/images/oph4_logo.png" alt="Logo Image" />
             </span>&#160;
-            <xsl:value-of select="sqroot/header/info/code/name"/>&#160;(<xsl:value-of select="sqroot/header/info/code/id"/>)<span class="caret"></span>
+            <xsl:value-of select="header/info/code/name"/>&#160;(<xsl:value-of select="header/info/code/id"/>)<span class="caret"></span>
           </a>
         </div>
         <div class="accordian-body collapse top-menu-div" id="mobilemenupanel" style="color:white; position:absolute; background:#222D32; z-index:100; width:100%; right:0px; top:50px; ">
           <div class="input-group sidebar-form">
-            <!--<input type="text" id="searchBox" name="searchBox" class="form-control" placeholder="Search..." onkeypress="return searchText(event,this.value);" value="" />-->
             <span class="input-group-btn">
               <button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="searchText(event);">
                 <ix class="fa fa-search" aria-hidden="true"></ix>
@@ -682,7 +674,7 @@
             </span>
           </div>
           <div class="panel-group" id="accordion2">
-            <xsl:apply-templates select="sqroot/header/menus/menu[@code='sidebar']/submenus/submenu" />
+            <xsl:apply-templates select="header/menus/menu[@code='sidebar']/submenus/submenu" />
           </div>
         </div>
         <div class="navbar-custom-menu">
@@ -694,60 +686,51 @@
             </li>
             <li class="dropdown user user-menu">
               <xsl:choose>
-                <xsl:when test="not(sqroot/header/info/user/userId)">
+                <xsl:when test="not(header/info/user/userId)">
                   <a href="#" data-toggle="modal" data-target="#login-modal">
-                    <span>
-                      <ix class="fa fa-sign-in"></ix>&#160;
-                    </span>
+                    <span><ix class="fa fa-sign-in"></ix>&#160;</span>
                     <span>Sign in</span>
                   </a>
                 </xsl:when>
                 <xsl:otherwise>
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                    <img src="OPHContent/documents/{sqroot/header/info/account}/{sqroot/header/info/user/userURL}" class="user-image" alt="User Image"/>
+                    <img src="OPHContent/documents/{header/info/account}/{header/info/user/userURL}" class="user-image" alt="User Image"/>
                     <span class="hidden-xs">
-                      <xsl:value-of select="sqroot/header/info/user/userName"/>
+                      <xsl:value-of select="header/info/user/userName"/>
                     </span>
                   </a>
                   <ul class="dropdown-menu">
                     <!-- User image -->
                     <li class="user-header">
-                      <img src="OPHContent/documents/{sqroot/header/info/account}/{sqroot/header/info/user/userURL}" class="img-circle" alt="User Image"/>
+                      <img src="OPHContent/documents/{header/info/account}/{header/info/user/userURL}" class="img-circle" alt="User Image"/>
                       <p>
-                        <xsl:value-of select="sqroot/header/info/user/userName"/>
-                        <small>
-                          Active since <xsl:value-of select="sqroot/header/info/user/dateCreate"/>
-                        </small>
+                        <xsl:value-of select="header/info/user/userName"/>
+                        <small>Active since <xsl:value-of select="header/info/user/dateCreate"/></small>
                       </p>
                     </li>
                     <!-- Menu Body -->
                     <li class="user-body">
                       <div class="row">
-                        <xsl:for-each select="sqroot/header/menus/menu[@code='primaryback']/submenus/submenu">
+                        <xsl:for-each select="header/menus/menu[@code='primaryback']/submenus/submenu">
                           <div class="col-xs-{$colMenu} text-center">
                             <a href="{pageURL}">
                               <xsl:value-of select="caption" />&#160;
                             </a>
                           </div>
                         </xsl:for-each>
-                        <!--<xsl:apply-templates select="sqroot/header/menus/menu[@code='primaryback']/submenus/submenu" />-->
                       </div>
                     </li>
                     <!-- Menu Footer-->
                     <li class="user-footer">
                       <div class="pull-left">
                         <a href="?code=profile" class="btn btn-default btn-flat">
-                          <span>
-						  <ix class="fa fa-user"></ix>
-                          </span>
-						  <span>Profile</span>
+                          <span><ix class="fa fa-user"></ix></span>
+            						  <span>Profile</span>
                         </a>
                       </div>
                       <div class="pull-right">
                         <a href="javascript:signOut()" class="btn btn-default btn-flat">
-                          <span>
-						  <ix class="fa fa-power-off"></ix>
-                          </span>
+                          <span><ix class="fa fa-power-off"></ix></span>
                           <span>Sign out</span>
                         </a>
                       </div>

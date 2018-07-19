@@ -15,7 +15,8 @@
       $($('.treeview').children().find('a[href$="='+c+'"]')[0].parentNode).addClass('active');
       } catch(e) {}
     </script>
-
+    <!-- search form -->
+    <!--<form method="get" class="sidebar-form">-->
     <div class="user-panel">
       <div class="pull-left image">
         <img src="OPHContent/documents/{sqroot/header/info/account}/{sqroot/header/info/user/userURL}" class="img-circle" alt="User Image" />
@@ -37,7 +38,8 @@
         </button>
       </span>
     </div>
-
+    <!--</form>-->
+    <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
       <xsl:apply-templates select="sqroot/header/menus/menu[@code='sidebar']/submenus/submenu" />
     </ul>
