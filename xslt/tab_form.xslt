@@ -8,6 +8,15 @@
   <xsl:decimal-format name="comma-dec" decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
 
+  <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/browse/info/permission/allowAccess" />
+  <xsl:variable name="allowForce" select="/sqroot/body/bodyContent/browse/info/permission/allowForce" />
+  <xsl:variable name="allowDelete" select="/sqroot/body/bodyContent/browse/info/permission/allowDelete" />
+  <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/browse/info/permission/allowWipe" />
+  <xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/browse/info/permission/allowOnOff" />
+  <xsl:variable name="settingmode" select="/sqroot/body/bodyContent/form/info/settingMode/." />
+  <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/status/."/>
+  <xsl:variable name="isRequester" select="/sqroot/body/bodyContent/form/info/document/isRequester"/>
+  <xsl:variable name="cid" select="/sqroot/body/bodyContent/form/info/GUID/."/>
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
     <script>
@@ -28,14 +37,10 @@
       $(function () {
 
       <!--//Date picker-->
-      $('.datepicker').datepicker({
-      autoclose: true
-      });
+      $('.datepicker').datepicker({autoclose: true});
 
       <!--//Date time picker-->
-      $('.datetimepicker').datetimepicker({
-
-      });
+      $('.datetimepicker').datetimepicker();
 
       $(".timepicker").timepicker({
       minuteStep: 15,
