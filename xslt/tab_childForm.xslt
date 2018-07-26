@@ -8,6 +8,16 @@
   <xsl:decimal-format name="comma-dec" decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
 
+  <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/form/info/permission/allowAccess" />
+  <xsl:variable name="allowForce" select="/sqroot/body/bodyContent/form/info/permission/allowForce" />
+  <xsl:variable name="allowDelete" select="/sqroot/body/bodyContent/form/info/permission/allowDelete" />
+  <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/form/info/permission/allowWipe" />
+  <xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/form/info/permission/allowOnOff" />
+  <xsl:variable name="settingmode" select="/sqroot/body/bodyContent/form/info/settingMode/." />
+  <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/status/."/>
+  <xsl:variable name="isRequester" select="/sqroot/body/bodyContent/form/info/document/isRequester"/>
+  <xsl:variable name="cid" select="/sqroot/body/bodyContent/form/info/GUID/."/>
+  
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
     <script>
@@ -133,22 +143,16 @@
             <!--location: 0 header; 1 child; 2 browse
               location: browse:10, header form:20, browse anak:30, browse form:40-->
 
-            <xsl:if test="/sqroot/body/bodyContent/form/info/permission/allowAdd = 1">
+            <xsl:if test="/sqroot/body/bodyContent/form/info/permission/allowAdd&gt;=1">
               <button id="child_button_addSave" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 41, 'form{sqroot/body/bodyContent/form/info/code/.}');">SAVE &amp; ADD NEW</button>&#160;
             </xsl:if>
             
             <button id="child_button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 40, 'form{sqroot/body/bodyContent/form/info/code/.}');">SAVE</button>&#160;
             <button id="child_button_cancel" class="btn btn-gray-a" onclick="closeChildForm('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}')">CANCEL</button>&#160;
             
-            <xsl:if test="(/sqroot/body/bodyContent/form/info/GUID/.)!='00000000-0000-0000-0000-000000000000' or (/sqroot/body/bodyContent/form/info/permission/allowDelete/.)=1" >
-              <button id="child_button_delete" class="btn btn-gray-a"
-                  onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 40)">
-                DELETE
-              </button>
-            </xsl:if>
             <xsl:if test="(/sqroot/body/bodyContent/form/info/GUID/.)!='00000000-0000-0000-0000-000000000000'">
               <script>
-                <xsl:if test="/sqroot/body/bodyContent/form/info/permission/allowAddSave = 1 and /sqroot/body/bodyContent/form/info/code = 'tadedudocm'">
+                <xsl:if test="/sqroot/body/bodyContent/form/info/permission/allowAddSave&gt;=1 and /sqroot/body/bodyContent/form/info/code = 'tadedudocm'">
                   $('#child_button_addSave').hide();
                 </xsl:if>
                 $('#child_button_save').hide();
@@ -291,13 +295,16 @@
 
     <xsl:variable name="fieldEnabled">
       <xsl:choose>
-        <xsl:when test ="@isEditable=1 or (@isEditable=2 and (/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))">enabled</xsl:when>
+        <xsl:when test="((@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (@isEditable='3' and $docState&lt;400)
+                        or (@isEditable='4' and $docState&lt;500))">enabled</xsl:when>
         <xsl:otherwise>disabled</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
 
     <xsl:choose>
-      <xsl:when test ="@isEditable=0 or (@isEditable=2 and (/sqroot/body/bodyContent/form/info/GUID/. != '00000000-0000-0000-0000-000000000000')) or (/sqroot/body/bodyContent/form/info/permission/allowEdit/.)!='1'">
+      <xsl:when test ="$fieldEnabled='disabled'">
         <script>
           $('#<xsl:value-of select="@fieldName"/>').attr('disabled', true);
         </script>
@@ -329,12 +336,6 @@
       <xsl:if test="value=1">
         <xsl:attribute name="checked">checked</xsl:attribute>
       </xsl:if>
-      <xsl:choose>
-        <xsl:when test ="../@isEditable=1 or (../@isEditable=2 and (/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))"></xsl:when>
-        <xsl:otherwise>
-          <xsl:attribute name="disabled">disabled</xsl:attribute>
-        </xsl:otherwise>
-      </xsl:choose>
     </input>
 
     <label id="{../@fieldName}caption">
@@ -360,26 +361,33 @@
     <xsl:variable name="tbContent">
       <xsl:choose>
         <xsl:when test="digit = 0 and value!=''">
-          <xsl:value-of select="format-number(., '###,###,###,##0', 'dot-dec')"/>
+          <xsl:value-of select="format-number(value, '###,###,###,##0', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="@digit  = 1 and .!=''">
-          <xsl:value-of select="format-number(., '###,###,###,##0.0', 'dot-dec')"/>
+        <xsl:when test="digit  = 1 and value!=''">
+          <xsl:value-of select="format-number(value, '###,###,###,##0.0', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="@digit  = 2 and .!=''">
-          <xsl:value-of select="format-number(., '###,###,###,##0.00', 'dot-dec')"/>
+        <xsl:when test="digit  = 2 and value!=''">
+          <xsl:value-of select="format-number(value, '###,###,###,##0.00', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="@digit  = 3 and .!=''">
-          <xsl:value-of select="format-number(., '###,###,###,##0.000', 'dot-dec')"/>
+        <xsl:when test="digit  = 3 and value!=''">
+          <xsl:value-of select="format-number(value, '###,###,###,##0.000', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="@digit  = 4 and .!=''">
-          <xsl:value-of select="format-number(., '###,###,###,##0.0000', 'dot-dec')"/>
+        <xsl:when test="digit  = 4 and value!=''">
+          <xsl:value-of select="format-number(value, '###,###,###,##0.0000', 'dot-dec')"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="value"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-
+    <xsl:variable name="align">
+      <xsl:choose>
+        <xsl:when test="align=0">left</xsl:when>
+        <xsl:when test="align=1">center</xsl:when>
+        <xsl:when test="align=2">right</xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+      
     <!--default value-->
     <xsl:variable name="thisvalue">
       <xsl:choose>
@@ -397,13 +405,8 @@
            onblur="preview('{preview/.}', '{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}','form{/sqroot/body/bodyContent/form/info/code/.}', this);" 
            oninput="javascript:checkChanges(this)"
            id ="{../@fieldName}">
-      <xsl:choose>
-        <xsl:when test ="../@isEditable=1 or (../@isEditable=2 and (/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))">
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:attribute name="disabled">disabled</xsl:attribute>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:attribute name="style">text-align:<xsl:value-of select="$align"/>
+    </xsl:attribute>
     </input>
   </xsl:template>
 
@@ -456,12 +459,6 @@
       <input type="text" class="form-control pull-right datepicker" id ="{../@fieldName}" name="{../@fieldName}"
              data-type="dateBox" data-old="{value}" Value="{value}" data-child="Y"
              onblur="preview('{preview/.}','{/sqroot/body/bodyContent/form/code/id}', '{/sqroot/body/bodyContent/form/info/GUID/.}','form{/sqroot/body/bodyContent/form/code/id}', this);" >
-        <xsl:choose>
-          <xsl:when test ="../@isEditable=1 or (../@isEditable=2 and (/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))"></xsl:when>
-          <xsl:otherwise>
-            <xsl:attribute name="disabled">disabled</xsl:attribute>
-          </xsl:otherwise>
-        </xsl:choose>
       </input>
     </div>
   </xsl:template>
@@ -479,9 +476,6 @@
       </div>
       <input type="text" class="form-control pull-right datetimepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" data-type="dateTimeBox" data-old="{value}"
         onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" >
-        <xsl:if test="../@isEditable=0">
-          <xsl:attribute name="disabled">disabled</xsl:attribute>
-        </xsl:if>
       </input>
     </div>
   </xsl:template>
@@ -501,12 +495,6 @@
       <input type="text" class="form-control pull-right timepicker" id ="{../@fieldName}" name="{../@fieldName}"
              data-type="timeBox" data-old="{value}" Value="{value}" data-child="Y"
              onblur="preview('{preview/.}','{/sqroot/body/bodyContent/form/code/id}', '{/sqroot/body/bodyContent/form/info/GUID/.}','form{/sqroot/body/bodyContent/form/code/id}', this);" >
-        <xsl:choose>
-          <xsl:when test ="../@isEditable=1 or (../@isEditable=2 and (/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))"></xsl:when>
-          <xsl:otherwise>
-            <xsl:attribute name="disabled">disabled</xsl:attribute>
-          </xsl:otherwise>
-        </xsl:choose>
       </input>
     </div>
   </xsl:template>
@@ -560,12 +548,6 @@
     <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}"
       data-type="selectBox" data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}" data-child="Y"
         onchange="autosuggest_onchange(this, '{preview/.}', '{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}','form{/sqroot/body/bodyContent/form/info/code/.}', this);">
-      <xsl:choose>
-        <xsl:when test ="../@isEditable=1 or (../@isEditable=2 and (/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))"></xsl:when>
-        <xsl:otherwise>
-          <xsl:attribute name="disabled">disabled</xsl:attribute>
-        </xsl:otherwise>
-      </xsl:choose>
 
       <option value="NULL">-----Select-----</option>
     </select>
@@ -711,9 +693,6 @@
       data-key="{key}" data-id="{id}" data-name="{name}"
       name="{../@fieldName}" id ="{../@fieldName}">
 
-      <xsl:if test="../@isEditable=0">
-        <xsl:attribute name="disabled">disabled</xsl:attribute>
-      </xsl:if>
     </input>
   </xsl:template>
 

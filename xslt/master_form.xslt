@@ -8,11 +8,11 @@
   <xsl:decimal-format name="comma-dec" decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
 
-  <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/browse/info/permission/allowAccess" />
-  <xsl:variable name="allowForce" select="/sqroot/body/bodyContent/browse/info/permission/allowForce" />
-  <xsl:variable name="allowDelete" select="/sqroot/body/bodyContent/browse/info/permission/allowDelete" />
-  <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/browse/info/permission/allowWipe" />
-  <xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/browse/info/permission/allowOnOff" />
+  <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/form/info/permission/allowAccess" />
+  <xsl:variable name="allowForce" select="/sqroot/body/bodyContent/form/info/permission/allowForce" />
+  <xsl:variable name="allowDelete" select="/sqroot/body/bodyContent/form/info/permission/allowDelete" />
+  <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/form/info/permission/allowWipe" />
+  <xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/form/info/permission/allowOnOff" />
   <xsl:variable name="settingmode" select="/sqroot/body/bodyContent/form/info/settingMode/." />
   <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/status/."/>
   <xsl:variable name="isRequester" select="/sqroot/body/bodyContent/form/info/document/isRequester"/>
@@ -193,7 +193,7 @@
                 <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
                 <xsl:if test="(/sqroot/body/bodyContent/form/info/permission/allowDelete/.)=1">
-                  <button id="button_save" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
+                  <button id="button_delete" class="btn btn-gray-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
                 </xsl:if>
                 <xsl:if test="($settingmode)='T' and ($docState) &lt; 400 ">
                   <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>
@@ -395,8 +395,7 @@
         <xsl:when test="((@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
                         or (@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
                         or (@isEditable='3' and $docState&lt;400)
-                        or (@isEditable='4' and $docState&lt;500))
-                        and (/sqroot/body/bodyContent/form/info/permission/allowEdit/.)='1'">enabled</xsl:when>
+                        or (@isEditable='4' and $docState&lt;500))">enabled</xsl:when>
         <xsl:otherwise>disabled</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -515,7 +514,15 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-
+      <xsl:attribute name="style">text-align:<xsl:value-of select="$align"/>
+    </xsl:attribute>
+    <xsl:variable name="align">
+      <xsl:choose>
+        <xsl:when test="align=0">left</xsl:when>
+        <xsl:when test="align=1">center</xsl:when>
+        <xsl:when test="align=2">right</xsl:when>
+      </xsl:choose>
+    </xsl:variable>
     <!--default value-->
     <xsl:variable name="thisvalue">
       <xsl:choose>
@@ -531,6 +538,9 @@
     <input type="text" class="form-control" Value="{$thisvalue}" data-type="textBox" data-old="{$thisvalue}" name="{../@fieldName}"
            onblur="preview('{preview/.}',getCode(), '{$cid}','formheader', this);" id ="{../@fieldName}"
            oninput="javascript:checkChanges(this)">
+      <xsl:attribute name="style">
+        text-align:<xsl:value-of select="$align"/>
+      </xsl:attribute>
     </input>
   </xsl:template>
 
@@ -649,7 +659,7 @@
     </select>
 
     <!--AutoSuggest Add New Form Modal-->
-    <xsl:if test="(@allowAdd=1 or @allowEdit=1) and ../@isEditable>0">
+    <xsl:if test="(@allowAdd&gt;=1) and ../@isEditable>0">
       <div id="addNew{../@fieldName}" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
@@ -714,7 +724,7 @@
         </div>
       </div>
 
-      <xsl:if test="@allowAdd=1">
+      <xsl:if test="@allowAdd&gt;=1">
         <span class="select2-search select2-box--dropdown" id="select2-{../@fieldName}-addNew" style="display:none;">
           <ul class="select2-results__options" role="tree" aria-expanded="true" aria-hidden="false">
             <li class="select2-results__option" role="treeitem" aria-selected="false">

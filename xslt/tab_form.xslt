@@ -33,7 +33,7 @@
       </xsl:if>
 
       var deferreds = [];
-	  cell_defer(deferreds);
+      cell_defer(deferreds);
       $(function () {
 
       <!--//Date picker-->
@@ -76,8 +76,8 @@
 
       var c='<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>';
       getHash(c);
-	  setCookie('<xsl:value-of select="translate(/sqroot/body/bodyContent/form/info/code/., $uppercase, $smallcase)"/>_curstateid', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/state/status/."/>');
-	  
+      setCookie('<xsl:value-of select="translate(/sqroot/body/bodyContent/form/info/code/., $uppercase, $smallcase)"/>_curstateid', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/state/status/."/>');
+
     </script>
 
     <xsl:variable name="settingmode">
@@ -192,7 +192,7 @@
                             <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20);">SAVE</button>&#160;
                             <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
                             <xsl:if test="(/sqroot/body/bodyContent/form/info/permission/allowDelete/.)=1">
-                              <button id="button_save" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
+                              <button id="button_delete" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
                               <!--location: 0 header; 1 child; 2 browse
               location: browse:10, header form:20, browse anak:30, browse form:40-->
 
@@ -410,13 +410,16 @@
 
     <xsl:variable name="fieldEnabled">
       <xsl:choose>
-        <xsl:when test ="@isEditable=1 or (@isEditable=2 and (/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))">enabled</xsl:when>
+        <xsl:when test ="((@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (@isEditable='3' and $docState&lt;400)
+                        or (@isEditable='4' and $docState&lt;500))">enabled</xsl:when>
         <xsl:otherwise>disabled</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
 
     <xsl:choose>
-      <xsl:when test ="@isEditable=0 or (@isEditable=2 and (/sqroot/body/bodyContent/form/info/GUID/. != '00000000-0000-0000-0000-000000000000')) or (/sqroot/body/bodyContent/form/info/permission/allowEdit/.)!='1'">
+      <xsl:when test ="$fieldEnabled='disabled'">
         <script>
           $('#<xsl:value-of select="@fieldName"/>').attr('disabled', true);
         </script>
@@ -448,9 +451,6 @@
       onchange="checkCB('{../@fieldName}');preview('{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);">
       <xsl:if test="value=1">
         <xsl:attribute name="checked">checked</xsl:attribute>
-      </xsl:if>
-      <xsl:if test="../@isEditable='0' or (../@isEditable='2' and (/sqroot/body/bodyContent/form/info/GUID/. != '00000000-0000-0000-0000-000000000000')) or (/sqroot/body/bodyContent/form/info/permission/allowEdit/.)!='1'">
-        <xsl:attribute name="disabled">disabled</xsl:attribute>
       </xsl:if>
     </input>
 
@@ -534,7 +534,13 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-
+    <xsl:variable name="align">
+      <xsl:choose>
+        <xsl:when test="align=0">left</xsl:when>
+        <xsl:when test="align=1">center</xsl:when>
+        <xsl:when test="align=2">right</xsl:when>
+      </xsl:choose>
+    </xsl:variable>
     <!--default value-->
     <xsl:variable name="thisvalue">
       <xsl:choose>
@@ -551,9 +557,9 @@
     <input type="text" class="form-control" Value="{$thisvalue}" data-type="textBox" data-old="{$thisvalue}" name="{../@fieldName}"
            onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" id ="{../@fieldName}"
            oninput="javascript:checkChanges(this)">
-      <xsl:if test="../@isEditable=0 or (../@isEditable=2 and (/sqroot/body/bodyContent/form/info/GUID/. != '00000000-0000-0000-0000-000000000000')) or (/sqroot/body/bodyContent/form/info/permission/allowEdit/.)!='1'">
-        <xsl:attribute name="disabled">disabled</xsl:attribute>
-      </xsl:if>
+      <xsl:attribute name="style">
+        text-align:<xsl:value-of select="$align"/>
+      </xsl:attribute>
     </input>
   </xsl:template>
 
@@ -573,9 +579,6 @@
 
       <input type="text" class="form-control pull-right datepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" data-type="dateBox" data-old="{value}"
         onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" >
-        <xsl:if test="../@isEditable=0">
-          <xsl:attribute name="disabled">disabled</xsl:attribute>
-        </xsl:if>
       </input>
     </div>
   </xsl:template>
@@ -590,9 +593,6 @@
       </div>
       <input type="text" class="form-control pull-right datetimepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" data-type="dateTimeBox" data-old="{value}"
         onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" >
-        <xsl:if test="../@isEditable=0">
-          <xsl:attribute name="disabled">disabled</xsl:attribute>
-        </xsl:if>
       </input>
     </div>
   </xsl:template>
@@ -607,9 +607,6 @@
 
     <input type="text" class="form-control" Value="********" data-type="textBox" data-old="" name="{../@fieldName}"
       onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" id ="{../@fieldName}">
-      <xsl:if test="../@isEditable=0 or (../@isEditable=2 and (/sqroot/body/bodyContent/form/info/GUID/. != '00000000-0000-0000-0000-000000000000')) or (/sqroot/body/bodyContent/form/info/permission/allowEdit/.)!='1'">
-        <xsl:attribute name="disabled">disabled</xsl:attribute>
-      </xsl:if>
     </input>
 
   </xsl:template>
@@ -630,12 +627,6 @@
       <input type="text" class="form-control pull-right timepicker" id ="{../@fieldName}" name="{../@fieldName}"
              data-type="timeBox" data-old="{value}" Value="{value}"
              onblur="preview('{preview/.}','{/sqroot/body/bodyContent/form/code/id}', '{/sqroot/body/bodyContent/form/info/GUID/.}','form{/sqroot/body/bodyContent/form/code/id}', this);" >
-        <xsl:choose>
-          <xsl:when test ="../@isEditable=1 or (../@isEditable=2 and (/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))"></xsl:when>
-          <xsl:otherwise>
-            <xsl:attribute name="disabled">disabled</xsl:attribute>
-          </xsl:otherwise>
-        </xsl:choose>
       </input>
     </div>
   </xsl:template>
@@ -650,14 +641,11 @@
     <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}" data-type="selectBox"
       data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}"
         onchange="autosuggest_onchange(this, '{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}', 'formheader');" >
-      <xsl:if test="../@isEditable=0">
-        <xsl:attribute name="disabled">disabled</xsl:attribute>
-      </xsl:if>
       <option></option>
     </select>
 
     <!--AutoSuggest Add New Form Modal-->
-    <xsl:if test="(@allowAdd=1 or @allowEdit=1) and ../@isEditable=1">
+    <xsl:if test="(@allowAdd&gt;=1 or @allowEdit=1) and ../@isEditable=1">
       <div id="addNew{../@fieldName}" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
@@ -722,7 +710,7 @@
         </div>
       </div>
 
-      <xsl:if test="@allowAdd=1">
+      <xsl:if test="@allowAdd&gt;=1">
         <span class="select2-search select2-box--dropdown" id="select2-{../@fieldName}-addNew" style="display:none;">
           <ul class="select2-results__options" role="tree" aria-expanded="true" aria-hidden="false">
             <li class="select2-results__option" role="treeitem" aria-selected="false">
@@ -763,29 +751,29 @@
 
     <script>
       $("#<xsl:value-of select="../@fieldName"/>").select2({
-        placeholder: 'Select <xsl:value-of select="titlecaption"/>',
-        onAdd: function(x) {
-          preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
-        },
-        onDelete: function(x) {
-          preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
-        },        
-        ajax: {
-          url:"OPHCORE/api/msg_autosuggest.aspx",
-          delay : 0,
-          data: function (params) {
-            var query = {
-              code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
-              colkey:"<xsl:value-of select="../@fieldName"/>",
-              search: params.term,
-              wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
-              wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
-              page: params.page
-            }
-            return query;
-          },
-          dataType: 'json', 
-        }        
+      placeholder: 'Select <xsl:value-of select="titlecaption"/>',
+      onAdd: function(x) {
+      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
+      },
+      onDelete: function(x) {
+      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
+      },
+      ajax: {
+      url:"OPHCORE/api/msg_autosuggest.aspx",
+      delay : 0,
+      data: function (params) {
+      var query = {
+      code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
+      colkey:"<xsl:value-of select="../@fieldName"/>",
+      search: params.term,
+      wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
+      wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
+      page: params.page
+      }
+      return query;
+      },
+      dataType: 'json',
+      }
       });
       <xsl:if test="value!=''">
         //deferreds.push(
@@ -865,7 +853,10 @@
       data-key="{key}" data-id="{id}" data-name="{name}"
       name="{../@fieldName}" id ="{../@fieldName}">
 
-      <xsl:if test="../@isEditable=0">
+      <xsl:if test="((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and $docState&lt;400)
+                        or (../@isEditable='4' and $docState&lt;500))">
         <xsl:attribute name="disabled">disabled</xsl:attribute>
       </xsl:if>
     </input>
