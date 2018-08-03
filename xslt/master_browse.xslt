@@ -261,11 +261,6 @@
                     Advanced Filters
                     <xsl:if test="sqroot/body/bodyContent/browse/info/filters/*/value">(ACTIVE)</xsl:if>
                   </button>
-                  <div class="box-body">
-                    <form id="formFilter">
-                      <xsl:apply-templates select="sqroot/body/bodyContent/browse/info/filters" />
-                    </form>
-                  </div>
                 </div>
                 <div class="box-body">
                   <form id="formFilter">

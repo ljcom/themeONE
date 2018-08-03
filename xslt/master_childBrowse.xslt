@@ -90,12 +90,12 @@
               <!-- /.box-body -->
               <!--xsl:if test="$parentState &lt; 400"-->
                 <div class="box-footer clearfix">
-                  <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;='1' and (/sqroot/body/bodyContent/browse/info/curState/@substateCode &lt; 500)">
+                  <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;='1' and ($parentState &lt; 500)">
                     <button class="btn btn-orange-a accordion-toggle" data-toggle="collapse"
                             data-target="#{$lowerCode}00000000-0000-0000-0000-000000000000"
                             onclick="showChildForm('{$lowerCode}','00000000-0000-0000-0000-000000000000')">ADD</button>&#160;
                   </xsl:if>
-                  <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and (/sqroot/body/bodyContent/browse/info/curState/@substateCode &lt; 500)">
+                  <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and ($parentState &lt; 500)">
                     <button class="btn btn-gray-a" onclick="cell_delete('{$lowerCode}', this)">DELETE</button>&#160;
                   </xsl:if>
                   <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;=1 and (/sqroot/body/bodyContent/browse/info/permission/allowExport/.)=1" >

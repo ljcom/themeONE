@@ -204,9 +204,9 @@
                     <xsl:if test="@status =0">&#160;
                     
 					            <div class="input-group">
-                            <input type="password" id="txtpwd" name="message" placeholder="Type Password ..." class="form-control" />
+                            <input type="password" id="txtpwd{aprvUserGUID}" name="message" placeholder="Type Password ..." class="form-control" />
                               <span class="input-group-btn">
-                              <button type="button" class="btn btn-primary btn-flat" style="color:white;background-color: #ff9900" onclick="javascript:executeFunction('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}','execute','21','{aprvUserGUID}', txtpwd.value)">Approve</button>
+                              <button type="button" class="btn btn-primary btn-flat" style="color:white;background-color: #ff9900" onclick="javascript:executeFunction('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}','execute','21','{aprvUserGUID}' )">Approve</button>
                             </span>
                       </div>
 	                

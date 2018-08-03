@@ -13,6 +13,7 @@
   <xsl:variable name="nbCol">
     <xsl:value-of select="count(/sqroot/body/bodyContent/browse/header/column)" />
   </xsl:variable>
+  <xsl:variable name="parentState" select="/sqroot/body/bodyContent/browse/info/parentState" />
   
   <xsl:template match="/">
     <script>
@@ -96,7 +97,7 @@
               </div>
               <!-- /.box-body -->
               <div class="box-footer clearfix">
-                <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;='1' and (/sqroot/body/bodyContent/browse/info/curState/@substateCode &lt; 500 or /sqroot/header/info/code/settingMode/. != 'T')">
+                <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;='1' and ($parentState &lt; 500)">
                   <button id="cell_button_add" class="btn btn-orange-a" style="margin-right:5px;margin-bottom:5px;"
                           onclick="cell_add('{$lowerCode}', columns_{/sqroot/body/bodyContent/browse/info/code}, {count(/sqroot/body/bodyContent/browse/children)}, this);">ADD</button>
                 </xsl:if>
@@ -217,7 +218,7 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="@editor">
+      <xsl:when test="@editor and @isEditable&gt;=1">
         <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}">
           <xsl:attribute name="align">
             <xsl:choose>

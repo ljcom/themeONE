@@ -394,8 +394,8 @@
       <xsl:choose>
         <xsl:when test="((@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
                         or (@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (@isEditable='3' and $docState&lt;400)
-                        or (@isEditable='4' and $docState&lt;500))">enabled</xsl:when>
+                        or (@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">enabled</xsl:when>
         <xsl:otherwise>disabled</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -514,8 +514,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-      <xsl:attribute name="style">text-align:<xsl:value-of select="$align"/>
-    </xsl:attribute>
+
     <xsl:variable name="align">
       <xsl:choose>
         <xsl:when test="align=0">left</xsl:when>
@@ -523,6 +522,7 @@
         <xsl:when test="align=2">right</xsl:when>
       </xsl:choose>
     </xsl:variable>
+	
     <!--default value-->
     <xsl:variable name="thisvalue">
       <xsl:choose>
@@ -620,7 +620,7 @@
     </xsl:if>
 
     <input type="text" class="form-control" Value="********" data-type="textBox" data-old="" name="{../@fieldName}"
-      onblur="preview('{preview/.}',getCode(), '{$cid}','formheader', this);" id ="{../@fieldName}">
+      onblur="preview('{preview/.}',getCode(), '{$cid}','formheader', this);" id ="{../@fieldName}" autocomplete="off">
     </input>
 
   </xsl:template>

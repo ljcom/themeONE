@@ -38,7 +38,9 @@
       loadScript('https://apis.google.com/js/platform.js');
 
       }
-
+      
+      signoff();
+      
       document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
 
 
