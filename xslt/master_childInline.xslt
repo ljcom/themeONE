@@ -218,7 +218,9 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="@editor and @isEditable&gt;=1">
+      <xsl:when test="@editor and ((@isEditable=1 and ($parentState=0 or $parentState=300)) 
+							or (@isEditable=3 and $parentState&lt;400)
+							or (@isEditable=4 and $parentState&lt;500))">
         <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}">
           <xsl:attribute name="align">
             <xsl:choose>
