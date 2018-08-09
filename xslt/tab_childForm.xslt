@@ -338,20 +338,20 @@
       </xsl:if>
     </input>
 
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
-    <label id="{../@fieldName}suffixCaption">
+    <label id="{../@fieldName}suffixCaption" name="{../@fieldName}suffixCaption">
       <xsl:value-of select="suffixCaption"/>
     </label>
 
   </xsl:template>
 
   <xsl:template match="textBox">
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0">
@@ -411,7 +411,7 @@
   </xsl:template>
 
   <xsl:template match="textEditor">    
-    <label id="{../@fieldName}caption" data-toggle="collapse" data-target="#section_{@sectionNo}">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption" data-toggle="collapse" data-target="#section_{@sectionNo}">
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0">
@@ -446,7 +446,7 @@
 </xsl:template>
   
   <xsl:template match="dateBox">
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0">
@@ -464,7 +464,7 @@
   </xsl:template>
 
   <xsl:template match="dateTimeBox">
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0">
@@ -482,7 +482,7 @@
   
   <xsl:template match="timeBox">
     <script>//timebox</script>
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0">
@@ -500,7 +500,7 @@
   </xsl:template>
 
   <xsl:template match="mediaBox">
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0">
@@ -537,7 +537,7 @@
   </xsl:template>
 
   <xsl:template match="autoSuggestBox">
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
 
@@ -664,7 +664,7 @@
       });      
     </script>
 
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
     
@@ -708,7 +708,7 @@
     </script>
     <input type="hidden" id="{../@fieldName}" value="{value/.}" />
     <div>
-      <label id="{../@fieldName}caption">
+      <label id="{../@fieldName}caption" name="{../@fieldName}caption">
         <xsl:value-of select="titlecaption"/>
       </label>
     </div>

@@ -7,10 +7,9 @@
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
   <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
-  <xsl:variable name="lowerCode">
-    <xsl:value-of select="translate(/sqroot/body/bodyContent/browse/info/code, $uppercase, $smallcase)"/>
-  </xsl:variable>
+  <xsl:variable name="lowerCode"><xsl:value-of select="translate(/sqroot/body/bodyContent/browse/info/code, $uppercase, $smallcase)"/></xsl:variable>
   <xsl:variable name="parentState" select="/sqroot/body/bodyContent/browse/info/parentState" />
+  <xsl:variable name="settingMode" select="/sqroot/header/info/code/settingMode/." />
 
   <xsl:template match="/">
     <script>
@@ -90,12 +89,12 @@
               <!-- /.box-body -->
               <!--xsl:if test="$parentState &lt; 400"-->
                 <div class="box-footer clearfix">
-                  <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;='1' and ($parentState &lt; 500)">
+                  <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;='1' and ($parentState &lt; 500 or $settingMode='M' or $settingMode='C')">
                     <button class="btn btn-orange-a accordion-toggle" data-toggle="collapse"
                             data-target="#{$lowerCode}00000000-0000-0000-0000-000000000000"
                             onclick="showChildForm('{$lowerCode}','00000000-0000-0000-0000-000000000000')">ADD</button>&#160;
                   </xsl:if>
-                  <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and ($parentState &lt; 500)">
+                  <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and ($parentState &lt; 500 or $settingMode='M' or $settingMode='C')">
                     <button class="btn btn-gray-a" onclick="cell_delete('{$lowerCode}', this)">DELETE</button>&#160;
                   </xsl:if>
                   <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;=1 and (/sqroot/body/bodyContent/browse/info/permission/allowExport/.)=1" >
@@ -184,7 +183,7 @@
       <xsl:when test="@editor='mediabox'">
         <td>
           <a class="text-muted" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={@caption}&#38;code={../../@code}&#38;GUID={../../@GUID}');">
-            Download Attachment
+            <ix class="fa fa-paperclip" title="Download" />
           </a>
         </td>
       </xsl:when>

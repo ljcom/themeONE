@@ -7,13 +7,10 @@
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
   <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
-  <xsl:variable name="lowerCode">
-    <xsl:value-of select="translate(/sqroot/body/bodyContent/browse/info/code, $uppercase, $smallcase)"/>
-  </xsl:variable>
-  <xsl:variable name="nbCol">
-    <xsl:value-of select="count(/sqroot/body/bodyContent/browse/header/column)" />
-  </xsl:variable>
+  <xsl:variable name="lowerCode"><xsl:value-of select="translate(/sqroot/body/bodyContent/browse/info/code, $uppercase, $smallcase)"/></xsl:variable>
+  <xsl:variable name="nbCol"><xsl:value-of select="count(/sqroot/body/bodyContent/browse/header/column)" /></xsl:variable>
   <xsl:variable name="parentState" select="/sqroot/body/bodyContent/browse/info/parentState" />
+  <xsl:variable name="settingMode" select="/sqroot/header/info/code/settingMode/." />
   
   <xsl:template match="/">
     <script>
@@ -97,14 +94,14 @@
               </div>
               <!-- /.box-body -->
               <div class="box-footer clearfix">
-                <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;='1' and ($parentState &lt; 500)">
+                <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;='1' and ($parentState &lt; 500 or $settingMode='M' or $settingMode='C')">
                   <button id="cell_button_add" class="btn btn-orange-a" style="margin-right:5px;margin-bottom:5px;"
                           onclick="cell_add('{$lowerCode}', columns_{/sqroot/body/bodyContent/browse/info/code}, {count(/sqroot/body/bodyContent/browse/children)}, this);">ADD</button>
                 </xsl:if>
                 <button id="cell_button_save" class="btn btn-orange-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="cell_save();">SAVE</button>
                 <button id="cell_button_cancel" class="btn btn-gray-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="cell_cancelSave()">CANCEL</button>
 
-                <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and (/sqroot/body/bodyContent/browse/info/curState/@substateCode &lt; 500 or /sqroot/header/info/code/settingMode/. != 'T')">
+                <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and ($parentState &lt; 500 or $settingMode='M' or $settingMode='C')">
                   <button id="cell_button_delete" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;" onclick="cell_delete('{$lowerCode}', this)">DELETE</button>
                 </xsl:if>
                 <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;=1 and (/sqroot/body/bodyContent/browse/info/permission/allowExport/.)=1" >
@@ -218,9 +215,9 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="@editor and ((@isEditable=1 and ($parentState=0 or $parentState=300)) 
+      <xsl:when test="@editor and ((@isEditable=1 and ($parentState=0 or $parentState=300 or $settingMode='C' or $settingMode='M')) 
 							or (@isEditable=3 and $parentState&lt;400)
-							or (@isEditable=4 and $parentState&lt;500))">
+							or (@isEditable=4 and ($parentState&lt;500)))">
         <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}">
           <xsl:attribute name="align">
             <xsl:choose>
