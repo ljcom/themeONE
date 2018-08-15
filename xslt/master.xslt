@@ -19,6 +19,8 @@
     <div style="display:none" id="themeName">&#xA0;</div>
 
     <script>
+      
+      
       Sideshow.config.language = "oph";
       if(getMode() == 'export') {
         Sideshow.config.autoSkipIntro = true;

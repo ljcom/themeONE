@@ -43,41 +43,7 @@
       defaultTime: false
       });
 
-      $(function() {
-
-      // We can attach the `fileselect` event to all file inputs on the page
-      $(document).on('change', ':file', function() {
-      var input = $(this),
-      numFiles = input.get(0).files ? input.get(0).files.length : 1,
-      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-      input.trigger('fileselect', [numFiles, label]);
-
-
-
-      //var file = this.files[0];
-      //if (file.size > 1024 {
-      //alert('max upload size is 1k')
-      //}
-      });
-
-      // We can watch for our custom `fileselect` event like this
-      $(document).ready( function() {
-      $(':file').on('fileselect', function(event, numFiles, label) {
-
-      var input = $(this).parents('.input-group').find(':text'),
-      //log = numFiles > 1 ? numFiles + ' files selected' : label;
-      log = label;
-      if( input.length ) {
-      input.val(log);
-      checkChanges(this);
-      } else {
-      //if( log ) alert(log);
-      }
-
-      });
-      });
-
-      });
+      upload_init('<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>');
 
 
       $(function () {
@@ -491,7 +457,7 @@
     <div class="input-group">
       <label class="input-group-btn">
         <span class="btn btn-primary">
-          Browse <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file" style="display: none;" multiple="" />
+          Browse <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file" data-code="{/sqroot/body/bodyContent/form/info/code}" data-child="Y" style="display: none;" multiple="" />
         </span>
       </label>
       <input id ="{../@fieldName}" name="{../@fieldName}" value="{value}" data-old="{value}" type="text" class="form-control" readonly="" />

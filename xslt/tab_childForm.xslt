@@ -43,25 +43,8 @@
       defaultTime: false
       });
 
-      upload_init(code, function(data) {
-      var err=''; s=0;
-      $(data).find("sqroot").find("message").each(function (i) {
-      var item=$(data).find("sqroot").find("message").eq(i);
-      if ($(item).text()!='') err += $(item).text()+' ';
-      })
+      upload_init('<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>');
 
-      $(data).find("sqroot").find("guid").each(function (i) {
-      var sn=$(data).find("sqroot").find("guid").eq(i);
-      if (sn!='') s++;
-      })
-      var msg='Upload Status: Success: '+s+(err==''?'':' Error: '+err);
-      showMessage(msg);
-      //setTimeout(function() {location.reload()}, 5000);
-
-      var code='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>';
-      loadChild(code);
-
-      });
 
       $(function () {
 
@@ -521,7 +504,7 @@
     <div class="input-group">
       <label class="input-group-btn">
         <span class="btn btn-primary">
-          Browse <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file" style="display: none;" multiple="" />
+          Browse <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file" data-code="{/sqroot/body/bodyContent/form/info/code}" data-child="Y" style="display: none;" multiple="" />
         </span>
       </label>
       <input id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" type="text" class="form-control" readonly="" />

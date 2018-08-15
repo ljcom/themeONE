@@ -27,9 +27,9 @@
       loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
       loadScript('OPHContent/cdn/select2/select2.full.min.js');
       var deferreds = [];
-	  cell_defer(deferreds);
+      cell_defer(deferreds);
     </script>
-    
+
     <section class="content-header visible-phone">
       <h1>
         <xsl:value-of select="$desc"/>
@@ -53,7 +53,12 @@
     <!-- Main content -->
     <section class="content">
       <xsl:if test="sqroot/body/bodyContent/query/queryPages/queryPage/querySections/querySection">
-        <xsl:apply-templates select="sqroot/body/bodyContent/query/queryPages/queryPage/querySections/querySection"/>
+        <div class="form-group enabled-input">
+          <form role="form" id="formheader">
+            <xsl:apply-templates select="sqroot/body/bodyContent/query/queryPages/queryPage/querySections/querySection"/>
+          </form>
+        </div>
+        
       </xsl:if>
       <div class="row" id="reportButton">
         <div class="col-md-12" style="margin-bottom:30px;margin-top:30px">
@@ -75,7 +80,7 @@
     </section>
     <script>
       $(function () {
-      $('.datepicker').datepicker({ 
+      $('.datepicker').datepicker({
       autoclose: true
       });
 
@@ -125,26 +130,22 @@
   </xsl:template>
 
   <xsl:template match="queryRows/queryRow ">
-    <xsl:apply-templates select="fields/field"/>
+        <xsl:apply-templates select="fields/field"/>
   </xsl:template>
 
   <xsl:template match="fields/field">
-    <div class="form-group enabled-input">
-      <form role="form" id="formheader">
-        <xsl:if test="textBox">
-          <xsl:apply-templates select="textBox"/>
-        </xsl:if>
-        <xsl:if test="dateBox">
-          <xsl:apply-templates select="dateBox"/>
-        </xsl:if>
-        <xsl:if test="checkBox">
-          <xsl:apply-templates select="checkBox"/>
-        </xsl:if>
-        <xsl:if test="comboBox">
-          <xsl:apply-templates select="comboBox"/>
-        </xsl:if>
-      </form>
-    </div>
+    <xsl:if test="textBox">
+      <xsl:apply-templates select="textBox"/>
+    </xsl:if>
+    <xsl:if test="dateBox">
+      <xsl:apply-templates select="dateBox"/>
+    </xsl:if>
+    <xsl:if test="checkBox">
+      <xsl:apply-templates select="checkBox"/>
+    </xsl:if>
+    <xsl:if test="autoSuggestBox">
+      <xsl:apply-templates select="autoSuggestBox"/>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="checkBox">
@@ -153,7 +154,7 @@
     <!--Supaya bisa di serialize-->
 
 
-    <input type="checkbox"  value="{value}" id ="{../@fieldName}"  name="{../@fieldName}" onchange="checkCB('{../@fieldName}');preview({preview/.},getCode(), null,'formheader');">
+    <input type="checkbox"  value="{value}" id ="{../@fieldName}"  name="{../@fieldName}" onchange="checkCB('{../@fieldName}');preview('{preview/.}',getCode(), null,'formheader');">
       <xsl:if test="value=1">
         <xsl:attribute name="checked">checked</xsl:attribute>
       </xsl:if>
@@ -176,7 +177,7 @@
     </label>
 
 
-    <input type="text" class="form-control" Value="{value}" name="{../@fieldName}" onblur="preview({preview/.},getCode(), null,'formheader');" id ="{../@fieldName}">
+    <input type="text" class="form-control" Value="{value}" name="{../@fieldName}" onblur="preview('{preview/.}',getCode(), null,'formheader');" id ="{../@fieldName}">
       <xsl:if test="../@isEditable=0">
         <xsl:attribute name="disabled">disabled</xsl:attribute>
       </xsl:if>
@@ -191,7 +192,7 @@
       <div class="input-group-addon">
         <ix class="fa fa-calendar"></ix>
       </div>
-      <input type="text" class="form-control pull-right datepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" onblur="preview({preview/.},getCode(), null,'formheader');" >
+      <input type="text" class="form-control pull-right datepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" onblur="preview('{preview/.}',getCode(), null,'formheader');" >
         <xsl:if test="../@isEditable=0">
           <xsl:attribute name="disabled">disabled</xsl:attribute>
         </xsl:if>
@@ -199,11 +200,11 @@
     </div>
   </xsl:template>
 
-  <xsl:template match="comboBox">
+  <xsl:template match="autoSuggestBox">
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titleCaption"/>
     </label>
-    <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}" onchange="preview({preview/.},getCode(), null,'formheader');" >
+    <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}" onchange="preview('{preview/.}',getCode(), null,'formheader');" >
       <xsl:if test="../@isEditable=0">
         <xsl:attribute name="disabled">disabled</xsl:attribute>
       </xsl:if>

@@ -102,7 +102,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-6">
               <h3>Use a local account to sign in</h3>
 
               <h4 style="color:gray">Please enter your username and password</h4>
@@ -113,7 +113,7 @@
                 </div>
                 <div class="form-group enabled-input">
                   <label>Password</label>
-                  <input type="password" class="form-control" name ="pwd" id ="pwd" onkeypress="return checkenter(event)"/>
+                  <input type="password" class="form-control" name ="pwd" id ="pwd" autocomplete="off" onkeypress="return checkenter(event)"/>
                 </div>
                 <div class="g-recaptcha" data-sitekey="6Ld9Qi8UAAAAAJKicrf2JhrOH3k5LkqxyCodIOWm"></div>
                 <br/>
@@ -132,7 +132,13 @@
                 </div>
               </div>-->
             </div>
-
+            <div class="col-md-6">
+              <img id="login_header" src="" alt="" />
+              <script>
+                 var acct='<xsl:value-of select="/sqroot/header/info/account"/>';
+                $("#login_header").attr("src","OPHContent/documents/"+acct+"/login_header.jpg");
+              </script>
+            </div>
             <!--<div class="col-md-5">
               
               <h3>Use another services to sign in</h3>

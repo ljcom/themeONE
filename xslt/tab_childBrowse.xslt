@@ -95,12 +95,20 @@
               <!-- /.box-body -->
               <div class="box-footer clearfix">
                 <!--<xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='1' and (/sqroot/body/bodyContent/browse/info/curState/@substateCode &lt; 500 or /sqroot/header/info/code/settingMode/. != 'T')">-->
-                <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;='1' and ($parentState &lt; 500)">
+                <xsl:if test="(
+                          ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='1' and $parentState &lt; 100 or not ($parentState))
+                          or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='3' and $parentState &lt; 400)
+                          or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='4' and $parentState &lt; 500)
+                        )">
                   <button class="btn btn-orange-a accordion-toggle" data-toggle="collapse"
                           data-target="#{$lowerCode}00000000-0000-0000-0000-000000000000"
                           onclick="showChildForm('{$lowerCode}','00000000-0000-0000-0000-000000000000')">ADD</button>&#160;
                 </xsl:if>
-                <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and ($parentState &lt; 500)">
+                <xsl:if test="(
+                          ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='1' and $parentState &lt; 100 or not ($parentState))
+                          or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='3' and $parentState &lt; 400)
+                          or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='4' and $parentState &lt; 500)
+                        )">
                   <button class="btn btn-gray-a" onclick="cell_delete('{$lowerCode}', this)">DELETE</button>&#160;
                 </xsl:if>
                 <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;=1 and (/sqroot/body/bodyContent/browse/info/permission/allowExport/.)=1" >
@@ -179,10 +187,22 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <td class="accordion-toggle" data-parent="#{$lowerCode}" data-target="#{$lowerCode}{@GUID}" data-parentGUID="{../../@GUID}"
-        onclick="showChildForm('{$lowerCode}','{../../@GUID}', '{$lowerCode}')" >
-      <xsl:value-of select="$tbContent"/>&#160;
-    </td>
+    <xsl:choose>
+      <xsl:when test="@editor='mediabox'">
+        <td>
+          <xsl:if test=".!=''">
+            <a class="text-muted" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={@caption}&#38;code={../../@code}&#38;GUID={../../@GUID}');">
+              <ix class="fa fa-paperclip" title="Download" />
+            </a>
+          </xsl:if>&#160;
+        </td>
+      </xsl:when>
+      <xsl:otherwise>
+        <td onclick="showChildForm('{$lowerCode}','{../../@GUID}', '{$lowerCode}');">
+          <xsl:value-of select="$tbContent"/>&#160;
+        </td>
+      </xsl:otherwise>
+    </xsl:choose>
 
   </xsl:template>
 

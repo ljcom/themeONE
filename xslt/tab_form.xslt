@@ -8,15 +8,24 @@
   <xsl:decimal-format name="comma-dec" decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
 
-  <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/browse/info/permission/allowAccess" />
-  <xsl:variable name="allowForce" select="/sqroot/body/bodyContent/browse/info/permission/allowForce" />
-  <xsl:variable name="allowDelete" select="/sqroot/body/bodyContent/browse/info/permission/allowDelete" />
-  <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/browse/info/permission/allowWipe" />
-  <xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/browse/info/permission/allowOnOff" />
-  <xsl:variable name="settingmode" select="/sqroot/body/bodyContent/form/info/settingMode/." />
+  <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/form/info/permission/allowAccess" />
+  <xsl:variable name="allowForce" select="/sqroot/body/bodyContent/form/info/permission/allowForce" />
+  <xsl:variable name="allowDelete" select="/sqroot/body/bodyContent/form/info/permission/allowDelete" />
+  <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/form/info/permission/allowWipe" />
+  <xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/form/info/permission/allowOnOff" />
+  <xsl:variable name="settingMode" select="/sqroot/body/bodyContent/form/info/settingMode/." />
   <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/status/."/>
-  <xsl:variable name="isRequester" select="/sqroot/body/bodyContent/form/info/document/isRequester"/>
+  <xsl:variable name="isApprover" select="/sqroot/body/bodyContent/form/info/document/isApprover"/>
   <xsl:variable name="cid" select="/sqroot/body/bodyContent/form/info/GUID/."/>
+  <xsl:variable name="colMax">
+    <xsl:for-each select="/sqroot/body/bodyContent/form/formPages/formPage/formSections/formSection/formCols/formCol">
+      <xsl:sort select="@colNo" data-type="number" order="descending"/>
+      <xsl:if test="position() = 1">
+        <xsl:value-of select="@colNo"/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:variable>
+  
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
     <script>
@@ -180,48 +189,50 @@
                   <div class="row">
                     <div class="col-md-12 device-sm visible-sm device-md visible-md device-lg visible-lg" style="margin-bottom:50px;">
                       <div style="text-align:left">
-                        <xsl:choose>
-                          <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
-                            <!--location: 0 header; 1 child; 2 browse
-              location: browse:10, header form:20, browse anak:30, browse form:40-->
 
-                            <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20);">SAVE</button>&#160;
+                        <xsl:choose>
+                          <!--location: 0 header; 1 child; 2 browse location: browse:10, header form:20, browse anak:30, browse form:40-->
+                          <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
+                            <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                             <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
                           </xsl:when>
-                          <xsl:when test="($documentstatus) = 0 or ($documentstatus) = ''">
-                            <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20);">SAVE</button>&#160;
+                          <xsl:when test="/sqroot/body/bodyContent/form/info/state/status/. = 0 or /sqroot/body/bodyContent/form/info/state/status/. = ''">
+                            <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                             <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
                             <xsl:if test="(/sqroot/body/bodyContent/form/info/permission/allowDelete/.)=1">
-                              <button id="button_delete" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
-                              <!--location: 0 header; 1 child; 2 browse
-              location: browse:10, header form:20, browse anak:30, browse form:40-->
-
+                              <button id="button_delete" class="btn btn-gray-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
                             </xsl:if>
-                            <xsl:if test="($settingmode)='T' and ($documentstatus) &lt; 400 ">
-                              <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">SUBMIT</button>
+                            <xsl:if test="($settingMode)='T' and ($docState) &lt; 400 ">
+                              <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>
                             </xsl:if>
                           </xsl:when>
-                          <xsl:when test="($documentstatus) &gt; 99 and ($documentstatus) &lt; 199">
-                            <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20);">SAVE</button>&#160;
+                          <xsl:when test="($docState) &gt;= 100 and ($docState) &lt; 300">
+                            <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                             <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                            <button id="button_approve" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">APPROVE</button>
+                            <xsl:if test="$isApprover=1">
+                              <button id="button_approve" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">APPROVE</button>&#160;
+                              <button id="button_reject" class="btn btn-orange-a" onclick="rejectPopup('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">REJECT</button>
+                            </xsl:if>
                           </xsl:when>
-                          <xsl:when test="($documentstatus) = 300">
-                            <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20);">SAVE</button>&#160;
+                          <xsl:when test="($docState) = 300">
+                            <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                             <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                            <button id="button_reject" class="btn btn-orange-a">REJECT</button>&#160;
+                            <xsl:if test="$isApprover=1">
+                              <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RE-SUBMIT</button>
+                            </xsl:if>
                           </xsl:when>
-                          <xsl:when test="($documentstatus) &gt;= 400 and ($documentstatus) &lt;= 499">
-                            <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20);">SAVE</button>&#160;
+                          <xsl:when test="($docState) &gt;= 400 and ($docState) &lt;= 499">
+                            <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                             <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                            <button id="button_close" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'force', 1, 20)">CLOSE</button>&#160;
+                            <xsl:if test="$allowForce=1">
+                              <button id="button_close" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">CLOSE</button>&#160;
+                            </xsl:if>
+                          </xsl:when>
+                          <xsl:when test="($docState) &gt;= 500 and ($docState) &lt;= 899">
+                            <button id="button_reopen" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'reopen', 1, 20)">REOPEN</button>&#160;
                           </xsl:when>
                           <xsl:otherwise>
                             &#160;
-                            <!--<div style="text-align:left">
-                <button id="button_save" class="btn btn-orange-a" onclick="submitfunction('formheader','{sqroot/body/bodyContent/form/info/GUID/.}','{sqroot/body/bodyContent/form/info/code/.}');">SAVE</button>&#160;
-                <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-              </div>-->
                           </xsl:otherwise>
                         </xsl:choose>
                       </div>

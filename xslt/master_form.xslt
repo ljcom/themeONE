@@ -13,17 +13,26 @@
   <xsl:variable name="allowDelete" select="/sqroot/body/bodyContent/form/info/permission/allowDelete" />
   <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/form/info/permission/allowWipe" />
   <xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/form/info/permission/allowOnOff" />
-  <xsl:variable name="settingmode" select="/sqroot/body/bodyContent/form/info/settingMode/." />
+  <xsl:variable name="settingMode" select="/sqroot/body/bodyContent/form/info/settingMode/." />
   <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/status/."/>
-  <xsl:variable name="isRequester" select="/sqroot/body/bodyContent/form/info/document/isRequester"/>
+  <xsl:variable name="isApprover" select="/sqroot/body/bodyContent/form/info/document/isApprover"/>
   <xsl:variable name="cid" select="/sqroot/body/bodyContent/form/info/GUID/."/>
-
+  <xsl:variable name="colMax">
+    <xsl:for-each select="/sqroot/body/bodyContent/form/formPages/formPage/formSections/formSection/formCols/formCol">
+      <xsl:sort select="@colNo" data-type="number" order="descending"/>
+      <xsl:if test="position() = 1">
+        <xsl:value-of select="@colNo"/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:variable> 
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
     <script>
       loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
       loadScript('OPHContent/cdn/select2/select2.full.min.js');
-
+            
+      form_init();
+      
       var xmldoc = ""
       var xsldoc = "OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder"/>/xslt/" + getPage();
 
@@ -53,39 +62,7 @@
       defaultTime: false
       });
 
-      $(function() {
-
-      // We can attach the `fileselect` event to all file inputs on the page
-      $(document).on('change', ':file', function() {
-      var input = $(this),
-      numFiles = input.get(0).files ? input.get(0).files.length : 1,
-      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-      input.trigger('fileselect', [numFiles, label]);
-
-      //var file = this.files[0];
-      //if (file.size > 1024 {
-      //alert('max upload size is 1k')
-      //}
-      });
-
-      // We can watch for our custom `fileselect` event like this
-      $(document).ready( function() {
-      $(':file').on('fileselect', function(event, numFiles, label) {
-
-      var input = $(this).parents('.input-group').find(':text'),
-      //log = numFiles > 1 ? numFiles + ' files selected' : label;
-      log = label;
-      if( input.length ) {
-      input.val(log);
-      checkChanges(this);
-      } else {
-      //if( log ) alert(log);
-      }
-
-      });
-      });
-
-      });
+      upload_init('<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>');
 
       <!--//iCheck for checkbox and radio inputs-->
       $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -122,7 +99,7 @@
           <xsl:when test="sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
             NEW&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>
           </xsl:when>
-          <xsl:when test="(sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000' and $settingmode='T'">
+          <xsl:when test="(sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000' and $settingMode='T'">
             EDIT&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
           </xsl:when>
           <xsl:otherwise>
@@ -151,7 +128,7 @@
             <xsl:when test="sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
               NEW&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/Description/."/>
             </xsl:when>
-            <xsl:when test="(sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000' and $settingmode='T'">
+            <xsl:when test="(sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000' and $settingMode='T'">
               EDIT&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
             </xsl:when>
             <xsl:otherwise>
@@ -196,14 +173,14 @@
                 <xsl:if test="(/sqroot/body/bodyContent/form/info/permission/allowDelete/.)=1">
                   <button id="button_delete" class="btn btn-gray-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
                 </xsl:if>
-                <xsl:if test="($settingmode)='T' and ($docState) &lt; 400 ">
+                <xsl:if test="($settingMode)='T' and ($docState) &lt; 400 ">
                   <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>
                 </xsl:if>
               </xsl:when>
               <xsl:when test="($docState) &gt;= 100 and ($docState) &lt; 300">
                 <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                <xsl:if test="$isRequester=0">
+                <xsl:if test="$isApprover=1">
                   <button id="button_approve" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">APPROVE</button>&#160;
                   <button id="button_reject" class="btn btn-orange-a" onclick="rejectPopup('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">REJECT</button>
                 </xsl:if>
@@ -211,7 +188,7 @@
               <xsl:when test="($docState) = 300">
                 <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                <xsl:if test="$isRequester=1">
+                <xsl:if test="$isApprover=1">
                   <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RE-SUBMIT</button>
                 </xsl:if>
               </xsl:when>
@@ -242,7 +219,7 @@
               <xsl:when test="($docState) = 0 or ($docState) = ''">
                 <button id="button_save2" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                 <button id="button_cancel2" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                <xsl:if test="($settingmode)='T' and ($docState) &lt; 400 ">
+                <xsl:if test="($settingMode)='T' and ($docState) &lt; 400 ">
                   <button id="button_submit2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>
                 </xsl:if>
               </xsl:when>
@@ -350,12 +327,12 @@
 
   <xsl:template match="formCol">
     <xsl:choose>
-      <xsl:when test="@colNo='0'">
+      <xsl:when test="@colNo='0' or $colMax=1">
         <div class="col-md-12">
           <xsl:apply-templates select="formRows"/>
         </div>
       </xsl:when>
-      <xsl:otherwise>
+      <xsl:when test="$colMax=2">
         <div class="col-md-6">
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
@@ -364,7 +341,38 @@
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
         </div>
-      </xsl:otherwise>
+      </xsl:when>
+      <xsl:when test="$colMax=3">
+        <div class="col-md-4">
+          <xsl:if test="@colNo='1'">
+            <xsl:apply-templates select="formRows"/>
+          </xsl:if>
+          <xsl:if test="@colNo='2'">
+            <xsl:apply-templates select="formRows"/>
+          </xsl:if>
+          <xsl:if test="@colNo='3'">
+            <xsl:apply-templates select="formRows"/>
+          </xsl:if>
+        </div>
+      </xsl:when>
+      <xsl:when test="$colMax=4">
+        <div class="col-md-3">
+          <xsl:if test="@colNo='1'">
+            <xsl:apply-templates select="formRows"/>
+          </xsl:if>
+          <xsl:if test="@colNo='2'">
+            <xsl:apply-templates select="formRows"/>
+          </xsl:if>
+          <xsl:if test="@colNo='3'">
+            <xsl:apply-templates select="formRows"/>
+          </xsl:if>
+          <xsl:if test="@colNo='4'">
+            <xsl:apply-templates select="formRows"/>
+          </xsl:if>
+        </div>
+      </xsl:when>
+
+
     </xsl:choose>
   </xsl:template>
 
@@ -660,7 +668,10 @@
     </select>
 
     <!--AutoSuggest Add New Form Modal-->
-    <xsl:if test="(@allowAdd&gt;=1) and ../@isEditable>0">
+    <xsl:if test="((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000' or $settingMode='C' or $settingMode='M')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
       <div id="addNew{../@fieldName}" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
@@ -898,7 +909,7 @@
     <div class="input-group">
       <label class="input-group-btn">
         <span class="btn btn-primary">
-          Browse <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file" style="display: none;" multiple="">
+          Browse <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file" data-code="{/sqroot/body/bodyContent/form/info/code}" style="display: none;" multiple="">
           </input>
         </span>
       </label>
