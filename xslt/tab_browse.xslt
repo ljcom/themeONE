@@ -311,7 +311,7 @@
                             <xsl:if test="$settingMode='T'">
                               <xsl:choose>
                                 <xsl:when test="$state=0 or $state=300">
-                                  <a href="javascript:btn_function('{@code}', '{@GUID}', 'execute', '1', 10)" data-toggle="tooltip">
+                                  <a href="javascript:btn_function('{/sqroot/header/info/code/id}', null, 'execute', '1', 10)" data-toggle="tooltip">
                                     <xsl:attribute name="title">
                                       <xsl:choose>
                                         <xsl:when test="$state=0">Submit All</xsl:when>
@@ -323,20 +323,20 @@
                                   </a>
                                 </xsl:when>
                                 <xsl:when test="$state &gt;= 100 and $state &lt;300">
-                                  <a href="javascript:btn_function('{@code}', '{@GUID}', 'execute', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="Approve All">
+                                  <a href="javascript:btn_function('{/sqroot/header/info/code/id}', null, 'execute', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="Approve All">
                                     <ix class="fa fa-check"></ix>
                                   </a>
-                                  <a href="javascript:rejectPopup('{@code}', '{@GUID}', 'force', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="Reject All">
+                                  <a href="javascript:rejectPopup('{/sqroot/header/info/code/id}', null, 'force', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="Reject All">
                                     <ix class="fa fa-times"></ix>
                                   </a>
                                 </xsl:when>
                                 <xsl:when test="$allowForce = 1 and $state &gt;= 400 and $state &lt; 500">
-                                  <a href="javascript:btn_function('{@code}', '{@GUID}', 'force', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="Close All">
+                                  <a href="javascript:btn_function('{/sqroot/header/info/code/id}', null, 'force', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="Close All">
                                     <ix class="fa fa-archive"></ix>
                                   </a>
                                 </xsl:when>
                                 <xsl:when test="$allowForce = 1 and $state = 500">
-                                  <a href="javascript:btn_function('{@code}', '{@GUID}', 'reopen', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="ReOpen All">
+                                  <a href="javascript:btn_function('{/sqroot/header/info/code/id}', null, 'reopen', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="ReOpen All">
                                     <ix class="fa fa-undo"></ix>
                                   </a>
                                 </xsl:when>

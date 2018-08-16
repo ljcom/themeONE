@@ -93,14 +93,22 @@
               </div>
               <!-- /.box-body -->
               <div class="box-footer clearfix">
-                <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;='1' and ($parentState &lt; 500 or not ($parentState))">
+                <xsl:if test="(
+                          ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='1' and $parentState &lt; 100 or not ($parentState))
+                          or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='3' and $parentState &lt; 400)
+                          or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='4' and $parentState &lt; 500)
+                        )">
                   <button id="cell_button_add" class="btn btn-orange-a" style="margin-right:5px;margin-bottom:5px;"
                           onclick="cell_add('{$lowerCode}', columns_{/sqroot/body/bodyContent/browse/info/code}, {count(/sqroot/body/bodyContent/browse/children)}, this);">ADD</button>
                 </xsl:if>
                 <button id="cell_button_save" class="btn btn-orange-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="cell_save();">SAVE</button>
                 <button id="cell_button_cancel" class="btn btn-gray-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="cell_cancelSave()">CANCEL</button>
 
-                <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and ($parentState &lt; 500 or not ($parentState))">
+                <xsl:if test="(
+                          ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and $parentState &lt; 100 or not ($parentState))
+                          or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='3' and $parentState &lt; 400)
+                          or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='4' and $parentState &lt; 500)
+                        )">
                   <button id="cell_button_delete" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;" onclick="cell_delete('{$lowerCode}', this)">DELETE</button>
                 </xsl:if>
                 <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;=1 and (/sqroot/body/bodyContent/browse/info/permission/allowExport/.)=1" >
@@ -214,7 +222,9 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="@editor">
+      <xsl:when test="@editor and ((@isEditable=1 and ($parentState=0 or $parentState=300 or not ($parentState))) 
+							or (@isEditable=3 and $parentState&lt;400)
+							or (@isEditable=4 and ($parentState&lt;500)))">
         <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}">
           <xsl:attribute name="align">
             <xsl:choose>
