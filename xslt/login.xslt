@@ -132,7 +132,7 @@
                 </div>
               </div>-->
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 visible-phone">
               <img id="login_header" src="" alt="" />
               <script>
                  var acct='<xsl:value-of select="/sqroot/header/info/account"/>';

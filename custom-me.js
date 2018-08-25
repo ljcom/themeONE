@@ -632,6 +632,7 @@ function loadExtraButton(buttons, location) {
                 });
             }
             a = "<a href=\"" + url + "\"><ix class='fa " + v.icon + "' data-toggle=\"tooltip\" title='" + v.caption + "'/></a>";
+			uo=(v.updateOnly==1)? 1:0;
             bstate = v.state
             if (bstate) {
                 bstate = bstate.split(' ').join('');
@@ -639,12 +640,18 @@ function loadExtraButton(buttons, location) {
                 for (var i = 0; i < bstate.length; i++) {
                     var gstate = (getState() == "") ? "0" : getState();
                     if (gstate == bstate[i]) {
-                        $(td).append(a);
+						if ($(td).find("a").find("."+v.icon))
+							$(td).find("a").find("."+v.icon).parent().attr("href", url);
+						else					
+							if (uo==0) $(td).append(a);
                         return;
                     }
                 }
             } else {
-                $(td).append(a);
+				if ($(td).find("a").find("."+v.icon))
+					$(td).find("a").find("."+v.icon).parent().attr("href", url);
+				else					
+					if (uo==0) $(td).append(a);
             }
         });
     });

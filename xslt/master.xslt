@@ -715,7 +715,7 @@
                       <div class="row">
                         <xsl:for-each select="header/menus/menu[@code='primaryback']/submenus/submenu">
                           <div class="col-xs-{$colMenu} text-center">
-                            <a href="{pageURL}">
+                            <a class="withBorder" href="{pageURL}">
                               <xsl:value-of select="caption" />&#160;
                             </a>
                           </div>
@@ -837,7 +837,7 @@
         <b>Version</b> 4.0
       </div>
       <strong>
-        Copyright &#169; 2017 <a href="#">Operahouse</a>.
+        Copyright &#169; 2018 <a href="#">Operahouse</a>.
       </strong> All rights reserved.
     </footer>
 

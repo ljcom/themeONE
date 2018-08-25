@@ -18,6 +18,10 @@
     margin: 0;
 }
 
+.withBorder:hover {
+		border: 1px solid #3498db;	
+		}
+		
 ul.new-doc {
     /*background: black;*/
     margin: 0;
@@ -127,6 +131,7 @@ ul.user-setting-menu {
         ul.user-setting-menu li:last-child {
             border-bottom: none;
         }
+
 
 .image-envi {
     /*background: red;
@@ -933,3 +938,4 @@ input[type=checkbox].pinned {
         color: skyblue;
     }
 }
+		
