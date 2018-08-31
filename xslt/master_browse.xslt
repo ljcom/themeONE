@@ -5,6 +5,7 @@
 
   <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
+  <xsl:variable name="normalChar" select="'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'" />
 
   <xsl:decimal-format name="comma-dec" decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
@@ -828,8 +829,9 @@
   <xsl:template match="fields/field[@mandatory=1]">
     <script>
       var m=$('#mandatory<xsl:value-of select="../../@GUID"/>').val();
-      if (m!='' &#38;&#38; "<xsl:value-of select="." />" != '') m+='/';
-      m+="<xsl:value-of select="." />";
+      var mv='<xsl:value-of select="translate(., $normalChar, '')" />';
+      if (m!='' &#38;&#38; mv!='') m+='/';
+      m+=mv;
       $('#mandatory<xsl:value-of select="../../@GUID"/>').val(m);
     </script>
     <td id="mandatory{../../@GUID}" class="expand-td" data-toggle="collapse" data-target="#{../@GUID}" data-parent="#{../@GUID}" data-field="{@caption}">
