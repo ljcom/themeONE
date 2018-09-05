@@ -157,7 +157,99 @@
     <!--<h2 class="page-header">CASH</h2>-->
     <section class="content">
       <div class="row">
-        <div class="col-md-12">
+
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div id="profileBox" class="box box-primary">
+            <xsl:for-each select="sqroot/body/bodyContent/profile/row">
+              <xsl:if test="type = 'file'">
+                <div style="float:right;position:inherit;display:none;" id="uploadBox" onmouseover="showUploadBox('uploadBox', 1);">
+                  <button onclick="uploadBox('{@key}', 'formProfile', 'profile', '{/sqroot/body/bodyContent/info/GUID}' )" style="position:absolute;top:10px;right:15px;background:none;border:none; color:blue;" title="upload your poto profile" >
+                    <ix class="fa fa-upload fa-lg"></ix>
+                  </button>
+                </div>
+              </xsl:if>
+            </xsl:for-each>
+            <div class="box-body box-profile">
+              <h3 class="profile-username text-center">
+                <xsl:value-of select="sqroot/body/bodyContent/info/name"/>
+              </h3>
+              <p class="text-muted text-center">
+                <xsl:value-of select="sqroot/body/bodyContent/info/id"/>
+              </p>
+              <p class="text-muted text-center">
+                <xsl:value-of select="sqroot/body/bodyContent/info/carolid"/>
+              </p>
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  Grand Total
+                  <a class="pull-right">1,322</a>
+                </li>
+                <li class="list-group-item">
+                  Subtotal
+                  <a class="pull-right">543</a>
+                </li>
+                <li class="list-group-item">
+                  Shipping Cost
+                  <a class="pull-right">13,287</a>
+                </li>
+                <li class="list-group-item">
+                  Discount
+                  <a class="pull-right">13,287</a>
+                </li>
+              </ul>
+            </div>
+            
+          </div>
+          <!-- /.box -->
+
+          <!-- About Me Box -->
+          <div id="aboutMeBox" class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">About Me</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <strong>
+                <span>
+                  <ix class="fa fa-briefcase"></ix>
+                </span> position
+              </strong>
+              <p class="text-muted">
+                <xsl:value-of select="sqroot/body/bodyContent/info/position"/>
+              </p>
+              <hr/>
+              <strong>
+                <span>
+                  <ix class="fa fa-envelope"></ix>
+                </span> e-mail
+              </strong>
+              <p class="text-muted">
+                <xsl:value-of select="sqroot/body/bodyContent/info/email"/>
+              </p>
+              <hr/>
+              <strong>
+                <span>
+                  <ix class="fa fa-phone-square"></ix>
+                </span> home phone
+              </strong>
+              <p class="text-muted">
+                <xsl:value-of select="sqroot/body/bodyContent/info/homephone"/>
+              </p>
+              <hr/>
+              <strong>
+                <span>
+                  <ix class="fa fa-mobile-phone"></ix>
+                </span> mobile phone
+              </strong>
+              <p class="text-muted">
+                <xsl:value-of select="sqroot/body/bodyContent/info/mobilephone"/>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
           <!-- Custom Tabs -->
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
@@ -219,6 +311,9 @@
                             <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
                             <xsl:if test="$isApprover=1">
                               <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RE-SUBMIT</button>
+                            </xsl:if>
+                            <xsl:if test="($settingMode)='T'">
+                              <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RESUBMIT</button>
                             </xsl:if>
                           </xsl:when>
                           <xsl:when test="($docState) &gt;= 400 and ($docState) &lt;= 499">
