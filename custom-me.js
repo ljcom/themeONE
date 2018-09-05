@@ -343,12 +343,8 @@ function saveProfile(formId, code, guid) {
 }
 
 function showUploadBox(divID, act) {
-    if (act == 1)
-        $('#' + divID).show();
-    //document.getElementById(divID).style.display = "block";
-    else
-        $('#' + divID).hide();
-        //document.getElementById(divID).style.display = "none";
+    if (act == 1) $('#' + divID).show();
+    else $('#' + divID).hide();
 }
 
 function uploadBox(id, formId, code, guid) {
@@ -364,8 +360,8 @@ function uploadBox(id, formId, code, guid) {
         input.trigger('fileselect', [numFiles, label]);
 
         var file = this.files[0];
-        if (file.size > 1000000) {
-            alert('Maximum file size is 1 Mb')
+        if (file.size > 2000000) {
+            alert('Maximum file size is 2 Mb')
         }
     });
 

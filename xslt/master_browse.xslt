@@ -6,10 +6,8 @@
   <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
   <xsl:variable name="normalChar" select="'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'" />
-
   <xsl:decimal-format name="comma-dec" decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
-
   <xsl:variable name="state" select="/sqroot/body/bodyContent/browse/info/curState/@substateCode" />
   <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/browse/info/permission/allowAccess" />
   <xsl:variable name="allowForce" select="/sqroot/body/bodyContent/browse/info/permission/allowForce" />
@@ -49,16 +47,11 @@
   <xsl:template match="/">
     <!--Re-Modeled by eLs-->
     <script>
-
-      //loadScript('OPHContent/cdn/select2/select2.full.min.js');
+      setCookie('stateid','<xsl:value-of select="$state" />', 0, 1, 0);
       <xsl:if test="sqroot/body/bodyContent/browse/info/buttons">
         buttons=<xsl:value-of select="sqroot/body/bodyContent/browse/info/buttons"/>;
         loadExtraButton(buttons, 'browse-action-button');
       </xsl:if>
-
-
-      setCookie('stateid','<xsl:value-of select="$state" />');
-
     </script>
 
     <!--Delegator Action Modal-->
@@ -80,8 +73,9 @@
               <p>If you want to set / modify your delegation later, please abandon this notification and go to your menu profile instead.</p>
             </div>
             <div class="modal-footer">
-              <button id="btnRevokeLater" type="button" class="btn btn-default" data-dismiss="modal" onclick="delegatorModal(false)">No, I'll do it later</button>
-              <button id="btnRevoke" type="button" class="btn btn-primary" data-loading-text="Revoking in process..." onclick="delegatorModal(true)">Yes, Revoke my delegate now</button>
+              <button id="btnRevokeLater" type="button" class="btn btn-default" data-dismiss="modal" onclick="delegatorModal(false, this)">No, I'll Do It Later</button>
+              <button id="btnRevokeCode" type="button" class="btn btn-success" data-loading-text="Revoking in process..." onclick="delegatorModal(true, this)">Yes, Revoke for This Module Only</button>
+              <button id="btnRevokeAll" type="button" class="btn btn-primary" data-loading-text="Revoking in process..." onclick="delegatorModal(true, this)">Yes, Revoke All</button>
             </div>
           </div>
         </div>
@@ -89,7 +83,7 @@
       <script>
         $(document).ready(function(){
         var isShow = 1;
-        var cname = '<xsl:value-of select="sqroot/header/info/code/id"/>_dmc';
+        var cname = '<xsl:value-of select="translate(sqroot/header/info/code/id, $uppercase, $smallcase)"/>_dmc';
         isShow = (getCookie(cname) == null || getCookie(cname) == undefined || getCookie(cname) == '') ? 1 : 0;
         if (isShow == 1) {
         $('#delegatorModal').modal({ backdrop: "static" });
@@ -102,17 +96,14 @@
     <xsl:if test="sqroot/body/bodyContent/browse/info/isDelegated = 1 and sqroot/body/bodyContent/browse/info/isDelegator = 0">
       <div id="delegationAlert" class="alert alert-warning alert-dismissable fade in">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&#215;</button>
-        <h4>
-          <ix class="icon fa fa-info"></ix>&#160; Attention
-        </h4>
+        <h4><ix class="icon fa fa-info"></ix>&#160; Attention</h4>
         You are assigned as a delegation for this module. Expand the "Advanced Filters Box" below to filtering between your documents or the delegators.
       </div>
       <script>
-        $("#delegationAlert").fadeTo(10000, 800).slideUp(800, function(){
-        $("#delegationAlert").slideUp(800);
-        });
+        $("#delegationAlert").fadeTo(10000, 800).slideUp(800, function(){ $("#delegationAlert").slideUp(800); });
       </script>
     </xsl:if>
+    
     <!--Reject Modal-->
     <div id="rejectModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -133,6 +124,7 @@
         </div>
       </div>
     </div>
+    
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
@@ -507,7 +499,7 @@
         </xsl:when>
       </xsl:choose>
     </xsl:variable>
-    <button class="btn btn-default" onclick="javascript:changestateid({@code})" title="{$titleState}" data-toggle="tooltip">
+    <button class="btn btn-default" onclick="changestateid({@code})" title="{$titleState}" data-toggle="tooltip">
       <xsl:if test="$state=@code">
         <xsl:attribute name="class">btn bg-navy active</xsl:attribute>
         <xsl:attribute name="style">font-weight:bold</xsl:attribute>
@@ -564,7 +556,7 @@
     <tr class="odd-tr" data-guid="{@GUID}">
       <xsl:if test="/sqroot/body/bodyContent/browse/info/isDelegator = 0">
         <td>
-          <input type="checkbox" data-guid="{@GUID}" class="pinned fa fa-square-o" onclick="checkedBox(this)" />
+          <input type="checkbox" data-code="{@code}" data-guid="{@GUID}" class="pinned fa fa-square-o" onclick="checkedBox(this)" />
         </td>
       </xsl:if>
       <input id="mandatory{@GUID}" type="hidden" value="" />
@@ -614,7 +606,7 @@
           <!--Action Approval icons-->
           <xsl:if test="$settingMode='T'">
             <xsl:choose>
-              <xsl:when test="$state=0 or $state=300 and docStatus/@isOwner=1">
+              <xsl:when test="($state=0 or $state=300) and (docStatus/@isOwner=1 or $cDelegated=1)">
                 <a href="javascript:btn_function('{@code}', '{@GUID}', 'execute', '{$pageNo}', 10)" data-toggle="tooltip">
                   <xsl:attribute name="title">
                     <xsl:choose>
@@ -625,7 +617,7 @@
                   <ix class="fa fa-check"></ix>
                 </a>
               </xsl:when>
-              <xsl:when test="$state &gt;= 100 and $state &lt; 300 and docStatus/@isOwner=0">
+              <xsl:when test="$state &gt;= 100 and $state &lt; 300 and (docStatus/@isOwner=0 or $cDelegated=1)">
                 <a href="javascript:btn_function('{@code}', '{@GUID}', 'execute', '{$pageNo}', 10)" data-toggle="tooltip" title="Approve This">
                   <ix class="fa fa-check"></ix>
                 </a>
@@ -723,7 +715,7 @@
             <div class="browse-data accordian-body collapse" id="brodeta-{@GUID}" style="cursor:default;">
               <div class="row">
                 <div class="col-md-12 full-width-a">
-                  loading child...
+                  <ix class="fa fa-refresh fa-spin"></ix> loading child... 
                 </div>
               </div>
             </div>
@@ -767,18 +759,6 @@
                       </div>
                       <div class="box-body">
                         <div class="direct-chat-msg">
-                          <!--<div class="direct-chat-info clearfix">
-                        <span class="direct-chat-name pull-left">
-                          Created By
-                        </span>
-                        <span class="direct-chat-timestamp pull-right">
-                          <xsl:value-of select="fields/field[@caption='CreatedUser']"/>
-                        </span>
-                      </div>-->
-                          <!--Approvals-->
-                          <!--<br/>
-                        <strong>APPROVALS</strong>
-                        <hr style="margin:0 0 5px 0;"/>-->
                           <xsl:apply-templates select="approvals"/>
                         </div>
                       </div>
@@ -786,17 +766,26 @@
                   </xsl:if>
 
                   <!--Talks-->
-                  <xsl:variable name="talkDisplay">
-                    <xsl:if test="not(talks/talk)">
-                      collapsed-box
-                    </xsl:if>
-                  </xsl:variable>
-                  <div class="box box-danger box-solid direct-chat direct-chat-danger {$talkDisplay}" style="max-width:300px;float:left;margin: 10px 10px 10px 10px;">
+                  <div style="max-width:300px;float:left;margin: 10px 10px 10px 10px;">
+                    <xsl:attribute name="class">
+                      <xsl:choose>
+                        <xsl:when test="talks/talk">box box-danger box-solid direct-chat direct-chat-danger</xsl:when>
+                        <xsl:otherwise>box box-danger box-solid direct-chat direct-chat-danger collapsed-box</xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:attribute>
+
                     <div class="box-header with-border">
                       <h3 class="box-title">Document Talk</h3>
                       <div class="box-tools pull-right">
                         <button class="btn btn-box-tool" data-widget="collapse">
-                          <ix class="fa fa-plus"></ix>
+                          <ix>
+                            <xsl:attribute name="class">
+                              <xsl:choose>
+                                <xsl:when test="talks/talk">fa fa-minus</xsl:when>
+                                <xsl:otherwise>fa fa-plus</xsl:otherwise>
+                              </xsl:choose>
+                            </xsl:attribute>
+                          </ix>
                         </button>
                       </div>
                     </div>
@@ -814,14 +803,12 @@
                       </div>
                     </div>
                   </div>
-
-
+                  
                 </div>
               </div>
             </div>
           </td>
         </tr>
-
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

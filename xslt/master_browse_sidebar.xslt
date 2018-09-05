@@ -15,8 +15,7 @@
       $($('.treeview').children().find('a[href$="='+c+'"]')[0].parentNode).addClass('active');
       } catch(e) {}
     </script>
-    <!-- search form -->
-    <!--<form method="get" class="sidebar-form">-->
+    
     <div class="user-panel">
       <div class="pull-left image">
         <img src="OPHContent/documents/{sqroot/header/info/account}/{sqroot/header/info/user/userURL}" class="img-circle" alt="User Image" />
@@ -31,16 +30,13 @@
       </div>
     </div>
     <div class="input-group sidebar-form">
-      <input type="text" id="searchBox" name="searchBox" class="form-control"  placeholder="Search..." 
-             onkeypress="return searchText(event, this.value);" value="" />
+      <input type="text" id="searchBox" name="searchBox" class="form-control" placeholder="Search..." onkeypress="return searchText(event, this.value);" value="" />
       <span class="input-group-btn">
         <button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="return searchText(event);">
           <ix class="fa fa-search" aria-hidden="true"></ix>
         </button>
       </span>
     </div>
-    <!--</form>-->
-    <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
       <xsl:apply-templates select="sqroot/header/menus/menu[@code='sidebar']/submenus/submenu" />
     </ul>
@@ -63,26 +59,22 @@
                 <ix class="fa {icon/fa/.}"></ix>&#160;
               </span>
             </xsl:if>
-            <span>
-              <xsl:value-of select="caption/." />
+            <span><xsl:value-of select="caption/." /></span>
+            <span class="pull-right-container">
+              <xsl:if test="(@type)='treeroot'">
+                <ix class="fa fa-angle-left pull-right"></ix>
+              </xsl:if>
+              <xsl:if test="nbReject">
+                <small class="label pull-right bg-red">
+                  <xsl:value-of select="nbReject"/>
+                </small>
+              </xsl:if>
+              <xsl:if test="nbAprv">
+                <small class="label pull-right bg-green">
+                  <xsl:value-of select="nbAprv"/>
+                </small>
+              </xsl:if>
             </span>
-            <xsl:choose>
-              <xsl:when test="(@type)='treeroot'">
-                <span class="pull-right-container">
-                  <ix class="fa fa-angle-left pull-right"></ix>
-                </span>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:if test="tCount/.>0">
-                  <span class="pull-right-container">
-                    <span class="label label-primary pull-right">
-                      <xsl:value-of select="tCount/." />
-                    </span>
-                  </span>
-                </xsl:if>
-
-              </xsl:otherwise>
-            </xsl:choose>
           </a>
           <xsl:if test="(@type)='treeroot'">
             <ul class="treeview-menu browse-left-sidebar">
@@ -96,16 +88,15 @@
             <xsl:value-of select="caption/." />
           </span>
           <xsl:if test="tCount/.>0">
-          <span class="pull-right-container">
-            <span class="label label-primary pull-right">
-              <xsl:value-of select="tCount/." />
+            <span class="pull-right-container">
+              <span class="label label-primary pull-right">
+                <xsl:value-of select="tCount/." />
+              </span>
             </span>
-          </span>
           </xsl:if>
         </xsl:otherwise>
       </xsl:choose>
     </li>
-
   </xsl:template>
 
   <xsl:template match="submenus/submenu[@type='treeview']">
@@ -115,9 +106,7 @@
           <xsl:if test="(icon/fa/.)!=''">
             <ix class="fa {icon/fa/.}"></ix>&#160;
           </xsl:if>
-          <span>
-            <xsl:value-of select="caption/." />
-          </span>
+          <xsl:value-of select="caption/." />&#160;
         </span>
         <span class="pull-right-container">
           <ix class="fa fa-angle-left pull-right"></ix>
@@ -139,26 +128,27 @@
           <xsl:if test="(icon/fa/.)!=''">
             <ix class="fa {icon/fa/.}"></ix>&#160;
           </xsl:if>
-          <span>
-            <xsl:value-of select="caption/." />
-          </span>
-          <xsl:if test="tCount/.>0">
-            <span class="pull-right-container">
-              <span class="label label-primary pull-right">
-                <xsl:value-of select="tCount/." />
-              </span>
-            </span>
-          </xsl:if>
+          <xsl:value-of select="caption/." />
         </span>
         &#160;
-        <xsl:if test="isPending &gt; 0">
+        <!--<xsl:if test="isPending &gt; 0">
           <ix class="fa fa-asterisk" aria-hidden="true" style="font-size: 8px; position: absolute;"></ix>
-        </xsl:if>
-        <!--<xsl:if test="tRecord &gt; 0">
-          <span class="label label-default">
-            <xsl:value-of select="tRecord"/>
-          </span>
         </xsl:if>-->
+        <span class="pull-right-container">
+          <xsl:if test="(@type)='treeroot'">
+            <ix class="fa fa-angle-left pull-right"></ix>
+          </xsl:if>
+          <xsl:if test="nbReject">
+            <small class="label pull-right bg-red" title="Records Rejected" data-toggle="tooltip">
+              <xsl:value-of select="nbReject"/>
+            </small>
+          </xsl:if>
+          <xsl:if test="nbAprv">
+            <small class="label pull-right bg-orange" title="Records Need Your Approval" data-toggle="tooltip">
+              <xsl:value-of select="nbAprv"/>
+            </small>
+          </xsl:if>
+        </span>
       </a>
     </li>
   </xsl:template>
@@ -176,16 +166,30 @@
           <span>
             <xsl:value-of select="caption/." />
           </span>
-          <xsl:if test="tCount/.>0">
+          <!--<xsl:if test="tCount/.>0">
             <span class="pull-right-container">
               <span class="label label-primary pull-right">
                 <xsl:value-of select="tCount/." />
               </span>
             </span>
-          </xsl:if>
+          </xsl:if>-->
+          <span class="pull-right-container">
+            <xsl:if test="(@type)='treeroot'">
+              <ix class="fa fa-angle-left pull-right"></ix>
+            </xsl:if>
+            <xsl:if test="nbReject">
+              <small class="label pull-right bg-red" title="Records Rejected" data-toggle="tooltip">
+                <xsl:value-of select="nbReject"/>
+              </small>
+            </xsl:if>
+            <xsl:if test="nbAprv">
+              <small class="label pull-right bg-orange" title="Records Need Your Approval" data-toggle="tooltip">
+                <xsl:value-of select="nbAprv"/>
+              </small>
+            </xsl:if>
+          </span>
         </p>
       </a>
     </li>
   </xsl:template>
-
 </xsl:stylesheet>
