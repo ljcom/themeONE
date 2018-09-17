@@ -136,43 +136,6 @@
         </a>
         <xsl:apply-templates select="sqroot/body/bodyContent/form/info"/>
       </li>
-
-      <!--Report Query Form-->
-      <xsl:variable name ="qpar" select="sqroot/body/bodyContent/form/query/reports/@parameter" />
-      <xsl:for-each select="sqroot/body/bodyContent/form/query/reports/report/.">
-        <xsl:variable name ="qstate" select="@state" />
-        <xsl:variable name ="qcode" select="code" />
-        <xsl:variable name ="qname" select="reportName" />
-        <xsl:variable name ="qdesc" select="description" />
-        <xsl:variable name ="isPDF" select="allowPDF" />
-        <xsl:variable name ="isXLS" select="allowXLS" />
-        <xsl:variable name ="qsql" select="querySQL" />
-        <!--<xsl:if test="$docStatus = $qstate">-->
-        <li class="treeview" id="reportPanel">
-          <xsl:if test="$isPDF = 1 and $isXLS = 0" >
-            <a href="javascript:genReport('{$qcode}','{$qpar}', 1,'{$qsql}','{$qname}');">
-              <span>
-                <ix class="fa fa-print"></ix>
-              </span>
-              <span>
-                &#160;<xsl:value-of select="$qdesc"/>
-              </span>
-            </a>
-          </xsl:if>
-          <xsl:if test="$isXLS = 1 and $isPDF = 0">
-            <a href="javascript:genReport('{$qcode}','{$qpar}', 0,'{$qsql}','{$qname}');" >
-              <span>
-                <ix class="fa fa-print"></ix>
-              </span>
-              <span>
-                &#160;<xsl:value-of select="$qdesc"/>
-              </span>
-            </a>
-          </xsl:if>
-        </li>
-        <!--</xsl:if>-->
-      </xsl:for-each>
-	  
 	
       <!--Approvals-->
       <xsl:if test="sqroot/body/bodyContent/form/approvals/approval" >

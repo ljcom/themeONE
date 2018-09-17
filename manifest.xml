@@ -1,8 +1,7 @@
 <sqroot>
   <manifest>
     <cssFile>OPHContent/cdn/bootstrap/css/bootstrap.min.css</cssFile>
-    <cssFile>OPHContent/cdn/font-awesome-4.7.0/css/font-awesome.min.css</cssFile>
-    <!--<cssFile>OPHContent/cdn/fontawesome-pro-5.0.13/web-fonts-with-css/css/fontawesome-all.min.css</cssFile>-->
+    <cssFile>OPHContent/cdn/fontawesome-pro-5.3.1-web/css/all.min.css</cssFile>
     <cssFile>OPHContent/cdn/daterangepicker/daterangepicker.css</cssFile>
     <cssFile>OPHContent/cdn/datepicker/datepicker3.css</cssFile>
     <cssFile>OPHContent/cdn/iCheck/all.css</cssFile>
@@ -17,6 +16,7 @@
     <cssFile>OPHContent/cdn/bootstrap/datetimepicker/bootstrap-datetimepicker.min.css</cssFile>
     <cssFile>OPHContent/cdn/sideshow/distr/fonts/sideshow-fontface.min.css</cssFile>
     <cssFile>OPHContent/cdn/sideshow/distr/stylesheets/sideshow.min.css</cssFile>
+    <cssFile>OPHContent/themes/themeONE/custom-me.css</cssFile>
     <!--jsFile>OPHContent/cdn/jQuery/jquery-2.2.3.min.js</jsFile-->
     <jsFile>OPHContent/cdn/bootstrap/js/bootstrap.min.js</jsFile>
     <jsFile>OPHContent/cdn/input-mask/jquery.inputmask.js</jsFile>
@@ -42,6 +42,5 @@
 	  <jsFile>OPHContent/cdn/chartjs/chart.bundle.min.js</jsFile>
     <cssFile>OPHContent/themes/themeONE/styles/icomoon/style.css</cssFile>
     <jsFile>OPHContent/themes/themeONE/custom-me.js</jsFile>
-    <cssFile>OPHContent/themes/themeONE/custom-me.css</cssFile>
   </manifest>
 </sqroot>

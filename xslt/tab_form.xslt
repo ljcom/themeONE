@@ -25,7 +25,7 @@
       </xsl:if>
     </xsl:for-each>
   </xsl:variable>
-  
+
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
     <script>
@@ -86,7 +86,7 @@
       var c='<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>';
       getHash(c);
       setCookie('<xsl:value-of select="translate(/sqroot/body/bodyContent/form/info/code/., $uppercase, $smallcase)"/>_curstateid', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/state/status/."/>');
-
+      $('body').addClass('sidebar-collapse');
     </script>
 
     <xsl:variable name="settingmode">
@@ -152,104 +152,146 @@
       </ol>
     </section>
 
-
+    <xsl:variable name="colmd">
+      <xsl:choose>
+        <xsl:when test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]">col-md-9</xsl:when>
+        <xsl:otherwise>col-md-12</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <!-- START CUSTOM TABS -->
     <!--<h2 class="page-header">CASH</h2>-->
     <section class="content">
       <div class="row">
+        <xsl:if test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]">
 
-        <div class="col-md-3">
+          <div class="col-md-3">
+            <xsl:variable name="GTVal">
+              <xsl:choose>
+                <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
+                  <xsl:value-of select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/textBox/defaultvalue" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/textBox/value" />
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <!-- Form Head-->
+            <div id="profileBox" class="box box-primary">
+              <div class="box-body box-profile">
+                <h3 class="profile-username text-center" id="{sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName}">
+                  <xsl:value-of select="$GTVal"/>&#160;
+                </h3>
+                <p class="text-muted text-center">
+                  <xsl:value-of select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/textBox/titlecaption"/>
+                </p>
+                <ul class="list-group list-group-unbordered">
+                  <xsl:for-each select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection/formCols/formCol/formRows/formRow/fields/field">
+                    <xsl:variable name="HeadVal">
+                      <xsl:choose>
+                        <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
+                          <xsl:value-of select="textBox/defaultvalue" />
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="textBox/value" />
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:variable>
+                    <li class="list-group-item">
+                      <xsl:value-of select="textBox/titlecaption"/>
+                      <a class="pull-right" id="{@fieldName}">
+                        <xsl:value-of select="$HeadVal"/>
+                      </a>
+                    </li>
+                  </xsl:for-each>
+                </ul>
+                <xsl:for-each select="sqroot/body/bodyContent/form/query/reports/report">
+                  <xsl:if test="allowPDF=1">
+                    <a href="javascript:genReport('{code}', 'pdf');" class="btn btn-primary btn-block">
+                      <span>
+                        <ix class="fa fa-file-pdf"></ix>
+                      </span>
+                      <span>
+                        <b>
+                          <xsl:value-of select="description"/>
+                        </b>
+                      </span>
+                    </a>
 
-          <!-- Profile Image -->
-          <div id="profileBox" class="box box-primary">
-            <xsl:for-each select="sqroot/body/bodyContent/profile/row">
-              <xsl:if test="type = 'file'">
-                <div style="float:right;position:inherit;display:none;" id="uploadBox" onmouseover="showUploadBox('uploadBox', 1);">
-                  <button onclick="uploadBox('{@key}', 'formProfile', 'profile', '{/sqroot/body/bodyContent/info/GUID}' )" style="position:absolute;top:10px;right:15px;background:none;border:none; color:blue;" title="upload your poto profile" >
-                    <ix class="fa fa-upload fa-lg"></ix>
-                  </button>
-                </div>
-              </xsl:if>
-            </xsl:for-each>
-            <div class="box-body box-profile">
-              <h3 class="profile-username text-center">
-                <xsl:value-of select="sqroot/body/bodyContent/info/name"/>
-              </h3>
-              <p class="text-muted text-center">
-                <xsl:value-of select="sqroot/body/bodyContent/info/id"/>
-              </p>
-              <p class="text-muted text-center">
-                <xsl:value-of select="sqroot/body/bodyContent/info/carolid"/>
-              </p>
-              <ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                  Grand Total
-                  <a class="pull-right">1,322</a>
-                </li>
-                <li class="list-group-item">
-                  Subtotal
-                  <a class="pull-right">543</a>
-                </li>
-                <li class="list-group-item">
-                  Shipping Cost
-                  <a class="pull-right">13,287</a>
-                </li>
-                <li class="list-group-item">
-                  Discount
-                  <a class="pull-right">13,287</a>
-                </li>
-              </ul>
+                  </xsl:if>
+                  <xsl:if test="allowXLS=1">
+                    <a href="javascript:genReport('{code}', 'xls');" class="btn btn-primary btn-block">
+                      <ix class="fa fa-file-spreadsheet"></ix>
+                      <b>
+                        <xsl:value-of select="description"/>
+                      </b>
+                    </a>
+                  </xsl:if>
+                </xsl:for-each>
+              </div>
+
             </div>
-            
+            <!-- /.box -->
+
+            <!-- About Me Box -->
+            <div id="aboutMeBox" class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">Action</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body">
+                <xsl:choose>
+                  <!--location: 0 header; 1 child; 2 browse location: browse:10, header form:20, browse anak:30, browse form:40-->
+                  <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
+                    <button id="button_save" class="btn btn-orange-a btn-block" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>
+                    <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
+                  </xsl:when>
+                  <xsl:when test="/sqroot/body/bodyContent/form/info/state/status/. = 0 or /sqroot/body/bodyContent/form/info/state/status/. = ''">
+                    <button id="button_save" class="btn btn-orange-a btn-block" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>
+                    <xsl:if test="($settingMode)='T' and ($docState) &lt; 400 ">
+                      <button id="button_submit" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>
+                    </xsl:if>
+                    <xsl:if test="(/sqroot/body/bodyContent/form/info/permission/allowDelete/.)=1">
+                      <button id="button_delete" class="btn btn-gray-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>
+                    </xsl:if>
+                    <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
+                  </xsl:when>
+                  <xsl:when test="($docState) &gt;= 100 and ($docState) &lt; 300">
+                    <button id="button_save" class="btn btn-orange-a btn-block" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>
+                    <xsl:if test="$isApprover=1">
+                      <button id="button_approve" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">APPROVE</button>
+                      <button id="button_reject" class="btn btn-gray-a btn-block" onclick="rejectPopup('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">REJECT</button>
+                    </xsl:if>
+                    <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
+                  </xsl:when>
+                  <xsl:when test="($docState) = 300">
+                    <button id="button_save" class="btn btn-orange-a btn-block" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>
+                    <xsl:if test="$isApprover=1">
+                      <button id="button_submit" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RE-SUBMIT</button>
+                    </xsl:if>
+                    <xsl:if test="($settingMode)='T'">
+                      <button id="button_submit" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RESUBMIT</button>
+                    </xsl:if>
+                    <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
+                  </xsl:when>
+                  <xsl:when test="($docState) &gt;= 400 and ($docState) &lt;= 499">
+                    <button id="button_save" class="btn btn-orange-a btn-block" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
+                    <xsl:if test="$allowForce=1">
+                      <button id="button_close" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">CLOSE</button>
+                    </xsl:if>
+                    <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
+                  </xsl:when>
+                  <xsl:when test="($docState) &gt;= 500 and ($docState) &lt;= 899">
+                    <button id="button_reopen" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'reopen', 1, 20)">REOPEN</button>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    &#160;
+                  </xsl:otherwise>
+                </xsl:choose>
+              </div>
+            </div>
           </div>
-          <!-- /.box -->
-
-          <!-- About Me Box -->
-          <div id="aboutMeBox" class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">About Me</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <strong>
-                <span>
-                  <ix class="fa fa-briefcase"></ix>
-                </span> position
-              </strong>
-              <p class="text-muted">
-                <xsl:value-of select="sqroot/body/bodyContent/info/position"/>
-              </p>
-              <hr/>
-              <strong>
-                <span>
-                  <ix class="fa fa-envelope"></ix>
-                </span> e-mail
-              </strong>
-              <p class="text-muted">
-                <xsl:value-of select="sqroot/body/bodyContent/info/email"/>
-              </p>
-              <hr/>
-              <strong>
-                <span>
-                  <ix class="fa fa-phone-square"></ix>
-                </span> home phone
-              </strong>
-              <p class="text-muted">
-                <xsl:value-of select="sqroot/body/bodyContent/info/homephone"/>
-              </p>
-              <hr/>
-              <strong>
-                <span>
-                  <ix class="fa fa-mobile-phone"></ix>
-                </span> mobile phone
-              </strong>
-              <p class="text-muted">
-                <xsl:value-of select="sqroot/body/bodyContent/info/mobilephone"/>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-9">
+        </xsl:if>
+        <div class="{$colmd}">
           <!-- Custom Tabs -->
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
@@ -281,57 +323,61 @@
                   <div class="row">
                     <div class="col-md-12 device-sm visible-sm device-md visible-md device-lg visible-lg" style="margin-bottom:50px;">
                       <div style="text-align:left">
-
                         <xsl:choose>
-                          <!--location: 0 header; 1 child; 2 browse location: browse:10, header form:20, browse anak:30, browse form:40-->
-                          <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
-                            <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
-                            <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                          </xsl:when>
-                          <xsl:when test="/sqroot/body/bodyContent/form/info/state/status/. = 0 or /sqroot/body/bodyContent/form/info/state/status/. = ''">
-                            <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
-                            <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                            <xsl:if test="(/sqroot/body/bodyContent/form/info/permission/allowDelete/.)=1">
-                              <button id="button_delete" class="btn btn-gray-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
-                            </xsl:if>
-                            <xsl:if test="($settingMode)='T' and ($docState) &lt; 400 ">
-                              <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>
-                            </xsl:if>
-                          </xsl:when>
-                          <xsl:when test="($docState) &gt;= 100 and ($docState) &lt; 300">
-                            <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
-                            <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                            <xsl:if test="$isApprover=1">
-                              <button id="button_approve" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">APPROVE</button>&#160;
-                              <button id="button_reject" class="btn btn-orange-a" onclick="rejectPopup('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">REJECT</button>
-                            </xsl:if>
-                          </xsl:when>
-                          <xsl:when test="($docState) = 300">
-                            <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
-                            <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                            <xsl:if test="$isApprover=1">
-                              <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RE-SUBMIT</button>
-                            </xsl:if>
-                            <xsl:if test="($settingMode)='T'">
-                              <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RESUBMIT</button>
-                            </xsl:if>
-                          </xsl:when>
-                          <xsl:when test="($docState) &gt;= 400 and ($docState) &lt;= 499">
-                            <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
-                            <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                            <xsl:if test="$allowForce=1">
-                              <button id="button_close" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">CLOSE</button>&#160;
-                            </xsl:if>
-                          </xsl:when>
-                          <xsl:when test="($docState) &gt;= 500 and ($docState) &lt;= 899">
-                            <button id="button_reopen" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'reopen', 1, 20)">REOPEN</button>&#160;
+                          <xsl:when test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]">
                           </xsl:when>
                           <xsl:otherwise>
-                            &#160;
+                            <xsl:choose>
+                              <!--location: 0 header; 1 child; 2 browse location: browse:10, header form:20, browse anak:30, browse form:40-->
+                              <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
+                                <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
+                                <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
+                              </xsl:when>
+                              <xsl:when test="/sqroot/body/bodyContent/form/info/state/status/. = 0 or /sqroot/body/bodyContent/form/info/state/status/. = ''">
+                                <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
+                                <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
+                                <xsl:if test="(/sqroot/body/bodyContent/form/info/permission/allowDelete/.)=1">
+                                  <button id="button_delete" class="btn btn-gray-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
+                                </xsl:if>
+                                <xsl:if test="($settingMode)='T' and ($docState) &lt; 400 ">
+                                  <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>
+                                </xsl:if>
+                              </xsl:when>
+                              <xsl:when test="($docState) &gt;= 100 and ($docState) &lt; 300">
+                                <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
+                                <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
+                                <xsl:if test="$isApprover=1">
+                                  <button id="button_approve" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">APPROVE</button>&#160;
+                                  <button id="button_reject" class="btn btn-orange-a" onclick="rejectPopup('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">REJECT</button>
+                                </xsl:if>
+                              </xsl:when>
+                              <xsl:when test="($docState) = 300">
+                                <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
+                                <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
+                                <xsl:if test="$isApprover=1">
+                                  <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RE-SUBMIT</button>
+                                </xsl:if>
+                                <xsl:if test="($settingMode)='T'">
+                                  <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RESUBMIT</button>
+                                </xsl:if>
+                              </xsl:when>
+                              <xsl:when test="($docState) &gt;= 400 and ($docState) &lt;= 499">
+                                <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
+                                <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
+                                <xsl:if test="$allowForce=1">
+                                  <button id="button_close" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">CLOSE</button>&#160;
+                                </xsl:if>
+                              </xsl:when>
+                              <xsl:when test="($docState) &gt;= 500 and ($docState) &lt;= 899">
+                                <button id="button_reopen" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'reopen', 1, 20)">REOPEN</button>&#160;
+                              </xsl:when>
+                              <xsl:otherwise>
+                                &#160;
+                              </xsl:otherwise>
+                            </xsl:choose>
                           </xsl:otherwise>
                         </xsl:choose>
                       </div>
-
                     </div>
                     <div class="col-md-12 displayblock-phone device-xs visible-xs" style="margin-bottom:20px;">
                       <div style="text-align:center">
@@ -872,8 +918,8 @@
       code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
       colkey:"<xsl:value-of select="../@fieldName"/>",
       search: params.term==undefined?'':params.term.toString().split('+').join('%2B'),
-      wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
-      wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
+      wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
+      wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
       page: params.page
       }
       return query;
