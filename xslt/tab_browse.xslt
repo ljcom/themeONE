@@ -844,8 +844,39 @@
       m+="<xsl:value-of select="." />";
       $('#mandatory<xsl:value-of select="../../@GUID"/>').val(m);
     </script>
+    <xsl:variable name="tbContent">
+      <xsl:choose>
+        <xsl:when test="@digit = 0 and .!=''">
+          <xsl:value-of select="format-number(., '###,###,###,##0', 'dot-dec')"/>
+        </xsl:when>
+        <xsl:when test="@digit  = 1 and .!=''">
+          <xsl:value-of select="format-number(., '###,###,###,##0.0', 'dot-dec')"/>
+        </xsl:when>
+        <xsl:when test="@digit  = 2 and .!=''">
+          <xsl:value-of select="format-number(., '###,###,###,##0.00', 'dot-dec')"/>
+        </xsl:when>
+        <xsl:when test="@digit  = 3 and .!=''">
+          <xsl:value-of select="format-number(., '###,###,###,##0.000', 'dot-dec')"/>
+        </xsl:when>
+        <xsl:when test="@digit  = 4 and .!=''">
+          <xsl:value-of select="format-number(., '###,###,###,##0.0000', 'dot-dec')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="."/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <td id="mandatory{../../@GUID}" class="expand-td" data-toggle="collapse" data-target="#{../@GUID}" data-parent="#{../@GUID}" data-field="{@caption}">
-      <xsl:value-of select="." />
+      <xsl:choose>
+        <xsl:when test="@editor='anchor'">
+          <a href="{$tbContent}">
+            <xsl:value-of select="$tbContent" />
+          </a>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$tbContent" />
+        </xsl:otherwise>
+      </xsl:choose>
     </td>
   </xsl:template>
 

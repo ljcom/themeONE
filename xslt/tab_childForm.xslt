@@ -689,7 +689,6 @@
       });
       }
     </script>
-    <input type="hidden" id="{../@fieldName}" value="{value/.}" />
     <div>
       <label id="{../@fieldName}caption" name="{../@fieldName}caption">
         <xsl:value-of select="titlecaption"/>
@@ -718,22 +717,22 @@
     <label class="radio-inline">
       <xsl:choose>
         <xsl:when test="@fieldName=../../value/.">
-          <input type="radio" name="{../../../@fieldName}_radio" id="{../../../@fieldName}_radio_{@radioNo}" value="{@fieldName}" checked="checked" />
+          <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" checked="checked" />
           <script>
             $('#panel_<xsl:value-of select="../../../@fieldName" />_<xsl:value-of select="@radioNo" />').collapse('show');
           </script>
         </xsl:when>
         <xsl:otherwise>
-          <input type="radio" name="{../../../@fieldName}_radio" id="{../../../@fieldName}_radio_{@radioNo}" value="{@fieldName}" />
+          <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" />
         </xsl:otherwise>
       </xsl:choose>
       <xsl:value-of select="@radioRowTitle"/>
     </label>
     <script>
-      $('#<xsl:value-of select="../../../@fieldName" />_radio_<xsl:value-of select="@radioNo" />').click(function(){
+      $('#<xsl:value-of select="../../../@fieldName" />_<xsl:value-of select="@radioNo" />').click(function(){
       <xsl:value-of select="../../../@fieldName" />_hide('panel_<xsl:value-of select="../../../@fieldName" />_<xsl:value-of select="@radioNo" />');
       $('#panel_<xsl:value-of select="../../../@fieldName" />_<xsl:value-of select="@radioNo" />').collapse('show');
-      var x=$('input[name=<xsl:value-of select="../../../@fieldName" />_radio]:checked').val();
+      var x=$('input[name=<xsl:value-of select="../../../@fieldName" />]:checked').val();
       $('#<xsl:value-of select="../../../@fieldName" />').val(x);
       });
     </script>

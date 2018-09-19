@@ -7,6 +7,23 @@
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
   <xsl:decimal-format name="comma-dec" decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
+  <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/form/info/permission/allowAccess" />
+  <xsl:variable name="allowForce" select="/sqroot/body/bodyContent/form/info/permission/allowForce" />
+  <xsl:variable name="allowDelete" select="/sqroot/body/bodyContent/form/info/permission/allowDelete" />
+  <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/form/info/permission/allowWipe" />
+  <xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/form/info/permission/allowOnOff" />
+  <xsl:variable name="settingMode" select="/sqroot/body/bodyContent/form/info/settingMode/." />
+  <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/status/."/>
+  <xsl:variable name="isApprover" select="/sqroot/body/bodyContent/form/info/document/isApprover"/>
+  <xsl:variable name="cid" select="/sqroot/body/bodyContent/form/info/GUID/."/>
+  <xsl:variable name="colMax">
+    <xsl:for-each select="/sqroot/body/bodyContent/form/formPages/formPage/formSections/formSection/formCols/formCol">
+      <xsl:sort select="@colNo" data-type="number" order="descending"/>
+      <xsl:if test="position() = 1">
+        <xsl:value-of select="@colNo"/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:variable>
 
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
