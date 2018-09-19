@@ -866,7 +866,17 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+    <xsl:variable name="align">
+      <xsl:choose>
+        <xsl:when test="@align=0">left</xsl:when>
+        <xsl:when test="@align=1">center</xsl:when>
+        <xsl:when test="@align=2">right</xsl:when>
+      </xsl:choose>
+    </xsl:variable>
     <td id="mandatory{../../@GUID}" class="expand-td" data-toggle="collapse" data-target="#{../@GUID}" data-parent="#{../@GUID}" data-field="{@caption}">
+      <xsl:attribute name="style">
+        text-align:<xsl:value-of select="$align"/>
+      </xsl:attribute>
       <xsl:choose>
         <xsl:when test="@editor='anchor'">
           <a href="{$tbContent}">
