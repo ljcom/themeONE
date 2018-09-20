@@ -129,28 +129,32 @@
   </xsl:template>
 
   <xsl:template match="sqroot/body/bodyContent">
-    <xsl:apply-templates select="form"/>
+    <div class="row">
+      <xsl:apply-templates select="form"/>
+    </div>
   </xsl:template>
 
   <xsl:template match="form">
-    <script>
-      var code = "<xsl:value-of select="info/code/."/>";
-      var tblnm =code+"requiredname";
-    </script>
-    <input type="hidden" name ="{info/code/.}requiredname"/>
-    <input type="hidden" name ="{info/code/.}requiredtblvalue"/>
-    <div class="col-md-12" id="child">
-      <form role="form" id="form{info/code/.}">
-        <input type="hidden" name="{info/parentKey/.}" id="PK{info/code/.}" value=""/>
-        <script>
-          //cannot use cid because grandchildren not using cid as parent
-          var childCode = 'child' + code;
-          var parentGUID = $("div[id*='" + childCode + "']").attr('id')
-          parentGUID = parentGUID.replace(childCode, '');
-          $('#PK'+code).val(parentGUID);
-        </script>
-        <xsl:apply-templates select="formPages/formPage[@pageNo&lt;9]"/>
-      </form>
+    <div class="row">
+      <script>
+        var code = "<xsl:value-of select="info/code/."/>";
+        var tblnm =code+"requiredname";
+      </script>
+      <input type="hidden" name ="{info/code/.}requiredname"/>
+      <input type="hidden" name ="{info/code/.}requiredtblvalue"/>
+      <div class="col-md-12" id="child">
+        <form role="form" id="form{info/code/.}">
+          <input type="hidden" name="{info/parentKey/.}" id="PK{info/code/.}" value=""/>
+          <script>
+            //cannot use cid because grandchildren not using cid as parent
+            var childCode = 'child' + code;
+            var parentGUID = $("div[id*='" + childCode + "']").attr('id')
+            parentGUID = parentGUID.replace(childCode, '');
+            $('#PK'+code).val(parentGUID);
+          </script>
+          <xsl:apply-templates select="formPages/formPage[@pageNo&lt;9]"/>
+        </form>
+      </div>
     </div>
   </xsl:template>
 
@@ -170,7 +174,9 @@
             <xsl:value-of select="@rowTitle/."/>&#160;
           </h3>
         </xsl:if>
-        <xsl:apply-templates select="formCols"/>
+        <div class="row">
+          <xsl:apply-templates select="formCols"/>
+        </div>
       </div>
     </div>
   </xsl:template>

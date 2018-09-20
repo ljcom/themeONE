@@ -818,7 +818,7 @@
       <!-- sidebar: style can be found in sidebar.less -->
       <section id="sidebarWrapper" class="sidebar">
         <div class="overlay">
-          <ix class="fa fa-refresh fa-spin"></ix>
+          <ix class="fas fa-spinner fa-pulse"></ix>
         </div>
       </section>
     </aside>
@@ -827,7 +827,7 @@
     <div id="contentWrapper" class="content-wrapper">
       <div style="padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px">
         <div class="overlay">
-          <ix class="fa fa-refresh fa-spin"></ix>
+          <ix class="fas fa-spinner fa-pulse"></ix>
         </div>
       </div>
     </div>

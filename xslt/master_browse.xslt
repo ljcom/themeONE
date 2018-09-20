@@ -10,6 +10,7 @@
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
   <xsl:variable name="state" select="/sqroot/body/bodyContent/browse/info/curState/@substateCode" />
   <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/browse/info/permission/allowAccess" />
+  <xsl:variable name="allowEdit" select="/sqroot/body/bodyContent/browse/info/permission/allowEdit" />
   <xsl:variable name="allowForce" select="/sqroot/body/bodyContent/browse/info/permission/allowForce" />
   <xsl:variable name="allowDelete" select="/sqroot/body/bodyContent/browse/info/permission/allowDelete" />
   <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/browse/info/permission/allowWipe" />
@@ -237,32 +238,34 @@
 
           <!--Browse Filters-->
           <xsl:if test="sqroot/body/bodyContent/browse/info/filters">
-            <div class="col-md-12">
-              <div id="bfBox">
-                <xsl:attribute name="class">
-                  <xsl:choose>
-                    <xsl:when test="sqroot/body/bodyContent/browse/info/filters/*/value">box box-default</xsl:when>
-                    <xsl:otherwise>box box-default collapsed-box</xsl:otherwise>
-                  </xsl:choose>
-                </xsl:attribute>
-                <div class="box-header with-border">
-                  <button id="btnAdvancedFilter" type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <ix aria-hidden="true">
-                      <xsl:attribute name="class">
-                        <xsl:choose>
-                          <xsl:when test="sqroot/body/bodyContent/browse/info/filters/*/value">fa fa-minus</xsl:when>
-                          <xsl:otherwise>fa fa-plus</xsl:otherwise>
-                        </xsl:choose>
-                      </xsl:attribute>
-                    </ix>
-                    Advanced Filters
-                    <xsl:if test="sqroot/body/bodyContent/browse/info/filters/*/value">(ACTIVE)</xsl:if>
-                  </button>
-                </div>
-                <div class="box-body">
-                  <form id="formFilter">
-                    <xsl:apply-templates select="sqroot/body/bodyContent/browse/info/filters" />
-                  </form>
+            <div class="row">
+              <div class="col-md-12">
+                <div id="bfBox">
+                  <xsl:attribute name="class">
+                    <xsl:choose>
+                      <xsl:when test="sqroot/body/bodyContent/browse/info/filters/*/value">box box-default</xsl:when>
+                      <xsl:otherwise>box box-default collapsed-box</xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:attribute>
+                  <div class="box-header with-border">
+                    <button id="btnAdvancedFilter" type="button" class="btn btn-box-tool" data-widget="collapse">
+                      <ix aria-hidden="true">
+                        <xsl:attribute name="class">
+                          <xsl:choose>
+                            <xsl:when test="sqroot/body/bodyContent/browse/info/filters/*/value">fa fa-minus</xsl:when>
+                            <xsl:otherwise>fa fa-plus</xsl:otherwise>
+                          </xsl:choose>
+                        </xsl:attribute>
+                      </ix>
+                      Advanced Filters
+                      <xsl:if test="sqroot/body/bodyContent/browse/info/filters/*/value">(ACTIVE)</xsl:if>
+                    </button>
+                  </div>
+                  <div class="box-body">
+                    <form id="formFilter">
+                      <xsl:apply-templates select="sqroot/body/bodyContent/browse/info/filters" />
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
@@ -278,7 +281,7 @@
                     <tr>
                       <xsl:if test="sqroot/body/bodyContent/browse/info/isDelegator = 0">
                         <th style="width:10px;" name="th_checkbox">
-                          <input type="checkbox" id="pinnedAll" class="pinned header fa fa-square-o fa-lg" onclick="checkedBox(this)" />
+                          <input type="checkbox" id="pinnedAll" class="pinned header fal fa-square fa-lg" onclick="checkedBox(this)" />
                         </th>
                       </xsl:if>
                       <xsl:if test="sqroot/body/bodyContent/browse/header/column[@mandatory=1]">
@@ -529,10 +532,10 @@
     <xsl:variable name="tvalue">
       <xsl:choose>
         <xsl:when test="@order='asc' or @order='ASC'">
-          <xsl:value-of select="$title"/> &amp;nbsp; &lt;ix class="fa fa-sort-alpha-asc" /&gt;
+          <xsl:value-of select="$title"/> &lt;ix class="fas fa-sort-amount-up" /&gt;
         </xsl:when>
         <xsl:when test="@order='desc' or @order='DESC'">
-          <xsl:value-of select="$title"/> &amp;nbsp; &lt;ix class="fa fa-sort-alpha-desc" /&gt;
+          <xsl:value-of select="$title"/> &lt;ix class="fas fa-sort-amount-down" /&gt;
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="$title"/>
@@ -556,7 +559,7 @@
     <tr class="odd-tr" data-guid="{@GUID}">
       <xsl:if test="/sqroot/body/bodyContent/browse/info/isDelegator = 0">
         <td>
-          <input type="checkbox" data-code="{@code}" data-guid="{@GUID}" class="pinned fa fa-square-o" onclick="checkedBox(this)" />
+          <input type="checkbox" data-code="{@code}" data-guid="{@GUID}" class="pinned fal fa-square" onclick="checkedBox(this)" />
         </td>
       </xsl:if>
       <input id="mandatory{@GUID}" type="hidden" value="" />
@@ -664,7 +667,7 @@
 
             <!--not allow delete-->
             <xsl:when test="$allowOnOff = 1 and $allowDelete = 0 and $state &lt; 500">
-              <a href="#">
+              <a href="#" style="display:none;">
                 <ix class="fa fa-toggle-on" style="color:LightGray"></ix>
               </a>
             </xsl:when>
@@ -686,13 +689,22 @@
           <!--edit things-->
           <xsl:choose>
             <xsl:when test="$state &lt; 999">
-              <a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="Edit/View This">
-                <ix class="fa fa-pencil"></ix>
-              </a>
+              <xsl:choose>
+                <xsl:when test="$allowEdit=1">
+                  <a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="Edit This">
+                    <ix class="fal fa-pencil-alt"></ix>
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="View This">
+                    <ix class="fas fa-eye"></ix>
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>                
             </xsl:when>
             <xsl:otherwise>
               <a href="#">
-                <ix class="fa fa-pencil" style="color:LightGray"></ix>
+                <ix class="fal fa-pencil-alt" style="color:LightGray"></ix>
               </a>
             </xsl:otherwise>
           </xsl:choose>

@@ -17,14 +17,6 @@
   <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/status/."/>
   <xsl:variable name="isApprover" select="/sqroot/body/bodyContent/form/info/document/isApprover"/>
   <xsl:variable name="cid" select="/sqroot/body/bodyContent/form/info/GUID/."/>
-  <xsl:variable name="colMax">
-    <xsl:for-each select="/sqroot/body/bodyContent/form/formPages/formPage/formSections/formSection/formCols/formCol">
-      <xsl:sort select="@colNo" data-type="number" order="descending"/>
-      <xsl:if test="position() = 1">
-        <xsl:value-of select="@colNo"/>
-      </xsl:if>
-    </xsl:for-each>
-  </xsl:variable> 
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
     <script>
@@ -284,7 +276,9 @@
   </xsl:template>
 
   <xsl:template match="sqroot/body/bodyContent">
-    <xsl:apply-templates select="form"/>
+    <div class="row">
+      <xsl:apply-templates select="form"/>
+    </div>
   </xsl:template>
 
   <xsl:template match="form">
@@ -292,12 +286,10 @@
       var code = "<xsl:value-of select="info/code/."/>";
       var tblnm =code+"requiredname";
     </script>
-
     <form role="form" id="formheader" enctype="multipart/form-data">
       <input type="hidden" id="cid" name="cid" value="{$cid}" />
       <input type="hidden" name ="{info/code/.}requiredname"/>
       <input type="hidden" name ="{info/code/.}requiredtblvalue"/>
-
       <xsl:apply-templates select="formPages/formPage[@pageNo&lt;9]"/>
     </form>
   </xsl:template>
@@ -320,7 +312,9 @@
     </xsl:if>
     <xsl:if test="formCols/formCol/formRows">
       <div class="col-md-12 collapse in" id="section_{@sectionNo}">
-        <xsl:apply-templates select="formCols"/>
+        <div class="row">
+          <xsl:apply-templates select="formCols"/>
+        </div>
       </div>
     </xsl:if>
   </xsl:template>
@@ -330,14 +324,23 @@
   </xsl:template>
 
   <xsl:template match="formCol">
+    <xsl:variable name="colMax">
+      <xsl:for-each select=".">
+        <xsl:sort select="@colNo" data-type="number" order="descending"/>
+        <xsl:if test="position() = 1">
+          <xsl:value-of select="@colNo"/>
+        </xsl:if>
+      </xsl:for-each>
+    </xsl:variable> 
+    
     <xsl:choose>
-      <xsl:when test="@colNo='0' or $colMax=1">
-        <div class="col-md-12">
+      <xsl:when test="$colMax=0">
+        <div class="col-md-12" data-cm="{$colMax}">
           <xsl:apply-templates select="formRows"/>
         </div>
       </xsl:when>
-      <xsl:when test="$colMax=2">
-        <div class="col-md-6">
+      <xsl:when test="$colMax=1 or $colMax=2">
+        <div class="col-md-6" data-cm="{$colMax}">
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
@@ -347,7 +350,7 @@
         </div>
       </xsl:when>
       <xsl:when test="$colMax=3">
-        <div class="col-md-4">
+        <div class="col-md-4" data-cm="{$colMax}">
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
@@ -360,7 +363,7 @@
         </div>
       </xsl:when>
       <xsl:when test="$colMax=4">
-        <div class="col-md-3">
+        <div class="col-md-3" data-cm="{$colMax}">
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
@@ -764,7 +767,7 @@
       <xsl:if test="@allowEdit=1">
         <span id="editForm{../@fieldName}" data-toggle="modal" data-target="#addNew{../@fieldName}" data-backdrop="static" data-action="edit"
           style="cursor: pointer;margin: 8px 30px 0px 0px;position: absolute;top: 0px;right: 0px; display:none" >
-          <ix class="fa fa-pencil" title= "Edit" ></ix >
+          <ix class="fal fa-pencil-alt" title= "Edit" ></ix >
         </span >
         <script>
           $("#<xsl:value-of select="../@fieldName"/>").on("select2:select", function(e) {

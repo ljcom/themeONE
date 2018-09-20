@@ -17,7 +17,6 @@
     <cssFile>OPHContent/cdn/sideshow/distr/fonts/sideshow-fontface.min.css</cssFile>
     <cssFile>OPHContent/cdn/sideshow/distr/stylesheets/sideshow.min.css</cssFile>
     <cssFile>OPHContent/themes/themeONE/custom-me.css</cssFile>
-    <!--jsFile>OPHContent/cdn/jQuery/jquery-2.2.3.min.js</jsFile-->
     <jsFile>OPHContent/cdn/bootstrap/js/bootstrap.min.js</jsFile>
     <jsFile>OPHContent/cdn/input-mask/jquery.inputmask.js</jsFile>
     <jsFile>OPHContent/cdn/input-mask/jquery.inputmask.date.extensions.js</jsFile>

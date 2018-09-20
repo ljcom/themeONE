@@ -897,6 +897,8 @@ ul.pending-task-module li {
     color:skyblue;
 }
 .pinned:checked:before {
+    font-family:"Font Awesome 5 Pro";
+    font-weight:900;
     content: "\f08d";
     color: gray;
     position: relative;
@@ -911,6 +913,8 @@ ul.pending-task-module li {
     bottom: 8px;
 }
 .pinned.header:checked:before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 900;
     content: "\f08d";
     color: black;
     position: relative;

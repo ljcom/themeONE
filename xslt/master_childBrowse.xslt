@@ -139,8 +139,11 @@
   <xsl:template match="column">
     <th style="cursor:pointer;" onclick="sortBrowse(this, 'child', '{../../info/code}', '{@fieldName}')" data-order="{@order}">
       <xsl:value-of select="."/>
-      <xsl:if test="@order">
-        &amp;nbsp;<ix class="fa fa-sort-alpha-{translate(@order, $uppercase, $smallcase)}" />
+      <xsl:if test="translate(@order, $uppercase, $smallcase)='asc'">
+        <ix class="fas fa-sort-alpha-up" />
+      </xsl:if>
+      <xsl:if test="translate(@order, $uppercase, $smallcase)='desc'">
+        <ix class="fas fa-sort-alpha-down" />
       </xsl:if>
     </th>
   </xsl:template>
