@@ -96,6 +96,7 @@
           </div>
           <div class="panel-group" id="accordion2">
             <xsl:apply-templates select="sqroot/header/menus/menu[@code='sidebar']/submenus/submenu" />
+            &#160;
           </div>
         </div>
         <div class="navbar-custom-menu">

@@ -53,24 +53,27 @@
       setCookie('userURL', 'OPHContent/documents/<xsl:value-of select="sqroot/header/info/account" />/<xsl:value-of select="sqroot/header/info/user/userURL"/>', 7);
       setCookie('userName', '<xsl:value-of select="sqroot/header/info/user/userName"/>', 7);
       //setCookie('userId', '<xsl:value-of select="sqroot/header/info/user/userId"/>', 7);
-      changeSkinColor;				  
+      changeSkinColor;
+      $('body').addClass('sidebar-collapse');
+
+
 
       Sideshow.registerWizard({
-          name: "ss_profile",
-          title: "Help Me to Use This Profile Page",
-          description: "We would like to help you how to use this profile.",
-          estimatedTime: "5 Minutes",
-          affects: [
-  		      function(){
-			        return true;
-		        }
-          ]
+      name: "ss_profile",
+      title: "Help Me to Use This Profile Page",
+      description: "We would like to help you how to use this profile.",
+      estimatedTime: "5 Minutes",
+      affects: [
+      function(){
+      return true;
+      }
+      ]
       }).storyLine({
-          showStepPosition: true,
-          steps: [
-    	      {
-		          title: "Welcome to Profile Page",
-		          text: "Hello \"<xsl:value-of select="sqroot/header/info/user/userName"/>\", welcome to our profile page. Here, you can manage your account including photo profile, your biography, change password and delegation."
+      showStepPosition: true,
+      steps: [
+      {
+      title: "Welcome to Profile Page",
+      text: "Hello \"<xsl:value-of select="sqroot/header/info/user/userName"/>\", welcome to our profile page. Here, you can manage your account including photo profile, your biography, change password and delegation."
             },
             {
 	            title: "Photo Profile",
@@ -205,6 +208,7 @@
           </div>
           <div class="panel-group" id="accordion2">
             <xsl:apply-templates select="sqroot/header/menus/menu[@code='sidebar']/submenus/submenu" />
+            &#160;
           </div>
         </div>
         <div class="navbar-custom-menu">
@@ -659,7 +663,7 @@
                     </div>
                     <div class="form-group">
                       <div class="col-sm-offset-3 col-sm-7">
-                        <span style="font-size:12px;">*) This action is only change your eform password, not your windows password.</span>
+                        <span style="font-size:12px;">*) This action is only change this application password, not your windows password.</span>
                       </div>
                     </div>
                     <div class="form-group">

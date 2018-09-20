@@ -695,7 +695,7 @@
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000' or $settingMode='C' or $settingMode='M')) 
+                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
                         or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
                         or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
@@ -703,15 +703,12 @@
     </xsl:if>
     <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}" data-type="selectBox"
       data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}"
-        onchange="autosuggest_onchange(this, '{preview/.}', getCode(), '{$cid}', 'formheader');" >
+        onchange="autosuggest_onchange(this, '{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}', 'formheader');" >
       <option></option>
     </select>
 
     <!--AutoSuggest Add New Form Modal-->
-    <xsl:if test="((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000' or $settingMode='C' or $settingMode='M')) 
-                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
+    <xsl:if test="(@allowAdd&gt;=1 or @allowEdit=1) and ../@isEditable=1">
       <div id="addNew{../@fieldName}" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
@@ -796,32 +793,44 @@
           });
         </script>
       </xsl:if>
-
       <xsl:if test="@allowEdit=1">
         <span id="editForm{../@fieldName}" data-toggle="modal" data-target="#addNew{../@fieldName}" data-backdrop="static" data-action="edit"
-          style="cursor: pointer;margin: 8px 30px 0px 0px;position: absolute;top: 0px;right: 0px; display:none" >
-          <ix class="fa fa-pencil" title= "Edit" ></ix >
-        </span >
+          style="cursor: pointer;margin: 8px 45px 0px 0px;position: absolute;top: 0px;right: 0px; display:none">
+          <ix class="far fa-pencil-alt" title= "Edit" data-toggle="tooltip"></ix>
+        </span>
+
         <script>
           $("#<xsl:value-of select="../@fieldName"/>").on("select2:select", function(e) {
           $selection = $('#select2-<xsl:value-of select="../@fieldName"/>-container').parents('.selection');
-          if ($selection.children('#editForm<xsl:value-of select="../@fieldName"/>').length == 0) {
-          $('#editForm<xsl:value-of select="../@fieldName"/>').appendTo($selection).show();
-          }
+          if ($selection.children('#editForm<xsl:value-of select="../@fieldName"/>').length == 0)
+          $('#editForm<xsl:value-of select="../@fieldName"/>').appendTo($selection);
+          $('#editForm<xsl:value-of select="../@fieldName"/>').show();
           });
         </script>
       </xsl:if>
-
     </xsl:if>
+
+    <span id="removeForm{../@fieldName}" style="cursor: pointer;margin: 8px 30px 0px 0px;position: absolute;top: 0px;right: 0px; display:none">
+      <ix class="far fa-times" title= "Remove Selection" data-toggle="tooltip" onclick="javascript: $('#{../@fieldName}').val(null).trigger('change');$('#editForm{../@fieldName}').hide();$('#removeForm{../@fieldName}').hide();"></ix>
+    </span>
+    <script>
+      $("#<xsl:value-of select="../@fieldName"/>").on("select2:select", function(e) {
+      $selection = $('#select2-<xsl:value-of select="../@fieldName"/>-container').parents('.selection');
+      if ($selection.children('#removeForm<xsl:value-of select="../@fieldName"/>').length == 0)
+      $('#removeForm<xsl:value-of select="../@fieldName"/>').appendTo($selection)
+      $('#removeForm<xsl:value-of select="../@fieldName"/>').show();
+      });
+    </script>
+
 
     <script>
       $("#<xsl:value-of select="../@fieldName"/>").select2({
       placeholder: 'Select <xsl:value-of select="titlecaption"/>',
       onAdd: function(x) {
-      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="$cid"/>','formheader', this);
+      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
       },
       onDelete: function(x) {
-      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="$cid"/>','formheader', this);
+      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
       },
       ajax: {
       url:"OPHCORE/api/msg_autosuggest.aspx",
@@ -831,8 +840,8 @@
       code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
       colkey:"<xsl:value-of select="../@fieldName"/>",
       search: params.term==undefined?'':params.term.toString().split('+').join('%2B'),
-      wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
-      wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
+      wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
+      wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
       page: params.page
       }
       return query;
