@@ -64,10 +64,10 @@
         <div class="col-md-12" style="margin-bottom:30px;margin-top:30px">
           <div style="text-align:left">
             <xsl:if test="$isPDF = 1">
-              <button id="btnPDF" class="btn btn-orange-a" onclick="genReport('{$code}','{$par}', 1,'{$sql}','{$reportName}');">SHOW PDF</button>&#160;
+              <button id="btnPDF" class="btn btn-orange-a" onclick="genReport('{$code}','pdf');">SHOW PDF</button>&#160;
             </xsl:if>
             <xsl:if test="$isXLS = 1">
-              <button id="btnXLS" class="btn btn-orange-a" onclick="genReport('{$code}','{$par}', 0,'{$sql}','{$reportName}');">SHOW XLS</button>&#160;
+              <button id="btnXLS" class="btn btn-orange-a" onclick="genReport('{$code}','xls');">SHOW XLS</button>&#160;
             </xsl:if>
           </div>
         </div>

@@ -22,7 +22,7 @@
       <table>
         <tr>
           <td rowspan="2" >
-            <div class="image image-envi data-logo">
+            <div class="image image-envi data-logo" style="border: 0px;">
               <xsl:choose>
                 <xsl:when test="sqroot/header/info/code/shortName != ''">
                   <span>

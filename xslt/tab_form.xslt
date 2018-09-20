@@ -165,6 +165,7 @@
         <xsl:if test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]">
 
           <div class="col-md-3">
+            <xsl:variable name="fieldHead" select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName" />
             <xsl:variable name="GTVal">
               <xsl:choose>
                 <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
@@ -175,11 +176,34 @@
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:variable>
+            <xsl:variable name="tbContent">
+              <xsl:choose>
+                <xsl:when test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/textBox/digit = 0 and $GTVal!=''">
+                  <xsl:value-of select="format-number($GTVal, '###,###,###,##0', 'dot-dec')"/>
+                </xsl:when>
+                <xsl:when test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/textBox/digit  = 1 and $GTVal!=''">
+                  <xsl:value-of select="format-number($GTVal, '###,###,###,##0.0', 'dot-dec')"/>
+                </xsl:when>
+                <xsl:when test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/textBox/digit  = 2 and $GTVal!=''">
+                  <xsl:value-of select="format-number($GTVal, '###,###,###,##0.00', 'dot-dec')"/>
+                </xsl:when>
+                <xsl:when test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/textBox/digit  = 3 and $GTVal!=''">
+                  <xsl:value-of select="format-number($GTVal, '###,###,###,##0.000', 'dot-dec')"/>
+                </xsl:when>
+                <xsl:when test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/textBox/digit  = 4 and $GTVal!=''">
+                  <xsl:value-of select="format-number($GTVal, '###,###,###,##0.0000', 'dot-dec')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="$GTVal"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
             <!-- Form Head-->
             <div id="profileBox" class="box box-primary">
+
               <div class="box-body box-profile">
                 <h3 class="profile-username text-center" id="{sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName}">
-                  <xsl:value-of select="$GTVal"/>&#160;
+                  <xsl:value-of select="$tbContent"/>&#160;
                 </h3>
                 <p class="text-muted text-center">
                   <xsl:value-of select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/textBox/titlecaption"/>
@@ -196,12 +220,18 @@
                         </xsl:otherwise>
                       </xsl:choose>
                     </xsl:variable>
-                    <li class="list-group-item">
-                      <xsl:value-of select="textBox/titlecaption"/>
-                      <a class="pull-right" id="{@fieldName}">
-                        <xsl:value-of select="$HeadVal"/>
-                      </a>
-                    </li>
+                    <xsl:choose>
+                      <xsl:when test="@fieldName=$fieldHead">
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <li class="list-group-item">
+                          <xsl:value-of select="textBox/titlecaption"/>
+                          <a class="pull-right" id="{@fieldName}">
+                            <xsl:value-of select="$HeadVal"/>
+                          </a>
+                        </li>
+                      </xsl:otherwise>
+                    </xsl:choose>
                   </xsl:for-each>
                 </ul>
                 <xsl:for-each select="sqroot/body/bodyContent/form/query/reports/report">
@@ -274,7 +304,7 @@
                     <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
                   </xsl:when>
                   <xsl:when test="($docState) &gt;= 400 and ($docState) &lt;= 499">
-                    <button id="button_save" class="btn btn-orange-a btn-block" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
+                    <button id="button_save" class="btn btn-orange-a btn-block" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>
                     <xsl:if test="$allowForce=1">
                       <button id="button_close" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">CLOSE</button>
                     </xsl:if>
@@ -298,13 +328,18 @@
               <li class="active">
                 <a href="#tab_1" data-toggle="tab"  onclick="storeHash('{/sqroot/body/bodyContent/form/info/code/.}', ''); preview('1','{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);">Header</a>
               </li>
-              <xsl:for-each select="sqroot/body/bodyContent/form/children/child">
-                <li>
-                  <a href="#tab_{code}" data-toggle="tab" onclick="storeHash('{/sqroot/body/bodyContent/form/info/code/.}', '#tab_{code}');">
-                    <xsl:value-of select="childTitle"/>
-                  </a>
-                </li>
-              </xsl:for-each>
+              <xsl:choose>
+                <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'"></xsl:when>
+                <xsl:otherwise>
+                  <xsl:for-each select="sqroot/body/bodyContent/form/children/child">
+                    <li>
+                      <a href="#tab_{code}" data-toggle="tab" onclick="storeHash('{/sqroot/body/bodyContent/form/info/code/.}', '#tab_{code}');">
+                        <xsl:value-of select="childTitle"/>
+                      </a>
+                    </li>
+                  </xsl:for-each>
+                </xsl:otherwise>
+              </xsl:choose>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="tab_1">
@@ -554,7 +589,11 @@
   </xsl:template>
 
   <xsl:template match="field">
-    <xsl:if test="@isNullable=0">
+    <xsl:if test="@isNullable=0 and 
+                    ((@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
       <script>
         document.getElementsByName(tblnm)[0].value = document.getElementsByName(tblnm)[0].value + ', <xsl:value-of select="@fieldName"/>'
       </script>
@@ -609,7 +648,11 @@
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
-    <xsl:if test="../@isNullable = 0">
+    <xsl:if test="../@isNullable = 0 and 
+                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -623,7 +666,11 @@
     <label id="{../@fieldName}caption" data-toggle="collapse" data-target="#section_{@sectionNo}">
       <xsl:value-of select="titlecaption"/>
     </label>
-    <xsl:if test="../@isNullable = 0">
+    <xsl:if test="../@isNullable = 0 and 
+                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -658,7 +705,11 @@
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
-    <xsl:if test="../@isNullable = 0">
+    <xsl:if test="../@isNullable = 0 and 
+                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -719,7 +770,11 @@
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
-    <xsl:if test="../@isNullable = 0">
+    <xsl:if test="../@isNullable = 0 and 
+                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
     <div class="input-group date">
@@ -753,7 +808,11 @@
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
-    <xsl:if test="../@isNullable = 0">
+    <xsl:if test="../@isNullable = 0 and 
+                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -768,7 +827,11 @@
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
-    <xsl:if test="../@isNullable = 0">
+    <xsl:if test="../@isNullable = 0 and 
+                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -787,7 +850,11 @@
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
-    <xsl:if test="../@isNullable = 0">
+    <xsl:if test="../@isNullable = 0 and 
+                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
     <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}" data-type="selectBox"
@@ -980,7 +1047,11 @@
       <xsl:value-of select="titlecaption"/>
     </label>
 
-    <xsl:if test="../@isNullable = 0">
+    <xsl:if test="../@isNullable = 0 and 
+                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -1018,7 +1089,11 @@
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
-    <xsl:if test="../@isNullable = 0">
+    <xsl:if test="../@isNullable = 0 and 
+                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -1053,6 +1128,17 @@
   </xsl:template>
 
   <xsl:template match="radio">
+    <xsl:variable name="radioVal">
+      <xsl:choose>
+        <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
+          <xsl:value-of select="defaultvalue" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="value" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    
     <script>
       function <xsl:value-of select="../@fieldName" />_hide(shownId) {
       $('#accordion_<xsl:value-of select="../@fieldName" />').children().each(function(){
@@ -1060,14 +1146,22 @@
       $(this).collapse('toggle');
       }
       });
+
       }
+      <xsl:if test="$radioVal != ''">
+          panel_display('<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="$radioVal"/>', true);
+      </xsl:if>
+
     </script>
-    <input type="hidden" id="{../@fieldName}" value="{value/.}" />
     <div>
       <label id="{../@fieldName}caption">
         <xsl:value-of select="titlecaption"/>
       </label>
-      <xsl:if test="../@isNullable = 0">
+      <xsl:if test="../@isNullable = 0 and 
+                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
         <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
       </xsl:if>
     </div>
@@ -1078,8 +1172,8 @@
       <div class="panel-body" id="accordion_{../@fieldName}" style="box-shadow:none;border:none;display:none;">
         <xsl:for-each select="radioSections/radioSection">
           <!--<xsl:if test="radioSections/radioSection/radioRows/radioRow">-->
-          <div id="panel_{../../../@fieldName}_{@radioNo}" class="box collapse" style="box-shadow:none;border:none;">
-            <xsl:apply-templates select="radioRows/radioRow/fields" />&#160;
+          <div id="panel_{../../../@fieldName}_{@radioNo}" class="box collapse" style="box-shadow:none;border:none;padding-bottom:0;padding-top:0;margin-bottom:0">
+            <xsl:apply-templates select="radioRows/radioRow/fields" />
           </div>
           <!--</xsl:if>-->
         </xsl:for-each>
@@ -1090,19 +1184,28 @@
   <xsl:template match="radioSections/radioSection">
 
     <xsl:variable name="pandis" select="count(radioRows)"/>
-
+    <xsl:variable name="radioVal1">
+      <xsl:choose>
+        <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
+          <xsl:value-of select="../../defaultvalue" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="../../value" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:choose>
-      <xsl:when test="@fieldName=../../value/.">
+      <xsl:when test="@fieldName=$radioVal1">
         <xsl:choose>
           <xsl:when test="radioRows">
-            <label class="radio-inline" for="{../../../@fieldName}_radio_{@radioNo}" onclick="panel_display('accordion_{../../../@fieldName}', 1)" >
-              <input type="radio" name="{../../../@fieldName}_radio" id="{../../../@fieldName}_radio_{@radioNo}" value="{@fieldName}" checked="checked" />
+            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '@radioNo')" >
+              <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" checked="checked" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>
           </xsl:when>
           <xsl:otherwise>
-            <label class="radio-inline" for="{../../../@fieldName}_radio_{@radioNo}" onclick="panel_display('accordion_{../../../@fieldName}', 0)" >
-              <input type="radio" name="{../../../@fieldName}_radio" id="{../../../@fieldName}_radio_{@radioNo}" value="{@fieldName}" checked="checked" />
+            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '@radioNo')" >
+              <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" checked="checked" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>
           </xsl:otherwise>
@@ -1114,14 +1217,14 @@
       <xsl:otherwise>
         <xsl:choose>
           <xsl:when test="radioRows">
-            <label class="radio-inline" for="{../../../@fieldName}_radio_{@radioNo}" onclick="panel_display('accordion_{../../../@fieldName}', 1)" >
-              <input type="radio" name="{../../../@fieldName}_radio" id="{../../../@fieldName}_radio_{@radioNo}" value="{@fieldName}" />
+            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}')" >
+              <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>
           </xsl:when>
           <xsl:otherwise>
-            <label class="radio-inline" for="{../../../@fieldName}_radio_{@radioNo}" onclick="panel_display('accordion_{../../../@fieldName}', 0)" >
-              <input type="radio" name="{../../../@fieldName}_radio" id="{../../../@fieldName}_radio_{@radioNo}" value="{@fieldName}" />
+            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}')" >
+              <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>
           </xsl:otherwise>
@@ -1130,10 +1233,10 @@
     </xsl:choose>
 
     <script>
-      $('#<xsl:value-of select="../../../@fieldName" />_radio_<xsl:value-of select="@radioNo" />').click(function(){
+      $('#<xsl:value-of select="../../../@fieldName" />_<xsl:value-of select="@radioNo" />').click(function(){
       <xsl:value-of select="../../../@fieldName" />_hide('panel_<xsl:value-of select="../../../@fieldName" />_<xsl:value-of select="@radioNo" />');
       $('#panel_<xsl:value-of select="../../../@fieldName" />_<xsl:value-of select="@radioNo" />').collapse('show');
-      var x=$('input[name=<xsl:value-of select="../../../@fieldName" />_radio]:checked').val();
+      var x=$('input[name=<xsl:value-of select="../../../@fieldName" />]:checked').val();
       $('#<xsl:value-of select="../../../@fieldName" />').val(x);
       });
     </script>

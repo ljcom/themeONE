@@ -37,6 +37,9 @@ function saveThemeONE(code, guid, location, formId) {
             //insert child
         else if (retguid != "" && retguid != guid && location == 40 ) {
             //preview(1, code, guid, formId + code);
+            if (msg != "") {
+                showMessage(msg);
+            }
             loadChild(code, pkey, pkvalue, 1)
         }
         else if (retguid != "" && retguid != guid && location == 41) {
