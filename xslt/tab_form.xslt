@@ -1149,7 +1149,7 @@
 
       }
       <xsl:if test="$radioVal != ''">
-          panel_display('<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="$radioVal"/>');
+          panel_display('<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="$radioVal"/>', true);
       </xsl:if>
 
     </script>
