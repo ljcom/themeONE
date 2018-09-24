@@ -174,7 +174,7 @@
                       <div class="row">
                         <xsl:for-each select="sqroot/header/menus/menu[@code='primaryback']/submenus/submenu">
                           <div class="col-xs-{$colMenu} text-center">
-                            <a href="{pageURL}">
+                            <a class="withBorder" href="{pageURL}">
                               <xsl:value-of select="caption" />&#160;
                             </a>
                           </div>

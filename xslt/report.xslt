@@ -149,7 +149,7 @@
         </div>
         <div class="accordian-body collapse top-menu-div" id="mobilemenupanel" style="color:white; position:absolute; background:#222D32; z-index:100; width:100%; right:0px; top:50px; ">
           <div class="input-group sidebar-form">
-            <input type="text" id="searchBox" name="searchBox" class="form-control" placeholder="Search..." onkeypress="return searchText(event,this.value);" value="" />
+            <input type="text" id="searchBox1" name="searchBox1" class="form-control" placeholder="Search..." onkeypress="return searchText(event,this.value);" value="" />
             <span class="input-group-btn">
               <button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="searchText(event);">
                 <ix class="fa fa-search" aria-hidden="true"></ix>
@@ -158,6 +158,7 @@
           </div>
           <div class="panel-group" id="accordion2">
             <xsl:apply-templates select="sqroot/header/menus/menu[@code='sidebar']/submenus/submenu" />
+            &#160;
           </div>
         </div>
         <div class="navbar-custom-menu">
@@ -200,7 +201,7 @@
                       <div class="row">
                         <xsl:for-each select="sqroot/header/menus/menu[@code='primaryback']/submenus/submenu">
                           <div class="col-xs-{$colMenu} text-center">
-                            <a href="{pageURL}">
+                            <a class="withBorder" href="{pageURL}">
                               <xsl:value-of select="caption" />&#160;
                             </a>
                           </div>
@@ -288,11 +289,10 @@ _________________________________________________________ -->
     <aside  class="main-sidebar">
       <!-- sidebar: style can be found in sidebar.less -->
       <section id="sidebarWrapper" class="sidebar">
-
-
+        <div class="overlay">
+          <ix class="fa fa-refresh fa-spin"></ix>
+        </div>
       </section>
-
-      <!-- /.sidebar -->
     </aside>
     <!-- Content Wrapper. Contains page content -->
     <div id="contentWrapper" class="content-wrapper" style="background:white">

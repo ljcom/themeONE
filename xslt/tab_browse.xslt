@@ -99,7 +99,7 @@
       <div id="delegationAlert" class="alert alert-warning alert-dismissable fade in">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&#215;</button>
         <h4>
-          <ix class="icon fa fa-info"></ix>&#160; Attention
+          <ix class="icon far fa-info"></ix>&#160; Attention
         </h4>
         You are assigned as a delegation for this module. Expand the "Advanced Filters Box" below to filtering between your documents or the delegators.
       </div>
@@ -138,7 +138,7 @@
         <li>
           <a href="javascript:goHome();">
             <span>
-              <ix class="fa fa-home"></ix>
+              <ix class="far fa-home"></ix>
             </span>&#160;Home
           </a>
         </li>
@@ -188,7 +188,7 @@
             <div class="col-xs-6 browse-dropdown-status">
               <div class="dropdown">
                 <button id="statusFilter" class="dropdown-toggle" type="button" data-toggle="dropdown" >
-                  <ix class="fa fa-file-text-o" aria-hidden="true"></ix>&#160;
+                  <ix class="far fa-file-text-o" aria-hidden="true"></ix>&#160;
                   <span style="font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif; font-weight:bold; font-size:smaller">
                     <xsl:value-of select="translate(sqroot/body/bodyContent/browse/info/curState/@substateName, $smallcase, $uppercase)"/>
                   </span>
@@ -255,8 +255,8 @@
                     <ix aria-hidden="true">
                       <xsl:attribute name="class">
                         <xsl:choose>
-                          <xsl:when test="sqroot/body/bodyContent/browse/info/filters/*/value">fa fa-minus</xsl:when>
-                          <xsl:otherwise>fa fa-plus</xsl:otherwise>
+                          <xsl:when test="sqroot/body/bodyContent/browse/info/filters/*/value">far fa-minus</xsl:when>
+                          <xsl:otherwise>far fa-plus</xsl:otherwise>
                         </xsl:choose>
                       </xsl:attribute>
                     </ix>
@@ -288,7 +288,7 @@
                     <tr>
                       <xsl:if test="sqroot/body/bodyContent/browse/info/isDelegator = 0">
                         <th style="width:10px;" name="th_checkbox">
-                          <input type="checkbox" id="pinnedAll" class="pinned header fa fa-square-o fa-lg" onclick="checkedBox(this)" />
+                          <input type="checkbox" id="pinnedAll" class="pinned header far fa-square fa-lg" onclick="checkedBox(this)" />
                         </th>
                       </xsl:if>
                       <xsl:if test="sqroot/body/bodyContent/browse/header/column[@mandatory=1]">
@@ -319,25 +319,25 @@
 																				  
                                       </xsl:choose>
                                     </xsl:attribute>
-                                    <ix class="fa fa-check"></ix>
+                                    <ix class="far fa-check"></ix>
                                   </a>
                                 </xsl:when>
                                 <xsl:when test="$state &gt;= 100 and $state &lt;300">
                                   <a href="javascript:btn_function('{/sqroot/header/info/code/id}', null, 'execute', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="Approve All">
-                                    <ix class="fa fa-check"></ix>
+                                    <ix class="far fa-check"></ix>
                                   </a>
                                   <a href="javascript:rejectPopup('{/sqroot/header/info/code/id}', null, 'force', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="Reject All">
-                                    <ix class="fa fa-times"></ix>
+                                    <ix class="far fa-times"></ix>
                                   </a>
                                 </xsl:when>
                                 <xsl:when test="$allowForce = 1 and $state &gt;= 400 and $state &lt; 500">
                                   <a href="javascript:btn_function('{/sqroot/header/info/code/id}', null, 'force', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="Close All">
-                                    <ix class="fa fa-archive"></ix>
+                                    <ix class="far fa-archive"></ix>
                                   </a>
                                 </xsl:when>
                                 <xsl:when test="$allowForce = 1 and $state = 500">
                                   <a href="javascript:btn_function('{/sqroot/header/info/code/id}', null, 'reopen', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="ReOpen All">
-                                    <ix class="fa fa-undo"></ix>
+                                    <ix class="far fa-undo"></ix>
                                   </a>
                                 </xsl:when>
                               </xsl:choose>
@@ -345,16 +345,16 @@
 
                             <xsl:if test="$allowOnOff = 1 and $allowDelete = 1 and $state &lt; 500 and docStatus/@isOwner=1">
                               <a href="#" onclick="btn_function('{sqroot/body/bodyContent/browse/info/code}', null, 'inactivate', {sqroot/body/bodyContent/browse/info/pageNo}, 10)">
-                                <ix class="fa fa-toggle-on fa-lg" data-toggle="tooltip" title="Inactivated All" data-placement="left"/>
+                                <ix class="far fa-toggle-on fa-lg" data-toggle="tooltip" title="Inactivated All" data-placement="left"/>
                               </a>
                             </xsl:if>
                             <xsl:if test="$state = 999">
                               <a href="#" onclick="btn_function('{sqroot/body/bodyContent/browse/info/code}', null, 'restore', {sqroot/body/bodyContent/browse/info/pageNo}, 10)">
-                                <ix class="fa fa-toggle-off fa-lg" data-toggle="tooltip" title="Re-Activated All" data-placement="left"/>
+                                <ix class="far fa-toggle-off fa-lg" data-toggle="tooltip" title="Re-Activated All" data-placement="left"/>
                               </a>
                               <xsl:if test="$allowWipe = 1">
                                 <a href="#" onclick="btn_function('{sqroot/body/bodyContent/browse/info/code}', null, 'wipe', {sqroot/body/bodyContent/browse/info/pageNo}, 10)">
-                                  <ix class="fa fa-tras fa-lg" data-toggle="tooltip" title="Wiped All" data-placement="left"/>
+                                  <ix class="far fa-tras fa-lg" data-toggle="tooltip" title="Wiped All" data-placement="left"/>
                                 </a>
                               </xsl:if>
                             </xsl:if>
@@ -545,10 +545,10 @@
     <xsl:variable name="tvalue">
       <xsl:choose>
         <xsl:when test="@order='asc' or @order='ASC'">
-          <xsl:value-of select="$title"/> &amp;nbsp; &lt;ix class="fa fa-sort-alpha-asc" /&gt;
+          <xsl:value-of select="$title"/> &amp;nbsp; &lt;ix class="far fa-sort-alpha-asc" /&gt;
         </xsl:when>
         <xsl:when test="@order='desc' or @order='DESC'">
-          <xsl:value-of select="$title"/> &amp;nbsp; &lt;ix class="fa fa-sort-alpha-desc" /&gt;
+          <xsl:value-of select="$title"/> &amp;nbsp; &lt;ix class="far fa-sort-alpha-desc" /&gt;
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="$title"/>
@@ -572,7 +572,7 @@
     <tr class="odd-tr" data-guid="{@GUID}">
       <xsl:if test="/sqroot/body/bodyContent/browse/info/isDelegator = 0">
         <td>
-          <input type="checkbox" data-guid="{@GUID}" class="pinned fa fa-square-o" onclick="checkedBox(this)" />
+          <input type="checkbox" data-guid="{@GUID}" class="pinned far fa-square" onclick="checkedBox(this)" />
         </td>
       </xsl:if>
       <input id="mandatory{@GUID}" type="hidden" value="" />
@@ -630,25 +630,25 @@
                       <xsl:when test="$state=300">Re-submit This</xsl:when>
                     </xsl:choose>
                   </xsl:attribute>
-                  <ix class="fa fa-check"></ix>
+                  <ix class="far fa-check"></ix>
                 </a>
               </xsl:when>
               <xsl:when test="$state &gt;= 100 and $state &lt; 300 and docStatus/@isOwner=0">
                 <a href="javascript:btn_function('{@code}', '{@GUID}', 'execute', '{$pageNo}', 10)" data-toggle="tooltip" title="Approve This">
-                  <ix class="fa fa-check"></ix>
+                  <ix class="far fa-check"></ix>
                 </a>
                 <a href="javascript:rejectPopup('{@code}', '{@GUID}', 'force', '{$pageNo}', 10)" data-toggle="tooltip" title="Reject This">
-                  <ix class="fa fa-times"></ix>
+                  <ix class="far fa-times"></ix>
                 </a>
               </xsl:when>
               <xsl:when test="$allowForce = 1 and $state &gt;= 400 and $state &lt; 500">
                 <a href="javascript:btn_function('{@code}', '{@GUID}', 'force', '{$pageNo}', 10)" data-toggle="tooltip" title="Close This">
-                  <ix class="fa fa-archive"></ix>
+                  <ix class="far fa-archive"></ix>
                 </a>
               </xsl:when>
               <xsl:when test="$allowForce = 1 and $state = 500">
                 <a href="javascript:btn_function('{@code}', '{@GUID}', 'reopen', '{$pageNo}', 10)" data-toggle="tooltip" title="ReOpen This">
-                  <ix class="fa fa-undo"></ix>
+                  <ix class="far fa-undo"></ix>
                 </a>
               </xsl:when>
             </xsl:choose>
@@ -659,21 +659,21 @@
             <!--allow delete-->
             <xsl:when test="$settingMode!='T' and $allowDelete = 1 and $state = 0">
               <a href="javascript:btn_function('{@code}', '{@GUID}', 'inactivate', '{$pageNo}', 10)" data-toggle="tooltip" title="Inactivate This">
-                <ix class="fa fa-toggle-on" title="Inactive"></ix>
+                <ix class="far fa-toggle-on" title="Inactive"></ix>
               </a>
             </xsl:when>
             <xsl:when test="$settingMode='T' and $allowDelete = 1 and $state = 0 and docStatus/@isOwner=1">
               <a href="javascript:btn_function('{@code}', '{@GUID}', 'delete', '{$pageNo}', 10)" data-toggle="tooltip" title="Delete This">
-                <ix class="fa fa-trash" title="Delete"></ix>
+                <ix class="far fa-trash" title="Delete"></ix>
               </a>
             </xsl:when>
             <xsl:when test="$state = 999">
               <a href="javascript:btn_function('{@code}', '{@GUID}', 'restore', '{$pageNo}', 10)" data-toggle="tooltip" title="Reactivate This">
-                <ix class="fa fa-toggle-off" title="Reactivate"></ix>
+                <ix class="far fa-toggle-off" title="Reactivate"></ix>
               </a>
               <xsl:if test="$allowWipe = 1">
                 <a href="javascript:btn_function('{@code}', '{@GUID}', 'wipe', '{$pageNo}', 10)" data-toggle="tooltip" title="Delete This Permanently">
-                  <ix class="fa fa-trash" title="Delete"></ix>
+                  <ix class="far fa-trash" title="Delete"></ix>
                 </a>
               </xsl:if>
             </xsl:when>
@@ -681,20 +681,20 @@
             <!--not allow delete-->
             <xsl:when test="$allowOnOff = 1 and $allowDelete = 0 and $state &lt; 500">
               <a href="#">
-                <ix class="fa fa-toggle-on" style="color:LightGray"></ix>
+                <ix class="far fa-toggle-on" style="color:LightGray"></ix>
               </a>
             </xsl:when>
             <xsl:when test="$allowOnOff = 0 and $allowDelete = 0 and $state &lt; 500">
               <a href="#">
-                <ix class="fa fa-trash" style="color:LightGray"></ix>
+                <ix class="far fa-trash" style="color:LightGray"></ix>
               </a>
             </xsl:when>
             <xsl:when test="$state = 999">
               <a href="#">
-                <ix class="fa fa-undo" style="color:lightgray"></ix>
+                <ix class="far fa-undo" style="color:lightgray"></ix>
               </a>
               <a href="#">
-                <ix class="fa fa-trash" style="color:LightGray"></ix>
+                <ix class="far fa-trash" style="color:LightGray"></ix>
               </a>
             </xsl:when>
           </xsl:choose>
@@ -703,12 +703,12 @@
           <xsl:choose>
             <xsl:when test="$state &lt; 999">
               <a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="Edit/View This">
-                <ix class="fa fa-pencil"></ix>
+                <ix class="far fa-pencil"></ix>
               </a>
             </xsl:when>
             <xsl:otherwise>
               <a href="#">
-                <ix class="fa fa-pencil" style="color:LightGray"></ix>
+                <ix class="far fa-pencil" style="color:LightGray"></ix>
               </a>
             </xsl:otherwise>
           </xsl:choose>
@@ -752,7 +752,7 @@
                         <h3 class="box-title">Content Summary</h3>
                         <div class="box-tools pull-right">
                           <button class="btn btn-box-tool" data-widget="collapse">
-                            <ix class="fa fa-minus"></ix>
+                            <ix class="far fa-minus"></ix>
                           </button>
                         </div>
                       </div>
@@ -769,7 +769,7 @@
                         <h3 class="box-title">Approval List</h3>
                         <div class="box-tools pull-right">
                           <button class="btn btn-box-tool" data-widget="collapse">
-                            <ix class="fa fa-minus"></ix>
+                            <ix class="far fa-minus"></ix>
                           </button>
                         </div>
                       </div>
@@ -804,7 +804,7 @@
                       <h3 class="box-title">Document Talk</h3>
                       <div class="box-tools pull-right">
                         <button class="btn btn-box-tool" data-widget="collapse">
-                          <ix class="fa fa-plus"></ix>
+                          <ix class="far fa-plus"></ix>
                         </button>
 							  
                       </div>
@@ -996,7 +996,7 @@
       </div>
       <div class="direct-chat-info clearfix">
         <span class="direct-chat-name pull-left">
-          <ix class="fa {$aprvIcon} fa-lg" aria-hidden="true" style="color:{$aprvColor};" title="{$aprvStat}"></ix>
+          <ix class="far {$aprvIcon} fa-lg" aria-hidden="true" style="color:{$aprvColor};" title="{$aprvStat}"></ix>
         </span>
         <span class="direct-chat-name pull-left">
           <xsl:value-of select="$aprvName"/>

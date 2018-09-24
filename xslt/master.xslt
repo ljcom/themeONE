@@ -669,6 +669,7 @@
         </div>
         <div class="accordian-body collapse top-menu-div" id="mobilemenupanel" style="color:white; position:absolute; background:#222D32; z-index:100; width:100%; right:0px; top:50px; ">
           <div class="input-group sidebar-form">
+            <input type="text" id="searchBox1" name="searchBox1" class="form-control" placeholder="Search..." onkeypress="return searchText(event,this.value);" value="" />
             <span class="input-group-btn">
               <button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="searchText(event);">
                 <ix class="fa fa-search" aria-hidden="true"></ix>
@@ -677,6 +678,7 @@
           </div>
           <div class="panel-group" id="accordion2">
             <xsl:apply-templates select="header/menus/menu[@code='sidebar']/submenus/submenu" />
+            &#160;
           </div>
         </div>
         <div class="navbar-custom-menu">

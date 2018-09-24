@@ -227,7 +227,7 @@
                         <li class="list-group-item">
                           <xsl:value-of select="textBox/titlecaption"/>
                           <a class="pull-right" id="{@fieldName}">
-                            <xsl:value-of select="$HeadVal"/>
+                            <xsl:value-of select="$HeadVal"/>&#160;
                           </a>
                         </li>
                       </xsl:otherwise>
@@ -235,8 +235,18 @@
                   </xsl:for-each>
                 </ul>
                 <xsl:for-each select="sqroot/body/bodyContent/form/query/reports/report">
+                  <xsl:variable name="qdisable">
+                    <xsl:choose>
+                      <xsl:when test="isVisible=1">
+                      </xsl:when>
+                      <xsl:otherwise>
+                        disabled
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:variable>
+
                   <xsl:if test="allowPDF=1">
-                    <a href="javascript:genReport('{code}', 'pdf');" class="btn btn-primary btn-block">
+                    <a href="javascript:genReport('{code}', 'pdf');" class="btn btn-primary btn-block {$qdisable}">
                       <span>
                         <ix class="fa fa-file-pdf"></ix>
                       </span>
@@ -246,7 +256,6 @@
                         </b>
                       </span>
                     </a>
-
                   </xsl:if>
                   <xsl:if test="allowXLS=1">
                     <a href="javascript:genReport('{code}', 'xls');" class="btn btn-primary btn-block">
@@ -949,23 +958,34 @@
           });
         </script>
       </xsl:if>
-
       <xsl:if test="@allowEdit=1">
         <span id="editForm{../@fieldName}" data-toggle="modal" data-target="#addNew{../@fieldName}" data-backdrop="static" data-action="edit"
-          style="cursor: pointer;margin: 8px 30px 0px 0px;position: absolute;top: 0px;right: 0px; display:none" >
-          <ix class="fa fa-pencil" title= "Edit" ></ix >
-        </span >
+          style="cursor: pointer;margin: 8px 45px 0px 0px;position: absolute;top: 0px;right: 0px; display:none">
+          <ix class="far fa-pencil-alt" title= "Edit" data-toggle="tooltip"></ix>
+        </span>
+
         <script>
           $("#<xsl:value-of select="../@fieldName"/>").on("select2:select", function(e) {
           $selection = $('#select2-<xsl:value-of select="../@fieldName"/>-container').parents('.selection');
-          if ($selection.children('#editForm<xsl:value-of select="../@fieldName"/>').length == 0) {
-          $('#editForm<xsl:value-of select="../@fieldName"/>').appendTo($selection).show();
-          }
+          if ($selection.children('#editForm<xsl:value-of select="../@fieldName"/>').length == 0)
+          $('#editForm<xsl:value-of select="../@fieldName"/>').appendTo($selection);
+          $('#editForm<xsl:value-of select="../@fieldName"/>').show();
           });
         </script>
       </xsl:if>
-
     </xsl:if>
+
+    <span id="removeForm{../@fieldName}" style="cursor: pointer;margin: 8px 30px 0px 0px;position: absolute;top: 0px;right: 0px; display:none">
+      <ix class="far fa-times" title= "Remove Selection" data-toggle="tooltip" onclick="javascript: $('#{../@fieldName}').val(null).trigger('change');$('#editForm{../@fieldName}').hide();$('#removeForm{../@fieldName}').hide();"></ix>
+    </span>
+    <script>
+      $("#<xsl:value-of select="../@fieldName"/>").on("select2:select", function(e) {
+      $selection = $('#select2-<xsl:value-of select="../@fieldName"/>-container').parents('.selection');
+      if ($selection.children('#removeForm<xsl:value-of select="../@fieldName"/>').length == 0)
+      $('#removeForm<xsl:value-of select="../@fieldName"/>').appendTo($selection)
+      $('#removeForm<xsl:value-of select="../@fieldName"/>').show();
+      });
+    </script>
 
 
     <script>
@@ -1138,7 +1158,7 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    
+
     <script>
       function <xsl:value-of select="../@fieldName" />_hide(shownId) {
       $('#accordion_<xsl:value-of select="../@fieldName" />').children().each(function(){
@@ -1149,7 +1169,7 @@
 
       }
       <xsl:if test="$radioVal != ''">
-          panel_display('<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="$radioVal"/>', true);
+        panel_display('<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="$radioVal"/>', true);
       </xsl:if>
 
     </script>
