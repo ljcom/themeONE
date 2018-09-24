@@ -227,7 +227,7 @@
                         <li class="list-group-item">
                           <xsl:value-of select="textBox/titlecaption"/>
                           <a class="pull-right" id="{@fieldName}">
-                            <xsl:value-of select="$HeadVal"/>
+                            <xsl:value-of select="$HeadVal"/>&#160;
                           </a>
                         </li>
                       </xsl:otherwise>

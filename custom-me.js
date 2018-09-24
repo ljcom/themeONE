@@ -127,31 +127,31 @@ function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, a
 
     var btname = "EDIT"
     if (allowedit == 1 && isDelegator == 0 ) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="fa fa-pencil"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));
+        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-pencil"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));
     }
 
     var btname = 'DELETE';
     var btfn = 'inactivate';
     if (status < 500 && allowDelete == 1 && isDelegator == 0) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="fa fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
     }
 
     var btname = 'WIPE';
     var btfn = 'wipe';
     if (status == 999 && allowWipe == 1 && isDelegator == 0) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="fa fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
     }
 
     var btname = 'ARCHIEVE'; 
     var btfn = 'force';
     if (status < 500 && status >= 400 && allowForce == 1 && isDelegator == 0) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="fa fa-archive"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-archive"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
     }
 
     var btname = 'APPROVE';
     var btfn = 'execute';
     if (isDelegator == 0) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="fa fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
     }
 
     x = x.replace('#td#', '');
@@ -596,7 +596,7 @@ function select2editForm(ini) {
     if (isGuid(guid)) {
         var divSpan = document.getElementById(id);
         $('#select2-' + id + '-container').append(edit);
-        $('#select2-' + id + '-container').children().append('<ix class="fa fa-pencil" title= "Edit" ></ix >');
+        $('#select2-' + id + '-container').children().append('<ix class="far fa-pencil" title= "Edit" ></ix >');
     }
 }
 
@@ -630,7 +630,7 @@ function loadExtraButton(buttons, location) {
 
                 });
             }
-            a = "<a href=\"" + url + "\"><ix class='fa " + v.icon + "' data-toggle=\"tooltip\" title='" + v.caption + "'/></a>";
+            a = "<a href=\"" + url + "\"><ix class='far " + v.icon + "' data-toggle=\"tooltip\" title='" + v.caption + "'/></a>";
 			uo=(v.updateOnly==1)? 1:0;
             bstate = v.state
             if (bstate) {
