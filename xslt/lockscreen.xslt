@@ -38,6 +38,18 @@
       $('#userImage').attr('src', getCookie('userURL'));
       $('#userName').html(getCookie('userName')+' ');
 
+
+      function checkenter(e) {
+      if (e.keyCode == 13) {
+      if (getCookie('isWhiteAddress') == '1') {
+      signIn(0);
+      }
+      else {
+      signIn(1);
+      }
+      }
+      }
+
     </script>
     <!-- Automatic element centering -->
     <div class="lockscreen-wrapper">
@@ -66,7 +78,7 @@
         <div class="input-group">
           <form id="signInForm" class="lockscreen-credentials">
             <input type="text" class="form-control" name ="userid" id ="userid" value="" style="display:none"/>
-            <input type="password" class="form-control" name ="pwd" id ="pwd" placeholder="password"/>
+            <input type="password" class="form-control" name ="pwd" id ="pwd" autocomplete="off" placeholder="password" onkeypress="return checkenter(event)"/>
           </form>
           <div class="input-group-btn">
             <button type="button" class="btn" onclick="javasript:signIn(0);">

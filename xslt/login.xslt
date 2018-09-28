@@ -113,7 +113,7 @@
                 </div>
                 <div class="form-group enabled-input">
                   <label>Password</label>
-                  <input type="password" class="form-control" name ="pwd" id ="pwd" autocomplete="off" onkeypress="return checkenter(event)"/>
+                  <input type="password" class="form-control" name ="pwd" id ="pwd" autocomplete="off" placeholder="password" onkeypress="return checkenter(event)"/>
                 </div>
                 <div class="g-recaptcha" data-sitekey="6Ld9Qi8UAAAAAJKicrf2JhrOH3k5LkqxyCodIOWm"></div>
                 <br/>
