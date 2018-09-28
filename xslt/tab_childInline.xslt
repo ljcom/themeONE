@@ -164,7 +164,17 @@
       <xsl:value-of select="."/>
       <script>
         var x=[];
+        <xsl:choose>
+        <xsl:when test="((@isEditable=1 and ($parentState=0 or $parentState=300 or not ($parentState))) 
+              or (@isEditable='2')
+							or (@isEditable=3 and ($parentState&lt;400 or not ($parentState)))
+							or (@isEditable=4 and ($parentState&lt;500 or not ($parentState))))">
         x.push('editor=<xsl:value-of select="@editor"/>');
+        </xsl:when>
+          <xsl:otherwise>
+            x.push('editor=');
+          </xsl:otherwise>
+        </xsl:choose>
         x.push('fieldname=<xsl:value-of select="@fieldName"/>');
         x.push('preview=<xsl:value-of select="@preview"/>');
         x.push('defaultValue=<xsl:value-of select="@defaultValue"/>');
@@ -172,6 +182,7 @@
         x.push('wf2=<xsl:value-of select="@wf2"/>');
         x.push('wf2=<xsl:value-of select="@align"/>');
         x.push('wf2=<xsl:value-of select="@digit"/>');
+        
         columns_<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>.push(x);
       </script>
     </th>
@@ -179,8 +190,8 @@
 
   <xsl:template match="sqroot/body/bodyContent/browse/content/row">
 
-    <tr id="tr1_{@code}{@GUID}" data-parent="#{/sqroot/body/bodyContent/browse/info/code}" data-target="#{@code}{@GUID}"
-        data-code="{@code}" data-guid="{@GUID}"
+    <tr id="tr1_{$lowerCode}{@GUID}" data-parent="#{/sqroot/body/bodyContent/browse/info/code}" data-target="#{$lowerCode}{@GUID}"
+        data-code="{$lowerCode}" data-guid="{@GUID}"
         onmouseover="this.bgColor='lavender';this.style.cursor='pointer';" onmouseout="this.bgColor='white'">
 
       <xsl:if test="count(/sqroot/body/bodyContent/browse/children/child)>0">
@@ -191,7 +202,7 @@
       <td class="cell-recordSelector"></td>
       <xsl:apply-templates select="fields/field"/>
     </tr>
-    <tr id="tr2_{@code}{@GUID}" style="display:none">
+    <tr id="tr2_{$lowerCode}{@GUID}" style="display:none">
       <td colspan="100">
       </td>
     </tr>
@@ -223,6 +234,7 @@
     </xsl:variable>
     <xsl:choose>
       <xsl:when test="@editor and ((@isEditable=1 and ($parentState=0 or $parentState=300 or not ($parentState))) 
+              or (@isEditable='2' and ../../@GUID = '00000000-0000-0000-0000-000000000000')
 							or (@isEditable=3 and $parentState&lt;400)
 							or (@isEditable=4 and ($parentState&lt;500)))">
         <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}">
@@ -237,7 +249,7 @@
         </td>
       </xsl:when>
       <xsl:otherwise>
-        <td class="cell" data-id="{@id}" data-field="{@caption}">
+        <td class="cell cell-disabled" data-id="{@id}" data-field="{@caption}">
           <xsl:attribute name="align">
             <xsl:choose>
               <xsl:when test="@align=0">left</xsl:when>

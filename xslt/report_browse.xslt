@@ -32,6 +32,9 @@
 
     <section class="content-header visible-phone">
       <h1>
+        <span>
+          <ix class="{sqroot/body/bodyContent/query/info/fa}"/>&#160;
+        </span>
         <xsl:value-of select="$desc"/>
       </h1>
       <ol class="breadcrumb">

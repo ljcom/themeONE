@@ -56,13 +56,13 @@
       <xsl:choose>
         <xsl:when test="(pageURL/.)!=''">
           <a href="{translate(pageURL/., $uppercase, $smallcase)}">
-            <xsl:if test="(icon/fa/.)!=''">
+            <xsl:if test="(fa/.)!=''">
               <span>
-                <ix class="fa {icon/fa/.}"></ix>&#160;
+                <ix class="{fa/.}"></ix>&#160;
               </span>
             </xsl:if>
-            <span>
-              <xsl:value-of select="caption/." />
+            <span title="{caption/.}" data-toggle="tooltip">
+              <xsl:value-of select="substring(caption/.,1,22)" />
             </span>
             <xsl:if test="(@type)='treeroot'">
               <span class="pull-right-container">
@@ -78,7 +78,7 @@
           </xsl:if>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="caption/." />&#160;
+          <xsl:value-of select="substring(caption/.,1,22)" />&#160;
         </xsl:otherwise>
       </xsl:choose>
     </li>
@@ -88,11 +88,13 @@
   <xsl:template match="submenus/submenu[@type='treeview']">
     <li class="treeview">
       <a href="{translate(pageURL/., $uppercase, $smallcase)}">
-        <span>
-          <xsl:if test="(icon/fa/.)!=''">
-            <ix class="fa {icon/fa/.}"></ix>&#160;
-          </xsl:if>
-          <xsl:value-of select="caption/." />&#160;
+        <xsl:if test="(fa/.)!=''">
+          <span>
+            <ix class="{fa/.}"></ix>&#160;
+          </span>
+        </xsl:if>
+        <span title="{caption/.}" data-toggle="tooltip" >
+          <xsl:value-of select="substring(caption/.,1,22)" />&#160;
         </span>
         <span class="pull-right-container">
           <ix class="fa fa-angle-left pull-right"></ix>
@@ -110,21 +112,18 @@
     <script>//label</script>
     <li>
       <a href="{translate(pageURL/., $uppercase, $smallcase)}">
-        <span>
-          <xsl:if test="(icon/fa/.)!=''">
-            <ix class="fa {icon/fa/.}"></ix>&#160;
-          </xsl:if>
-          <xsl:value-of select="caption/." />&#160;
+        <xsl:if test="(fa/.)!=''">
+          <span>
+            <ix class="{fa/.}"></ix>&#160;
+          </span>
+        </xsl:if>
+        <span title="{caption/.}" data-toggle="tooltip">
+          <xsl:value-of select="substring(caption/.,1,22)" />&#160;
         </span>
         &#160;
         <xsl:if test="isPending &gt; 0">
-          <ix class="fa fa-asterisk" aria-hidden="true" style="font-size: 8px; position: absolute;"></ix>
+          <ix class="fa fa-asterisk" aria-hidden="true" style="font-size: 10px; position: absolute;"></ix>
         </xsl:if>
-        <!--<xsl:if test="tRecord &gt; 0">
-          <span class="label label-default">
-            <xsl:value-of select="tRecord"/>
-          </span>
-        </xsl:if>-->
       </a>
     </li>
   </xsl:template>
@@ -138,11 +137,10 @@
           <br />
           <xsl:value-of select="translate(substring(code/.,3,2), $smallcase, $uppercase)" />&#160;
         </h4>
-        <p style="width:150px">
-          <xsl:value-of select="caption/." />&#160;
+        <p style="width:150px" title="{caption/.}" data-toggle="tooltip">
+          <xsl:value-of select="substring(caption/.,1,22)" />&#160;
         </p>
       </a>
     </li>
   </xsl:template>
-
 </xsl:stylesheet>
