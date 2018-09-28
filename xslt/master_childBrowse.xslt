@@ -90,7 +90,7 @@
               <!--xsl:if test="$parentState &lt; 400"-->
                 <div class="box-footer clearfix">
                   <xsl:if test="(
-                          ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='1' and $parentState &lt; 100 or not ($parentState))
+                          ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='1' and ($parentState &lt; 100 or not ($parentState)))
                           or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='3' and $parentState &lt; 400)
                           or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='4' and $parentState &lt; 500)
                         )">
@@ -99,7 +99,7 @@
                             onclick="showChildForm('{$lowerCode}','00000000-0000-0000-0000-000000000000')">ADD</button>&#160;
                   </xsl:if>
                   <xsl:if test="(
-                          ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and $parentState &lt; 100 or not ($parentState))
+                          ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and ($parentState &lt; 100 or not ($parentState)))
                           or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='3' and $parentState &lt; 400)
                           or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='4' and $parentState &lt; 500)
                         )">
