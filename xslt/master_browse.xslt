@@ -129,6 +129,9 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
+        <span>
+          <ix class="{sqroot/body/bodyContent/browse/info/fa}"/>&#160;
+        </span>
         <xsl:value-of select="sqroot/header/info/code/name"/>
       </h1>
       <ol class="breadcrumb">

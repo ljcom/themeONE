@@ -17,16 +17,10 @@
   <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/status/."/>
   <xsl:variable name="isRequester" select="/sqroot/body/bodyContent/form/info/document/isRequester"/>
   <xsl:variable name="cid" select="/sqroot/body/bodyContent/form/info/GUID/."/>
-  
+
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
     <script>
-      <!--loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
-      loadScript('OPHContent/cdn/select2/select2.full.min.js');-->
-
-      <!--var xmldoc = ""
-      var--> <!--xsldoc = "OPHContent/themes/<xsl:value-of select="sqroot/header/info/themeFolder"/>/xslt/" + getPage();-->
-
       $('.datepicker').datepicker({
       autoclose: true
       });
@@ -47,41 +41,6 @@
 
 
       $(function () {
-
-      <!--//Datemask dd/mm/yyyy--><!--
-      $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
-      --><!--//Datemask2 mm/dd/yyyy--><!--
-      $("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
-      --><!--//Money Euro--><!--
-      $("[data-mask]").inputmask();
-
-      --><!--//Date range picker--><!--
-      $('#reservation').daterangepicker();
-      --><!--//Date range picker with time picker--><!--
-      $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
-      --><!--//Date range as a button--><!--
-      $('#daterange-btn').daterangepicker(
-      {
-      ranges: {
-      'Today': [moment(), moment()],
-      'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-      'This Month': [moment().startOf('month'), moment().endOf('month')],
-      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-      },
-      startDate: moment().subtract(29, 'days'),
-      endDate: moment()
-      },
-      function (start, end) {
-      $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-      }
-      );-->
-
-      <!--//Date picker-->
-      <!--$('#datepicker').datepicker({
-      autoclose: true
-      });-->
 
       <!--//iCheck for checkbox and radio inputs-->
       $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -104,8 +63,6 @@
       <!--//color picker with addon-->
       $(".my-colorpicker2").colorpicker();
 
-      <!--//Timepicker-->
-
       });
 
       //preview(1, '<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','form<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', this);
@@ -118,7 +75,7 @@
       <!-- title -->
 
       <xsl:apply-templates select="sqroot/body/bodyContent"/>
-      
+
       <!-- view header -->
       <div class="row" style="box-shadow:0px;border:0;">
         <div class="col-md-12" style="margin-bottom:50px;">
@@ -129,10 +86,10 @@
             <xsl:if test="/sqroot/body/bodyContent/form/info/permission/allowAdd&gt;=1">
               <button id="child_button_addSave" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 41, 'form{sqroot/body/bodyContent/form/info/code/.}');">SAVE &amp; ADD NEW</button>&#160;
             </xsl:if>
-            
+
             <button id="child_button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 40, 'form{sqroot/body/bodyContent/form/info/code/.}');">SAVE</button>&#160;
             <button id="child_button_cancel" class="btn btn-gray-a" onclick="closeChildForm('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}')">CANCEL</button>&#160;
-            
+
             <xsl:if test="(/sqroot/body/bodyContent/form/info/GUID/.)!='00000000-0000-0000-0000-000000000000'">
               <script>
                 <xsl:if test="/sqroot/body/bodyContent/form/info/permission/allowAddSave&gt;=1 and /sqroot/body/bodyContent/form/info/code = 'tadedudocm'">
@@ -207,14 +164,18 @@
   </xsl:template>
 
   <xsl:template match="formSection ">
+
     <div class="box box-solid box-default" style="box-shadow:0px;border:none;">
       <div class="col-md-12">
-        <h3>
-          <xsl:value-of select="@rowTitle/."/>&#160;
-        </h3>
+        <xsl:if test="@rowTitle/.">
+          <h3>
+            <xsl:value-of select="@rowTitle/."/>&#160;
+          </h3>
+        </xsl:if>
         <xsl:apply-templates select="formCols"/>
       </div>
     </div>
+
 
   </xsl:template>
 
@@ -370,7 +331,7 @@
         <xsl:when test="align=2">right</xsl:when>
       </xsl:choose>
     </xsl:variable>
-      
+
     <!--default value-->
     <xsl:variable name="thisvalue">
       <xsl:choose>
@@ -384,16 +345,17 @@
     </xsl:variable>
 
     <input type="text" class="form-control" Value="{$thisvalue}" name="{../@fieldName}"
-           data-old="{value/.}" data-child="Y" 
-           onblur="preview('{preview/.}', '{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}','form{/sqroot/body/bodyContent/form/info/code/.}', this);" 
+           data-old="{value/.}" data-child="Y"
+           onblur="preview('{preview/.}', '{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}','form{/sqroot/body/bodyContent/form/info/code/.}', this);"
            oninput="javascript:checkChanges(this)"
            id ="{../@fieldName}">
-      <xsl:attribute name="style">text-align:<xsl:value-of select="$align"/>
-    </xsl:attribute>
+      <xsl:attribute name="style">
+        text-align:<xsl:value-of select="$align"/>
+      </xsl:attribute>
     </input>
   </xsl:template>
 
-  <xsl:template match="textEditor">    
+  <xsl:template match="textEditor">
     <label id="{../@fieldName}caption" name="{../@fieldName}caption" data-toggle="collapse" data-target="#section_{@sectionNo}">
       <xsl:value-of select="titlecaption"/>
     </label>
@@ -408,26 +370,26 @@
         </xsl:when>
         <xsl:otherwise>&#160;</xsl:otherwise>
       </xsl:choose>
-    </textarea>  
+    </textarea>
 
     <script type="text/javascript">
       CKEDITOR.replace('<xsl:value-of select="../@fieldName"/>');
       CKEDITOR.instances['<xsl:value-of select="../@fieldName"/>'].on('blur', function() {
-        var teOldData = $('#<xsl:value-of select="../@fieldName"/>').html();
-        var teData = CKEDITOR.instances['<xsl:value-of select="../@fieldName"/>'].getData();
-        teData = teData.trim();
-        $('#<xsl:value-of select="../@fieldName"/>').html(teData);
-        if (teOldData != teData) {
-          $('#button_save').show();
-          $('#button_cancel').show();
-          $('#button_save2').show();
-          $('#button_cancel2').show();
-        }
-        preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);
+      var teOldData = $('#<xsl:value-of select="../@fieldName"/>').html();
+      var teData = CKEDITOR.instances['<xsl:value-of select="../@fieldName"/>'].getData();
+      teData = teData.trim();
+      $('#<xsl:value-of select="../@fieldName"/>').html(teData);
+      if (teOldData != teData) {
+      $('#button_save').show();
+      $('#button_cancel').show();
+      $('#button_save2').show();
+      $('#button_cancel2').show();
+      }
+      preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);
       });
     </script>
-</xsl:template>
-  
+  </xsl:template>
+
   <xsl:template match="dateBox">
     <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
@@ -462,7 +424,7 @@
       </input>
     </div>
   </xsl:template>
-  
+
   <xsl:template match="timeBox">
     <script>//timebox</script>
     <label id="{../@fieldName}caption" name="{../@fieldName}caption">
@@ -527,7 +489,7 @@
     <xsl:if test="../@isNullable = 0">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
-    
+
     <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}"
       data-type="selectBox" data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}" data-child="Y"
         onchange="autosuggest_onchange(this, '{preview/.}', '{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}','form{/sqroot/body/bodyContent/form/info/code/.}', this);">
@@ -606,8 +568,8 @@
       });
       });
     </script>-->
-    
-    <script type="text/javascript">   
+
+    <script type="text/javascript">
       var sURL<xsl:value-of select="../@fieldName"/>='OPHCore/api/msg_autosuggest.aspx?mode=token&amp;code=<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>&amp;colkey=<xsl:value-of select="../@fieldName"/>'
       var noPrepopulate<xsl:value-of select="../@fieldName"/>=1;
       <xsl:if test="value">
@@ -644,17 +606,17 @@
       );
       }
       });
-      });      
+      });
     </script>
 
     <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
-    
+
     <xsl:if test="../@isNullable = 0">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
-    
+
     <!--digit-->
     <xsl:variable name="tbContent">
       <xsl:value-of select="value"/>
@@ -749,7 +711,7 @@
   </xsl:template>
 
   <xsl:template match="child">
-    
+
     <input type="hidden" id="CPKID" value="gchild{code/.}"/>
     <input type="hidden" id="childKey{code/.}" value="{parentkey/.}"/>
     <input type="hidden" id="filter{code/.}" value="{parentkey/.}='{/sqroot/body/bodyContent/form/info/GUID/.}'"/>
@@ -775,7 +737,7 @@
         </div>
       </div-->
     <div class="box box-solid box-default visible-phone" style="box-shadow:0px;border:none;" id="child{code/.}{/sqroot/body/bodyContent/form/info/GUID/.}" data-parentguid="{/sqroot/body/bodyContent/form/info/GUID/.}">
-    &#160;
+      &#160;
     </div>
     <!--/div-->
   </xsl:template>

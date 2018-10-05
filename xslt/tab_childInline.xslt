@@ -17,7 +17,7 @@
 
   <xsl:template match="/">
     <script>
-      var code='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>';
+      var code='<xsl:value-of select="$lowerCode"/>';
       cell_init(code);
 
       upload_init(code, function(data) {
@@ -35,19 +35,21 @@
       showMessage(msg);
       //setTimeout(function() {location.reload()}, 5000);
 
-      var code='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>';
+      var code='<xsl:value-of select="$lowerCode"/>';
       loadChild(code);
 
       });
-
-      var columns_<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>=[];
+      var tblnm =code+"requiredname";
+      var columns_<xsl:value-of select="$lowerCode"/>=[];
 
     </script>
+    <input type="hidden" name ="{$lowerCode}requiredname"/>
+    <input type="hidden" name ="{$lowerCode}requiredtblvalue"/>    
     <xsl:apply-templates select="sqroot/body/bodyContent/browse/children" />
 
     <div class="row">
       <div class="col-md-12">
-        <div class="box-header with-border" style="background:white" data-toggle="collapse" data-target="#content_{/sqroot/body/bodyContent/browse/info/code}">
+        <div class="box-header with-border" style="background:white" data-toggle="collapse" data-target="#content_{$lowerCode}">
           <h3 class="dashboard-title">
             <xsl:value-of select="sqroot/body/bodyContent/browse/info/description"/>
           </h3>
@@ -73,7 +75,7 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-            <div style="border:0px none white;box-shadow:none;" id="content_{/sqroot/body/bodyContent/browse/info/code}" class="box collapse in">
+            <div style="border:0px none white;box-shadow:none;" id="content_{$lowerCode}" class="box collapse in">
               <div style="border:0px none white;box-shadow:none;overflow:auto" >
                 <table class="table table-condensed strip-table-browse cell-table" style="border-collapse:collapse">
                   <thead>
@@ -94,36 +96,36 @@
               <!-- /.box-body -->
               <div class="box-footer clearfix">
                 <xsl:if test="(
-                          ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='1' and $parentState &lt; 100 or not ($parentState))
-                          or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='3' and $parentState &lt; 400)
-                          or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='4' and $parentState &lt; 500)
+                          ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='1' and ($parentState &lt; 100 or not ($parentState)))
+                          or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='3' and ($parentState &lt; 400))
+                          or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='4' and ($parentState &lt; 500))
                         )">
                   <button id="cell_button_add" class="btn btn-orange-a" style="margin-right:5px;margin-bottom:5px;"
-                          onclick="cell_add('{$lowerCode}', columns_{/sqroot/body/bodyContent/browse/info/code}, {count(/sqroot/body/bodyContent/browse/children)}, this);">ADD</button>
+                          onclick="cell_add('{$lowerCode}', columns_{$lowerCode}, {count(/sqroot/body/bodyContent/browse/children)}, this);">ADD</button>
                 </xsl:if>
                 <button id="cell_button_save" class="btn btn-orange-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="cell_save();">SAVE</button>
                 <button id="cell_button_cancel" class="btn btn-gray-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="cell_cancelSave()">CANCEL</button>
 
                 <xsl:if test="(
-                          ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and $parentState &lt; 100 or not ($parentState))
-                          or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='3' and $parentState &lt; 400)
-                          or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='4' and $parentState &lt; 500)
+                          ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and ($parentState &lt; 100 or not ($parentState)))
+                          or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='3' and ($parentState &lt; 400))
+                          or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='4' and ($parentState &lt; 500))
                         )">
                   <button id="cell_button_delete" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;" onclick="cell_delete('{$lowerCode}', this)">DELETE</button>
                 </xsl:if>
                 <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;=1 and (/sqroot/body/bodyContent/browse/info/permission/allowExport/.)=1" >
                   <button id="cell_button_download" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;"
-                          onclick="downloadChild('{/sqroot/body/bodyContent/browse/info/code}', '')">DOWNLOAD</button>
+                          onclick="downloadChild('{$lowerCode}', '')">DOWNLOAD</button>
                   <button id="cell_button_upload" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;" onclick="javascript:$('#import_hidden').click();">UPLOAD...</button>
 
-                  <!--<button type="button" class="buttonCream" id="download" name="download" onclick="javascript:PrintDirect('{/sqroot/body/bodyContent/browse/info/code}', '', 3, '', '', '');">DOWNLOAD</button>
-                  <button type="button" class="buttonCream" id="upload" name="upload" onclick="javascript:showSubBrowseView('{/sqroot/body/bodyContent/browse/info/code}','',1,'');">UPLOAD</button>-->
-                  <input id ="import_hidden" name="import_hidden" type="file" data-code="{/sqroot/body/bodyContent/browse/info/code}" style="visibility: hidden; width: 0; height: 0;" multiple="" />
+                  <!--<button type="button" class="buttonCream" id="download" name="download" onclick="javascript:PrintDirect('{$lowerCode}', '', 3, '', '', '');">DOWNLOAD</button>
+                  <button type="button" class="buttonCream" id="upload" name="upload" onclick="javascript:showSubBrowseView('{$lowerCode}','',1,'');">UPLOAD</button>-->
+                  <input id ="import_hidden" name="import_hidden" type="file" data-code="{$lowerCode}" style="visibility: hidden; width: 0; height: 0;" multiple="" />
                 </xsl:if>
                 <xsl:if test="/sqroot/body/bodyContent/browse/info/nbPages > 1">
                   <ul class="pagination pagination-sm no-margin pull-right" id="childPageNo"></ul>
                   <script>
-                    var code='<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/code"/>';
+                    var code='<xsl:value-of select ="$lowerCode"/>';
                     var pageNo = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/pageNo"/>';
                     var nbPages = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/nbPages"/>';
                     childPageNo('childPageNo', code, pageNo, nbPages);
@@ -160,27 +162,44 @@
   </xsl:template>
 
   <xsl:template match="column">
+    <xsl:if test="@isNullable=0">
+      <script>
+        document.getElementsByName(tblnm)[0].value = document.getElementsByName(tblnm)[0].value + ', <xsl:value-of select="@fieldName"/>'
+      </script>
+    </xsl:if>
     <th>
       <xsl:value-of select="."/>
       <script>
         var x=[];
+        <xsl:choose>
+        <xsl:when test="((@isEditable=1 and ($parentState=0 or $parentState=300 or not ($parentState))) 
+              or (@isEditable='2')
+							or (@isEditable=3 and ($parentState&lt;400 or not ($parentState)))
+							or (@isEditable=4 and ($parentState&lt;500 or not ($parentState))))">
         x.push('editor=<xsl:value-of select="@editor"/>');
+        </xsl:when>
+          <xsl:otherwise>
+            x.push('editor=');
+          </xsl:otherwise>
+        </xsl:choose>
         x.push('fieldname=<xsl:value-of select="@fieldName"/>');
         x.push('preview=<xsl:value-of select="@preview"/>');
         x.push('defaultValue=<xsl:value-of select="@defaultValue"/>');
         x.push('wf1=<xsl:value-of select="@wf1"/>');
         x.push('wf2=<xsl:value-of select="@wf2"/>');
-        x.push('wf2=<xsl:value-of select="@align"/>');
-        x.push('wf2=<xsl:value-of select="@digit"/>');
-        columns_<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>.push(x);
+        x.push('align=<xsl:value-of select="@align"/>');
+        x.push('digit=<xsl:value-of select="@digit"/>');
+        x.push('isNullable=<xsl:value-of select="@isNullable"/>');
+
+        columns_<xsl:value-of select="$lowerCode"/>.push(x);
       </script>
     </th>
   </xsl:template>
 
   <xsl:template match="sqroot/body/bodyContent/browse/content/row">
 
-    <tr id="tr1_{@code}{@GUID}" data-parent="#{/sqroot/body/bodyContent/browse/info/code}" data-target="#{@code}{@GUID}"
-        data-code="{@code}" data-guid="{@GUID}"
+    <tr id="tr1_{$lowerCode}{@GUID}" data-parent="#{$lowerCode}" data-target="#{$lowerCode}{@GUID}"
+        data-code="{$lowerCode}" data-guid="{@GUID}"
         onmouseover="this.bgColor='lavender';this.style.cursor='pointer';" onmouseout="this.bgColor='white'">
 
       <xsl:if test="count(/sqroot/body/bodyContent/browse/children/child)>0">
@@ -191,7 +210,7 @@
       <td class="cell-recordSelector"></td>
       <xsl:apply-templates select="fields/field"/>
     </tr>
-    <tr id="tr2_{@code}{@GUID}" style="display:none">
+    <tr id="tr2_{$lowerCode}{@GUID}" style="display:none">
       <td colspan="100">
       </td>
     </tr>
@@ -223,6 +242,7 @@
     </xsl:variable>
     <xsl:choose>
       <xsl:when test="@editor and ((@isEditable=1 and ($parentState=0 or $parentState=300 or not ($parentState))) 
+              or (@isEditable='2' and ../../@GUID = '00000000-0000-0000-0000-000000000000')
 							or (@isEditable=3 and $parentState&lt;400)
 							or (@isEditable=4 and ($parentState&lt;500)))">
         <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}">
@@ -237,7 +257,7 @@
         </td>
       </xsl:when>
       <xsl:otherwise>
-        <td class="cell" data-id="{@id}" data-field="{@caption}">
+        <td class="cell cell-disabled" data-id="{@id}" data-field="{@caption}">
           <xsl:attribute name="align">
             <xsl:choose>
               <xsl:when test="@align=0">left</xsl:when>

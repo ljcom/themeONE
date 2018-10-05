@@ -113,7 +113,7 @@
                 </div>
                 <div class="form-group enabled-input">
                   <label>Password</label>
-                  <input type="password" class="form-control" name ="pwd" id ="pwd" autocomplete="off" onkeypress="return checkenter(event)"/>
+                  <input type="password" class="form-control" name ="pwd" id ="pwd" autocomplete="off" placeholder="password" onkeypress="return checkenter(event)"/>
                 </div>
                 <div class="g-recaptcha" data-sitekey="6Ld9Qi8UAAAAAJKicrf2JhrOH3k5LkqxyCodIOWm"></div>
                 <br/>
@@ -200,53 +200,6 @@
       }
       }
 
-      <!--function checklogin()
-      {
-      var uid = document.getElementById("userid").value;
-      var pwd = document.getElementById("pwd").value;
-
-      var dataForm = $('#signinForm').serialize() //.split('_').join('');
-
-      var dfLength = dataForm.length;
-      dataForm = dataForm.substring(2, dfLength);
-      dataForm = dataForm.split('%3C').join('%26lt%3B');
-      path = "OPHCore/api/default.aspx?mode=signin&amp;userid=" + uid + "&amp;pwd=" + pwd;
-
-      $.ajax({
-      url: path,
-      data: dataForm,
-      type: 'POST',
-      dataType: "xml",
-      timeout: 80000,
-      beforeSend: function () {
-      //setCursorWait(this);
-      },
-      success: function (data) {
-      var x = $(data).find("sqroot").children().each(function () {
-      var msg = $(this).text();
-      if (msg != '') {
-      if ($(this)[0].nodeName == "hostGUID")
-      {
-      lastPar=getCookie('lastPar');
-      //setCookie('lastPar', '');
-      if (lastPar=="") lastPar="?";
-      window.location = lastPar;
-      }
-      }
-      else {
-      showMessage('Invalid User or password!');
-      }
-      });
-      }
-      });
-
-      }-->
-
-
-      function goToALL(name){
-      window.location.assign("browse.html")
-      // alert("goToALL");
-      }
     </script>
 
   </xsl:template>

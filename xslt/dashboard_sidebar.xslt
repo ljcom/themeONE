@@ -57,9 +57,9 @@
       <xsl:choose>
         <xsl:when test="(pageURL/.)!=''">
           <a href="{translate(pageURL/., $uppercase, $smallcase)}">
-            <xsl:if test="(icon/fa/.)!=''">
+            <xsl:if test="(fa/.)!=''">
               <span>
-                <ix class="fa {icon/fa/.}"></ix>&#160;
+                <ix class="{fa/.}"></ix>&#160;
               </span>
             </xsl:if>
             <span>
@@ -90,8 +90,8 @@
     <li class="treeview">
       <a href="{translate(pageURL/., $uppercase, $smallcase)}">
         <span>
-          <xsl:if test="(icon/fa/.)!=''">
-            <ix class="fa {icon/fa/.}"></ix>&#160;
+          <xsl:if test="(fa/.)!=''">
+            <ix class="{fa/.}"></ix>&#160;
           </xsl:if>
           <xsl:value-of select="caption/." />&#160;
         </span>
@@ -112,8 +112,8 @@
     <li>
       <a href="{translate(pageURL/., $uppercase, $smallcase)}">
         <span>
-          <xsl:if test="(icon/fa/.)!=''">
-            <ix class="fa {icon/fa/.}"></ix>&#160;
+          <xsl:if test="(fa/.)!=''">
+            <ix class="{fa/.}"></ix>&#160;
           </xsl:if>
           <xsl:value-of select="caption/." />&#160;
         </span>
