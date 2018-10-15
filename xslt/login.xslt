@@ -106,14 +106,14 @@
               <h3>Use a local account to sign in</h3>
 
               <h4 style="color:gray">Please enter your username and password</h4>
-              <form id="formlogin" onsubmit ="return signIn(1);">
+              <form id="formlogin" onsubmit ="return signIn('{/sqroot/header/info/account}');">
                 <div class="form-group enabled-input">
                   <label>User Name</label>
-                  <input type="text" class="form-control" name ="userid" id ="userid" autofocus="autofocus" onkeypress="return checkenter(event)"/>
+                  <input type="text" class="form-control" name ="{/sqroot/header/info/account}_userid" id ="{/sqroot/header/info/account}_userid" autofocus="autofocus" onkeypress="return checkenter(event)"/>
                 </div>
                 <div class="form-group enabled-input">
                   <label>Password</label>
-                  <input type="password" class="form-control" name ="pwd" id ="pwd" autocomplete="off" placeholder="password" onkeypress="return checkenter(event)"/>
+                  <input type="password" class="form-control" name ="{/sqroot/header/info/account}_pwd" id ="{/sqroot/header/info/account}_pwd" autocomplete="off" placeholder="password" onkeypress="return checkenter(event)"/>
                 </div>
                 <div class="g-recaptcha" data-sitekey="6Ld9Qi8UAAAAAJKicrf2JhrOH3k5LkqxyCodIOWm"></div>
                 <br/>
@@ -184,18 +184,24 @@
     <script>
       if (getCookie('isWhiteAddress') == '1') {
       $('#formlogin .g-recaptcha').remove();
-      $('#btn_submitLogin').attr('onclick', 'signIn(0)')
+      $('#btn_submitLogin').click(function() {
+          signIn('<xsl:value-of select="/sqroot/header/info/account"/>')
+          }
+      )
       } else {
-      $('#btn_submitLogin').attr('onclick', 'signIn(1)')
+      $('#btn_submitLogin').click(function() {
+          signIn('<xsl:value-of select="/sqroot/header/info/account"/>')
+          }
+      )
       }
 
       function checkenter(e) {
       if (e.keyCode == 13) {
       if (getCookie('isWhiteAddress') == '1') {
-      signIn(0);
+      signIn('<xsl:value-of select="/sqroot/header/info/account"/>');
       }
       else {
-      signIn(1);
+      signIn('<xsl:value-of select="/sqroot/header/info/account"/>');
       }
       }
       }
