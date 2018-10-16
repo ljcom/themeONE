@@ -87,10 +87,13 @@
   <xsl:template match="submenus/submenu[@type='treeview']">
     <li class="treeview">
       <a href="{translate(pageURL/., $uppercase, $smallcase)}">
-        <span>
-          <xsl:if test="(fa/.)!=''">
+
+        <xsl:if test="(fa/.)!=''">
+          <span>
             <ix class="{fa/.}"></ix>&#160;
-          </xsl:if>
+          </span>
+        </xsl:if>
+        <span>
           <xsl:value-of select="caption/." />&#160;
         </span>
         <span class="pull-right-container">
@@ -109,15 +112,20 @@
     <script>//label</script>
     <li>
       <a href="{translate(pageURL/., $uppercase, $smallcase)}">
-        <span>
-          <xsl:if test="(fa/.)!=''">
+
+        <xsl:if test="(fa/.)!=''">
+          <span>
             <ix class="{fa/.}"></ix>&#160;
-          </xsl:if>
+          </span>
+        </xsl:if>
+        <span>
           <xsl:value-of select="caption/." />&#160;
         </span>
         &#160;
         <xsl:if test="isPending &gt; 0">
-          <ix class="fa fa-asterisk" aria-hidden="true" style="font-size: 8px; position: absolute;"></ix>
+          <span>
+            <ix class="fa fa-asterisk" aria-hidden="true" style="font-size: 8px; position: absolute;"></ix>
+          </span>
         </xsl:if>
         <!--<xsl:if test="tRecord &gt; 0">
           <span class="label label-default">

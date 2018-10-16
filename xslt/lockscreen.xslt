@@ -22,7 +22,7 @@
       meta.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
       loadMeta(meta);
 
-      
+
       $("body").addClass("lockscreen");
       $("body").addClass("hold-transition");
       $("body").addClass("sidebar-mini");
@@ -33,8 +33,8 @@
       //if (lastPar=='') lastPar='index.aspx';
       //if (getCookie('lockScreen')=='1') window.location=lastPar;
       //setCookie('lockScreen',1);
-      uid=getCookie('userId');
-      if(uid == undefined) window.location='index.aspx';
+      uid=getCookie('<xsl:value-of select="sqroot/header/info/account"/>'.toLowerCase()+'_userId');
+      if(uid == undefined) window.location='index.aspx?code=login';
       $('#userImage').attr('src', getCookie('userURL'));
       $('#userName').html(getCookie('userName')+' ');
 
@@ -42,10 +42,10 @@
       function checkenter(e) {
       if (e.keyCode == 13) {
       if (getCookie('isWhiteAddress') == '1') {
-      signIn(0);
+      signIn('<xsl:value-of select="sqroot/header/info/account"/>');
       }
       else {
-      signIn(1);
+      signIn('<xsl:value-of select="sqroot/header/info/account"/>');
       }
       }
       }
@@ -77,11 +77,11 @@
         <!-- lockscreen credentials (contains the form) -->
         <div class="input-group">
           <form id="signInForm" class="lockscreen-credentials">
-            <input type="text" class="form-control" name ="userid" id ="userid" value="" style="display:none"/>
-            <input type="password" class="form-control" name ="pwd" id ="pwd" autocomplete="off" placeholder="password" onkeypress="return checkenter(event)"/>
+            <input type="text" class="form-control" name ="{/sqroot/header/info/account}_userid" id ="{/sqroot/header/info/account}_userid" value="" style="display:none"/>
+            <input type="password" class="form-control" name ="{/sqroot/header/info/account}_pwd" id ="{/sqroot/header/info/account}_pwd" autocomplete="off" placeholder="password" onkeypress="return checkenter(event)"/>
           </form>
           <div class="input-group-btn">
-            <button type="button" class="btn" onclick="javasript:signIn(0);">
+            <button type="button" class="btn" onclick="javasript:signIn('{/sqroot/header/info/account}');">
               <ix class="fa fa-arrow-right text-muted"></ix>
             </button>
           </div>
@@ -98,7 +98,7 @@
       </div>
       <div class="lockscreen-footer text-center">
         <strong>
-          Copyright &#169; 2017 <a href="#">Operahouse</a>.
+          Copyright &#169; 2018 <a href="#">Operahouse</a>.
         </strong> All rights reserved.
 
       </div>
