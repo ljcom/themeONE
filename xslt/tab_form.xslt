@@ -825,8 +825,9 @@
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
-    <input type="text" class="form-control" Value="********" data-type="textBox" data-old="" name="{../@fieldName}"
-      onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" id ="{../@fieldName}" autocomplete="off">
+    <input type="password" class="form-control" Value="********" data-type="textBox" data-old="" name="{../@fieldName}"
+           minlength="8" required="required" placeholder="8 characters minimum."
+      onblur="preview('{preview/.}',getCode(), '{$cid}','formheader', this);" id ="{../@fieldName}" autocomplete="false">
     </input>
 
   </xsl:template>
