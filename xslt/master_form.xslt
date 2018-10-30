@@ -182,9 +182,6 @@
                 <xsl:if test="$isApprover=1">
                   <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RE-SUBMIT</button>&#160;
                 </xsl:if>
-                <xsl:if test="($settingMode)='T'">
-                  <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RESUBMIT</button>&#160;
-                </xsl:if>
                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;&#160;
 
               </xsl:when>

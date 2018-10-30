@@ -193,7 +193,7 @@
         </li>
       </xsl:if>
 
-      <xsl:if test="$settingmode!='C'">
+      <xsl:if test="$settingmode!='C' and /sqroot/body/bodyContent/form/info/permission/ShowDocTalk/.=1">
         <script>
           setTimeout(function () { refreshTalk('<xsl:value-of select="sqroot/body/bodyContent/form/info/GUID" />', '', 20); }, 1000 * 60);
         </script>

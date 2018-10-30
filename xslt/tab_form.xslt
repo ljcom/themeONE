@@ -307,9 +307,6 @@
                     <xsl:if test="$isApprover=1">
                       <button id="button_submit" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RE-SUBMIT</button>
                     </xsl:if>
-                    <xsl:if test="($settingMode)='T'">
-                      <button id="button_submit" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RESUBMIT</button>
-                    </xsl:if>
                     <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
                   </xsl:when>
                   <xsl:when test="($docState) &gt;= 400 and ($docState) &lt;= 499">
