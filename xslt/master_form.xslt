@@ -20,8 +20,8 @@
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
     <script>
-      loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
-      loadScript('OPHContent/cdn/select2/select2.full.min.js');
+      //loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
+      //loadScript('OPHContent/cdn/select2/select2.full.min.js');
 
       form_init();
 

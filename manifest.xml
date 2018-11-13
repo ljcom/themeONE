@@ -13,6 +13,7 @@
     <cssFile>OPHContent/cdn/admin-LTE/css/AdminLTE.min.css</cssFile>
     <cssFile>OPHContent/cdn/admin-LTE/css/skins/_all-skins.min.css</cssFile>
     <cssFile>OPHContent/cdn/ophelements/celljs/cell.css</cssFile>
+    <cssFile>OPHContent/cdn/ophelements/offline/offline.css</cssFile>
     <cssFile>OPHContent/cdn/bootstrap/datetimepicker/bootstrap-datetimepicker.min.css</cssFile>
     <cssFile>OPHContent/cdn/sideshow/distr/fonts/sideshow-fontface.min.css</cssFile>
     <cssFile>OPHContent/cdn/sideshow/distr/stylesheets/sideshow.min.css</cssFile>
@@ -39,6 +40,7 @@
     <jsFile>OPHContent/cdn/sideshow/distr/dependencies/pagedown.min.js</jsFile>
     <jsFile>OPHContent/cdn/sideshow/distr/sideshow.js</jsFile>
 	  <jsFile>OPHContent/cdn/chartjs/chart.bundle.min.js</jsFile>
+    <jsFile>OPHContent/cdn/admin-LTE/js/app.min.js</jsFile>
     <cssFile>OPHContent/themes/themeONE/styles/icomoon/style.css</cssFile>
     <jsFile>OPHContent/themes/themeONE/custom-me.js</jsFile>
   </manifest>
