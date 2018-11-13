@@ -706,12 +706,12 @@
           <xsl:choose>
             <xsl:when test="$state &lt; 999">
               <a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="Edit/View This">
-                <ix class="far fa-pencil"></ix>
+                <ix class="far fa-pencil-alt"></ix>
               </a>
             </xsl:when>
             <xsl:otherwise>
               <a href="#">
-                <ix class="far fa-pencil" style="color:LightGray"></ix>
+                <ix class="far fa-pencil-alt" style="color:LightGray"></ix>
               </a>
             </xsl:otherwise>
           </xsl:choose>

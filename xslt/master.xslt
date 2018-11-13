@@ -58,6 +58,7 @@
       document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
 
       resetBrowseCookies();
+      setCookie(getCode().toLowerCase()+'_showdocinfo', '<xsl:value-of select="/sqroot/header/info/code/ShowDocInfo" />',7);
       loadContent(1);
 
       setCookie('userURL', 'OPHContent/documents/<xsl:value-of select="sqroot/header/info/account" />/<xsl:value-of select="sqroot/header/info/user/userURL"/>', 7);

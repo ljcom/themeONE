@@ -29,8 +29,8 @@
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
     <script>
-      loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
-      loadScript('OPHContent/cdn/select2/select2.full.min.js');
+      //loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
+      //loadScript('OPHContent/cdn/select2/select2.full.min.js');
 
       var xmldoc = ""
       var xsldoc = "OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder"/>/xslt/" + getPage();
@@ -306,9 +306,6 @@
                     <button id="button_save" class="btn btn-orange-a btn-block" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>
                     <xsl:if test="$isApprover=1">
                       <button id="button_submit" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RE-SUBMIT</button>
-                    </xsl:if>
-                    <xsl:if test="($settingMode)='T'">
-                      <button id="button_submit" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RESUBMIT</button>
                     </xsl:if>
                     <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
                   </xsl:when>
@@ -825,8 +822,9 @@
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
-    <input type="text" class="form-control" Value="********" data-type="textBox" data-old="" name="{../@fieldName}"
-      onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" id ="{../@fieldName}" autocomplete="off">
+    <input type="password" class="form-control" Value="********" data-type="textBox" data-old="" name="{../@fieldName}"
+           minlength="8" required="required" placeholder="8 characters minimum."
+      onblur="preview('{preview/.}',getCode(), '{$cid}','formheader', this);" id ="{../@fieldName}" autocomplete="false">
     </input>
 
   </xsl:template>

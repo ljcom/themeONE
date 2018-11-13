@@ -39,7 +39,7 @@
 
       }
       
-      signoff();
+      //signoff();
       
       document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
 

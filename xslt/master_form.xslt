@@ -20,11 +20,11 @@
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
     <script>
-      loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
-      loadScript('OPHContent/cdn/select2/select2.full.min.js');
-            
+      //loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
+      //loadScript('OPHContent/cdn/select2/select2.full.min.js');
+
       form_init();
-      
+
       var xmldoc = ""
       var xsldoc = "OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder"/>/xslt/" + getPage();
 
@@ -182,9 +182,6 @@
                 <xsl:if test="$isApprover=1">
                   <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RE-SUBMIT</button>&#160;
                 </xsl:if>
-                <xsl:if test="($settingMode)='T'">
-                  <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RESUBMIT</button>&#160;
-                </xsl:if>
                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;&#160;
 
               </xsl:when>
@@ -250,7 +247,7 @@
       </xsl:if>
       <!-- browse for phone/tablet max width 768 -->
     </section>
-    
+
     <!--reject modal-->
     <div id="rejectModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -331,8 +328,8 @@
           <xsl:value-of select="@colNo"/>
         </xsl:if>
       </xsl:for-each>
-    </xsl:variable> 
-    
+    </xsl:variable>
+
     <xsl:choose>
       <xsl:when test="$colMax=0">
         <div class="col-md-12" data-cm="{$colMax}">
@@ -419,12 +416,12 @@
         <xsl:otherwise>disabled</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-      <xsl:if test ="$fieldEnabled='disabled'">
-        <script>
-          $('#<xsl:value-of select="@fieldName"/>').attr('disabled', 'disabled');
-          $('#<xsl:value-of select="@fieldName"/>').prop('disabled', true);
-        </script>
-      </xsl:if>
+    <xsl:if test ="$fieldEnabled='disabled'">
+      <script>
+        $('#<xsl:value-of select="@fieldName"/>').attr('disabled', 'disabled');
+        $('#<xsl:value-of select="@fieldName"/>').prop('disabled', true);
+      </script>
+    </xsl:if>
 
     <div class="form-group {$fieldEnabled}-input">
       <xsl:apply-templates select="textBox"/>
@@ -554,7 +551,7 @@
         <xsl:when test="align=2">right</xsl:when>
       </xsl:choose>
     </xsl:variable>
-	
+
     <!--default value-->
     <xsl:variable name="thisvalue">
       <xsl:choose>
@@ -663,8 +660,9 @@
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
-    <input type="text" class="form-control" Value="********" data-type="textBox" data-old="" name="{../@fieldName}"
-      onblur="preview('{preview/.}',getCode(), '{$cid}','formheader', this);" id ="{../@fieldName}" autocomplete="off">
+    <input type="password" class="form-control" Value="********" data-type="textBox" data-old="" name="{../@fieldName}"
+           minlength="8" required="required" placeholder="8 characters minimum."
+      onblur="preview('{preview/.}',getCode(), '{$cid}','formheader', this);" id ="{../@fieldName}" autocomplete="false">
     </input>
 
   </xsl:template>
