@@ -564,10 +564,15 @@ ul.view-form-toggle {
     transition: all 0.2s ease;
 }
 
-    .btn-gray-a:hover {
-        background: #a3a3a3;
-        color: white;
-    }
+.btn-gray-a:hover {
+	background: #a3a3a3;
+	color: white;
+}
+
+.btn-none {
+	
+	display:none;
+}
 
 #accordion-view-detail h4 a {
     font-size: 13px;
