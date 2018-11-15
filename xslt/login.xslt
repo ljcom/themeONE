@@ -62,7 +62,7 @@
                 </script>
               </span>
               <span style="font-size:25px;">
-                <xsl:value-of select="sqroot/header/info/company"/>
+                <xsl:value-of select="sqroot/header/info/productName"/>
               </span>
             </a>
           </div>
@@ -96,7 +96,7 @@
             <div class="col-md-12">
               <h1 style="font-size:40px; font-weight:bold">
                 WELCOME TO <br/>
-                <xsl:value-of select="sqroot/header/info/company"/>&#160;<xsl:value-of select="sqroot/header/info/productName"/>
+                <xsl:value-of select="sqroot/header/info/company"/>
               </h1>
 
             </div>

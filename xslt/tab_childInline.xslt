@@ -162,11 +162,6 @@
   </xsl:template>
 
   <xsl:template match="column">
-    <xsl:if test="@isNullable=0">
-      <script>
-        document.getElementsByName(tblnm)[0].value = document.getElementsByName(tblnm)[0].value + ', <xsl:value-of select="@fieldName"/>'
-      </script>
-    </xsl:if>
     <th>
       <xsl:value-of select="."/>
       <script>
@@ -177,6 +172,9 @@
 							or (@isEditable=3 and ($parentState&lt;400 or not ($parentState)))
 							or (@isEditable=4 and ($parentState&lt;500 or not ($parentState))))">
         x.push('editor=<xsl:value-of select="@editor"/>');
+		<xsl:if test="@isNullable=0">
+			document.getElementsByName(tblnm)[0].value = document.getElementsByName(tblnm)[0].value + ', <xsl:value-of select="@fieldName"/>'
+		</xsl:if>
         </xsl:when>
           <xsl:otherwise>
             x.push('editor=');
@@ -191,7 +189,8 @@
         x.push('digit=<xsl:value-of select="@digit"/>');
         x.push('isNullable=<xsl:value-of select="@isNullable"/>');
 
-        columns_<xsl:value-of select="$lowerCode"/>.push(x);
+		columns_<xsl:value-of select="$lowerCode"/>.push(x);
+        
       </script>
     </th>
   </xsl:template>

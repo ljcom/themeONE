@@ -509,6 +509,7 @@
       search: params.term==undefined?'':params.term.toString().split('+').join('%2B'),
       wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
       wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
+      parentCode: getCode(),
       page: params.page,
       code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
       colkey:"<xsl:value-of select="../@fieldName"/>"

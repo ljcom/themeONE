@@ -14,7 +14,7 @@
   <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/form/info/permission/allowWipe" />
   <xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/form/info/permission/allowOnOff" />
   <xsl:variable name="settingMode" select="/sqroot/body/bodyContent/form/info/settingMode/." />
-  <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/status/."/>
+  <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/parentState/."/>
   <xsl:variable name="isRequester" select="/sqroot/body/bodyContent/form/info/document/isRequester"/>
   <xsl:variable name="cid" select="/sqroot/body/bodyContent/form/info/GUID/."/>
 
@@ -95,13 +95,11 @@
             <!--location: 0 header; 1 child; 2 browse
               location: browse:10, header form:20, browse anak:30, browse form:40-->
 
-            <xsl:if test="/sqroot/body/bodyContent/form/info/permission/allowAdd&gt;=1">
+            <xsl:if test="(/sqroot/body/bodyContent/form/info/permission/allowAdd=1 and (/sqroot/body/bodyContent/form/info/state/parentState/.=0 or /sqroot/body/bodyContent/form/info/state/parentState/.=300))">
               <button id="child_button_addSave" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 41, 'form{sqroot/body/bodyContent/form/info/code/.}');">SAVE &amp; ADD NEW</button>&#160;
             </xsl:if>
-
-            <button id="child_button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 40, 'form{sqroot/body/bodyContent/form/info/code/.}');">SAVE</button>&#160;
-            <button id="child_button_cancel" class="btn btn-gray-a" onclick="closeChildForm('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}')">CANCEL</button>&#160;
-
+			<button id="child_button_save" class="btn btn-orange-a btn-none" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 40, 'form{sqroot/body/bodyContent/form/info/code/.}');">SAVE</button>&#160;
+			<button id="child_button_cancel" class="btn btn-gray-a btn-none" onclick="closeChildForm('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}')">CANCEL</button>&#160;
             <xsl:if test="(/sqroot/body/bodyContent/form/info/GUID/.)!='00000000-0000-0000-0000-000000000000'">
               <script>
                 $('#child_button_addSave').hide();
@@ -226,7 +224,8 @@
 
     <xsl:variable name="fieldEnabled">
       <xsl:choose>
-        <xsl:when test ="((@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000' or $settingMode='C' or $settingMode='M')) 
+        <xsl:when test ="((@isEditable='1' and ($docState='' or $docState=0 or $docState=300 
+							or $cid = '00000000-0000-0000-0000-000000000000' or /sqroot/body/bodyContent/form/info/parentMode/.='C' or /sqroot/body/bodyContent/form/info/parentMode/.='M' )) 
                         or (@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
                         or (@isEditable='3' and $docState&lt;400)
                         or (@isEditable='4' and $docState&lt;500))">enabled</xsl:when>
@@ -241,7 +240,9 @@
         </script>
       </xsl:when>
     </xsl:choose>
-
+<script>
+//alert('<xsl:value-of select="@isEditable" />');
+</script>
     <div class="form-group {$fieldEnabled}-input">
       <xsl:apply-templates select="textBox"/>
       <xsl:apply-templates select="textEditor"/>
@@ -511,6 +512,7 @@
       search: params.term==undefined?'':params.term.toString().split('+').join('%2B'),
       wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
       wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
+      parentCode: getCode(),
       page: params.page
       }
       return query;
@@ -608,7 +610,7 @@
   <xsl:template match="radio">
     <xsl:variable name="radioEnabled">
       <xsl:choose>
-        <xsl:when test ="((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000' or $settingMode='C' or $settingMode='M')) 
+        <xsl:when test ="((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000' or /sqroot/body/bodyContent/form/info/parentMode/.='C' or /sqroot/body/bodyContent/form/info/parentMode/.='M')) 
                         or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
                         or (../@isEditable='3' and $docState&lt;400)
                         or (../@isEditable='4' and $docState&lt;500))">enabled</xsl:when>

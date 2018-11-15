@@ -11,6 +11,8 @@
 
   <xsl:variable name="state" select="/sqroot/body/bodyContent/browse/info/curState/@substateCode" />
   <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/browse/info/permission/allowAccess" />
+  <xsl:variable name="allowAdd" select="/sqroot/body/bodyContent/browse/info/permission/allowAdd" />
+  <xsl:variable name="allowEdit" select="/sqroot/body/bodyContent/browse/info/permission/allowEdit" />
   <xsl:variable name="allowForce" select="/sqroot/body/bodyContent/browse/info/permission/allowForce" />
   <xsl:variable name="allowDelete" select="/sqroot/body/bodyContent/browse/info/permission/allowDelete" />
   <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/browse/info/permission/allowWipe" />
@@ -488,6 +490,7 @@
       var query = {
       code:"<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code/."/>",
       colkey:"<xsl:value-of select="@id"/>",
+      parentCode: getCode(),
       search: params.term, page: params.page
       }
       return query;
@@ -705,13 +708,25 @@
           <!--edit things-->
           <xsl:choose>
             <xsl:when test="$state &lt; 999">
-              <a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="Edit/View This">
-                <ix class="far fa-pencil-alt"></ix>
-              </a>
+			  <xsl:choose>
+                <xsl:when test="(($allowEdit>=1 or $allowAdd>=1 or $allowDelete>=1) and (/sqroot/body/bodyContent/browse/info/curState/@substateCode=0 or /sqroot/body/bodyContent/browse/info/curState/@substateCode=300))
+							or (($allowEdit>=3 or $allowDelete>=3) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=300)
+							or (($allowEdit>=4 or $allowAdd>=4 or $allowDelete>=4) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=400)">
+                  <a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="Edit This">
+                    <ix class="fal fa-pencil-alt"></ix>
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="View This">
+                    <ix class="fas fa-eye"></ix>
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>   
+			  
             </xsl:when>
             <xsl:otherwise>
               <a href="#">
-                <ix class="far fa-pencil-alt" style="color:LightGray"></ix>
+                <ix class="fal fa-eye" style="color:LightGray"></ix>
               </a>
             </xsl:otherwise>
           </xsl:choose>

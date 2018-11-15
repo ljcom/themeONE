@@ -7,7 +7,8 @@
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
   <xsl:decimal-format name="comma-dec" decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
-
+  <xsl:variable name="allowAdd" select="/sqroot/body/bodyContent/form/info/permission/allowAdd" />
+  <xsl:variable name="allowEdit" select="/sqroot/body/bodyContent/form/info/permission/allowEdit" />
   <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/form/info/permission/allowAccess" />
   <xsl:variable name="allowForce" select="/sqroot/body/bodyContent/form/info/permission/allowForce" />
   <xsl:variable name="allowDelete" select="/sqroot/body/bodyContent/form/info/permission/allowDelete" />
@@ -96,17 +97,33 @@
       <xsl:value-of select="/sqroot/body/bodyContent/form/info/state/status/."/>
     </xsl:variable>
 
+	<xsl:variable name="headlabel">
+		<xsl:choose>
+			<xsl:when test="sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
+			NEW
+			</xsl:when>
+			<xsl:when test="(($allowEdit>=1 or $allowAdd>=1 or $allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))
+							or (($allowEdit>=3 or $allowDelete>=3) and /sqroot/body/bodyContent/form/info/state/status&lt;=300)
+							or (($allowEdit>=4 or $allowAdd>=4 or $allowDelete>=4) and /sqroot/body/bodyContent/form/info/state/status&lt;=400)">
+			EDIT
+			</xsl:when>
+			<xsl:otherwise>
+			VIEW
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	
     <section class="content-header visible-phone">
       <h1 data-toggle="collapse" data-target="#header" id="header_title">
         <xsl:choose>
           <xsl:when test="sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
-            NEW&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>
+            <xsl:value-of select="$headlabel" />&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>
           </xsl:when>
           <xsl:when test="(sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000' and $settingmode='T'">
-            EDIT&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
+            <xsl:value-of select="$headlabel" />&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
           </xsl:when>
           <xsl:otherwise>
-            EDIT&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
+            <xsl:value-of select="$headlabel" />&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
           </xsl:otherwise>
         </xsl:choose>
 
@@ -1005,6 +1022,7 @@
       search: params.term==undefined?'':params.term.toString().split('+').join('%2B'),
       wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
       wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
+      parentCode: getCode(),
       page: params.page
       }
       return query;

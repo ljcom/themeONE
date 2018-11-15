@@ -3,9 +3,9 @@
     xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
   <xsl:output method="xml" indent="yes"/>
 
-  <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
-  <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
-  <xsl:variable name="normalChar" select="'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'" />
+  <xsl:variable name="smallcase" select="abcdefghijklmnopqrstuvwxyz" />
+  <xsl:variable name="uppercase" select="ABCDEFGHIJKLMNOPQRSTUVWXYZ" />
+  <xsl:variable name="normalChar" select="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890" />
   <xsl:decimal-format name="comma-dec" decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
   <xsl:variable name="state" select="/sqroot/body/bodyContent/browse/info/curState/@substateCode" />
@@ -18,6 +18,25 @@
   <xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/browse/info/permission/allowOnOff" />
   <xsl:variable name="settingMode" select="/sqroot/header/info/code/settingMode" />
 
+  <xsl:template name="string-replace-all">
+  <xsl:param name="text" />
+  <xsl:param name="replace" />
+  <xsl:param name="by" />
+  <xsl:choose>
+    <xsl:when test="contains($text, $replace)">
+      <xsl:value-of select="substring-before($text,$replace)" />
+      <xsl:value-of select="$by" />
+      <xsl:call-template name="string-replace-all">
+        <xsl:with-param name="text" select="substring-after($text,$replace)" />
+        <xsl:with-param name="replace" select="$replace" />
+        <xsl:with-param name="by" select="$by" />
+      </xsl:call-template>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$text" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
 
   <!--Table colspan-->
   <xsl:variable name="cMandatory">
@@ -307,12 +326,12 @@
                           <div style="display:none;">
                             <xsl:if test="$settingMode='T'">
                               <xsl:choose>
-                                <xsl:when test="$state=0 or $state=300">
+                                <xsl:when test="/sqroot/body/bodyContent/browse/info/curState/@substateCode=0 or /sqroot/body/bodyContent/browse/info/curState/@substateCode=300">
                                   <a href="javascript:btn_function('{/sqroot/header/info/code/id}', null, 'execute', '1', 10)" data-toggle="tooltip">
                                     <xsl:attribute name="title">
                                       <xsl:choose>
-                                        <xsl:when test="$state=0">Submit All</xsl:when>
-                                        <xsl:when test="$state=300">Re-submit All</xsl:when>
+                                        <xsl:when test="/sqroot/body/bodyContent/browse/info/curState/@substateCode=0">Submit All</xsl:when>
+                                        <xsl:when test="/sqroot/body/bodyContent/browse/info/curState/@substateCode=300">Re-submit All</xsl:when>
                                       </xsl:choose>
                                     </xsl:attribute>
                                     <ix class="fa fa-check"></ix>
@@ -481,6 +500,7 @@
       var query = {
       code:"<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code/."/>",
       colkey:"<xsl:value-of select="@id"/>",
+      parentCode: getCode(),
       search: params.term, page: params.page
       }
       return query;
@@ -694,7 +714,9 @@
           <xsl:choose>
             <xsl:when test="$state &lt; 999">
               <xsl:choose>
-                <xsl:when test="$allowEdit=1 or $allowAdd=1 or $allowDelete=1">
+                <xsl:when test="(($allowEdit>=1 or $allowAdd>=1 or $allowDelete>=1) and (/sqroot/body/bodyContent/browse/info/curState/@substateCode=0 or /sqroot/body/bodyContent/browse/info/curState/@substateCode=300))
+							or (($allowEdit>=3 or $allowDelete>=3) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=300)
+							or (($allowEdit>=4 or $allowAdd>=4 or $allowDelete>=4) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=400)">
                   <a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="Edit This">
                     <ix class="fal fa-pencil-alt"></ix>
                   </a>
@@ -708,7 +730,7 @@
             </xsl:when>
             <xsl:otherwise>
               <a href="#">
-                <ix class="fal fa-pencil-alt" style="color:LightGray"></ix>
+                <ix class="fal fa-eye" style="color:LightGray"></ix>
               </a>
             </xsl:otherwise>
           </xsl:choose>
@@ -830,9 +852,10 @@
   </xsl:template>
 
   <xsl:template match="fields/field[@mandatory=1]">
+
     <script>
       var m=$('#mandatory<xsl:value-of select="../../@GUID"/>').val();
-      var mv='<xsl:value-of select="translate(., $normalChar, '')" />';
+      var mv='<xsl:value-of select="translate(., translate(text(), '&amp;x22;','#'), '')" />';
       if (m!='' &#38;&#38; mv!='') m+='/';
       m+=mv;
       $('#mandatory<xsl:value-of select="../../@GUID"/>').val(m);
