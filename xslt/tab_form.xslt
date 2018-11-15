@@ -1111,13 +1111,16 @@
     <input type="text" class="form-control" Value="{$thisvalue}" data-type="tokenBox" data-old="{$thisvalue}" data-newJSON="" data-code="{code/.}"
       data-key="{key}" data-id="{id}" data-name="{name}"
       name="{../@fieldName}" id ="{../@fieldName}">
-
-      <xsl:if test="((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+	  <xsl:choose>
+        <xsl:when test="((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
                         or (../@isEditable='3' and $docState&lt;400)
                         or (../@isEditable='4' and $docState&lt;500))">
-        <xsl:attribute name="disabled">disabled</xsl:attribute>
-      </xsl:if>
+	    </xsl:when>						
+		<xsl:otherwise>
+          <xsl:attribute name="disabled">disabled</xsl:attribute>
+        </xsl:otherwise>
+	  </xsl:choose>
     </input>
   </xsl:template>
 
