@@ -105,7 +105,7 @@
     </div>
     <!-- /.center -->
     <!-- *** NOTIFICATION MODAL -->
-    <div id="notiModal" class="modal fade" role="dialog">
+    <div id="notiModal" class="modal fade" role="dialog" tabindex="-1">
       <div class="modal-dialog">
 
         <!-- Modal content-->

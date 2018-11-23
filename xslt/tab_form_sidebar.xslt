@@ -262,59 +262,112 @@
   <xsl:template match="sqroot/body/bodyContent/form/info">
     <ul class="treeview-menu view-left-sidebar">
       <li>
-        <xsl:if test="docNo/.">
+        <!--<xsl:if test="docNo/.">
           <dl>
-            <dt>Doc No</dt>
             <dt>
+              <span style="font-weight:normal;">Doc No</span>
+              <br/>
               <xsl:value-of select="docNo"/>
             </dt>
           </dl>
         </xsl:if>
         <xsl:if test="refNo/.">
           <dl>
-            <dt>Ref No</dt>
-
             <dt>
+              <span style="font-weight:normal;">Ref No</span>
+              <br/>
               <xsl:value-of select="refNo"/>
             </dt>
           </dl>
         </xsl:if>
         <xsl:if test="docDate/.">
           <dl>
-            <dt>Doc Date</dt>
             <dt>
+              <span style="font-weight:normal;">Doc Date</span>
+              <br/>
               <xsl:value-of select="docDate"/>
             </dt>
           </dl>
-        </xsl:if>
-        <xsl:if test="id/.">
-          <dl>
-            <dt>ID</dt>
-            <dd>
-              <xsl:value-of select="id"/>
-            </dd>
-          </dl>
-        </xsl:if>
-        <hr />
-        <xsl:if test="state/status/.">
-          <dl>
-            <dt>Status</dt>
-            <dt>
-              <xsl:value-of select="state/status"/>
-            </dt>
-          </dl>
-        </xsl:if>
+        </xsl:if>-->
         <xsl:if test="state/statuscomment/.">
           <dl>
-            <dt>Comment</dt>
             <dt>
+              <span style="font-weight:normal;">Status Comment</span>
+              <br/>
               <xsl:value-of select="state/statuscomment"/>
             </dt>
           </dl>
         </xsl:if>
+        <xsl:if test="document/createdDate/.">
+          <dl>
+            <dt>
+              <span style="font-weight:normal;">Created On</span>
+              <br/>
+              <xsl:value-of select="document/createdDate"/>
+            </dt>
+          </dl>
+        </xsl:if>
+        <xsl:if test="document/createdUser/.">
+          <dl>
+            <dt>
+              <span style="font-weight:normal;">Created By</span>
+              <br/>
+              <xsl:value-of select="document/createdUser"/>
+            </dt>
+          </dl>
+        </xsl:if>
+        <xsl:if test="document/updatedDate/.">
+          <dl>
+            <dt>
+              <span style="font-weight:normal;">Updated On</span>
+              <br/>
+              <xsl:value-of select="document/updatedDate"/>
+            </dt>
+          </dl>
+        </xsl:if>
+        <xsl:if test="document/updatedUser/.">
+          <dl>
+            <dt>
+              <span style="font-weight:normal;">Updated By</span>
+              <br/>
+              <xsl:value-of select="document/updatedUser"/>
+            </dt>
+          </dl>
+        </xsl:if>
+        <xsl:if test="document/isDelete/. = 1">
+          <xsl:if test="document/isDeleted/.">
+            <dl>
+              <dt>
+                <span style="font-weight:normal;">Status Document</span>
+                <br/>
+                Deleted
+              </dt>
+            </dl>
+          </xsl:if>
+          <xsl:if test="document/deletedDate/.">
+            <dl>
+              <dt>
+                <span style="font-weight:normal;">Deleted On</span>
+                <br/>
+                <xsl:value-of select="document/deletedDate"/>
+              </dt>
+            </dl>
+          </xsl:if>
+          <xsl:if test="document/deletedUser/.">
+            <dl>
+              <dt>
+                <span style="font-weight:normal;">Deleted By</span>
+                <br/>
+                <xsl:value-of select="document/deletedUser"/>
+              </dt>
+            </dl>
+          </xsl:if>
+        </xsl:if>
       </li>
     </ul>
   </xsl:template>
+
+    
 
   <xsl:template match="sqroot/body/bodyContent/form/approvals">
     <ul class="treeview-menu view-left-sidebar">
