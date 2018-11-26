@@ -641,7 +641,7 @@ function loadExtraButton(buttons, location) {
                 for (var i = 0; i < bstate.length; i++) {
                     var gstate = (getState() == "") ? "0" : getState();
                     if (gstate == bstate[i]) {
-						if ($(td).find("a").find("."+v.icon))
+						if ($(td).find("a").find("."+v.icon).length>0)
 							$(td).find("a").find("."+v.icon).parent().attr("href", url);
 						else					
 							if (uo==0) $(td).append(a);
@@ -649,7 +649,7 @@ function loadExtraButton(buttons, location) {
                     }
                 }
             } else {
-				if ($(td).find("a").find("."+v.icon))
+				if ($(td).find("a").find("."+v.icon).length>0)
 					$(td).find("a").find("."+v.icon).parent().attr("href", url);
 				else					
 					if (uo==0) $(td).append(a);

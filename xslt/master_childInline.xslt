@@ -33,6 +33,7 @@
       //setTimeout(function() {location.reload()}, 5000);
 
       var code='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>';
+      var <xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>_parent='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/filter"/>';
       loadChild(code);
 
       });

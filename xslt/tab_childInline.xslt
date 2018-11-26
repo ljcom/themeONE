@@ -41,7 +41,8 @@
       });
       var tblnm =code+"requiredname";
       var columns_<xsl:value-of select="$lowerCode"/>=[];
-
+      //setCookie('<xsl:value-of select="$lowerCode"/>_parent', '<xsl:value-of select="/sqroot/body/bodyContent/browse/info/filter"/>', 1);
+      var <xsl:value-of select="$lowerCode"/>_parent='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/filter"/>';
     </script>
     <input type="hidden" name ="{$lowerCode}requiredname"/>
     <input type="hidden" name ="{$lowerCode}requiredtblvalue"/>    
