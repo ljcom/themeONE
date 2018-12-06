@@ -92,9 +92,9 @@
 			<xsl:when test="sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
 			NEW
 			</xsl:when>
-			<xsl:when test="(($allowEdit>=1 or $allowAdd>=1 or $allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))
-							or (($allowEdit>=3 or $allowDelete>=3) and /sqroot/body/bodyContent/form/info/state/status&lt;=300)
-							or (($allowEdit>=4 or $allowAdd>=4 or $allowDelete>=4) and /sqroot/body/bodyContent/form/info/state/status&lt;=400)">
+			<xsl:when test="(($allowEdit>=1 or $allowAdd>=1 or $allowDelete>=1) and ($docState=0 or $docState=300))
+							or (($allowEdit>=3 or $allowDelete>=3) and $docState&lt;=300)
+							or (($allowEdit>=4 or $allowAdd>=4 or $allowDelete>=4) and $docState&lt;=400)">
 			EDIT
 			</xsl:when>
 			<xsl:otherwise>
@@ -178,13 +178,14 @@
                 <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
               </xsl:when>
-              <xsl:when test="/sqroot/body/bodyContent/form/info/state/status/. = 0 or /sqroot/body/bodyContent/form/info/state/status/. = ''">
+              <xsl:when test="$docState = 0 or $docState = ''">
                 <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
                 <xsl:if test="($settingMode)='T' and ($docState) &lt; 400 ">
                   <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>&#160;
                 </xsl:if>
-                <xsl:if test="(/sqroot/body/bodyContent/form/info/permission/allowDelete/.)=1">
+                <xsl:if test="(($allowDelete>=1) and ($docState=0 or $docState=300))
+							                or (($allowDelete>=4) and ($docState&lt;100 or $docState&gt;=300))">
                   <button id="button_delete" class="btn btn-gray-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
                 </xsl:if>
               </xsl:when>
@@ -838,7 +839,7 @@
       $("#<xsl:value-of select="../@fieldName"/>").on("select2:select", function(e) {
       $selection = $('#select2-<xsl:value-of select="../@fieldName"/>-container').parents('.selection');
       if ($selection.children('#removeForm<xsl:value-of select="../@fieldName"/>').length == 0)
-      $('#removeForm<xsl:value-of select="../@fieldName"/>').appendTo($selection)
+      $('#removeForm<xsl:value-of select="../@fieldName"/>').appendTo($selection);
       $('#removeForm<xsl:value-of select="../@fieldName"/>').show();
       });
     </script>
@@ -988,6 +989,12 @@
     <div class="input-group">
       <label class="input-group-btn">
         <span class="btn btn-primary">
+          <xsl:if test="not (((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000' or $settingMode='C' or $settingMode='M')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000'))))">
+            <xsl:attribute name="disabled">disabled</xsl:attribute>
+          </xsl:if>
           Browse <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file" data-code="{/sqroot/body/bodyContent/form/info/code}" style="display: none;">
           </input>
         </span>
@@ -996,7 +1003,10 @@
       />
       <span class="input-group-btn">
         <button class="btn btn-secondary" type="button" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={../@fieldName}&#38;code={/sqroot/body/bodyContent/form/info/code/.}&#38;GUID={$cid}');">
-          <xsl:if test="/sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
+          <xsl:if test="not (((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000' or $settingMode='C' or $settingMode='M')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000'))))">
             <xsl:attribute name="disabled">disabled</xsl:attribute>
           </xsl:if>
           <ix class="fa fa-paperclip"></ix>&#160;

@@ -306,7 +306,8 @@
                     <xsl:if test="($settingMode)='T' and ($docState) &lt; 400 ">
                       <button id="button_submit" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>
                     </xsl:if>
-                    <xsl:if test="(/sqroot/body/bodyContent/form/info/permission/allowDelete/.)=1">
+                    <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))">
+                      
                       <button id="button_delete" class="btn btn-gray-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>
                     </xsl:if>
                     <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
@@ -329,8 +330,13 @@
                   <xsl:when test="($docState) &gt;= 400 and ($docState) &lt;= 499">
                     <button id="button_save" class="btn btn-orange-a btn-block" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>
                     <xsl:if test="$allowForce=1">
-                      <button id="button_close" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">CLOSE</button>
+                      <button id="button_close" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">CLOSE</button>   
                     </xsl:if>
+                    <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))
+							                or (($allowDelete>=4) and (/sqroot/body/bodyContent/form/info/state/status&lt;100 or /sqroot/body/bodyContent/form/info/state/status&gt;=300))">
+
+                      <button id="button_delete" class="btn btn-gray-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>
+                    </xsl:if>  
                     <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
                   </xsl:when>
                   <xsl:when test="($docState) &gt;= 500 and ($docState) &lt;= 899">
@@ -394,8 +400,9 @@
                               <xsl:when test="/sqroot/body/bodyContent/form/info/state/status/. = 0 or /sqroot/body/bodyContent/form/info/state/status/. = ''">
                                 <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
                                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                                <xsl:if test="(/sqroot/body/bodyContent/form/info/permission/allowDelete/.)=1">
-                                  <button id="button_delete" class="btn btn-gray-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
+                                <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))">
+
+                                    <button id="button_delete" class="btn btn-gray-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
                                 </xsl:if>
                                 <xsl:if test="($settingMode)='T' and ($docState) &lt; 400 ">
                                   <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>
@@ -424,6 +431,10 @@
                                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
                                 <xsl:if test="$allowForce=1">
                                   <button id="button_close" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">CLOSE</button>&#160;
+                                </xsl:if>
+                                <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))
+							                             or (($allowDelete>=4) and (/sqroot/body/bodyContent/form/info/state/status&lt;100 or /sqroot/body/bodyContent/form/info/state/status&gt;=300))">
+                                  <button id="button_delete" class="btn btn-gray-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>
                                 </xsl:if>
                               </xsl:when>
                               <xsl:when test="($docState) &gt;= 500 and ($docState) &lt;= 899">

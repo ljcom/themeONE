@@ -236,10 +236,10 @@
                 <xsl:if test="sqroot/body/bodyContent/browse/info/permission/allowAdd = 0">
                   <xsl:attribute name="disabled">disabled</xsl:attribute>
                 </xsl:if>
-																																										 
-																							 
-																		   
-						   
+
+
+
+
                 <strong>NEW DOCUMENT</strong>
               </button>
             </div>
@@ -321,7 +321,7 @@
                                       <xsl:choose>
                                         <xsl:when test="$state=0">Submit All</xsl:when>
                                         <xsl:when test="$state=300">Re-submit All</xsl:when>
-																				  
+
                                       </xsl:choose>
                                     </xsl:attribute>
                                     <ix class="far fa-check"></ix>
@@ -347,20 +347,23 @@
                                 </xsl:when>
                               </xsl:choose>
                             </xsl:if>
+                            <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))
+							                or (($allowDelete>=4) and (/sqroot/body/bodyContent/form/info/state/status&lt;100 or /sqroot/body/bodyContent/form/info/state/status&gt;=300))">
 
-                            <xsl:if test="$allowOnOff = 1 and $allowDelete = 1 and $state &lt; 500 and docStatus/@isOwner=1">
-                              <a href="#" onclick="btn_function('{sqroot/body/bodyContent/browse/info/code}', null, 'inactivate', {sqroot/body/bodyContent/browse/info/pageNo}, 10)">
-                                <ix class="far fa-toggle-on fa-lg" data-toggle="tooltip" title="Inactivated All" data-placement="left"/>
-                              </a>
-                            </xsl:if>
-                            <xsl:if test="$state = 999">
-                              <a href="#" onclick="btn_function('{sqroot/body/bodyContent/browse/info/code}', null, 'restore', {sqroot/body/bodyContent/browse/info/pageNo}, 10)">
-                                <ix class="far fa-toggle-off fa-lg" data-toggle="tooltip" title="Re-Activated All" data-placement="left"/>
-                              </a>
-                              <xsl:if test="$allowWipe = 1">
-                                <a href="#" onclick="btn_function('{sqroot/body/bodyContent/browse/info/code}', null, 'wipe', {sqroot/body/bodyContent/browse/info/pageNo}, 10)">
-                                  <ix class="far fa-tras fa-lg" data-toggle="tooltip" title="Wiped All" data-placement="left"/>
+                              <xsl:if test="$allowOnOff = 1 and $state &lt; 500 and docStatus/@isOwner=1">
+                                <a href="#" onclick="btn_function('{sqroot/body/bodyContent/browse/info/code}', null, 'inactivate', {sqroot/body/bodyContent/browse/info/pageNo}, 10)">
+                                  <ix class="far fa-toggle-on fa-lg" data-toggle="tooltip" title="Inactivated All" data-placement="left"/>
                                 </a>
+                              </xsl:if>
+                              <xsl:if test="$state = 999">
+                                <a href="#" onclick="btn_function('{sqroot/body/bodyContent/browse/info/code}', null, 'restore', {sqroot/body/bodyContent/browse/info/pageNo}, 10)">
+                                  <ix class="far fa-toggle-off fa-lg" data-toggle="tooltip" title="Re-Activated All" data-placement="left"/>
+                                </a>
+                                <xsl:if test="$allowWipe = 1">
+                                  <a href="#" onclick="btn_function('{sqroot/body/bodyContent/browse/info/code}', null, 'wipe', {sqroot/body/bodyContent/browse/info/pageNo}, 10)">
+                                    <ix class="far fa-tras fa-lg" data-toggle="tooltip" title="Wiped All" data-placement="left"/>
+                                  </a>
+                                </xsl:if>
                               </xsl:if>
                             </xsl:if>
                           </div>
@@ -661,57 +664,62 @@
           </xsl:if>
 
           <!--delete things-->
+
           <xsl:choose>
-            <!--allow delete-->
-            <xsl:when test="$settingMode!='T' and $allowDelete = 1 and $state = 0">
-              <a href="javascript:btn_function('{@code}', '{@GUID}', 'inactivate', '{$pageNo}', 10)" data-toggle="tooltip" title="Inactivate This">
-                <ix class="far fa-toggle-on" title="Inactive"></ix>
-              </a>
-            </xsl:when>
-            <xsl:when test="$settingMode='T' and $allowDelete = 1 and $state = 0 and docStatus/@isOwner=1">
-              <a href="javascript:btn_function('{@code}', '{@GUID}', 'delete', '{$pageNo}', 10)" data-toggle="tooltip" title="Delete This">
-                <ix class="far fa-trash" title="Delete"></ix>
-              </a>
-            </xsl:when>
-            <xsl:when test="$state = 999">
-              <a href="javascript:btn_function('{@code}', '{@GUID}', 'restore', '{$pageNo}', 10)" data-toggle="tooltip" title="Reactivate This">
-                <ix class="far fa-toggle-off" title="Reactivate"></ix>
-              </a>
-              <xsl:if test="$allowWipe = 1">
-                <a href="javascript:btn_function('{@code}', '{@GUID}', 'wipe', '{$pageNo}', 10)" data-toggle="tooltip" title="Delete This Permanently">
+            <xsl:when test="(($allowDelete>=1) and ($state=0 or $state=300 or @state=999))
+							                or (($allowDelete>=4) and ($state&lt;100 or $state&gt;=300))">
+
+              <!--allow delete-->
+              <xsl:if test="$allowOnOff=1">
+                <a href="javascript:btn_function('{@code}', '{@GUID}', 'inactivate', '{$pageNo}', 10)" data-toggle="tooltip" title="Inactivate This">
+                  <ix class="far fa-toggle-on" title="Inactive"></ix>
+                </a>
+              </xsl:if>
+              <xsl:if test="$settingMode='T' and docStatus/@isOwner=1">
+                <a href="javascript:btn_function('{@code}', '{@GUID}', 'delete', '{$pageNo}', 10)" data-toggle="tooltip" title="Delete This">
                   <ix class="far fa-trash" title="Delete"></ix>
                 </a>
               </xsl:if>
+              <xsl:if test="$state = 999">
+                <a href="javascript:btn_function('{@code}', '{@GUID}', 'restore', '{$pageNo}', 10)" data-toggle="tooltip" title="Reactivate This">
+                  <ix class="far fa-toggle-off" title="Reactivate"></ix>
+                </a>
+                <xsl:if test="$allowWipe = 1">
+                  <a href="javascript:btn_function('{@code}', '{@GUID}', 'wipe', '{$pageNo}', 10)" data-toggle="tooltip" title="Delete This Permanently">
+                    <ix class="far fa-trash" title="Delete"></ix>
+                  </a>
+                </xsl:if>
+              </xsl:if>
             </xsl:when>
-
-            <!--not allow delete-->
-            <xsl:when test="$allowOnOff = 1 and $allowDelete = 0 and $state &lt; 500">
-              <a href="#">
-                <ix class="far fa-toggle-on" style="color:LightGray"></ix>
-              </a>
-            </xsl:when>
-            <xsl:when test="$allowOnOff = 0 and $allowDelete = 0 and $state &lt; 500">
-              <a href="#">
-                <ix class="far fa-trash" style="color:LightGray"></ix>
-              </a>
-            </xsl:when>
-            <xsl:when test="$state = 999">
-              <a href="#">
-                <ix class="far fa-undo" style="color:lightgray"></ix>
-              </a>
-              <a href="#">
-                <ix class="far fa-trash" style="color:LightGray"></ix>
-              </a>
-            </xsl:when>
+            <xsl:otherwise>
+              <!--not allow delete-->
+              <xsl:if test="$allowOnOff = 1 and $state &lt; 500">
+                <a href="#">
+                  <ix class="far fa-toggle-on" style="color:LightGray"></ix>
+                </a>
+              </xsl:if>
+              <xsl:if test="$allowOnOff = 0 and $state &lt; 500">
+                <a href="#">
+                  <ix class="far fa-trash" style="color:LightGray"></ix>
+                </a>
+              </xsl:if>
+              <xsl:if test="$state = 999">
+                <a href="#">
+                  <ix class="far fa-undo" style="color:lightgray"></ix>
+                </a>
+                <a href="#">
+                  <ix class="far fa-trash" style="color:LightGray"></ix>
+                </a>
+              </xsl:if>
+            </xsl:otherwise>
           </xsl:choose>
-
           <!--edit things-->
           <xsl:choose>
             <xsl:when test="$state &lt; 999">
-			  <xsl:choose>
+              <xsl:choose>
                 <xsl:when test="(($allowEdit>=1 or $allowAdd>=1 or $allowDelete>=1) and (/sqroot/body/bodyContent/browse/info/curState/@substateCode=0 or /sqroot/body/bodyContent/browse/info/curState/@substateCode=300))
-							or (($allowEdit>=3 or $allowDelete>=3) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=300)
-							or (($allowEdit>=4 or $allowAdd>=4 or $allowDelete>=4) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=400)">
+							                    or (($allowEdit>=3 or $allowDelete>=3) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=300)
+							                    or (($allowEdit>=4 or $allowAdd>=4 or $allowDelete>=4) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=400)">
                   <a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="Edit This">
                     <ix class="fal fa-pencil-alt"></ix>
                   </a>
@@ -721,8 +729,8 @@
                     <ix class="fas fa-eye"></ix>
                   </a>
                 </xsl:otherwise>
-              </xsl:choose>   
-			  
+              </xsl:choose>
+
             </xsl:when>
             <xsl:otherwise>
               <a href="#">
@@ -824,13 +832,13 @@
                         <button class="btn btn-box-tool" data-widget="collapse">
                           <ix class="far fa-plus"></ix>
                         </button>
-							  
+
                       </div>
                     </div>
                     <div class="box-body">
                       <div class="direct-chat-messages" id="chatMessages{@GUID}" >
                         <xsl:apply-templates select="talks/talk"/>
-							  
+
                       </div>
                     </div>
                     <div class="box-footer">
@@ -838,12 +846,12 @@
                         <input type="text" id="message{@GUID}" name="message" placeholder="Type Message ..." class="form-control" onkeypress="javascript:enterTalk('{@GUID}', event, '10')"/>
                         <span class="input-group-btn">
                           <button type="button" class="btn btn-danger btn-flat" onclick="javascript:submitTalk('{@GUID}', '10')">Send</button>
-								 
+
                         </span>
                       </div>
                     </div>
                   </div>
-                  
+
 
                 </div>
               </div>
