@@ -140,10 +140,10 @@
               NEW&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/Description/."/>
             </xsl:when>
             <xsl:when test="(sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000' and $settingMode='T'">
-              EDIT&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
+              DOC&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
             </xsl:when>
             <xsl:otherwise>
-              EDIT&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
+              DOC&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
             </xsl:otherwise>
           </xsl:choose>
         </li>

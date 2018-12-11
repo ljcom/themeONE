@@ -216,6 +216,63 @@
               </xsl:choose>
             </xsl:variable>
             <!-- Form Head-->
+
+            <xsl:if test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=2]/fields/field/imageBox/. != ''">
+              <xsl:variable name="imgName">
+                <xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=2]/fields/field/@fieldName/."/>
+              </xsl:variable>
+              <xsl:variable name="imgVal">
+                <xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=2]/fields/field/imageBox/value/."/>
+              </xsl:variable>
+              <div id="profileBox" class="box box-primary">
+
+                <div class="box-body box-profile">
+                  <!--<xsl:value-of select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=2]/fields/field/imageBox/titlecaption"/>-->
+                  <div id="imageBox" style=" padding:5px;">
+                    <div id="{$imgName}_camera">
+                      <img style="width:100%" src="{$imgVal}" />
+                      &#xa0;
+                    </div>
+                    <div id="{$imgName}_hidden" style="display:none">
+                      is hidden
+                    </div>
+
+                    <a href="javascript:btnWebcam('opencamera', '{$imgName}')" class="btn btn-primary btn-block" style="margin-top:5px;" id="opencamera">
+                      <span>
+                        <ix class="fa fa-camera"></ix>
+                      </span>
+                      <span>
+                        <b> Open Camera</b>
+                      </span>
+                    </a>
+                    <a href="javascript:btnWebcam('takesnap')" class="btn btn-primary btn-block" style="margin-top:5px; display:none;" id="takesnapshot">
+                      <span>
+                        <ix class="fa fa-camera"></ix>
+                      </span>
+                      <span>
+                        <b> Take Snapshot</b>
+                      </span>
+                    </a>
+                    <a href="javascript:btnWebcam('takeanother')" class="btn btn-primary btn-block" style="margin-top:5px; display:none;" id="takeanother">
+                      <span>
+                        <ix class="fa fa-camera"></ix>
+                      </span>
+                      <span>
+                        <b> Take Another</b>
+                      </span>
+                    </a>
+                    <a href="javascript:btnWebcam('savephoto', '{$imgName}')" class="btn btn-primary btn-block" style="margin-top:5px; display:none;" id="savephoto">
+                      <span>
+                        <ix class="fa fa-camera"></ix>
+                      </span>
+                      <span>
+                        <b> Save Photo</b>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </xsl:if>
             <div id="profileBox" class="box box-primary">
 
               <div class="box-body box-profile">
@@ -239,6 +296,8 @@
                     </xsl:variable>
                     <xsl:choose>
                       <xsl:when test="@fieldName=$fieldHead">
+                      </xsl:when>
+                      <xsl:when test="imageBox">
                       </xsl:when>
                       <xsl:otherwise>
                         <li class="list-group-item">
@@ -535,8 +594,11 @@
       <input type="hidden" id="cid" name="cid" value="{/sqroot/body/bodyContent/form/info/GUID/.}" />
       <input type="hidden" name ="{info/code/.}requiredname"/>
       <input type="hidden" name ="{info/code/.}requiredtblvalue"/>
+      <xsl:if test="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=2]/fields/field/imageBox/. != ''">
+        <input type="hidden" class="oph-webcam" id="{/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=2]/fields/field/@fieldName/.}" name ="{/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=2]/fields/field/@fieldName/.}"/>
+      </xsl:if>
 
-      <xsl:apply-templates select="formPages/formPage[@pageNo&lt;9]"/>
+        <xsl:apply-templates select="formPages/formPage[@pageNo&lt;9]"/>
     </form>
   </xsl:template>
 

@@ -345,7 +345,7 @@
   <xsl:template match="textEditor">
     <label id="{../@fieldName}caption" name="{../@fieldName}caption" data-toggle="collapse" data-target="#section_{@sectionNo}">
       <xsl:value-of select="titlecaption"/>
-    </label>
+    </label>ASAsaAsA
     <xsl:if test="../@isNullable = 0">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>

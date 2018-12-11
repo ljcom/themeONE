@@ -7,7 +7,9 @@
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
   <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
-  <xsl:variable name="lowerCode"><xsl:value-of select="translate(/sqroot/body/bodyContent/browse/info/code, $uppercase, $smallcase)"/></xsl:variable>
+  <xsl:variable name="lowerCode">
+    <xsl:value-of select="translate(/sqroot/body/bodyContent/browse/info/code, $uppercase, $smallcase)"/>
+  </xsl:variable>
   <xsl:variable name="parentState" select="/sqroot/body/bodyContent/browse/info/parentState" />
   <xsl:variable name="settingMode" select="/sqroot/header/info/code/settingMode/." />
 
@@ -26,8 +28,8 @@
       var sn=$(data).find("sqroot").find("guid").eq(i);
       if (sn!='') s++;
       })
-      
-      var msg= (err != '') ? 'Upload Error : ' + err : 'Upload Data Success'      
+
+      var msg= (err != '') ? 'Upload Error : ' + err : 'Upload Data Success'
       showMessage(msg);
       //setTimeout(function() {location.reload()}, 5000);
 
@@ -44,9 +46,10 @@
           </h3>
         </div>
         <div>
-          <input style="width:200px; position:absolute; right:25px; top:5px; padding-right:25px" type="text" id="searchBox_{$lowerCode}" name="searchBox_{$lowerCode}"
-            class="form-control" placeholder="Enter search key..." value="{sqroot/body/bodyContent/browse/info/search}"
-              onkeypress="searchTextChild(event, this.value, '{$lowerCode}');" />
+          <input style="width:200px; position:absolute; right:25px; top:5px; padding-right:25px;visibility:hidden;" type="text" id="searchBox_{$lowerCode}"
+                  name="searchBox_{$lowerCode}" class="form-control" placeholder="Enter search key..."
+                  value="{sqroot/body/bodyContent/browse/info/search}"
+                  onkeypress="searchTextChild(event, this.value, '{$lowerCode}');" />
           <button id="clear{$lowerCode}" type="button" class="btn btn-flat" style="position:absolute; right:25px; top:5px; background:none; border:none; display:none" >
             <span aria-hidden="true">&#215;</span>
           </button>
@@ -88,42 +91,43 @@
               </div>
               <!-- /.box-body -->
               <!--xsl:if test="$parentState &lt; 400"-->
-                <div class="box-footer clearfix">
-                  <xsl:if test="(
-                          ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='1' and ($parentState &lt; 100 or not ($parentState)))
+              <div class="box-footer clearfix">
+                <xsl:if test="(
+                          ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='1' and ($parentState=0 or $parentState=300 or not ($parentState)))
                           or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='3' and $parentState &lt; 400)
                           or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='4' and $parentState &lt; 500)
                         )">
-                    <button class="btn btn-orange-a accordion-toggle" data-toggle="collapse"
-                            data-target="#{$lowerCode}00000000-0000-0000-0000-000000000000"
-                            onclick="showChildForm('{$lowerCode}','00000000-0000-0000-0000-000000000000')">ADD</button>&#160;
-                  </xsl:if>
-                  <xsl:if test="(
-                          ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and ($parentState &lt; 100 or not ($parentState)))
+                  <button class="btn btn-orange-a accordion-toggle" data-toggle="collapse"
+                          data-target="#{$lowerCode}00000000-0000-0000-0000-000000000000"
+                          onclick="showChildForm('{$lowerCode}','00000000-0000-0000-0000-000000000000')">ADD</button>&#160;
+                </xsl:if>
+                <xsl:if test="(
+                          ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and ($parentState=0 or $parentState=300 or not ($parentState)))
                           or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='3' and $parentState &lt; 400)
                           or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='4' and $parentState &lt; 500)
                         )">
-                    <button class="btn btn-gray-a" onclick="cell_delete('{$lowerCode}', this)">DELETE</button>&#160;
-                  </xsl:if>
-                  <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;=1 and (/sqroot/body/bodyContent/browse/info/permission/allowExport/.)=1" >
-                    <button class="btn btn-gray-a"
-                            onclick="downloadChild('{$lowerCode}', '')">DOWNLOAD</button>&#160;
-                    <button class="btn btn-gray-a" onclick="javascript:$('#import_hidden').click();">UPLOAD...</button>&#160;
+                  <button class="btn btn-gray-a" onclick="cell_delete('{$lowerCode}', this)">DELETE</button>&#160;
+                </xsl:if>
+                <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;=1 and (/sqroot/body/bodyContent/browse/info/permission/allowExport/.)=1" >
+                  <button class="btn btn-gray-a"
+                          onclick="downloadChild('{$lowerCode}', '')">DOWNLOAD</button>&#160;
+                  <button class="btn btn-gray-a" onclick="javascript:$('#import_hidden').click();">UPLOAD...</button>&#160;
 
-                    <!--<button type="button" class="buttonCream" id="download" name="download" onclick="javascript:PrintDirect('{$lowerCode}', '', 3, '', '', '');">DOWNLOAD</button>
+                  <!--<button type="button" class="buttonCream" id="download" name="download" onclick="javascript:PrintDirect('{$lowerCode}', '', 3, '', '', '');">DOWNLOAD</button>
                   <button type="button" class="buttonCream" id="upload" name="upload" onclick="javascript:showSubBrowseView('{$lowerCode}','',1,'');">UPLOAD</button>-->
-                    <input id ="import_hidden" name="import_hidden" type="file" data-code="{$lowerCode}" style="visibility: hidden; width: 0; height: 0;" multiple="" />
-                  </xsl:if>
-                  <xsl:if test="/sqroot/body/bodyContent/browse/info/nbPages > 1">
-                    <ul class="pagination pagination-sm no-margin pull-right" id="childPageNo"></ul>
-                    <script>
-                      var code='<xsl:value-of select ="$lowerCode"/>';
-                      var pageNo = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/pageNo"/>';
-                      var nbPages = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/nbPages"/>';
-                      childPageNo('childPageNo', code, pageNo, nbPages);
-                    </script>
-                  </xsl:if>
-                </div>
+                  <input id ="import_hidden" name="import_hidden" type="file" data-code="{$lowerCode}" style="visibility: hidden; width: 0; height: 0;" multiple="" />
+                </xsl:if>
+                <xsl:if test="/sqroot/body/bodyContent/browse/info/nbPages > 1">
+                  <ul class="pagination pagination-sm no-margin pull-right" id="childPageNo"></ul>
+                  <script>
+                    var code='<xsl:value-of select ="$lowerCode"/>';
+                    var pageNo = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/pageNo"/>';
+                    var nbPages = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/nbPages"/>';
+                    childPageNo('childPageNo', code, pageNo, nbPages);
+                    $('#searchBox_'+code).css('visibility', 'visible');
+                  </script>
+                </xsl:if>
+              </div>
               <!--/xsl:if-->
             </div>
           </div>
@@ -194,9 +198,9 @@
       <xsl:when test="@editor='mediabox'">
         <td>
           <xsl:if test=".!=''">
-          <a class="text-muted" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={@caption}&#38;code={../../@code}&#38;GUID={../../@GUID}');">
-            <ix class="fa fa-paperclip" title="Download" />
-          </a>
+            <a class="text-muted" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={@caption}&#38;code={../../@code}&#38;GUID={../../@GUID}');">
+              <ix class="fa fa-paperclip" title="Download" />
+            </a>
           </xsl:if>&#160;
         </td>
       </xsl:when>
@@ -204,7 +208,7 @@
         <td onclick="showChildForm('{$lowerCode}','{../../@GUID}', '{$lowerCode}');">
           <xsl:value-of select="$tbContent"/>&#160;
         </td>
-      </xsl:otherwise>    
+      </xsl:otherwise>
     </xsl:choose>
 
   </xsl:template>

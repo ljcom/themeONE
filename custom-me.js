@@ -695,3 +695,50 @@ function checkedBox(ini) {
         }
     }
 }
+
+function btnWebcam(mode, idimg) {
+    if (mode == 'opencamera') {
+        Webcam.set({
+            width: 270,
+            height: 200,
+            image_format: 'jpeg',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#' + idimg +'_camera');
+
+        $('#' + idimg +'_camera').width('100%')
+
+        $('#' + idimg + '_camera').find('video').width('100%')
+        $("#opencamera").hide()
+        $("#takesnapshot").show()
+    }
+    else if (mode == 'takesnap') {
+        Webcam.freeze();
+
+        $("#savephoto").show()
+        $("#takeanother").show()
+        $("#takesnapshot").hide()
+    } else if (mode == 'takeanother') {
+        Webcam.unfreeze();
+
+        $("#savephoto").hide()
+        $("#takeanother").hide()
+        $("#takesnapshot").show()
+    } else if (mode = 'savephoto') {
+        Webcam.snap(function (data_uri) {
+            // display results in page
+            document.getElementById(idimg + '_hidden').innerHTML =
+					'<img id="' + idimg + '_image" src="' + data_uri + '"/>';
+
+        });
+        $('#' + idimg + '_camera').html($('#' + idimg + '_hidden').html())
+        $("#savephoto").hide()
+        $("#takeanother").hide()
+        $("#opencamera").show()
+
+        $("#" + idimg).val($('#' + idimg + '_image').attr('src'))
+        $("#button_save").click()
+
+    }
+    
+}
