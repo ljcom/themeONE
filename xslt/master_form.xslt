@@ -995,7 +995,7 @@
                         or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000'))))">
             <xsl:attribute name="disabled">disabled</xsl:attribute>
           </xsl:if>
-          Browse <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file" data-code="{/sqroot/body/bodyContent/form/info/code}" style="display: none;" multiple="">
+          Browse <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file" data-code="{/sqroot/body/bodyContent/form/info/code}" style="display: none;">
           </input>
         </span>
       </label>

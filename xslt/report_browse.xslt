@@ -72,6 +72,9 @@
             <xsl:if test="$isXLS = 1">
               <button id="btnXLS" class="btn btn-orange-a" onclick="genReport('{$code}','xls');">SHOW XLS</button>&#160;
             </xsl:if>
+            <xsl:if test="$isXLS = 2">
+              <button id="btnXLS" class="btn btn-orange-a" onclick="genReport('{$code}','xlstemplate');">SHOW XLS</button>&#160;
+            </xsl:if>
           </div>
         </div>
         <!--<div class="col-md-12 displayblock-phone" style="margin-bottom:20px;">
