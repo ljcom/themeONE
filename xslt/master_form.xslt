@@ -87,23 +87,23 @@
       setCookie('<xsl:value-of select="translate(/sqroot/body/bodyContent/form/info/code/., $uppercase, $smallcase)"/>_curstateid', '<xsl:value-of select="$docState"/>');
     </script>
 
-	<xsl:variable name="head">
-		<xsl:choose>
-			<xsl:when test="sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
-			NEW
-			</xsl:when>
-			<xsl:when test="(($allowEdit>=1 or $allowAdd>=1 or $allowDelete>=1) and ($docState=0 or $docState=300))
+    <xsl:variable name="head">
+      <xsl:choose>
+        <xsl:when test="sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
+          NEW
+        </xsl:when>
+        <xsl:when test="(($allowEdit>=1 or $allowAdd>=1 or $allowDelete>=1) and ($docState=0 or $docState=300))
 							or (($allowEdit>=3 or $allowDelete>=3) and $docState&lt;=300)
 							or (($allowEdit>=4 or $allowAdd>=4 or $allowDelete>=4) and $docState&lt;=400)">
-			EDIT
-			</xsl:when>
-			<xsl:otherwise>
-			VIEW
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-	
-	
+          EDIT
+        </xsl:when>
+        <xsl:otherwise>
+          VIEW
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+
     <section class="content-header">
       <h1 data-toggle="collapse" data-target="#header" id="header_title">
         <xsl:choose>
@@ -832,18 +832,19 @@
       </xsl:if>
     </xsl:if>
 
-    <span id="removeForm{../@fieldName}" style="cursor: pointer;margin: 8px 30px 0px 0px;position: absolute;top: 0px;right: 0px; display:none">
-      <ix class="far fa-times" title= "Remove Selection" data-toggle="tooltip" onclick="javascript: $('#{../@fieldName}').val(null).trigger('change');$('#editForm{../@fieldName}').hide();$('#removeForm{../@fieldName}').hide();"></ix>
-    </span>
-    <script>
-      $("#<xsl:value-of select="../@fieldName"/>").on("select2:select", function(e) {
-      $selection = $('#select2-<xsl:value-of select="../@fieldName"/>-container').parents('.selection');
-      if ($selection.children('#removeForm<xsl:value-of select="../@fieldName"/>').length == 0)
-      $('#removeForm<xsl:value-of select="../@fieldName"/>').appendTo($selection);
-      $('#removeForm<xsl:value-of select="../@fieldName"/>').show();
-      });
-    </script>
-
+    <xsl:if test="@allowEdit=1">
+      <span id="removeForm{../@fieldName}" style="cursor: pointer;margin: 8px 30px 0px 0px;position: absolute;top: 0px;right: 0px; display:none">
+        <ix class="far fa-times" title= "Remove Selection" data-toggle="tooltip" onclick="javascript: $('#{../@fieldName}').val(null).trigger('change');$('#editForm{../@fieldName}').hide();$('#removeForm{../@fieldName}').hide();"></ix>
+      </span>
+      <script>
+        $("#<xsl:value-of select="../@fieldName"/>").on("select2:select", function(e) {
+        $selection = $('#select2-<xsl:value-of select="../@fieldName"/>-container').parents('.selection');
+        if ($selection.children('#removeForm<xsl:value-of select="../@fieldName"/>').length == 0)
+        $('#removeForm<xsl:value-of select="../@fieldName"/>').appendTo($selection);
+        $('#removeForm<xsl:value-of select="../@fieldName"/>').show();
+        });
+      </script>
+    </xsl:if>
 
     <script>
       $("#<xsl:value-of select="../@fieldName"/>").select2({

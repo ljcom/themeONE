@@ -942,4 +942,15 @@ input[type=checkbox].pinned {
         color: skyblue;
     }
 }
-		
+.equal {
+    display: flex;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 768px) {
+    .row.equal {
+        display: flex;
+        flex-wrap: wrap;
+    }
+}

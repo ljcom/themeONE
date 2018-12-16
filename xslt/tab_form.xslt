@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
   <xsl:output method="xml" indent="yes"/>
@@ -88,6 +88,18 @@
       getHash(c);
       setCookie('<xsl:value-of select="translate(/sqroot/body/bodyContent/form/info/code/., $uppercase, $smallcase)"/>_curstateid', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/state/status/."/>');
       $('body').addClass('sidebar-collapse');
+
+      var origin=window.location.origin;
+      if (!(origin.substring(0,5)=='https' || origin.includes('localhost')))
+      {
+      $('#getImage').css("display", "block");
+      $('#opencamera').css("display", "none");
+      $('#takesnapshot').css("display", "none");
+      $('#takeanother').css("display", "none");
+      $('#savephoto').css("display", "none");
+
+      }
+      upload_init('<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>');
     </script>
 
     <xsl:variable name="settingmode">
@@ -97,22 +109,22 @@
       <xsl:value-of select="/sqroot/body/bodyContent/form/info/state/status/."/>
     </xsl:variable>
 
-	<xsl:variable name="headlabel">
-		<xsl:choose>
-			<xsl:when test="sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
-			NEW
-			</xsl:when>
-			<xsl:when test="(($allowEdit>=1 or $allowAdd>=1 or $allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))
+    <xsl:variable name="headlabel">
+      <xsl:choose>
+        <xsl:when test="sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
+          NEW
+        </xsl:when>
+        <xsl:when test="(($allowEdit>=1 or $allowAdd>=1 or $allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))
 							or (($allowEdit>=3 or $allowDelete>=3) and /sqroot/body/bodyContent/form/info/state/status&lt;=300)
 							or (($allowEdit>=4 or $allowAdd>=4 or $allowDelete>=4) and /sqroot/body/bodyContent/form/info/state/status&lt;=400)">
-			EDIT
-			</xsl:when>
-			<xsl:otherwise>
-			VIEW
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-	
+          EDIT
+        </xsl:when>
+        <xsl:otherwise>
+          VIEW
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <section class="content-header visible-phone">
       <h1 data-toggle="collapse" data-target="#header" id="header_title">
         <xsl:choose>
@@ -180,7 +192,6 @@
     <section class="content">
       <div class="row">
         <xsl:if test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]">
-
           <div class="col-md-3">
             <xsl:variable name="fieldHead" select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName" />
             <xsl:variable name="GTVal">
@@ -216,132 +227,165 @@
               </xsl:choose>
             </xsl:variable>
             <!-- Form Head-->
-
-            <xsl:if test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=2]/fields/field/imageBox/. != ''">
-              <xsl:variable name="imgName">
-                <xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=2]/fields/field/@fieldName/."/>
-              </xsl:variable>
-              <xsl:variable name="imgVal">
-                <xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=2]/fields/field/imageBox/value/."/>
-              </xsl:variable>
-              <div id="profileBox" class="box box-primary">
-
-                <div class="box-body box-profile">
-                  <!--<xsl:value-of select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=2]/fields/field/imageBox/titlecaption"/>-->
-                  <div id="imageBox" style=" padding:5px;">
-                    <div id="{$imgName}_camera">
-                      <img style="width:100%" src="{$imgVal}" />
-                      &#xa0;
-                    </div>
-                    <div id="{$imgName}_hidden" style="display:none">
-                      is hidden
-                    </div>
-
-                    <a href="javascript:btnWebcam('opencamera', '{$imgName}')" class="btn btn-primary btn-block" style="margin-top:5px;" id="opencamera">
-                      <span>
-                        <ix class="fa fa-camera"></ix>
-                      </span>
-                      <span>
-                        <b> Open Camera</b>
-                      </span>
-                    </a>
-                    <a href="javascript:btnWebcam('takesnap')" class="btn btn-primary btn-block" style="margin-top:5px; display:none;" id="takesnapshot">
-                      <span>
-                        <ix class="fa fa-camera"></ix>
-                      </span>
-                      <span>
-                        <b> Take Snapshot</b>
-                      </span>
-                    </a>
-                    <a href="javascript:btnWebcam('takeanother')" class="btn btn-primary btn-block" style="margin-top:5px; display:none;" id="takeanother">
-                      <span>
-                        <ix class="fa fa-camera"></ix>
-                      </span>
-                      <span>
-                        <b> Take Another</b>
-                      </span>
-                    </a>
-                    <a href="javascript:btnWebcam('savephoto', '{$imgName}')" class="btn btn-primary btn-block" style="margin-top:5px; display:none;" id="savephoto">
-                      <span>
-                        <ix class="fa fa-camera"></ix>
-                      </span>
-                      <span>
-                        <b> Save Photo</b>
-                      </span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </xsl:if>
             <div id="profileBox" class="box box-primary">
-
               <div class="box-body box-profile">
-                <h3 class="profile-username text-center" id="{sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName}">
-                  <xsl:value-of select="$tbContent"/>&#160;
-                </h3>
-                <p class="text-muted text-center">
-                  <xsl:value-of select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/textBox/titlecaption"/>
-                </p>
-                <ul class="list-group list-group-unbordered">
-                  <xsl:for-each select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection/formCols/formCol/formRows/formRow/fields/field">
-                    <xsl:variable name="HeadVal">
+                <xsl:choose>
+                  <xsl:when test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/imageBox/. != ''">
+                    <xsl:variable name="imgName">
+                      <xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName/."/>
+                    </xsl:variable>
+                    <xsl:variable name="imgVal">
+                      <xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/imageBox/value/."/>
+                    </xsl:variable>
+
+                    <!--<xsl:value-of select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/imageBox/titlecaption"/>-->
+                    <div id="imageBox" style=" padding:5px;">
+                      <div id="{$imgName}_camera">
+                        <img style="width:100%" id="{$imgName}_camera_img">
+                          <xsl:attribute name="src">
+                            <xsl:choose>
+                              <xsl:when test="$imgVal!=''">
+                                ophcontent/documents/<xsl:value-of select="/sqroot/header/info/account" />/<xsl:value-of select="$imgVal" />
+                              </xsl:when>
+                              <xsl:otherwise>
+                                ophcontent/documents/blank-person.png
+                              </xsl:otherwise>
+                            </xsl:choose>
+                          </xsl:attribute>
+                        </img>
+                        &#xa0;
+                      </div>
+                      <div id="{$imgName}_hidden_div" style="display:none">
+                        <img style="width:100%" id="{$imgName}_hidden_img">
+                          <xsl:attribute name="src">
+                            <xsl:choose>
+                              <xsl:when test="$imgVal!=''">
+                                ophcontent/documents/<xsl:value-of select="/sqroot/header/info/account" />/<xsl:value-of select="$imgVal" />
+                              </xsl:when>
+                              <xsl:otherwise>
+                                ophcontent/documents/blank-person.png
+                              </xsl:otherwise>
+                            </xsl:choose>
+                          </xsl:attribute>
+                        </img>
+                      </div>
+                      <form role="form" id="formwebcam" enctype="multipart/form-data" onsubmit="return false">
+                        <label class="btn btn-primary btn-block" id="getImage">
+                          <span>
+                            Get Image <input id ="{$imgName}_hidden" name="{$imgName}_hidden" type="file" style="display: none;" multiple="" data-code="{/sqroot/body/bodyContent/form/info/code/.}" data-webcam="1" data-field="{$imgName}"
+accept="image/*"
+                                    />
+                          </span>
+                        </label>
+                      </form>
+                      <a href="javascript:btnWebcam('opencamera', '{$imgName}')" class="btn btn-primary btn-block" style="margin-top:5px;" id="opencamera">
+                        <span>
+                          <ix class="fa fa-camera"></ix>
+                        </span>
+                        <span>
+                          <b> Open Camera</b>
+                        </span>
+                      </a>
+                      <a href="javascript:btnWebcam('takesnap')" class="btn btn-primary btn-block" style="margin-top:5px; display:none;" id="takesnapshot">
+                        <span>
+                          <ix class="fa fa-camera"></ix>
+                        </span>
+                        <span>
+                          <b> Take Snapshot</b>
+                        </span>
+                      </a>
+                      <a href="javascript:btnWebcam('takeanother')" class="btn btn-primary btn-block" style="margin-top:5px; display:none;" id="takeanother">
+                        <span>
+                          <ix class="fa fa-camera"></ix>
+                        </span>
+                        <span>
+                          <b> Take Another</b>
+                        </span>
+                      </a>
+                      <a href="javascript:btnWebcam('savephoto', '{$imgName}')" class="btn btn-primary btn-block" style="margin-top:5px; display:none;" id="savephoto">
+                        <span>
+                          <ix class="fa fa-camera"></ix>
+                        </span>
+                        <span>
+                          <b> Save Photo</b>
+                        </span>
+                      </a>
+                    </div>
+                  </xsl:when>
+                  <xsl:otherwise>
+
+                    <h3 class="profile-username text-center" id="{sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName}">
+                      <xsl:value-of select="$tbContent"/>&#160;
+                    </h3>
+                    <p class="text-muted text-center">
+                      <xsl:value-of select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/textBox/titlecaption"/>
+                    </p>
+                  </xsl:otherwise>
+                </xsl:choose>
+                <xsl:if test="count(sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection/formCols/formCol/formRows/formRow[@rowNo>1]/fields/field)>0">
+                  <ul class="list-group list-group-unbordered">
+                    <xsl:for-each select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection/formCols/formCol/formRows/formRow/fields/field">
+                      <xsl:variable name="HeadVal">
+                        <xsl:choose>
+                          <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
+                            <xsl:value-of select="textBox/defaultvalue" />
+                          </xsl:when>
+                          <xsl:otherwise>
+                            <xsl:value-of select="textBox/value" />
+                          </xsl:otherwise>
+                        </xsl:choose>
+                      </xsl:variable>
                       <xsl:choose>
-                        <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
-                          <xsl:value-of select="textBox/defaultvalue" />
+                        <xsl:when test="@fieldName=$fieldHead">
+                        </xsl:when>
+                        <xsl:when test="imageBox">
                         </xsl:when>
                         <xsl:otherwise>
-                          <xsl:value-of select="textBox/value" />
+                          <li class="list-group-item">
+                            <xsl:value-of select="textBox/titlecaption"/>
+                            <a class="pull-right" id="{@fieldName}">
+                              <xsl:value-of select="$HeadVal"/>&#160;
+                            </a>
+                          </li>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:for-each>
+                  </ul>
+                </xsl:if>
+                <xsl:if test="sqroot/body/bodyContent/form/query/reports/report">
+                  <xsl:for-each select="sqroot/body/bodyContent/form/query/reports/report">
+                    <xsl:variable name="qdisable">
+                      <xsl:choose>
+                        <xsl:when test="isVisible=1">
+                        </xsl:when>
+                        <xsl:otherwise>
+                          disabled
                         </xsl:otherwise>
                       </xsl:choose>
                     </xsl:variable>
-                    <xsl:choose>
-                      <xsl:when test="@fieldName=$fieldHead">
-                      </xsl:when>
-                      <xsl:when test="imageBox">
-                      </xsl:when>
-                      <xsl:otherwise>
-                        <li class="list-group-item">
-                          <xsl:value-of select="textBox/titlecaption"/>
-                          <a class="pull-right" id="{@fieldName}">
-                            <xsl:value-of select="$HeadVal"/>&#160;
-                          </a>
-                        </li>
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:for-each>
-                </ul>
-                <xsl:for-each select="sqroot/body/bodyContent/form/query/reports/report">
-                  <xsl:variable name="qdisable">
-                    <xsl:choose>
-                      <xsl:when test="isVisible=1">
-                      </xsl:when>
-                      <xsl:otherwise>
-                        disabled
-                      </xsl:otherwise>
-                    </xsl:choose>
-                  </xsl:variable>
 
-                  <xsl:if test="allowPDF=1">
-                    <a href="javascript:genReport('{code}', 'pdf');" class="btn btn-primary btn-block {$qdisable}">
-                      <span>
-                        <ix class="fa fa-file-pdf"></ix>
-                      </span>
-                      <span>
+                    <xsl:if test="allowPDF=1">
+                      <a href="javascript:genReport('{code}', 'pdf');" class="btn btn-primary btn-block {$qdisable}">
+                        <span>
+                          <ix class="fa fa-file-pdf"></ix>
+                        </span>
+                        <span>
+                          <b>
+                            <xsl:value-of select="description"/>
+                          </b>
+                        </span>
+                      </a>
+                    </xsl:if>
+                    <xsl:if test="allowXLS=1">
+                      <a href="javascript:genReport('{code}', 'xls');" class="btn btn-primary btn-block">
+                        <ix class="fa fa-file-spreadsheet"></ix>
                         <b>
                           <xsl:value-of select="description"/>
                         </b>
-                      </span>
-                    </a>
-                  </xsl:if>
-                  <xsl:if test="allowXLS=1">
-                    <a href="javascript:genReport('{code}', 'xls');" class="btn btn-primary btn-block">
-                      <ix class="fa fa-file-spreadsheet"></ix>
-                      <b>
-                        <xsl:value-of select="description"/>
-                      </b>
-                    </a>
-                  </xsl:if>
-                </xsl:for-each>
+                      </a>
+                    </xsl:if>
+                  </xsl:for-each>
+                </xsl:if>
               </div>
 
             </div>
@@ -366,7 +410,7 @@
                       <button id="button_submit" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>
                     </xsl:if>
                     <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))">
-                      
+
                       <button id="button_delete" class="btn btn-gray-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>
                     </xsl:if>
                     <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
@@ -389,13 +433,13 @@
                   <xsl:when test="($docState) &gt;= 400 and ($docState) &lt;= 499">
                     <button id="button_save" class="btn btn-orange-a btn-block" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>
                     <xsl:if test="$allowForce=1">
-                      <button id="button_close" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">CLOSE</button>   
+                      <button id="button_close" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">CLOSE</button>
                     </xsl:if>
                     <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))
 							                or (($allowDelete>=4) and (/sqroot/body/bodyContent/form/info/state/status&lt;100 or /sqroot/body/bodyContent/form/info/state/status&gt;=300))">
 
                       <button id="button_delete" class="btn btn-gray-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>
-                    </xsl:if>  
+                    </xsl:if>
                     <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
                   </xsl:when>
                   <xsl:when test="($docState) &gt;= 500 and ($docState) &lt;= 899">
@@ -461,7 +505,7 @@
                                 <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
                                 <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))">
 
-                                    <button id="button_delete" class="btn btn-gray-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
+                                  <button id="button_delete" class="btn btn-gray-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
                                 </xsl:if>
                                 <xsl:if test="($settingMode)='T' and ($docState) &lt; 400 ">
                                   <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>
@@ -590,15 +634,15 @@
       var tblnm =code+"requiredname";
     </script>
 
-    <form role="form" id="formheader" enctype="multipart/form-data">
+    <form role="form" id="formheader" enctype="multipart/form-data" onsubmit="return false">
       <input type="hidden" id="cid" name="cid" value="{/sqroot/body/bodyContent/form/info/GUID/.}" />
       <input type="hidden" name ="{info/code/.}requiredname"/>
       <input type="hidden" name ="{info/code/.}requiredtblvalue"/>
-      <xsl:if test="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=2]/fields/field/imageBox/. != ''">
-        <input type="hidden" class="oph-webcam" id="{/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=2]/fields/field/@fieldName/.}" name ="{/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=2]/fields/field/@fieldName/.}"/>
+      <xsl:if test="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/imageBox/. != ''">
+        <input type="hidden" class="oph-webcam" id="{/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName/.}" name ="{/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName/.}"/>
       </xsl:if>
 
-        <xsl:apply-templates select="formPages/formPage[@pageNo&lt;9]"/>
+      <xsl:apply-templates select="formPages/formPage[@pageNo&lt;9]"/>
     </form>
   </xsl:template>
 
@@ -722,6 +766,7 @@
       <xsl:apply-templates select="passwordBox"/>
       <xsl:apply-templates select="checkBox"/>
       <xsl:apply-templates select="mediaBox"/>
+      <xsl:apply-templates select="imageBox"/>
       <xsl:apply-templates select="autoSuggestBox"/>
       <xsl:apply-templates select="tokenBox"/>
       <xsl:apply-templates select="radio"/>
@@ -1062,18 +1107,19 @@
         </script>
       </xsl:if>
     </xsl:if>
-
-    <span id="removeForm{../@fieldName}" style="cursor: pointer;margin: 8px 30px 0px 0px;position: absolute;top: 0px;right: 0px; display:none">
-      <ix class="far fa-times" title= "Remove Selection" data-toggle="tooltip" onclick="javascript: $('#{../@fieldName}').val(null).trigger('change');$('#editForm{../@fieldName}').hide();$('#removeForm{../@fieldName}').hide();"></ix>
-    </span>
-    <script>
-      $("#<xsl:value-of select="../@fieldName"/>").on("select2:select", function(e) {
-      $selection = $('#select2-<xsl:value-of select="../@fieldName"/>-container').parents('.selection');
-      if ($selection.children('#removeForm<xsl:value-of select="../@fieldName"/>').length == 0)
-      $('#removeForm<xsl:value-of select="../@fieldName"/>').appendTo($selection)
-      $('#removeForm<xsl:value-of select="../@fieldName"/>').show();
-      });
-    </script>
+    <xsl:if test="@allowEdit=1">
+      <span id="removeForm{../@fieldName}" style="cursor: pointer;margin: 8px 30px 0px 0px;position: absolute;top: 0px;right: 0px; display:none">
+        <ix class="far fa-times" title= "Remove Selection" data-toggle="tooltip" onclick="javascript: $('#{../@fieldName}').val(null).trigger('change');$('#editForm{../@fieldName}').hide();$('#removeForm{../@fieldName}').hide();"></ix>
+      </span>
+      <script>
+        $("#<xsl:value-of select="../@fieldName"/>").on("select2:select", function(e) {
+        $selection = $('#select2-<xsl:value-of select="../@fieldName"/>-container').parents('.selection');
+        if ($selection.children('#removeForm<xsl:value-of select="../@fieldName"/>').length == 0)
+        $('#removeForm<xsl:value-of select="../@fieldName"/>').appendTo($selection)
+        $('#removeForm<xsl:value-of select="../@fieldName"/>').show();
+        });
+      </script>
+    </xsl:if>
 
 
     <script>
@@ -1150,6 +1196,8 @@
       }
       });
       });
+
+
     </script>
 
     <label id="{../@fieldName}caption">
@@ -1184,17 +1232,19 @@
     <input type="text" class="form-control" Value="{$thisvalue}" data-type="tokenBox" data-old="{$thisvalue}" data-newJSON="" data-code="{code/.}"
       data-key="{key}" data-id="{id}" data-name="{name}"
       name="{../@fieldName}" id ="{../@fieldName}">
-	  <xsl:choose>
+      <xsl:choose>
         <xsl:when test="((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
                         or (../@isEditable='3' and $docState&lt;400)
                         or (../@isEditable='4' and $docState&lt;500))">
-	    </xsl:when>						
-		<xsl:otherwise>
+        </xsl:when>
+        <xsl:otherwise>
           <xsl:attribute name="disabled">disabled</xsl:attribute>
         </xsl:otherwise>
-	  </xsl:choose>
+      </xsl:choose>
     </input>
+  </xsl:template>
+  <xsl:template match="imageBox">
   </xsl:template>
 
   <xsl:template match="mediaBox">

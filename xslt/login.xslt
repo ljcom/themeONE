@@ -38,12 +38,17 @@
       loadScript('https://apis.google.com/js/platform.js');
 
       }
-      
+
       //signoff();
-      
+
       document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
 
-
+      if (getCookie("AutoUser")) {
+      $('#autologin').css('display','block');
+      $('#autoUser').html(getCookie("AutoUser"));
+      }
+      else {
+      }
     </script>
 
     <div class="wrapper" style="background: rgba(38, 44, 44, 0.1);">
@@ -93,7 +98,7 @@
       <div class="content-wrapper" style="background:white">
         <section class="content">
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 ">
               <h1 style="font-size:40px; font-weight:bold">
                 WELCOME TO <br/>
                 <xsl:value-of select="sqroot/header/info/company"/>
@@ -101,44 +106,66 @@
 
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-6">
-              <h3>Use a local account to sign in</h3>
-
-              <h4 style="color:gray">Please enter your username and password</h4>
-              <form id="formlogin" onsubmit ="return signIn('{/sqroot/header/info/account}');">
-                <div class="form-group enabled-input">
-                  <label>User Name</label>
-                  <input type="text" class="form-control" name ="{/sqroot/header/info/account}_userid" id ="{/sqroot/header/info/account}_userid" autofocus="autofocus" onkeypress="return checkenter(event)"/>
+          <div class="row equal">
+            <div class="col-md-4" id="autologin" style="display:none">
+              <div class="box box-solid box-default">
+                <div class="box-header">
+                  <h3 class="box-title">Windows login</h3>
                 </div>
-                <div class="form-group enabled-input">
-                  <label>Password</label>
-                  <input type="password" class="form-control" name ="{/sqroot/header/info/account}_pwd" id ="{/sqroot/header/info/account}_pwd" autocomplete="off" placeholder="password" onkeypress="return checkenter(event)"/>
+                <div class="box-body">
+                  <div class="form-group enabled-input">
+                    <h3>
+                      Welcome <span id="autoUser">Guest</span>.
+                    </h3>
+                    <h4>You are registered in windows login. You may have a direct access without enter the password. If failed, you can try the local account authentication.</h4>
+                    <!--div class="form-group enabled-input">
+                    <input type="checkbox" id="skipAutoLoginPage" /><label for="skipAutoLoginPage">Skip this page for next visit.</label>
+                  </div-->
+                  </div>
                 </div>
-                <div class="g-recaptcha" data-sitekey="6Ld9Qi8UAAAAAJKicrf2JhrOH3k5LkqxyCodIOWm"></div>
-                <br/>
-              </form>
-              <div style="text-align:center">
-                <button id="btn_submitLogin" class="btn btn-orange-a">SUBMIT</button>&#160;
-                <button class="btn btn-gray-a" onclick="clearLoginText();">CLEAR</button>
+                <div class="box-footer clearfix">
+                  <div style="text-align:center">
+                    <button id="btn_autologin" class="btn btn-orange-a" onclick="signIn('{/sqroot/header/info/account}', 1)">ENTER NOW</button>&#160;
+                  </div>
+                </div>
               </div>
-              <br/>
-              <!--<div>
-                <div>
-                  <a href="">Register as a new user?</a>
-                </div>
-                <div>
-                  <a href="">Forgot your password?</a>
-                </div>
-              </div>-->
             </div>
-            <div class="col-md-6 visible-phone">
+            <div class="col-md-4">
+              <div class="box box-solid box-primary">
+                <div class="box-header">
+                  <h3 class="box-title">Local Login</h3>
+                </div>
+                <div class="box-body">
+                  <h3>You can use a local account to sign in</h3>
+                  <h4 style="color:gray">Please enter your username and password</h4>
+                  <form id="formlogin" onsubmit ="return signIn('{/sqroot/header/info/account}');">
+                    <div class="form-group enabled-input">
+                      <label>User Name</label>
+                      <input type="text" class="form-control" name ="{/sqroot/header/info/account}_userid" id ="{/sqroot/header/info/account}_userid" autofocus="autofocus" onkeypress="return checkenter(event)"/>
+                    </div>
+                    <div class="form-group enabled-input">
+                      <label>Password</label>
+                      <input type="password" class="form-control" name ="{/sqroot/header/info/account}_pwd" id ="{/sqroot/header/info/account}_pwd" autocomplete="off" placeholder="password" onkeypress="return checkenter(event)"/>
+                    </div>
+                    <div class="g-recaptcha" data-sitekey="6Ld9Qi8UAAAAAJKicrf2JhrOH3k5LkqxyCodIOWm"></div>
+                  </form>
+                </div>
+                <div class="box-footer clearfix">
+                  <div style="text-align:center">
+                    <button id="btn_submitLogin" class="btn btn-orange-a">SUBMIT</button>&#160;
+                    <button class="btn btn-gray-a" onclick="clearLoginText();">CLEAR</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 visible-phone">
               <img id="login_header" src="" alt="" />
               <script>
-                 var acct='<xsl:value-of select="/sqroot/header/info/account"/>';
+                var acct='<xsl:value-of select="/sqroot/header/info/account"/>';
                 $("#login_header").attr("src","OPHContent/documents/"+acct+"/login_header.jpg");
               </script>
             </div>
+
             <!--<div class="col-md-5">
               
               <h3>Use another services to sign in</h3>
@@ -185,13 +212,13 @@
       if (getCookie('isWhiteAddress') == '1') {
       $('#formlogin .g-recaptcha').remove();
       $('#btn_submitLogin').click(function() {
-          signIn('<xsl:value-of select="/sqroot/header/info/account"/>')
-          }
+      signIn('<xsl:value-of select="/sqroot/header/info/account"/>')
+      }
       )
       } else {
       $('#btn_submitLogin').click(function() {
-          signIn('<xsl:value-of select="/sqroot/header/info/account"/>')
-          }
+      signIn('<xsl:value-of select="/sqroot/header/info/account"/>')
+      }
       )
       }
 

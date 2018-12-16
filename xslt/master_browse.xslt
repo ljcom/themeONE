@@ -16,6 +16,7 @@
   <xsl:variable name="allowDelete" select="/sqroot/body/bodyContent/browse/info/permission/allowDelete" />
   <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/browse/info/permission/allowWipe" />
   <xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/browse/info/permission/allowOnOff" />
+  <xsl:variable name="allowAll" select="/sqroot/body/bodyContent/browse/info/permission/allowAll" />
   <xsl:variable name="settingMode" select="/sqroot/header/info/code/settingMode" />
 
   <xsl:template name="string-replace-all">
@@ -324,7 +325,7 @@
                           <span>ACTION</span>
                           <!--action button all, keep hidden for a while-->
                           <div style="display:none;">
-                            <xsl:if test="$settingMode='T'">
+                            <xsl:if test="$settingMode='T' and $allowAll=1">
                               <xsl:choose>
                                 <xsl:when test="/sqroot/body/bodyContent/browse/info/curState/@substateCode=0 or /sqroot/body/bodyContent/browse/info/curState/@substateCode=300">
                                   <a href="javascript:btn_function('{/sqroot/header/info/code/id}', null, 'execute', '1', 10)" data-toggle="tooltip">
