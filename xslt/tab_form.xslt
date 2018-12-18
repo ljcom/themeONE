@@ -248,7 +248,7 @@
                                 ophcontent/documents/<xsl:value-of select="/sqroot/header/info/account" />/<xsl:value-of select="$imgVal" />
                               </xsl:when>
                               <xsl:otherwise>
-                                ophcontent/documents/blank-person.png
+                                ophcontent/themes/themeone/images/blank-person.png
                               </xsl:otherwise>
                             </xsl:choose>
                           </xsl:attribute>
@@ -263,7 +263,7 @@
                                 ophcontent/documents/<xsl:value-of select="/sqroot/header/info/account" />/<xsl:value-of select="$imgVal" />
                               </xsl:when>
                               <xsl:otherwise>
-                                ophcontent/documents/blank-person.png
+                                ophcontent/themes/themeone/images/blank-person.png
                               </xsl:otherwise>
                             </xsl:choose>
                           </xsl:attribute>
