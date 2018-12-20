@@ -671,7 +671,7 @@
 							                or (($allowDelete>=4) and ($state&lt;100 or $state&gt;=300))">
 
               <!--allow delete-->
-              <xsl:if test="$allowOnOff=1">
+              <xsl:if test="$settingMode!='T' and $allowDelete = 1 and $state = 0">
                 <a href="javascript:btn_function('{@code}', '{@GUID}', 'inactivate', '{$pageNo}', 10)" data-toggle="tooltip" title="Inactivate This">
                   <ix class="far fa-toggle-on" title="Inactive"></ix>
                 </a>

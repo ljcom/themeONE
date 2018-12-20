@@ -957,7 +957,7 @@ accept="image/*"
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
-    <input type="password" class="form-control" Value="********" data-type="textBox" data-old="" name="{../@fieldName}"
+    <input type="password" class="form-control" Value="" data-type="textBox" data-old="" name="{../@fieldName}"
            minlength="8" required="required" placeholder="8 characters minimum."
       onblur="preview('{preview/.}',getCode(), '{$cid}','formheader', this);" id ="{../@fieldName}" autocomplete="false">
     </input>
