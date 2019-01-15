@@ -451,6 +451,7 @@
       <xsl:apply-templates select="dateTimeBox"/>
       <xsl:apply-templates select="timeBox"/>
       <xsl:apply-templates select="passwordBox"/>
+      <xsl:apply-templates select="hiddenBox"/>
       <xsl:apply-templates select="checkBox"/>
       <xsl:apply-templates select="mediaBox"/>
       <xsl:apply-templates select="autoSuggestBox"/>
@@ -458,6 +459,10 @@
       <xsl:apply-templates select="radio"/>
     </div>
   </xsl:template>
+  <xsl:template match="hiddenBox">
+    <input type="hidden" Value="{value}" data-type="hiddenBox" data-old="{value}" name="{../@fieldName}"
+           id ="{../@fieldName}"/>
+    </xsl:template>
 
   <xsl:template match="checkBox">
     <!--Supaya bisa di serialize-->
@@ -526,7 +531,7 @@
       });
     </script>
   </xsl:template>
-
+  
   <xsl:template match="textBox">
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
@@ -1128,6 +1133,9 @@
       var x=$('input[name=<xsl:value-of select="../../../@fieldName" />]:checked').val();
       $('#<xsl:value-of select="../../../@fieldName" />').val(x);
       });
+      <xsl:if test="../../../@isEditable=0">
+        $('#<xsl:value-of select="../../../@fieldName" />_<xsl:value-of select="@radioNo" />').attr('disabled', true);
+      </xsl:if>
     </script>
   </xsl:template>
 

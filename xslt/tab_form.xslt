@@ -655,13 +655,6 @@ accept="image/*"
   </xsl:template>
 
   <xsl:template match="formSection ">
-    <xsl:if test="@rowTitle/.!=''">
-      <div class="col-md-12" data-toggle="collapse" data-target="#section_{@sectionNo}">
-        <h3>
-          <xsl:value-of select="@rowTitle/."/>&#160;
-        </h3>
-      </div>
-    </xsl:if>
     <xsl:if test="formCols/formCol/formRows">
       <div class="col-md-12 collapse in" id="section_{@sectionNo}">
         <xsl:apply-templates select="formCols"/>
@@ -680,12 +673,22 @@ accept="image/*"
     <xsl:choose>
       <xsl:when test="@colNo='0'">
         <div class="col-md-12">
+  	      <xsl:if test="@rowTitle/.!=''">
+            <h3>
+              <xsl:value-of select="@rowTitle/."/>&#160;
+            </h3>
+        </xsl:if>	
           <xsl:apply-templates select="formRows"/>
         </div>
       </xsl:when>
       <xsl:otherwise>
         <xsl:if test="$totalcol = 3 or $totalcol = 4">
           <div class="col-md-4">
+		    <xsl:if test="../formCol/@rowTitle/.!=''">
+              <h3>
+                <xsl:value-of select="@rowTitle/."/>&#160;
+              </h3>
+            </xsl:if>
             <xsl:if test="@colNo='1'">
               <xsl:apply-templates select="formRows"/>
             </xsl:if>
@@ -699,6 +702,11 @@ accept="image/*"
         </xsl:if>
         <xsl:if test="$totalcol = 1 or $totalcol = 2">
           <div class="col-md-6">
+			<xsl:if test="../formCol/@rowTitle/.!=''">
+              <h3>
+                <xsl:value-of select="@rowTitle/."/>&#160;
+              </h3>
+            </xsl:if>		   
             <xsl:if test="@colNo='1'">
               <xsl:apply-templates select="formRows"/>
             </xsl:if>
@@ -713,6 +721,7 @@ accept="image/*"
 
   <xsl:template match="formRows">
     <div class="box box-solid box-default">
+
       <div class="box-body">
         <xsl:apply-templates select="formRow"/>
       </div>
@@ -764,6 +773,7 @@ accept="image/*"
       <xsl:apply-templates select="dateTimeBox"/>
       <xsl:apply-templates select="timeBox"/>
       <xsl:apply-templates select="passwordBox"/>
+      <xsl:apply-templates select="hiddenBox"/>
       <xsl:apply-templates select="checkBox"/>
       <xsl:apply-templates select="mediaBox"/>
       <xsl:apply-templates select="imageBox"/>
@@ -773,6 +783,10 @@ accept="image/*"
     </div>
   </xsl:template>
 
+  <xsl:template match="hiddenBox">
+    <input type="hidden" Value="{value}" data-type="hiddenBox" data-old="{value}" name="{../@fieldName}"
+           id ="{../@fieldName}"/>
+    </xsl:template>
 
   <xsl:template match="checkBox">
     <!--Supaya bisa di serialize-->
@@ -1401,6 +1415,9 @@ accept="image/*"
       var x=$('input[name=<xsl:value-of select="../../../@fieldName" />]:checked').val();
       $('#<xsl:value-of select="../../../@fieldName" />').val(x);
       });
+      <xsl:if test="../../../@isEditable=0">
+        $('#<xsl:value-of select="../../../@fieldName" />_<xsl:value-of select="@radioNo" />').attr('disabled', true);
+      </xsl:if>
     </script>
   </xsl:template>
 
