@@ -40,6 +40,9 @@
         $('#button_cancel').hide();
         $('#button_save2').hide();
         $('#button_cancel2').hide();
+
+        $('.action-save').hide();
+        $('.action-cancel').hide();
       </xsl:if>
 
       var deferreds = [];
@@ -131,7 +134,7 @@
           <xsl:when test="sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
             <xsl:value-of select="$headlabel" />&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>
           </xsl:when>
-          <xsl:when test="(sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000' and $settingmode='T'">
+          <xsl:when test="(sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000' and /sqroot/body/bodyContent/form/info/settingMode/.='T'">
             <xsl:value-of select="$headlabel" />&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
           </xsl:when>
           <xsl:otherwise>
@@ -149,7 +152,7 @@
           </a>
         </li>
         <li>
-          <a href="javascript: loadBrowse('{sqroot/body/bodyContent/form/info/code/.}');">
+          <a href="javascript: loadBrowse('{/sqroot/body/bodyContent/form/info/code/.}');">
             <span>
               <ix class="fa fa-file-o"></ix>
             </span>&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/Description/."/>
@@ -160,7 +163,7 @@
             <xsl:when test="sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
               NEW&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/Description/."/>
             </xsl:when>
-            <xsl:when test="(sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000' and $settingmode='T'">
+            <xsl:when test="(sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000' and /sqroot/body/bodyContent/form/info/settingMode/.='T'">
               EDIT&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
             </xsl:when>
             <xsl:otherwise>
@@ -170,7 +173,7 @@
         </li>
         <xsl:if test="sqroot/body/bodyContent/form/info/GUID!='00000000-0000-0000-0000-000000000000'">
           <li>
-            <a style="color:blue" href="?code={sqroot/body/bodyContent/form/info/code/.}&amp;guid=00000000-0000-0000-0000-000000000000">
+            <a style="color:blue" href="?code={/sqroot/body/bodyContent/form/info/code/.}&amp;guid=00000000-0000-0000-0000-000000000000">
               <span>
                 <ix class="fa fa-plus-square"></ix>
               </span>
@@ -181,22 +184,21 @@
       </ol>
     </section>
 
-    <xsl:variable name="colmd">
-      <xsl:choose>
-        <xsl:when test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]">col-md-9</xsl:when>
-        <xsl:otherwise>col-md-12</xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
     <!-- START CUSTOM TABS -->
     <!--<h2 class="page-header">CASH</h2>-->
     <section class="content">
+      <form role="form" id="formheader" enctype="multipart/form-data" onsubmit="return false">
+        <input type="hidden" id="cid" name="cid" value="{/sqroot/body/bodyContent/form/info/GUID/.}" />
+        <input type="hidden" name ="{info/code/.}requiredname"/>
+        <input type="hidden" name ="{info/code/.}requiredtblvalue"/>
+      </form>
       <div class="row">
         <xsl:if test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]">
           <div class="col-md-3">
             <xsl:variable name="fieldHead" select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName" />
             <xsl:variable name="GTVal">
               <xsl:choose>
-                <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
+                <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
                   <xsl:value-of select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/textBox/defaultvalue" />
                 </xsl:when>
                 <xsl:otherwise>
@@ -270,11 +272,13 @@
                         </img>
                       </div>
                       <form role="form" id="formwebcam" enctype="multipart/form-data" onsubmit="return false">
+                        <xsl:if test="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/imageBox/. != ''">
+                          <input type="hidden" class="oph-webcam" id="{/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName/.}" name ="{/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName/.}"/>
+                        </xsl:if>
+
                         <label class="btn btn-primary btn-block" id="getImage">
                           <span>
-                            Get Image <input id ="{$imgName}_hidden" name="{$imgName}_hidden" type="file" style="display: none;" multiple="" data-code="{/sqroot/body/bodyContent/form/info/code/.}" data-webcam="1" data-field="{$imgName}"
-accept="image/*"
-                                    />
+                            Get Image <input id ="{$imgName}_hidden" name="{$imgName}_hidden" type="file" style="display: none;" multiple="" data-code="{/sqroot/body/bodyContent/form/info/code/.}" data-webcam="1" data-field="{$imgName}" accept="image/*"/>
                           </span>
                         </label>
                       </form>
@@ -314,7 +318,7 @@ accept="image/*"
                   </xsl:when>
                   <xsl:otherwise>
 
-                    <h3 class="profile-username text-center" id="{sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName}">
+                    <h3 class="profile-username text-center" id="{/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName}">
                       <xsl:value-of select="$tbContent"/>&#160;
                     </h3>
                     <p class="text-muted text-center">
@@ -327,7 +331,7 @@ accept="image/*"
                     <xsl:for-each select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection/formCols/formCol/formRows/formRow/fields/field">
                       <xsl:variable name="HeadVal">
                         <xsl:choose>
-                          <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
+                          <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
                             <xsl:value-of select="textBox/defaultvalue" />
                           </xsl:when>
                           <xsl:otherwise>
@@ -398,74 +402,79 @@ accept="image/*"
               </div>
               <!-- /.box-header -->
               <div class="box-body">
-                <xsl:choose>
-                  <!--location: 0 header; 1 child; 2 browse location: browse:10, header form:20, browse anak:30, browse form:40-->
-                  <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
-                    <button id="button_save" class="btn btn-orange-a btn-block" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>
-                    <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
-                  </xsl:when>
-                  <xsl:when test="/sqroot/body/bodyContent/form/info/state/status/. = 0 or /sqroot/body/bodyContent/form/info/state/status/. = ''">
-                    <button id="button_save" class="btn btn-orange-a btn-block" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>
-                    <xsl:if test="($settingMode)='T' and ($docState) &lt; 400 ">
-                      <button id="button_submit" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>
-                    </xsl:if>
-                    <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))">
-
-                      <button id="button_delete" class="btn btn-gray-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>
-                    </xsl:if>
-                    <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
-                  </xsl:when>
-                  <xsl:when test="($docState) &gt;= 100 and ($docState) &lt; 300">
-                    <button id="button_save" class="btn btn-orange-a btn-block" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>
-                    <xsl:if test="$isApprover=1">
-                      <button id="button_approve" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">APPROVE</button>
-                      <button id="button_reject" class="btn btn-gray-a btn-block" onclick="rejectPopup('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">REJECT</button>
-                    </xsl:if>
-                    <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
-                  </xsl:when>
-                  <xsl:when test="($docState) = 300">
-                    <button id="button_save" class="btn btn-orange-a btn-block" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>
-                    <xsl:if test="$isApprover=1">
-                      <button id="button_submit" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RE-SUBMIT</button>
-                    </xsl:if>
-                    <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
-                  </xsl:when>
-                  <xsl:when test="($docState) &gt;= 400 and ($docState) &lt;= 499">
-                    <button id="button_save" class="btn btn-orange-a btn-block" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>
-                    <xsl:if test="$allowForce=1">
-                      <button id="button_close" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">CLOSE</button>
-                    </xsl:if>
-                    <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))
+                    <xsl:choose>
+                      <!--location: 0 header; 1 child; 2 browse location: browse:10, header form:20, browse anak:30, browse form:40-->
+                      <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
+                      </xsl:when>
+                      <xsl:when test="/sqroot/body/bodyContent/form/info/state/status/. = 0 or /sqroot/body/bodyContent/form/info/state/status/. = ''">
+                        <xsl:if test="(/sqroot/body/bodyContent/form/info/settingMode/.)='T' and (/sqroot/body/bodyContent/form/info/state/status/.) &lt; 400 ">
+                          <button id="button_submit" class="btn btn-orange-a btn-block action-submit" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">SUBMIT</button>
+                        </xsl:if>
+                        <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))">
+                          <button id="button_delete" class="btn btn-gray-a btn-block action-delete" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>
+                        </xsl:if>
+                      </xsl:when>
+                      <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 100 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt; 300">
+                        <xsl:if test="$isApprover=1">
+                          <button id="button_approve" class="btn btn-orange-a btn-block action-approve" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">APPROVE</button>
+                          <button id="button_reject" class="btn btn-gray-a btn-block action-reject" onclick="rejectPopup('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'force', 1, 20)">REJECT</button>
+                        </xsl:if>
+                      </xsl:when>
+                      <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) = 300">
+                        <xsl:if test="$isApprover=1">
+                          <button id="button_submit" class="btn btn-orange-a btn-block action-submit" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">RE-SUBMIT</button>
+                        </xsl:if>
+                      </xsl:when>
+                      <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 400 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 499">
+                        <xsl:if test="$allowForce=1">
+                          <button id="button_close" class="btn btn-orange-a btn-block action-close" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'force', 1, 20)">CLOSE</button>
+                        </xsl:if>
+                        <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))
 							                or (($allowDelete>=4) and (/sqroot/body/bodyContent/form/info/state/status&lt;100 or /sqroot/body/bodyContent/form/info/state/status&gt;=300))">
 
-                      <button id="button_delete" class="btn btn-gray-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>
-                    </xsl:if>
-                    <button id="button_cancel" class="btn btn-gray-a btn-block" onclick="saveCancel()">CANCEL</button>
-                  </xsl:when>
-                  <xsl:when test="($docState) &gt;= 500 and ($docState) &lt;= 899">
-                    <button id="button_reopen" class="btn btn-orange-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'reopen', 1, 20)">REOPEN</button>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    &#160;
-                  </xsl:otherwise>
-                </xsl:choose>
+                          <button id="button_delete" class="btn btn-gray-a btn-block action-delete" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>
+                        </xsl:if>
+                      </xsl:when>
+                      <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 500 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 899">
+                        <button id="button_reopen" class="btn btn-orange-a btn-block action-reopen" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'reopen', 1, 20)">REOPEN</button>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        &#160;
+                      </xsl:otherwise>
+                    </xsl:choose>
+                &#160;
               </div>
             </div>
           </div>
         </xsl:if>
-        <div class="{$colmd}">
+        <div class="col-md-9">
           <!-- Custom Tabs -->
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active">
-                <a href="#tab_1" data-toggle="tab"  onclick="storeHash('{/sqroot/body/bodyContent/form/info/code/.}', ''); preview('1','{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);">Header</a>
-              </li>
+              <xsl:for-each select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo&lt;10]">
+                <li>
+                  <xsl:attribute name="class">
+                    <xsl:if test="@pageNo=1">active</xsl:if>
+                  </xsl:attribute>
+                  <a href="#tab_{@pageNo}" data-toggle="tab"
+                     onclick="storeHash('{/sqroot/body/bodyContent/form/info/code/.}', '#tab_{@pageNo}');">
+                    <xsl:choose>
+                      <xsl:when test="@pageTitle">
+                        <xsl:value-of select="@pageTitle"/>
+                      </xsl:when>
+                      <xsl:otherwise>Header
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </a>
+                </li>
+              </xsl:for-each>
               <xsl:choose>
-                <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'"></xsl:when>
+                <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'"></xsl:when>
                 <xsl:otherwise>
                   <xsl:for-each select="sqroot/body/bodyContent/form/children/child">
                     <li>
-                      <a href="#tab_{code}" data-toggle="tab" onclick="storeHash('{/sqroot/body/bodyContent/form/info/code/.}', '#tab_{code}');">
+                      <a href="#tab_{code}" data-toggle="tab"
+                         onclick="storeHash('{/sqroot/body/bodyContent/form/info/code/.}', '#tab_{code}');">
                         <xsl:value-of select="childTitle"/>
                       </a>
                     </li>
@@ -474,132 +483,13 @@ accept="image/*"
               </xsl:choose>
             </ul>
             <div class="tab-content">
-              <div class="tab-pane active" id="tab_1">
-                <!-- Main content -->
-                <section class="content">
-                  <!--<div class="row visible-phone">
-        <div class="col-md-12">
-          <div class="view-title">
-            <h3>REQUEST FOR RECRUITMENT (HRRR)</h3>
-          </div>
-        </div>
-      </div>-->
-                  <!-- title -->
-                  <xsl:apply-templates select="sqroot/body/bodyContent"/>
-                  <!-- view header -->
-                  <div class="row">
-                    <div class="col-md-12 device-sm visible-sm device-md visible-md device-lg visible-lg" style="margin-bottom:50px;">
-                      <div style="text-align:left">
-                        <xsl:choose>
-                          <xsl:when test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]">
-                          </xsl:when>
-                          <xsl:otherwise>
-                            <xsl:choose>
-                              <!--location: 0 header; 1 child; 2 browse location: browse:10, header form:20, browse anak:30, browse form:40-->
-                              <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
-                                <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
-                                <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                              </xsl:when>
-                              <xsl:when test="/sqroot/body/bodyContent/form/info/state/status/. = 0 or /sqroot/body/bodyContent/form/info/state/status/. = ''">
-                                <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
-                                <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                                <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))">
-
-                                  <button id="button_delete" class="btn btn-gray-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
-                                </xsl:if>
-                                <xsl:if test="($settingMode)='T' and ($docState) &lt; 400 ">
-                                  <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>
-                                </xsl:if>
-                              </xsl:when>
-                              <xsl:when test="($docState) &gt;= 100 and ($docState) &lt; 300">
-                                <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
-                                <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                                <xsl:if test="$isApprover=1">
-                                  <button id="button_approve" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">APPROVE</button>&#160;
-                                  <button id="button_reject" class="btn btn-orange-a" onclick="rejectPopup('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">REJECT</button>
-                                </xsl:if>
-                              </xsl:when>
-                              <xsl:when test="($docState) = 300">
-                                <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
-                                <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                                <xsl:if test="$isApprover=1">
-                                  <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RE-SUBMIT</button>
-                                </xsl:if>
-                                <xsl:if test="($settingMode)='T'">
-                                  <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RESUBMIT</button>
-                                </xsl:if>
-                              </xsl:when>
-                              <xsl:when test="($docState) &gt;= 400 and ($docState) &lt;= 499">
-                                <button id="button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
-                                <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                                <xsl:if test="$allowForce=1">
-                                  <button id="button_close" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">CLOSE</button>&#160;
-                                </xsl:if>
-                                <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))
-							                             or (($allowDelete>=4) and (/sqroot/body/bodyContent/form/info/state/status&lt;100 or /sqroot/body/bodyContent/form/info/state/status&gt;=300))">
-                                  <button id="button_delete" class="btn btn-gray-a btn-block" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>
-                                </xsl:if>
-                              </xsl:when>
-                              <xsl:when test="($docState) &gt;= 500 and ($docState) &lt;= 899">
-                                <button id="button_reopen" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'reopen', 1, 20)">REOPEN</button>&#160;
-                              </xsl:when>
-                              <xsl:otherwise>
-                                &#160;
-                              </xsl:otherwise>
-                            </xsl:choose>
-                          </xsl:otherwise>
-                        </xsl:choose>
-                      </div>
-                    </div>
-                    <div class="col-md-12 displayblock-phone device-xs visible-xs" style="margin-bottom:20px;">
-                      <div style="text-align:center">
-                        <xsl:choose>
-                          <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
-                            <button id="button_save2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'save', 1, 20);">SAVE</button>&#160;
-                            <button id="button_cancel2" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                          </xsl:when>
-                          <xsl:when test="($documentstatus) = 0 or ($documentstatus) = ''">
-                            <button id="button_save2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'save', 1, 20);">SAVE</button>&#160;
-                            <button id="button_cancel2" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                            <xsl:if test="($settingmode)='T' and ($documentstatus) &lt; 400 ">
-                              <button id="button_submit2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">SUBMIT</button>
-                            </xsl:if>
-                          </xsl:when>
-                          <xsl:when test="($documentstatus) &gt; 99 and ($documentstatus) &lt; 199">
-                            <button id="button_save2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'save', 1, 20);">SAVE</button>&#160;
-                            <button id="button_cancel2" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                            <button id="button_approve2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">APPROVE</button>
-                          </xsl:when>
-                          <xsl:when test="($documentstatus) = 300">
-                            <button id="button_save2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'save', 1, 20);">SAVE</button>&#160;
-                            <button id="button_cancel2" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                            <button id="button_reject2" class="btn btn-orange-a">REJECT</button>&#160;
-                          </xsl:when>
-                          <xsl:when test="($documentstatus) &gt;= 400 and ($documentstatus) &lt;= 499">
-                            <button id="button_save2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'save', 1, 20);">SAVE</button>&#160;
-                            <button id="button_cancel2" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-                            <button id="button_close2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'force', 1, 20)">CLOSE</button>&#160;
-                          </xsl:when>
-                          <xsl:otherwise>
-                            &#160;
-                            <!--<div style="text-align:left">
-                <button id="button_save" class="btn btn-orange-a" onclick="submitfunction('formheader','{sqroot/body/bodyContent/form/info/GUID/.}','{sqroot/body/bodyContent/form/info/code/.}');">SAVE</button>&#160;
-                <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
-              </div>-->
-                          </xsl:otherwise>
-                        </xsl:choose>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- button view header -->
-
-
-                </section>
-                <!-- /.content -->
-
-              </div>
+              <xsl:apply-templates select="sqroot/body/bodyContent"/>
               <!-- /.tab-pane -->
-
+              <xsl:for-each select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo&gt;1 and @pageNo&lt;10]">
+                <div class="tab-pane active" id="tab_{@pageNo}">
+                  &#160;
+                </div>
+              </xsl:for-each>
               <xsl:for-each select="sqroot/body/bodyContent/form/children/child">
                 <div class="tab-pane" id="tab_{code}">
                   <xsl:if test="/sqroot/body/bodyContent/form/info/GUID !='00000000-0000-0000-0000-000000000000'">
@@ -611,6 +501,7 @@ accept="image/*"
               </xsl:for-each>
 
             </div>
+
             <!-- /.tab-content -->
           </div>
           <!-- nav-tabs-custom -->
@@ -629,25 +520,107 @@ accept="image/*"
   </xsl:template>
 
   <xsl:template match="form">
-    <script>
-      var code = "<xsl:value-of select="info/code/."/>";
-      var tblnm =code+"requiredname";
-    </script>
-
-    <form role="form" id="formheader" enctype="multipart/form-data" onsubmit="return false">
-      <input type="hidden" id="cid" name="cid" value="{/sqroot/body/bodyContent/form/info/GUID/.}" />
-      <input type="hidden" name ="{info/code/.}requiredname"/>
-      <input type="hidden" name ="{info/code/.}requiredtblvalue"/>
-      <xsl:if test="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/imageBox/. != ''">
-        <input type="hidden" class="oph-webcam" id="{/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName/.}" name ="{/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName/.}"/>
-      </xsl:if>
-
-      <xsl:apply-templates select="formPages/formPage[@pageNo&lt;9]"/>
-    </form>
+    <xsl:apply-templates select="formPages/formPage[@pageNo&lt;9]"/>
   </xsl:template>
 
   <xsl:template match="formPages/formPage[@pageNo&lt;9]">
-    <xsl:apply-templates select="formSections"/>
+    <div id="tab_{@pageNo}">
+      <xsl:attribute name="class">
+        <xsl:choose>
+          <xsl:when test="@pageNo=1">
+            tab-pane active
+          </xsl:when>
+          <xsl:otherwise>
+            tab-pane
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute> 
+      <!-- Main content -->
+      <section class="content">
+        <!-- title -->
+        <!-- view header -->
+        <div class="row">
+          <script>
+            var code = "<xsl:value-of select="info/code/."/>";
+            var tblnm =code+"requiredname";
+          </script>
+
+          <form role="form" id="formheader_{@pageNo}" enctype="multipart/form-data" onsubmit="return false">
+            <xsl:apply-templates select="formSections" />
+          </form>
+
+        </div>
+        <!-- button view header -->
+        <div class="row">
+          <div class="col-md-12 device-sm visible-sm device-md visible-md device-lg visible-lg" style="margin-bottom:50px;">
+            <div style="text-align:left">
+              <xsl:choose>
+                <!--location: 0 header; 1 child; 2 browse location: browse:10, header form:20, browse anak:30, browse form:40-->
+                <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
+                  <button id="button_save_{@pageNo}" class="btn btn-orange-a action-save" onclick="saveThemeONE('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
+                  <button id="button_cancel_{@pageNo}" class="btn btn-gray-a action-cancel" onclick="saveCancel()">CANCEL</button>&#160;
+                </xsl:when>
+                <xsl:when test="/sqroot/body/bodyContent/form/info/state/status/. = 0 or /sqroot/body/bodyContent/form/info/state/status/. = ''">
+                  <button id="button_save_{@pageNo}" class="btn btn-orange-a action-save" onclick="saveThemeONE('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
+                  <button id="button_cancel_{@pageNo}" class="btn btn-gray-a action-cancel" onclick="saveCancel()">CANCEL</button>&#160;
+                </xsl:when>
+                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 100 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt; 300">
+                  <button id="button_save_{@pageNo}" class="btn btn-orange-a action-save" onclick="saveThemeONE('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
+                  <button id="button_cancel_{@pageNo}" class="btn btn-gray-a action-cancel" onclick="saveCancel()">CANCEL</button>&#160;
+                </xsl:when>
+                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) = 300">
+                  <button id="button_save_{@pageNo}" class="btn btn-orange-a action-save" onclick="saveThemeONE('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
+                  <button id="button_cancel_{@pageNo}" class="btn btn-gray-a action-cancel" onclick="saveCancel()">CANCEL</button>&#160;
+                </xsl:when>
+                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 400 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 499">
+                  <button id="button_save_{@pageNo}" class="btn btn-orange-a action-save" onclick="saveThemeONE('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 20, 'formheader');">SAVE</button>&#160;
+                  <button id="button_cancel_{@pageNo}" class="btn btn-gray-a action-cancel" onclick="saveCancel()">CANCEL</button>&#160;
+                </xsl:when>
+                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 500 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 899">
+                </xsl:when>
+                <xsl:otherwise>
+                  &#160;
+                </xsl:otherwise>
+              </xsl:choose>
+            </div>
+          </div>
+          <div class="col-md-12 displayblock-phone device-xs visible-xs" style="margin-bottom:20px;">
+            <div style="text-align:center">
+              <xsl:choose>
+                <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
+                  <button id="button_save2" class="btn btn-orange-a btn-block action-save" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 'save', 1, 20);">SAVE</button>
+                  <button id="button_cancel2" class="btn btn-gray-a btn-block action-cancel" onclick="saveCancel()">CANCEL</button>
+                </xsl:when>
+                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) = 0 or (/sqroot/body/bodyContent/form/info/state/status/.) = ''">
+                  <button id="button_save2" class="btn btn-orange-a btn-block action-save" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 'save', 1, 20);">SAVE</button>
+                  <button id="button_cancel2" class="btn btn-gray-a btn-block action-cancel" onclick="saveCancel()">CANCEL</button>
+                </xsl:when>
+                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt; 99 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt; 199">
+                  <button id="button_save2" class="btn btn-orange-a btn-block action-save" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 'save', 1, 20);">SAVE</button>
+                  <button id="button_cancel2" class="btn btn-gray-a btn-block action-cancel" onclick="saveCancel()">CANCEL</button>
+                </xsl:when>
+                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) = 300">
+                  <button id="button_save2" class="btn btn-orange-a btn-block action-save" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 'save', 1, 20);">SAVE</button>
+                  <button id="button_cancel2" class="btn btn-gray-a btn-block action-cancel" onclick="saveCancel()">CANCEL</button>
+                </xsl:when>
+                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 400 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 499">
+                  <button id="button_save2" class="btn btn-orange-a btn-block action-save" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 'save', 1, 20);">SAVE</button>
+                  <button id="button_cancel2" class="btn btn-gray-a btn-block action-cancel" onclick="saveCancel()">CANCEL</button>
+                </xsl:when>
+                <xsl:otherwise>
+                  &#160;
+                  <!--<div style="text-align:left">
+                <button id="button_save" class="btn btn-orange-a" onclick="submitfunction('formheader','{/sqroot/body/bodyContent/form/info/GUID/.}','{/sqroot/body/bodyContent/form/info/code/.}');">SAVE</button>&#160;
+                <button id="button_cancel" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
+              </div>-->
+                </xsl:otherwise>
+              </xsl:choose>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
   </xsl:template>
 
   <xsl:template match="formSections">
@@ -673,18 +646,18 @@ accept="image/*"
     <xsl:choose>
       <xsl:when test="@colNo='0'">
         <div class="col-md-12">
-  	      <xsl:if test="@rowTitle/.!=''">
+          <xsl:if test="@rowTitle/.!=''">
             <h3>
               <xsl:value-of select="@rowTitle/."/>&#160;
             </h3>
-        </xsl:if>	
+          </xsl:if>
           <xsl:apply-templates select="formRows"/>
         </div>
       </xsl:when>
       <xsl:otherwise>
         <xsl:if test="$totalcol = 3 or $totalcol = 4">
           <div class="col-md-4">
-		    <xsl:if test="../formCol/@rowTitle/.!=''">
+            <xsl:if test="../formCol/@rowTitle/.!=''">
               <h3>
                 <xsl:value-of select="@rowTitle/."/>&#160;
               </h3>
@@ -702,11 +675,11 @@ accept="image/*"
         </xsl:if>
         <xsl:if test="$totalcol = 1 or $totalcol = 2">
           <div class="col-md-6">
-			<xsl:if test="../formCol/@rowTitle/.!=''">
+            <xsl:if test="../formCol/@rowTitle/.!=''">
               <h3>
                 <xsl:value-of select="@rowTitle/."/>&#160;
               </h3>
-            </xsl:if>		   
+            </xsl:if>
             <xsl:if test="@colNo='1'">
               <xsl:apply-templates select="formRows"/>
             </xsl:if>
@@ -739,10 +712,10 @@ accept="image/*"
 
   <xsl:template match="field">
     <xsl:if test="@isNullable=0 and 
-                    ((@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
-                        or (@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
-                        or (@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
+                    ((@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                        or (@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
+                        or (@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <script>
         document.getElementsByName(tblnm)[0].value = document.getElementsByName(tblnm)[0].value + ', <xsl:value-of select="@fieldName"/>'
       </script>
@@ -750,10 +723,10 @@ accept="image/*"
 
     <xsl:variable name="fieldEnabled">
       <xsl:choose>
-        <xsl:when test ="((@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
-                        or (@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
-                        or (@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">enabled</xsl:when>
+        <xsl:when test ="((@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                        or (@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
+                        or (@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">enabled</xsl:when>
         <xsl:otherwise>disabled</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -786,7 +759,7 @@ accept="image/*"
   <xsl:template match="hiddenBox">
     <input type="hidden" Value="{value}" data-type="hiddenBox" data-old="{value}" name="{../@fieldName}"
            id ="{../@fieldName}"/>
-    </xsl:template>
+  </xsl:template>
 
   <xsl:template match="checkBox">
     <!--Supaya bisa di serialize-->
@@ -804,10 +777,10 @@ accept="image/*"
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -822,10 +795,10 @@ accept="image/*"
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -861,10 +834,10 @@ accept="image/*"
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -926,10 +899,10 @@ accept="image/*"
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
     <div class="input-group date">
@@ -940,7 +913,8 @@ accept="image/*"
 
 
       <input type="text" class="form-control pull-right datepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" data-type="dateBox" data-old="{value}"
-        onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" >
+        onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);"
+        onchange="checkChanges(this)">
       </input>
     </div>
   </xsl:template>
@@ -964,16 +938,16 @@ accept="image/*"
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
     <input type="password" class="form-control" Value="" data-type="textBox" data-old="" name="{../@fieldName}"
            minlength="8" required="required" placeholder="8 characters minimum."
-      onblur="preview('{preview/.}',getCode(), '{$cid}','formheader', this);" id ="{../@fieldName}" autocomplete="false">
+      onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" id ="{../@fieldName}" autocomplete="false">
     </input>
 
   </xsl:template>
@@ -984,10 +958,10 @@ accept="image/*"
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -1007,10 +981,10 @@ accept="image/*"
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
     <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}" data-type="selectBox"
@@ -1064,7 +1038,7 @@ accept="image/*"
               $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').append('<div style="float:left; margin-left:10px;font-size:20px;">Please wait...</div>');
               $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').children('div:first').append('<ix class="fa fa-spinner fa-pulse fa-2x fa-fw"></ix>');
               }).on('shown.bs.modal', function (event) {
-              if (isGuid($('#<xsl:value-of select="../@fieldName"/>').val()) &amp;&amp; $(event.relatedTarget).data('action') == 'edit' ) {
+              if (isGuid($('#<xsl:value-of select="../@fieldName"/>').val()) &amp;&amp; $(event.relatedTarget).data('.action') == 'edit' ) {
               loadModalForm('modalForm<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="@comboCode"/>', $('#<xsl:value-of select="../@fieldName"/>').val());
               }
               else {
@@ -1219,10 +1193,10 @@ accept="image/*"
     </label>
 
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -1247,10 +1221,10 @@ accept="image/*"
       data-key="{key}" data-id="{id}" data-name="{name}"
       name="{../@fieldName}" id ="{../@fieldName}">
       <xsl:choose>
-        <xsl:when test="((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and $docState&lt;400)
-                        or (../@isEditable='4' and $docState&lt;500))">
+        <xsl:when test="((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and /sqroot/body/bodyContent/form/info/state/status/.&lt;400)
+                        or (../@isEditable='4' and /sqroot/body/bodyContent/form/info/state/status/.&lt;500))">
         </xsl:when>
         <xsl:otherwise>
           <xsl:attribute name="disabled">disabled</xsl:attribute>
@@ -1266,10 +1240,10 @@ accept="image/*"
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -1306,7 +1280,7 @@ accept="image/*"
   <xsl:template match="radio">
     <xsl:variable name="radioVal">
       <xsl:choose>
-        <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
+        <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
           <xsl:value-of select="defaultvalue" />
         </xsl:when>
         <xsl:otherwise>
@@ -1334,10 +1308,10 @@ accept="image/*"
         <xsl:value-of select="titlecaption"/>
       </label>
       <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
         <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
       </xsl:if>
     </div>
@@ -1362,7 +1336,7 @@ accept="image/*"
     <xsl:variable name="pandis" select="count(radioRows)"/>
     <xsl:variable name="radioVal1">
       <xsl:choose>
-        <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
+        <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
           <xsl:value-of select="../../defaultvalue" />
         </xsl:when>
         <xsl:otherwise>
