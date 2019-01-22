@@ -92,8 +92,14 @@ function saveThemeONE(code, guid, location, formId) {
 }
 
 function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, allowForce, isDelegator) {
-    var tx1 = $('#mandatory' + guid).val();
-    var tx2 = '<strong>' + tx1 + '</strong> ' + $('#summary' + guid).text();
+    var tx1='';
+    $('td#mandatory' + guid).each(function(i, td) {
+            tx1+='<strong>'+$(td).data('title')+'</strong> '+$(td).html()+' &#183; ';
+        } )    
+
+
+    //var tx1 = $('td#mandatory' + guid).val();
+    var tx2 = '' + tx1 + ' ' + $('#summary' + guid).html();
     var tx3 = '<b>WAIT FOR APPROVAL</b><br /><b>USER 3 </b>';
     var divname = 'collapse' + guid;
 
@@ -122,7 +128,13 @@ function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, a
 
     x = x.replace('#d212#', '<div style="text-align:center; display:block; background:gray; padding:10px 0;">#t#</div>');
     x = x.replace('#t#', '<table style="width:100%">#tr#</table>');
-    x = x.replace('#tr#', '<tr><td>&#160;</td>#td#<td>&#160;</td></tr>');
+    x = x.replace('#tr#', '<tr><td>&#160;</td>#summary#<td>&#160;</td></tr><tr><td>&#160;</td>#td#<td>&#160;</td></tr>');
+
+    var sum='';
+    $('div#approval-' + guid).each(function(i, div) {
+            sum+='Level '+$(div).data('level')+'<strong>'+$(div).data('username')+'</strong> '+$(div).data('approvaldate')+' '+' &#183; ';
+        } )    
+    x = x.replace('#summary#', sum);
 
     bt = '<td width="1" style="padding:0 10px;">#bt#</td>#td#';
     bt = bt.replace('#bt#', '<button type="button" class="btn btn-gray-a" style="background:#ccc; border:none;" onclick="#abt#">#btname#</button>');
@@ -133,7 +145,7 @@ function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, a
     }
 
     var btname = 'DELETE';
-    var btfn = 'inactivate';
+    var btfn = 'delete';
     if (status < 500 && allowDelete == 1 && isDelegator == 0) {
         x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
     }
@@ -150,10 +162,22 @@ function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, a
         x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-archive"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
     }
 
+    var btname = 'SUBMIT';
+    var btfn = 'execute';
+    if (status==0 || status==300) {
+        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+    }
+
     var btname = 'APPROVE';
     var btfn = 'execute';
-    if (isDelegator == 0) {
+    if (isDelegator == 0 && status > 0 && status < 200) {
         x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+    }
+
+    var btname = 'REJECT';
+    var btfn = 'force';
+    if (isDelegator == 0 && status > 0 && status < 200) {
+        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:rejectPopup(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
     }
 
     x = x.replace('#td#', '');
@@ -694,4 +718,51 @@ function checkedBox(ini) {
             $("#actionHeader div").hide();
         }
     }
+}
+
+function btnWebcam(mode, idimg) {
+    if (mode === 'opencamera') {
+        Webcam.set({
+            width: 270,
+            height: 200,
+            image_format: 'jpeg',
+            jpeg_quality: 90
+        });
+        Webcam.attach('#' + idimg +'_camera');
+
+        $('#' + idimg + '_camera').width('100%');
+
+        $('#' + idimg + '_camera').find('video').width('100%');
+        $("#opencamera").hide();
+        $("#takesnapshot").show();
+    }
+    else if (mode == 'takesnap') {
+        Webcam.freeze();
+
+        $("#savephoto").show();
+        $("#takeanother").show();
+        $("#takesnapshot").hide();
+    } else if (mode == 'takeanother') {
+        Webcam.unfreeze();
+
+        $("#savephoto").hide();
+        $("#takeanother").hide();
+        $("#takesnapshot").show();
+    } else if (mode == 'savephoto') {
+        Webcam.snap(function (data_uri) {
+            // display results in page
+            document.getElementById(idimg + '_hidden').innerHTML =
+					'<img id="' + idimg + '_image" src="' + data_uri + '"/>';
+
+        });
+        $('#' + idimg + '_camera').html($('#' + idimg + '_hidden').html());
+        $("#savephoto").hide();
+        $("#takeanother").hide();
+        $("#opencamera").show();
+
+        $("#" + idimg).val($('#' + idimg + '_image').attr('src'));
+        $("#button_save").click();
+
+    }
+    
 }

@@ -14,6 +14,7 @@
   </xsl:variable>
 
   <xsl:template match="/">
+  
     <div style="display:none" id="pageName">&#xA0;</div>
     <div style="display:none" id="themeName">&#xA0;</div>
 
@@ -316,60 +317,6 @@
 
   </xsl:template>
 
-  <xsl:template match="sqroot/header/menus/menu[@code='sidebar']/submenus/submenu">
-    <div class="panel top-menu-onphone">
-      <a class="top-envi" data-toggle="collapse" data-parent="#accordion2" href="#{@idMenu}">
-        <xsl:value-of select="caption/." />&#160;<span class="caret"></span>
-      </a>
-      <div id="{@idMenu}" class="panel-collapse collapse">
-        <ul class="treeview">
-          <xsl:if test="(@type)='treeroot'">
-            <xsl:apply-templates select="submenus/submenu[@type='treeview']" />&#160;
-            <xsl:apply-templates select="submenus/submenu[@type='label']" />&#160;
-          </xsl:if>
-        </ul>
-      </div>
-    </div>
-  </xsl:template>
-
-  <xsl:template match="sqroot/header/menus/menu[@code='sidebar']/submenus/submenu[@type='treeview']">
-    <li>
-      <a data-toggle="collapse" data-parent="#accordion{../../@GUID}" href="#{@idMenu}">
-        <xsl:value-of select="caption/." />
-      </a>
-      <div id="{@idMenu}" class="panel-collapse collapse">
-        <ul class="panel-group">
-          <xsl:apply-templates select="submenus/submenu[@type='treeview']" />&#160;
-          <xsl:apply-templates select="submenus/submenu[@type='label']" />&#160;
-        </ul>
-      </div>
-    </li>
-  </xsl:template>
-
-  <xsl:template match="submenus/submenu[@type='treeview']">
-    <li>
-      <a data-toggle="collapse" data-parent="#accordion{../../@GUID}" href="#{@idMenu}">
-        <xsl:value-of select="caption/." />
-        &#160;
-        <span class="caret"></span>
-      </a>
-      <div id="{@idMenu}" class="panel-collapse collapse">
-        <ul class="panel-group">
-          <xsl:apply-templates select="submenus/submenu[@type='treeview']" />&#160;
-          <xsl:apply-templates select="submenus/submenu[@type='label']" />&#160;
-        </ul>
-      </div>
-    </li>
-  </xsl:template>
-
-  <xsl:template match="submenus/submenu[@type='label']">
-    <a href="{pageURL/.}" class="top-envi">
-      <xsl:value-of select="caption/." />
-      &#160;
-      <xsl:if test="isPending &gt; 0">
-        <ix class="fa fa-asterisk" aria-hidden="true" style="font-size: 8px; position:absolute"></ix>
-      </xsl:if>
-    </a>
-  </xsl:template>
+  <xsl:include href="dashboard_menu.xslt" />
 
 </xsl:stylesheet>

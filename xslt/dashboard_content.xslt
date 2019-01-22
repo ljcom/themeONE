@@ -46,6 +46,7 @@
   </xsl:template>
 
   <xsl:template match="widgets/widgetPages/widgetPage">
+  
     <xsl:apply-templates select="widgetSections/widgetSection" />
 
   </xsl:template>

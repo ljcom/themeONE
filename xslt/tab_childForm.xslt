@@ -136,6 +136,7 @@
     </script>
     <input type="hidden" name ="{info/code/.}requiredname"/>
     <input type="hidden" name ="{info/code/.}requiredtblvalue"/>
+	<input type="hidden" id="chid" name="chid" value="{/sqroot/body/bodyContent/form/info/GUID/.}" />
     <div class="col-md-12" id="child">
       <form role="form" id="form{info/code/.}">
         <input type="hidden" name="{info/parentKey/.}" id="PK{info/code/.}" value=""/>
@@ -167,11 +168,6 @@
 
     <div class="box box-solid box-default" style="box-shadow:0px;border:none;">
       <div class="col-md-12">
-        <xsl:if test="@rowTitle/.">
-          <h3>
-            <xsl:value-of select="@rowTitle/."/>&#160;
-          </h3>
-        </xsl:if>
         <xsl:apply-templates select="formCols"/>
       </div>
     </div>
@@ -199,11 +195,21 @@
     <xsl:choose>
       <xsl:when test="@colNo='0'">
         <div class="col-md-12">
+          <xsl:if test="../formCol/@rowTitle/.">
+            <h3>
+              <xsl:value-of select="@rowTitle/."/>&#160;
+            </h3>
+          </xsl:if>		
           <xsl:apply-templates select="formRows"/>
         </div>
       </xsl:when>
       <xsl:otherwise>
         <div class="col-md-6">
+          <xsl:if test="../formCol/@rowTitle/.">
+            <h3>
+              <xsl:value-of select="@rowTitle/."/>&#160;
+            </h3>
+          </xsl:if>		
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
@@ -262,6 +268,7 @@
       <xsl:apply-templates select="dateTimeBox"/>
       <xsl:apply-templates select="timeBox"/>
       <xsl:apply-templates select="passwordBox"/>
+      <xsl:apply-templates select="hiddenBox"/>
       <xsl:apply-templates select="checkBox"/>
       <xsl:apply-templates select="mediaBox"/>
       <xsl:apply-templates select="autoSuggestBox"/>
@@ -269,7 +276,10 @@
       <xsl:apply-templates select="radio"/>
     </div>
   </xsl:template>
-
+  <xsl:template match="hiddenBox">
+    <input type="hidden" Value="{value}" data-type="hiddenBox" data-old="{value}" name="{../@fieldName}"
+           id ="{../@fieldName}"/>
+    </xsl:template>
   <xsl:template match="checkBox">
     <!--Supaya bisa di serialize-->
     <input type="hidden" name="{../@fieldName}" id="{../@fieldName}" value="{value}"/>
@@ -497,6 +507,124 @@
       <option value="NULL">-----Select-----</option>
     </select>
 
+    <!--AutoSuggest Add New Form Modal-->
+    <xsl:if test="(@allowAdd&gt;=1 or @allowEdit=1) and ../@isEditable=1">
+      <div id="addNew{../@fieldName}" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+                <span aria-hidden="true">&#215;</span>
+              </button>
+              <div style="float:left;margin-top:-15px;">
+                <h3>
+                  <xsl:value-of select="titlecaption"/>
+                </h3>
+                <span>(Quick Add New Data Set)</span>
+              </div>
+              <div style="float:left">
+                <a id="link{../@fieldName}" data-toggle="tooltip" data-placement="right" title="Click to see more detail" style="cursor:pointer;" onclick="">
+                  <ix class="fa fa-external-link fa-2x"></ix>
+                </a>
+                <script>
+                  $('#link<xsl:value-of select="../@fieldName"/>').click(function(){
+                  var guid = (isGuid($('#<xsl:value-of select="../@fieldName"/>').val())) ? $('#<xsl:value-of select="../@fieldName"/>').val() : '00000000-0000-0000-0000-000000000000';
+                  var url = '?code=<xsl:value-of select="@comboCode"/>&amp;guid=' + guid;
+                  window.open(url);
+                  });
+                </script>
+              </div>
+            </div>
+            <div class="modal-body">
+              <div class="row" id="modalForm{../@fieldName}">
+                &#160;
+              </div>
+            </div>
+            <script>
+              if ($('body').children('#addNew<xsl:value-of select="../@fieldName"/>').length == 1) {
+              $('body').children('#addNew<xsl:value-of select="../@fieldName"/>').remove();
+              }
+              $('#addNew<xsl:value-of select="../@fieldName"/>').appendTo("body");
+              $('#addNew<xsl:value-of select="../@fieldName"/>').on('show.bs.modal', function (event) {
+              $('#<xsl:value-of select="../@fieldName"/>').select2('close');
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').append('<div class="col-md-12"></div>');
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').append('<div style="float:left;"></div>');
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').append('<div style="float:left; margin-left:10px;font-size:20px;">Please wait...</div>');
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('.col-md-12').children('div:first').append('<ix class="fa fa-spinner fa-pulse fa-2x fa-fw"></ix>');
+              }).on('shown.bs.modal', function (event) {
+              if (isGuid($('#<xsl:value-of select="../@fieldName"/>').val()) &amp;&amp; $(event.relatedTarget).data('action') == 'edit' ) {
+              loadModalForm('modalForm<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="@comboCode"/>', $('#<xsl:value-of select="../@fieldName"/>').val());
+              }
+              else {
+              loadModalForm('modalForm<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="@comboCode"/>', '00000000-0000-0000-0000-000000000000');
+              }
+              }).on('hide.bs.modal', function(event){
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('div').remove();
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('form').remove();
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').children('button').remove();
+              $('#addNew<xsl:value-of select="../@fieldName"/> .modal-footer').children('button[id*="btn_save"]').remove();
+              $('#modalForm<xsl:value-of select="../@fieldName"/>').text('&#160;');
+              });
+            </script>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal" >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <xsl:if test="@allowAdd&gt;=1">
+        <span class="select2-search select2-box--dropdown" id="select2-{../@fieldName}-addNew" style="display:none;">
+          <ul class="select2-results__options" role="tree" aria-expanded="true" aria-hidden="false">
+            <li class="select2-results__option" role="treeitem" aria-selected="false">
+              <a data-toggle="modal" data-target="#addNew{../@fieldName}" data-backdrop="static" data-action="new">
+                Add New <xsl:value-of select="titlecaption"/>
+              </a>
+            </li>
+          </ul>
+        </span>
+        <script>
+          $("#<xsl:value-of select="../@fieldName"/>").on("select2:open", function(e) {
+          var s2id = $("span[class*='select2-dropdown select2-dropdown']").children('.select2-results').children().attr('id');
+          s2id = s2id.split('select2-').join('').split('-results').join('');
+          if (s2id == '<xsl:value-of select="../@fieldName"/>') {
+          $('#select2-<xsl:value-of select="../@fieldName"/>-addNew').appendTo("span[class*='select2-dropdown select2-dropdown']").show();
+          }
+          });
+        </script>
+      </xsl:if>
+      <xsl:if test="@allowEdit=1">
+        <span id="editForm{../@fieldName}" data-toggle="modal" data-target="#addNew{../@fieldName}" data-backdrop="static" data-action="edit"
+
+          style="cursor: pointer;margin: 8px 45px 0px 0px;position: absolute;top: 0px;right: 0px; display:none">
+          <ix class="far fa-pencil-alt" title= "Edit" data-toggle="tooltip"></ix>
+        </span>
+
+        <script>
+          $("#<xsl:value-of select="../@fieldName"/>").on("select2:select", function(e) {
+          $selection = $('#select2-<xsl:value-of select="../@fieldName"/>-container').parents('.selection');
+          if ($selection.children('#editForm<xsl:value-of select="../@fieldName"/>').length == 0)
+          $('#editForm<xsl:value-of select="../@fieldName"/>').appendTo($selection);
+          $('#editForm<xsl:value-of select="../@fieldName"/>').show();
+          });
+        </script>
+      </xsl:if>
+    </xsl:if>
+
+    <xsl:if test="@allowEdit=1">
+      <span id="removeForm{../@fieldName}" style="cursor: pointer;margin: 8px 30px 0px 0px;position: absolute;top: 0px;right: 0px; display:none">
+        <ix class="far fa-times" title= "Remove Selection" data-toggle="tooltip" onclick="javascript: $('#{../@fieldName}').val(null).trigger('change');$('#editForm{../@fieldName}').hide();$('#removeForm{../@fieldName}').hide();"></ix>
+      </span>
+      <script>
+        $("#<xsl:value-of select="../@fieldName"/>").on("select2:select", function(e) {
+        $selection = $('#select2-<xsl:value-of select="../@fieldName"/>-container').parents('.selection');
+        if ($selection.children('#removeForm<xsl:value-of select="../@fieldName"/>').length == 0)
+        $('#removeForm<xsl:value-of select="../@fieldName"/>').appendTo($selection);
+        $('#removeForm<xsl:value-of select="../@fieldName"/>').show();
+        });
+      </script>
+    </xsl:if>
+    
     <script>
 
       <!--$("#<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/><xsl:value-of select="../@fieldName"/>").select2({-->
@@ -643,6 +771,17 @@
   </xsl:template>
 
   <xsl:template match="radio">
+    <xsl:variable name="radioVal">
+      <xsl:choose>
+        <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
+          <xsl:value-of select="defaultvalue" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="value" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <script>
       function <xsl:value-of select="../@fieldName" />_hide(shownId) {
       $('#accordion_<xsl:value-of select="../@fieldName" />').children().each(function(){
@@ -650,25 +789,34 @@
       $(this).collapse('toggle');
       }
       });
+
       }
+      <xsl:if test="$radioVal != ''">
+        panel_display('<xsl:value-of select="../@fieldName"/>', '<xsl:value-of select="$radioVal"/>', true);
+      </xsl:if>
+
     </script>
     <div>
-      <label id="{../@fieldName}caption" name="{../@fieldName}caption">
+      <label id="{../@fieldName}caption">
         <xsl:value-of select="titlecaption"/>
       </label>
+      <xsl:if test="../@isNullable = 0 and 
+                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
+        <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
+      </xsl:if>
     </div>
-    <xsl:if test="../@isNullable = 0">
-      <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
-    </xsl:if>
-    <div class = "btn-group" data-toggle = "buttons">
+    <div class = "btn-group" data-toggle = "radios">
       <xsl:apply-templates select="radioSections/radioSection"/>
     </div>
     <xsl:if test="radioSections/radioSection/radioRows">
-      <div class="panel-body" id="accordion_{../@fieldName}" style="box-shadow:none;border:none;">
+      <div class="panel-body" id="accordion_{../@fieldName}" style="box-shadow:none;border:none;display:none;">
         <xsl:for-each select="radioSections/radioSection">
           <!--<xsl:if test="radioSections/radioSection/radioRows/radioRow">-->
-          <div id="panel_{../../../@fieldName}_{@radioNo}" class="box collapse" style="box-shadow:none;border:none;">
-            <xsl:apply-templates select="radioRows/radioRow/fields" />&#160;
+          <div id="panel_{../../../@fieldName}_{@radioNo}" class="box collapse" style="box-shadow:none;border:none;padding-bottom:0;padding-top:0;margin-bottom:0">
+            <xsl:apply-templates select="radioRows/radioRow/fields" />
           </div>
           <!--</xsl:if>-->
         </xsl:for-each>
@@ -698,6 +846,9 @@
       var x=$('input[name=<xsl:value-of select="../../../@fieldName" />]:checked').val();
       $('#<xsl:value-of select="../../../@fieldName" />').val(x);
       });
+      <xsl:if test="../../../@isEditable=0">
+        $('#<xsl:value-of select="../../../@fieldName" />_<xsl:value-of select="@radioNo" />').attr('disabled', true);
+      </xsl:if>
     </script>
   </xsl:template>
 
