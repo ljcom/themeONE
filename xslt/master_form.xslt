@@ -342,7 +342,7 @@
 
   <xsl:template match="formCol">
     <xsl:variable name="colMax">
-      <xsl:for-each select=".">
+      <xsl:for-each select="../formCol/.">
         <xsl:sort select="@colNo" data-type="number" order="descending"/>
         <xsl:if test="position() = 1">
           <xsl:value-of select="@colNo"/>
@@ -715,6 +715,9 @@
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
+    <label id="{../@fieldName}chain" data-toggle="tooltip" style="display:none">
+      &#160;<ix class="far fa-link"></ix>
+    </label>
     <xsl:if test="../@isNullable = 0 and 
                     ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
@@ -846,6 +849,22 @@
 
 
     <script>
+      var wfc1 = '<xsl:value-of select='whereFields/wf1'/>';
+      var wfc1Caps = $('#'+wfc1+'caption').text()
+      var wfc2 = '<xsl:value-of select='whereFields/wf2'/>';
+      var wfc2Caps = $('#'+wfc2+'caption').text();
+
+      if (wfc1Caps != '') {
+        var chainCaps = 'Linked with field ['+wfc1Caps+']';
+        
+        if (wfc2Caps != '') {
+          chainCaps = chainCaps + ' and ['+wfc2Caps+']';
+        }
+        
+        $("#<xsl:value-of select="../@fieldName"/>chain").attr('title', chainCaps);
+        $("#<xsl:value-of select="../@fieldName"/>chain").show();
+      }
+      
       $("#<xsl:value-of select="../@fieldName"/>").select2({
       placeholder: 'Select <xsl:value-of select="titlecaption"/>',
       onAdd: function(x) {

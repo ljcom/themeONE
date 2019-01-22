@@ -483,35 +483,102 @@
   <xsl:template match="comboFilter">
     <div class="col-md-6">
       <div class="form-group">
-        <label for="{@id}">
+        <label id="label_{@id}">
           <xsl:value-of select="@caption"/>
         </label>
-        <select class="form-control select2" style="width: 100%;" name="{@id}" id="{@id}" tabindex="-1" aria-hidden="true"
-           data-type="selectBox" data-old="{value}" data-oldText="{value}" data-value="{value}" >
-          <option value="NULL">-- Select All --</option>
+        <label id="chain_{@id}" data-toggle="tooltip" style="display:none">
+          &#160;<ix class="far fa-link"></ix>
+        </label>
+        <select id="{@id}" name="{@id}" class="comboFilter select2" style="width: 100%;" data-wf1="{@wf1}" data-wf2="{@wf2}" data-old="{value}" data-selected="{value}">
+          <option></option>
         </select>
       </div>
-    </div>
+    </div>    
+    <span id="clear{@id}" style="cursor: pointer;margin: 8px 30px 0px 0px;position: absolute;top: 0px;right: 0px; display:none">
+      <ix class="far fa-times" title= "Clear Selection" data-toggle="tooltip"></ix>
+    </span>
     <script>
-      $("#<xsl:value-of select="@id"/>").select2({
-      ajax: {
-      url:"OPHCORE/api/msg_autosuggest.aspx",
-      data: function (params) {
-      var query = {
-      code:"<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code/."/>",
-      colkey:"<xsl:value-of select="@id"/>",
-      parentCode: getCode(),
-      search: params.term, page: params.page
-      }
-      return query;
-      },
-      dataType: 'json',
-      }
+      $("#<xsl:value-of select="@id"/>").on("select2:select", function(e) {
+        $('#clear<xsl:value-of select="@id"/>').show();
+        
+        var oldSelected = $('#<xsl:value-of select="@id"/>').data("selected", "");
+        var newSelected = $('#<xsl:value-of select="@id"/>').val();
+                
+        //WhereField Condition
+        $(".comboFilter.select2").each(function(){
+          if ($(this).data('wf1') == '<xsl:value-of select="@id"/>') {            
+            $("#" + this.id).prop("disabled", false);
+            //$("#select2-" + this.id + "-container").tooltip("disable");
+
+            if (oldSelected != newSelected) $("#clear" + this.id).click();
+          }
+        });
+        
+        $('#<xsl:value-of select="@id"/>').data("selected", newSelected);
       });
-      <xsl:if test="value!=''">
+      
+      $("#clear<xsl:value-of select="@id"/>").on("click", function(e) {
+        $('#<xsl:value-of select="@id"/>').val(null).trigger("change.select2");
+        $('#<xsl:value-of select="@id"/>').data("selected", "");
+        $(this).hide();
+
+        //WhereField Condition
+        $(".comboFilter.select2").each(function(){
+          if ($(this).data('wf1') == '<xsl:value-of select="@id"/>') {
+            $("#clear" + this.id).click();
+            $("#" + this.id).prop("disabled", true);
+            $("#select2-" + this.id + "-container").tooltip("enable");
+          }
+        });
+        
+      });
+
+      $("#<xsl:value-of select="@id"/>").select2({
+        placeholder: 'Select All [<xsl:value-of select="@caption"/>] Data',
+        ajax: {
+          url:"OPHCORE/api/msg_autosuggest.aspx",
+          data: function (params) {
+            var query = {
+              code:"<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code/."/>",
+              colkey:"<xsl:value-of select="@id"/>",
+              search: params.term==undefined?'':params.term.toString().split('+').join('%2B'),
+              wf1value: ($("#<xsl:value-of select='@wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='@wf1'/>").val()),
+              wf2value: ($("#<xsl:value-of select='@wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='@wf2'/>").val()),
+              parentCode: getCode(),
+              page: params.page
+            }
+            return query;
+          },
+          dataType: 'json',
+        }
+      });
+
+      $selection = $('#select2-<xsl:value-of select="@id"/>-container').parents('.selection');
+      if ($selection.children('#clear<xsl:value-of select="@id"/>').length == 0) $('#clear<xsl:value-of select="@id"/>').appendTo($selection);
+      $('#clear<xsl:value-of select="@id"/>').show();
+      
+      var cb<xsl:value-of select="@id"/> = '<xsl:value-of select="value"/>';
+      if (cb<xsl:value-of select="@id"/> != '') {
         var defer = [];
-        autosuggestSetValue(defer,'<xsl:value-of select="@id"/>','<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code/."/>','<xsl:value-of select="@id"/>', '<xsl:value-of select="value"/>', '', '')
-      </xsl:if>
+        autosuggestSetValue(defer,'<xsl:value-of select="@id"/>','<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code/."/>','<xsl:value-of select="@id"/>', '<xsl:value-of select="value"/>', '<xsl:value-of select="@wf1"/>', '<xsl:value-of select="@wf2"/>')
+      } else {
+        $('#clear<xsl:value-of select="@id"/>').click();
+      }
+      
+      var label_bfwf1 = $('#label_<xsl:value-of select="@wf1"/>').text();
+      var label_bfwf2 = $("#label_<xsl:value-of select='@wf2'/>").text();
+      if (label_bfwf1 != '') {
+        var chainCaps = 'Linked with field ['+label_bfwf1+']';        
+        if (label_bfwf2 != '') chainCaps = chainCaps + ' and ['+label_bfwf2+']';
+        
+        $("#chain_<xsl:value-of select="@id"/>").attr('title', chainCaps);
+        $("#chain_<xsl:value-of select="@id"/>").show();
+
+        if(cb<xsl:value-of select="@id"/> == "") {
+          $('#select2-<xsl:value-of select="@id"/>-container').attr('title', 'Please Select ['+label_bfwf1+'] First')        
+          $('#select2-<xsl:value-of select="@id"/>-container').attr('data-toggle', 'tooltip');        
+        }
+      }
     </script>
   </xsl:template>
 

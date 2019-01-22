@@ -6,12 +6,8 @@
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
   <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
-  <xsl:variable name="lowerCode">
-    <xsl:value-of select="translate(/sqroot/body/bodyContent/browse/info/code, $uppercase, $smallcase)"/>
-  </xsl:variable>
-  <xsl:variable name="nbCol">
-    <xsl:value-of select="count(/sqroot/body/bodyContent/browse/header/column)" />
-  </xsl:variable>
+  <xsl:variable name="lowerCode"><xsl:value-of select="translate(/sqroot/body/bodyContent/browse/info/code, $uppercase, $smallcase)"/></xsl:variable>
+  <xsl:variable name="nbCol"><xsl:value-of select="count(/sqroot/body/bodyContent/browse/header/column)" /></xsl:variable>
   <xsl:variable name="parentState" select="/sqroot/body/bodyContent/browse/info/parentState" />
   <xsl:variable name="settingMode" select="/sqroot/header/info/code/settingMode/." />
 
@@ -77,7 +73,7 @@
         <div class="row">
           <div class="col-md-12">
             <div style="border:0px none white;box-shadow:none;" id="content_{$lowerCode}" class="box collapse in">
-              <div style="border:0px none white;box-shadow:none;overflow:auto" >
+              <div style="border:0px none white;box-shadow:none;overflow:auto">
                 <table class="table table-condensed strip-table-browse cell-table" style="border-collapse:collapse">
                   <thead>
                     <tr style="background:#3C8DBC; color:white">
@@ -89,7 +85,6 @@
                     </tr>
                   </thead>
                   <tbody id="{$lowerCode}">
-
                     <xsl:apply-templates select="sqroot/body/bodyContent/browse/content/row"/>
                   </tbody>
                 </table>
@@ -158,6 +153,7 @@
     </xsl:if>
 
   </xsl:template>
+  
   <xsl:template match="sqroot/body/bodyContent/browse/header">
     <xsl:apply-templates select="column"/>
   </xsl:template>
