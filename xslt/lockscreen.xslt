@@ -128,13 +128,6 @@
 
   </xsl:template>
 
-  <xsl:template match="sqroot/header/menus/menu[@code='primary']/submenus/submenu/submenus/submenu">
-    <li>
-      <a href="{pageURL/.}">
-        <xsl:value-of select="caption/." />
-      </a>
-    </li>
-  </xsl:template>
 
 
 
