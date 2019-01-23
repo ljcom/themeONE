@@ -1413,7 +1413,6 @@
 
   </xsl:template>
 
-
   <xsl:template match="child">
     <xsl:if test="info/permission/allowBrowse='1'">
       <input type="hidden" id="PKID" value="child{code/.}"/>
