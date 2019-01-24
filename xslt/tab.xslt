@@ -820,7 +820,7 @@ _________________________________________________________ -->
         <b>Version</b> 4.0
       </div>
       <strong>
-        Copyright &#169; 2017 <a href="#">Operahouse</a>.
+        Copyright &#169; 2019 <a href="#">Operahouse</a>.
       </strong> All rights reserved.
     </footer>
 
