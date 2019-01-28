@@ -5,7 +5,6 @@
   <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
 
-	<xsl:include href="_sidebar.xslt" />
+  <xsl:include href="_sidebar.xslt" />
   
-  
-  </xsl:stylesheet>
+</xsl:stylesheet>

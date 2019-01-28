@@ -34,8 +34,8 @@ function saveThemeONE(code, guid, location, formId) {
 
         //insert new form
         if (retguid != "" && retguid != guid && location == 20) window.location = 'index.aspx?env=back&code=' + getCode() + '&guid=' + retguid;
-            //insert child
-        else if (retguid != "" && retguid != guid && location == 40 ) {
+        //insert child
+        else if (retguid != "" && retguid != guid && location == 40) {
             //preview(1, code, guid, formId + code);
             if (msg != "") {
                 showMessage(msg);
@@ -56,7 +56,7 @@ function saveThemeONE(code, guid, location, formId) {
             if (isGuid(msg) && location == 20) {
                 window.location = 'index.aspx?env=back&code=' + getCode() + '&guid=' + msg;
             }
-                //compatible with load version
+            //compatible with load version
             else if (isGuid(msg) && location == 40) {
                 preview(1, code, msg, formId + code);
                 loadChild(code, pkey, pkvalue, 1);
@@ -92,10 +92,10 @@ function saveThemeONE(code, guid, location, formId) {
 }
 
 function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, allowForce, isDelegator) {
-    var tx1='';
-    $('td#mandatory' + guid).each(function(i, td) {
-            tx1+='<strong>'+$(td).data('title')+'</strong> '+$(td).html()+' &#183; ';
-        } )    
+    var tx1 = '';
+    $('td#mandatory' + guid).each(function (i, td) {
+        tx1 += '<strong>' + $(td).data('title') + '</strong> ' + $(td).html() + ' &#183; ';
+    })
 
 
     //var tx1 = $('td#mandatory' + guid).val();
@@ -130,17 +130,17 @@ function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, a
     x = x.replace('#t#', '<table style="width:100%">#tr#</table>');
     x = x.replace('#tr#', '<tr><td>&#160;</td>#summary#<td>&#160;</td></tr><tr><td>&#160;</td>#td#<td>&#160;</td></tr>');
 
-    var sum='';
-    $('div#approval-' + guid).each(function(i, div) {
-            sum+='Level '+$(div).data('level')+'<strong>'+$(div).data('username')+'</strong> '+$(div).data('approvaldate')+' '+' &#183; ';
-        } )    
+    var sum = '';
+    $('div#approval-' + guid).each(function (i, div) {
+        sum += 'Level ' + $(div).data('level') + '<strong>' + $(div).data('username') + '</strong> ' + $(div).data('approvaldate') + ' ' + ' &#183; ';
+    })
     x = x.replace('#summary#', sum);
 
     bt = '<td width="1" style="padding:0 10px;">#bt#</td>#td#';
     bt = bt.replace('#bt#', '<button type="button" class="btn btn-gray-a" style="background:#ccc; border:none;" onclick="#abt#">#btname#</button>');
 
     var btname = "EDIT"
-    if (allowedit == 1 && isDelegator == 0 ) {
+    if (allowedit == 1 && isDelegator == 0) {
         x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-pencil"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));
     }
 
@@ -156,7 +156,7 @@ function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, a
         x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
     }
 
-    var btname = 'ARCHIEVE'; 
+    var btname = 'ARCHIEVE';
     var btfn = 'force';
     if (status < 500 && status >= 400 && allowForce == 1 && isDelegator == 0) {
         x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-archive"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
@@ -164,7 +164,7 @@ function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, a
 
     var btname = 'SUBMIT';
     var btfn = 'execute';
-    if (status==0 || status==300) {
+    if (status == 0 || status == 300) {
         x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
     }
 
@@ -213,7 +213,7 @@ function addpagenumber(pageid, currentpage, totalpages) {
 
 
         var combo = "<li><select style ='background:#fafafa;color:#666;border:1px solid #ddd;height:30px;'onchange='loadContent(this.value)'>";
-        for (var i = 1 ; i <= parseInt(tp) ; i++) {
+        for (var i = 1; i <= parseInt(tp); i++) {
             combo += "<option value =" + i + " " + (cp == i ? "selected" : "") + ">" + i + "</option>";
         };
 
@@ -310,11 +310,22 @@ function changePassProfile() {
     var curPass = document.getElementById('curPass').value;
     var newPass = document.getElementById('newPass').value;
 
-    var urlPath = "OPHCore/api/default.aspx?code=profile&mode=changePassword&curpass=" + curPass + "&newpass=" + newPass + "&unique=" + getUnique();
+    var urlPath = "OPHCore/api/default.aspx?code=profile&mode=changePassword&unique=" + getUnique();
 
-    $.post(urlPath, function (data) {
+    data = new FormData();
+    data.append('curpass', curPass);
+    data.append('newpass', newPass);
+
+    $.ajax({
+        url: urlPath,
+        type: 'POST',
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+    }).done(function (data) {
         var msg = $(data).find('message').text();
-        if (msg == '') {
+        if (msg === '') {
             //alert("You have successfully change your password.");
             //location.reload();
             showMessage("You have successfully change your password", 2, undefined, function () {
@@ -657,7 +668,7 @@ function loadExtraButton(buttons, location) {
                 });
             }
             a = "<a href=\"" + url + "\"><ix class='far " + v.icon + "' data-toggle=\"tooltip\" title='" + v.caption + "'/></a>";
-			uo=(v.updateOnly==1)? 1:0;
+            uo = (v.updateOnly == 1) ? 1 : 0;
             bstate = v.state
             if (bstate) {
                 bstate = bstate.split(' ').join('');
@@ -665,18 +676,18 @@ function loadExtraButton(buttons, location) {
                 for (var i = 0; i < bstate.length; i++) {
                     var gstate = (getState() == "") ? "0" : getState();
                     if (gstate == bstate[i]) {
-						if ($(td).find("a").find("."+v.icon).length>0)
-							$(td).find("a").find("."+v.icon).parent().attr("href", url);
-						else					
-							if (uo==0) $(td).append(a);
+                        if ($(td).find("a").find("." + v.icon).length > 0)
+                            $(td).find("a").find("." + v.icon).parent().attr("href", url);
+                        else
+                            if (uo == 0) $(td).append(a);
                         return;
                     }
                 }
             } else {
-				if ($(td).find("a").find("."+v.icon).length>0)
-					$(td).find("a").find("."+v.icon).parent().attr("href", url);
-				else					
-					if (uo==0) $(td).append(a);
+                if ($(td).find("a").find("." + v.icon).length > 0)
+                    $(td).find("a").find("." + v.icon).parent().attr("href", url);
+                else
+                    if (uo == 0) $(td).append(a);
             }
         });
     });
@@ -728,7 +739,7 @@ function btnWebcam(mode, idimg) {
             image_format: 'jpeg',
             jpeg_quality: 90
         });
-        Webcam.attach('#' + idimg +'_camera');
+        Webcam.attach('#' + idimg + '_camera');
 
         $('#' + idimg + '_camera').width('100%');
 
@@ -752,7 +763,7 @@ function btnWebcam(mode, idimg) {
         Webcam.snap(function (data_uri) {
             // display results in page
             document.getElementById(idimg + '_hidden').innerHTML =
-					'<img id="' + idimg + '_image" src="' + data_uri + '"/>';
+                '<img id="' + idimg + '_image" src="' + data_uri + '"/>';
 
         });
         $('#' + idimg + '_camera').html($('#' + idimg + '_hidden').html());
@@ -764,5 +775,5 @@ function btnWebcam(mode, idimg) {
         $("#button_save").click();
 
     }
-    
+
 }

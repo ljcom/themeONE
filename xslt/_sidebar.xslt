@@ -9,9 +9,11 @@
       $("#searchBox").val(getSearchText());
       var c=getQueryVariable('code').toLowerCase();
       try {
-      $($('.treeview').children().find('a[href$="='+c+'"]')[0].parentNode.parentNode.parentNode.parentNode.parentNode).addClass('active');
-      $($('.treeview').children().find('a[href$="='+c+'"]')[0].parentNode.parentNode.parentNode).addClass('active');
-      $($('.treeview').children().find('a[href$="='+c+'"]')[0].parentNode).addClass('active');
+
+      $($('.sidebar-menu').children().find('a[href$="='+c+'"]')[0].parentNode.parentNode.parentNode.parentNode.parentNode).addClass('active');
+      $($('.sidebar-menu').children().find('a[href$="='+c+'"]')[0].parentNode.parentNode.parentNode).addClass('active');
+      $($('.sidebar-menu').children().find('a[href$="='+c+'"]')[0].parentNode.parentNode).addClass('menu-open');
+      $($('.sidebar-menu').children().find('a[href$="='+c+'"]')[0].parentNode).addClass('active');
       } catch(e) {}
     </script>
     <!-- search form -->

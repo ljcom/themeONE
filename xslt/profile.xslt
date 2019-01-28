@@ -750,10 +750,8 @@
 
   </xsl:template>
 
-  <xsl:include href="profile_menu.xslt" />
+  <xsl:include href="_menu.xslt" />
   
-
-
   <xsl:template match="sqroot/body/bodyContent/profile">
     <xsl:for-each select="row">
       <xsl:choose>
