@@ -41,13 +41,24 @@
       </xsl:if>
 
       var deferreds = [];
-	  cell_defer(deferreds);
+      cell_defer(deferreds);
 
       $(function () {
 
+
       <!--//Date picker-->
-      $('.datepicker').datepicker({
-      autoclose: true
+      $('.datepicker').datepicker({autoclose: true});
+
+      $('.datepicker').datepicker().on('show.bs.modal', function(event) {
+      // prevent datepicker from firing bootstrap modal "show.bs.modal"
+      event.stopPropagation();
+      });
+      $('.datepicker').on("show", function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      }).on("hide", function(e){
+      e.preventDefault();
+      e.stopPropagation();
       });
 
       <!--//Date time picker-->
