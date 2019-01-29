@@ -627,8 +627,31 @@
           </div>
         </div>
       </section>
+
+      <!-- /.content -->
     </div>
 
+    <!--reject modal-->
+    <div id="rejectModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&#215;</button>
+            <h4 class="modal-title" id="rejectTitle">Reject Reason</h4>
+          </div>
+          <div class="modal-body" id="rejectContent">
+            <p>Please mention your reject reason: (required)</p>
+            <textarea id="rejectComment" placeholder="Enter your reject reason." class="form-control">&#160;</textarea>
+          </div>
+          <div class="modal-footer">
+            <button id="rejectBtn" type="button" class="btn btn-secondary" data-dismiss="modal" style="visibility:hidden">Reject</button>
+            <button id="rejectCancelBtn" type="button" class="btn btn-primary btn-default" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
   </xsl:template>
 
   <xsl:template match="formSections">

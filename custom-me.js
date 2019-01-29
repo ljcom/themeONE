@@ -29,7 +29,7 @@ function saveThemeONE(code, guid, location, formId) {
             var pkvalue = document.getElementById("PK" + code).value;
             var parentkey = document.getElementById("PKID").value.split('child').join('');
             var pkey = $('#parent' + code).val();
-            var childKey = $('#childKey' + code).val()
+            var childKey = $('#childKey' + code).val();
         }
 
         //insert new form
