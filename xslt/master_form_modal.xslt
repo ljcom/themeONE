@@ -94,7 +94,7 @@
       });
 
       $.when.apply($, deferreds).done(function() {
-      preview('1', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
+      preview('1', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','', this);
       });
     </script>
 
@@ -254,7 +254,7 @@
     <!--Supaya bisa di serialize-->
 
     <input type="checkbox" value="{value}" id ="cb{../@fieldName}"  name="cb{../@fieldName}" data-type="checkBox" data-old="{value}"
-      onchange="checkCB('{../@fieldName}');preview('{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);">
+      onchange="checkCB('{../@fieldName}');preview('{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);">
       <xsl:if test="value=1">
         <xsl:attribute name="checked">checked</xsl:attribute>
       </xsl:if>
@@ -303,7 +303,7 @@
       $('#button_save2').show();
       $('#button_cancel2').show();
       }
-      preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);
+      preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);
       });
     </script>
   </xsl:template>
@@ -354,7 +354,7 @@
     </xsl:variable>
 
     <input type="text" class="form-control" Value="{$thisvalue}" data-type="textBox" data-old="{$thisvalue}" name="{../@fieldName}"
-           onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" id ="{../@fieldName}" >
+           onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" id ="{../@fieldName}" >
     </input>
   </xsl:template>
 
@@ -370,7 +370,7 @@
         <ix class="fa fa-calendar"></ix>
       </div>
       <input type="text" class="form-control pull-right datepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" data-type="dateBox" data-old="{value}"
-        onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" >
+        onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
       </input>
     </div>
   </xsl:template>
@@ -384,7 +384,7 @@
         <ix class="fa fa-calendar"></ix>
       </div>
       <input type="text" class="form-control pull-right datetimepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" data-type="dateTimeBox" data-old="{value}"
-        onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" >
+        onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
       </input>
     </div>
   </xsl:template>
@@ -398,7 +398,7 @@
     </xsl:if>
 
     <input type="text" class="form-control" Value="********" data-type="textBox" data-old="" name="{../@fieldName}"
-      onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" id ="{../@fieldName}">
+      onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" id ="{../@fieldName}">
     </input>
 
   </xsl:template>
@@ -418,7 +418,7 @@
       </div>
       <input type="text" class="form-control pull-right timepicker" id ="{../@fieldName}" name="{../@fieldName}"
              data-type="timeBox" data-old="{value}" Value="{value}"
-             onblur="preview('{preview/.}','{/sqroot/body/bodyContent/form/code/id}', '{/sqroot/body/bodyContent/form/info/GUID/.}','form{/sqroot/body/bodyContent/form/code/id}', this);" >
+             onblur="preview('{preview/.}','{/sqroot/body/bodyContent/form/code/id}', '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
       </input>
     </div>
   </xsl:template>
@@ -435,7 +435,7 @@
         <xsl:attribute name="class">input-group</xsl:attribute>
       </xsl:if>
       <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}_{/sqroot/body/bodyContent/form/info/code}" data-type="selectBox"
-        data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}" onchange="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" >
+        data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}" onchange="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
         <option></option>
       </select>
       <xsl:if test="button">
@@ -504,10 +504,10 @@
       onReady: function(x) {
       },
       onAdd: function(x) {
-      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
+      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','', this);
       },
       onDelete: function(x) {
-      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
+      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','', this);
       }
       }
       );

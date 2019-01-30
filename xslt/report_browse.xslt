@@ -79,7 +79,7 @@
         </div>
         <!--<div class="col-md-12 displayblock-phone" style="margin-bottom:20px;">
           <div style="text-align:center">
-            <button class="btn btn-orange-a" onclick="submitfunction('formheader',null,'{sqroot/body/bodyContent/query/info/code/.}');">SHOW</button>&#160;
+            <button class="btn btn-orange-a" onclick="submitfunction('',null,'{sqroot/body/bodyContent/query/info/code/.}');">SHOW</button>&#160;
           </div>
         </div>-->
       </div>
@@ -108,7 +108,7 @@
       });
 
       $.when.apply($,deferreds).done(function() {
-      preview(1,getCode(), null,'formheader');
+      preview(1,getCode(), null,'');
       });
     </script>
   </xsl:template>
@@ -160,7 +160,7 @@
     <!--Supaya bisa di serialize-->
 
 
-    <input type="checkbox"  value="{value}" id ="{../@fieldName}"  name="{../@fieldName}" onchange="checkCB('{../@fieldName}');preview('{preview/.}',getCode(), null,'formheader');">
+    <input type="checkbox"  value="{value}" id ="{../@fieldName}"  name="{../@fieldName}" onchange="checkCB('{../@fieldName}');preview('{preview/.}',getCode(), null,'');">
       <xsl:if test="value=1">
         <xsl:attribute name="checked">checked</xsl:attribute>
       </xsl:if>
@@ -183,7 +183,7 @@
     </label>
 
 
-    <input type="text" class="form-control" Value="{value}" name="{../@fieldName}" onblur="preview('{preview/.}',getCode(), null,'formheader');" id ="{../@fieldName}">
+    <input type="text" class="form-control" Value="{value}" name="{../@fieldName}" onblur="preview('{preview/.}',getCode(), null,'');" id ="{../@fieldName}">
       <xsl:if test="../@isEditable=0">
         <xsl:attribute name="disabled">disabled</xsl:attribute>
       </xsl:if>
@@ -198,7 +198,7 @@
       <div class="input-group-addon">
         <ix class="fa fa-calendar"></ix>
       </div>
-      <input type="text" class="form-control pull-right datepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" onblur="preview('{preview/.}',getCode(), null,'formheader');" >
+      <input type="text" class="form-control pull-right datepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" onblur="preview('{preview/.}',getCode(), null,'');" >
         <xsl:if test="../@isEditable=0">
           <xsl:attribute name="disabled">disabled</xsl:attribute>
         </xsl:if>
@@ -210,7 +210,7 @@
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titleCaption"/>
     </label>
-    <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}" onchange="preview('{preview/.}',getCode(), null,'formheader');" >
+    <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}" onchange="preview('{preview/.}',getCode(), null,'');" >
       <xsl:if test="../@isEditable=0">
         <xsl:attribute name="disabled">disabled</xsl:attribute>
       </xsl:if>

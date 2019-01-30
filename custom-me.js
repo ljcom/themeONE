@@ -41,7 +41,7 @@ function saveThemeONE(code, guid, location, formId) {
                 showMessage(msg);
             }
             loadChild(code, pkey, pkvalue, 1)
-            preview('1', getCode(), getGUID(), 'formheader', this);
+            preview('1', getCode(), getGUID(), '', this);
         }
         else if (retguid != "" && retguid != guid && location == 41) {
             //preview(1, code, guid, formId + code);
@@ -83,7 +83,7 @@ function saveThemeONE(code, guid, location, formId) {
                     });
                 } else {
                     loadChild(code, pkey, pkvalue, 1);
-                    preview('1', getCode(), getGUID(), 'formheader', this);
+                    preview('1', getCode(), getGUID(), '', this);
                 }
             }
         }
