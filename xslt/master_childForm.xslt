@@ -789,7 +789,7 @@
       <xsl:apply-templates select="radioSections/radioSection"/>
     </div>
     <xsl:if test="radioSections/radioSection/radioRows">
-      <div class="panel-body" id="accordion_{../@fieldName}" style="box-shadow:none;border:none;display:none;">
+      <div class="panel-body" id="accordion_{../@fieldName}" style="box-shadow:none;border:none;display:block;">
         <xsl:for-each select="radioSections/radioSection">
           <!--<xsl:if test="radioSections/radioSection/radioRows/radioRow">-->
           <div id="panel_{../../../@fieldName}_{@radioNo}" class="box collapse" style="box-shadow:none;border:none;padding-bottom:0;padding-top:0;margin-bottom:0">
@@ -805,13 +805,13 @@
     <label class="radio-inline">
       <xsl:choose>
         <xsl:when test="@fieldName=../../value/.">
-          <input type="radio" name="{../../../@fieldName}_radio" id="{../../../@fieldName}_radio_{@radioNo}" value="{@fieldName}" checked="checked" />
+          <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_radio_{@radioNo}" value="{@fieldName}" checked="checked" />
           <script>
             $('#panel_<xsl:value-of select="../../../@fieldName" />_<xsl:value-of select="@radioNo" />').collapse('show');
           </script>
         </xsl:when>
         <xsl:otherwise>
-          <input type="radio" name="{../../../@fieldName}_radio" id="{../../../@fieldName}_radio_{@radioNo}" value="{@fieldName}" />
+          <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_radio_{@radioNo}" value="{@fieldName}" />
         </xsl:otherwise>
       </xsl:choose>
       <xsl:value-of select="@radioRowTitle"/>
