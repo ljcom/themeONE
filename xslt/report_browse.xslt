@@ -6,15 +6,16 @@
   <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
 
-  <xsl:variable name="code" select="sqroot/body/bodyContent/query/info/code" />
-  <xsl:variable name="desc" select="sqroot/body/bodyContent/query/info/description" />
-  <xsl:variable name="type" select="translate(sqroot/body/bodyContent/query/info/type, $uppercase, $smallcase)"/>
-  <xsl:variable name="sql" select="sqroot/body/bodyContent/query/info/querySQL" />
+  <xsl:variable name="code" select="/sqroot/body/bodyContent/query/info/code" />
+  <xsl:variable name="desc" select="/sqroot/body/bodyContent/query/info/description" />
+  <xsl:variable name="type" select="translate(/sqroot/body/bodyContent/query/info/type, $uppercase, $smallcase)"/>
+  <xsl:variable name="sql" select="/sqroot/body/bodyContent/query/info/querySQL" />
   <xsl:variable name="reportName" select="sqroot/body/bodyContent/query/info/reportName" />
-  <xsl:variable name="isPDF" select="sqroot/body/bodyContent/query/info/permission/allowPDF" />
-  <xsl:variable name="isXLS" select="sqroot/body/bodyContent/query/info/permission/allowXLS" />
+  <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/query/info/permission/allowAccess" />
+  <xsl:variable name="isPDF" select="/sqroot/body/bodyContent/query/info/permission/allowPDF" />
+  <xsl:variable name="isXLS" select="/sqroot/body/bodyContent/query/info/permission/allowXLS" />
   <xsl:variable name="par">
-    <xsl:for-each select="sqroot/body/bodyContent/query/queryPages/queryPage/querySections/querySection/queryCols/queryCol/queryRows/.">
+    <xsl:for-each select="/sqroot/body/bodyContent/query/queryPages/queryPage/querySections/querySection/queryCols/queryCol/queryRows/.">
       <xsl:text>**</xsl:text>
       <xsl:value-of select="queryRow/fields/field/@fieldName" />
       <xsl:text>**</xsl:text>
@@ -55,34 +56,44 @@
 
     <!-- Main content -->
     <section class="content">
-      <xsl:if test="sqroot/body/bodyContent/query/queryPages/queryPage/querySections/querySection">
-        <div class="form-group enabled-input">
-          <form role="form" id="formheader">
-            <xsl:apply-templates select="sqroot/body/bodyContent/query/queryPages/queryPage/querySections/querySection"/>
-          </form>
-        </div>
-        
-      </xsl:if>
-      <div class="row" id="reportButton">
-        <div class="col-md-12" style="margin-bottom:30px;margin-top:30px">
-          <div style="text-align:left">
-            <xsl:if test="$isPDF = 1">
-              <button id="btnPDF" class="btn btn-orange-a" onclick="genReport('{$code}','pdf');">SHOW PDF</button>&#160;
-            </xsl:if>
-            <xsl:if test="$isXLS = 1">
-              <button id="btnXLS" class="btn btn-orange-a" onclick="genReport('{$code}','xls');">SHOW XLS</button>&#160;
-            </xsl:if>
-            <xsl:if test="$isXLS = 2">
-              <button id="btnXLS" class="btn btn-orange-a" onclick="genReport('{$code}','xlstemplate');">SHOW XLS</button>&#160;
-            </xsl:if>
-          </div>
-        </div>
-        <!--<div class="col-md-12 displayblock-phone" style="margin-bottom:20px;">
+      <xsl:choose>
+        <xsl:when test="$allowAccess = 1">
+          <xsl:if test="sqroot/body/bodyContent/query/queryPages/queryPage/querySections/querySection">
+            <div class="form-group enabled-input">
+              <form role="form" id="formheader">
+                <xsl:apply-templates select="sqroot/body/bodyContent/query/queryPages/queryPage/querySections/querySection"/>
+              </form>
+            </div>
+
+          </xsl:if>
+          <div class="row" id="reportButton">
+            <div class="col-md-12" style="margin-bottom:30px;margin-top:30px">
+              <div style="text-align:left">
+                <xsl:if test="$isPDF = 1">
+                  <button id="btnPDF" class="btn btn-orange-a" onclick="genReport('{$code}','pdf');">SHOW PDF</button>&#160;
+                </xsl:if>
+                <xsl:if test="$isXLS = 1">
+                  <button id="btnXLS" class="btn btn-orange-a" onclick="genReport('{$code}','xls');">SHOW XLS</button>&#160;
+                </xsl:if>
+                <xsl:if test="$isXLS = 2">
+                  <button id="btnXLS" class="btn btn-orange-a" onclick="genReport('{$code}','xlstemplate');">SHOW XLS</button>&#160;
+                </xsl:if>
+              </div>
+            </div>
+            <!--<div class="col-md-12 displayblock-phone" style="margin-bottom:20px;">
           <div style="text-align:center">
             <button class="btn btn-orange-a" onclick="submitfunction('',null,'{sqroot/body/bodyContent/query/info/code/.}');">SHOW</button>&#160;
           </div>
         </div>-->
-      </div>
+          </div>
+        </xsl:when>
+        <xsl:otherwise>
+          <div class="callout callout-danger">
+            <h4>Unauthority Access!</h4>
+            <p>You don't have the right access. Please ask the administrator if you feel that you already have the right access into this module.</p>
+          </div>
+        </xsl:otherwise>
+      </xsl:choose>
     </section>
     <script>
       $(function () {
@@ -136,7 +147,7 @@
   </xsl:template>
 
   <xsl:template match="queryRows/queryRow ">
-        <xsl:apply-templates select="fields/field"/>
+    <xsl:apply-templates select="fields/field"/>
   </xsl:template>
 
   <xsl:template match="fields/field">

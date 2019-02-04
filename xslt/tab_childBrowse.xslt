@@ -40,8 +40,12 @@
         if($('th[data-order="DESC"]').length == 1) $('th[data-order="DESC"]').append(' &lt;ix class="fa fa-sort-alpha-desc" /&gt;');
         else if($('th[data-order="ASC"]').length == 1) $('th[data-order="ASC"]').append(' &lt;ix class="fa fa-sort-alpha-asc" /&gt;');
       });
-
-    </script>
+      
+      <xsl:if test="/sqroot/body/bodyContent/browse/info/buttons">
+        buttons=<xsl:value-of select="sqroot/body/bodyContent/browse/info/buttons"/>;
+        loadExtraButton(buttons, 'browse-action-button');
+      </xsl:if>
+      </script>
     <div class="row">
       <div class="col-md-12">
         <div class="box-header with-border" style="background:white" data-toggle="collapse" data-target="#content_{/sqroot/body/bodyContent/browse/info/code}">
@@ -77,6 +81,11 @@
                     <tr style="background:#3C8DBC; color:white">
                       <th class="cell-recordSelectors" style="width:28px;"></th>
                       <xsl:apply-templates select="sqroot/body/bodyContent/browse/header"/>
+                      <xsl:if test="/sqroot/body/bodyContent/browse/info/buttons">
+                        <th id="actionHeader" class="text-right">
+                          <span>ACTION</span>
+                        </th>
+                      </xsl:if>
                     </tr>
                   </thead>
                   <tbody id="{$lowerCode}">
@@ -153,6 +162,11 @@
         onmouseover="this.bgColor='lavender';this.style.cursor='pointer';" onmouseout="this.bgColor='white'">
       <td class="cell-recordSelector"></td>
       <xsl:apply-templates select="fields/field"/>
+      <xsl:if test="/sqroot/body/bodyContent/browse/info/buttons">
+        <td class="browse-action-button text-right" style="white-space: nowrap;">
+
+        </td>
+      </xsl:if>
     </tr>
     <tr id="tr2_{$lowerCode}{@GUID}">
       <td colspan="7" style="padding:0;">

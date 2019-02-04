@@ -5,11 +5,7 @@
 
 
   <xsl:template match="/">
-
-
     <script>
-      
-      
       Sideshow.config.language = "oph";
       if(getMode() == 'export') {
         Sideshow.config.autoSkipIntro = true;

@@ -19,7 +19,7 @@
                 <ix class="{fa/.}"></ix>&#160;
               </span>
             </xsl:if>
-            <span>
+            <span class="info">
               <xsl:value-of select="caption/." />
             </span>
             <span class="pull-right-container">
@@ -68,7 +68,9 @@
           <xsl:if test="(fa/.)!=''">
             <ix class="{fa/.}"></ix>&#160;
           </xsl:if>
-          <xsl:value-of select="caption/." />&#160;
+        </span>
+        <span class="info">
+            <xsl:value-of select="caption/." />&#160;
         </span>
         <span class="pull-right-container">
           <ix class="fa fa-angle-left pull-right"></ix>
@@ -92,7 +94,7 @@
             <ix class="{fa/.}"></ix>&#160;
           </span>
         </xsl:if>
-        <span>
+        <span class="info">
           <xsl:value-of select="caption/." />
         </span>
         &#160;
