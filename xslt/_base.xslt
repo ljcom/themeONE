@@ -15,6 +15,13 @@
   </xsl:variable>
   
   <xsl:template match="sqroot">
+    <script>
+      $('.sidebar-toggle').click(function() {
+      if ($('body').hasClass('sidebar-collapse')) $('body').removeClass('sidebar-collapse');
+      else $('body').addClass('sidebar-collapse');
+      });
+
+    </script>
     <div style="display:none" id="pageName">&#xA0;</div>
     <div style="display:none" id="themeName">&#xA0;</div>
 	
@@ -31,7 +38,7 @@
         </span>
       </a>
       <nav class="navbar navbar-static-top">
-        <a href="#" class="sidebar-toggle visible-phone" data-toggle="offcanvas" role="button" >
+        <a href="#" class="sidebar-toggle visible-phone" data-toggle="push-menu" role="button" >
           <span class="sr-only">Toggle navigation</span>
         </a>
         <div id ="button-menu-phone" class="unvisible-phone" style="color:white;  margin:0; display:inline-table; margin-top:15px; margin-left:10px" data-toggle="collapse" data-target="#mobilemenupanel">

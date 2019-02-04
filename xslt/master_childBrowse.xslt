@@ -34,7 +34,7 @@
       //setTimeout(function() {location.reload()}, 5000);
 
       var code='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>';
-      preview('1', getCode(), getGUID(),'formheader', this);
+      preview('1', getCode(), getGUID(),'', this);
       loadChild(code);
 
       });

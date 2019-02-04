@@ -22,61 +22,60 @@
     <xsl:choose>
       <xsl:when test="/sqroot/body/bodyContent/form/info/permission/ShowDocInfo/.=1">
         <div class="user-panel">
-          <table>
-            <tr>
-              <td rowspan="2" >
-                <div class="image image-envi data-logo" style="border: 0px;">
+          <div class="pull-left image">
+            <xsl:variable name="sname">
+              <xsl:choose>
+                <xsl:when test="sqroot/header/info/code/shortName != ''">
+                  <xsl:value-of select="/sqroot/header/info/code/shortName" />
+                </xsl:when>
+                <xsl:otherwise>
                   <xsl:choose>
-                    <xsl:when test="sqroot/header/info/code/shortName != ''">
-                      <span>
-                        <xsl:value-of select="translate(substring(sqroot/header/info/code/shortName, 1, 2), $smallcase, $uppercase)" />
-                        <br />
-                        <xsl:value-of select="translate(substring(sqroot/header/info/code/shortName, 3, 2), $smallcase, $uppercase)" />
-                      </span>
+
+                    <xsl:when test="sqroot/header/info/code/settingMode = 't' or sqroot/header/info/code/settingMode = 'T'">
+                      <xsl:value-of select="translate(substring(sqroot/header/info/code/id, 3, 4), $smallcase, $uppercase)" />
                     </xsl:when>
                     <xsl:otherwise>
-                      <xsl:choose>
-                        <xsl:when test="sqroot/header/info/code/settingMode = 't' or sqroot/header/info/code/settingMode = 'T'">
-                          <span>
-                            <xsl:value-of select="translate(substring(sqroot/header/info/code/id, 3, 2), $smallcase, $uppercase)" />
-                            <br />
-                            <xsl:value-of select="translate(substring(sqroot/header/info/code/id, 5, 2), $smallcase, $uppercase)" />
-                          </span>
-                        </xsl:when>
-                        <xsl:otherwise>
-                          <span >
-                            <xsl:value-of select="translate(substring(sqroot/header/info/code/id, 1, 2), $smallcase, $uppercase)" />
-                            <br />
-                            <xsl:value-of select="translate(substring(sqroot/header/info/code/id, 3, 2), $smallcase, $uppercase)" />
-                          </span>
-                        </xsl:otherwise>
-                      </xsl:choose>
+                      <xsl:value-of select="translate(substring(sqroot/header/info/code/id, 1, 2), $smallcase, $uppercase)" />
                     </xsl:otherwise>
                   </xsl:choose>
-                </div>
-              </td>
-              <td>
-                <div class="dn-panel" data-toggle="tooltip" title="Doc Number" data-placement="right">
-                  <xsl:if test="$settingmode='T'">
-                    <xsl:value-of select="sqroot/body/bodyContent/form/info/docNo"/>
-                  </xsl:if>
-                </div>
-              </td>
-            </tr>
-            <tr>
-               <td id="summary{@GUID}">
-                  <xsl:choose>
-                    <xsl:when test="$settingmode='T'">
-                      <xsl:value-of select="sqroot/body/bodyContent/form/info/refNo/."/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </td>
-            </tr>
-          </table>
-          
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <div class="image image-envi data-logo" style="border: 0px;">
+
+              <span class="fa-layers fa-fw">
+                <ix class="fas fa-2x fa-file fa-inverse"></ix>
+                <span class="fa-layers-text" data-fa-transform="shrink-11.5 down-3"
+                  style="font-weight:900;font-family:arial;font-size:9pt;color:black">
+                  <br/>
+                  <br/>
+                  <xsl:value-of select="translate(substring($sname, 1, 2), $smallcase, $uppercase)" />
+                  <br/>
+                  <xsl:value-of select="translate(substring($sname, 3, 2), $smallcase, $uppercase)" />
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="pull-left info">
+            <p>
+              <div class="dn-panel" data-toggle="tooltip" title="Doc Number" data-placement="right">
+                <xsl:if test="$settingmode='T'">
+                  <xsl:value-of select="sqroot/body/bodyContent/form/info/docNo"/>
+                </xsl:if>
+              </div>
+            </p>
+            
+            <a href="#">
+              <xsl:choose>
+                <xsl:when test="$settingmode='T'">
+                  <xsl:value-of select="sqroot/body/bodyContent/form/info/refNo/."/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </a>
+          </div>
         </div>
         <!-- search form -->
 

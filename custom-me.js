@@ -41,7 +41,7 @@ function saveThemeONE(code, guid, location, formId) {
                 showMessage(msg);
             }
             loadChild(code, pkey, pkvalue, 1)
-            preview('1', getCode(), getGUID(), 'formheader', this);
+            preview('1', getCode(), getGUID(), '', this);
         }
         else if (retguid != "" && retguid != guid && location == 41) {
             //preview(1, code, guid, formId + code);
@@ -83,7 +83,7 @@ function saveThemeONE(code, guid, location, formId) {
                     });
                 } else {
                     loadChild(code, pkey, pkvalue, 1);
-                    preview('1', getCode(), getGUID(), 'formheader', this);
+                    preview('1', getCode(), getGUID(), '', this);
                 }
             }
         }
@@ -638,27 +638,34 @@ function select2editForm(ini) {
 }
 
 function changeSkinColor() {
+    var bodyClass
     if (getCookie('skinColor') != '')
-        var bodyClass = getCookie('skinColor')
+        bodyClass = getCookie('skinColor')
     else
-        var bodyClass = 'skin-blue';
+        bodyClass = 'skin-blue';
     $('body').addClass(bodyClass);
 }
 
 function loadExtraButton(buttons, location) {
+    var cval;
     $('td.' + location).each(function (i, td) {
         var a, bstate;
         buttons.forEach(function (v) {
             var url = v.url;
+            //check variable
             var arurl = url.match(/%+\w+(?:%)/g);
             if (arurl) {
                 arurl.forEach(function (val) {
                     val = val.split('%').join('');
 
                     if (val == 'guid') {
-                        var cval = $(td).parent().data(val);
-                    } else {
-                        var cval = $(td).parent().find("[data-field='" + val + "']").html();
+                        cval = $(td).parent().data(val);
+                    }
+                    else if (val == 'rid') {
+                        cval = $(td).parent().data("guid");
+                    }
+                    else {
+                        cval = $(td).parent().find("[data-field='" + val + "']").html();
                     }
 
                     if (cval) {
@@ -669,7 +676,7 @@ function loadExtraButton(buttons, location) {
             }
             a = "<a href=\"" + url + "\"><ix class='far " + v.icon + "' data-toggle=\"tooltip\" title='" + v.caption + "'/></a>";
             uo = (v.updateOnly == 1) ? 1 : 0;
-            bstate = v.state
+            bstate = v.state;
             if (bstate) {
                 bstate = bstate.split(' ').join('');
                 bstate = bstate.split(',');
