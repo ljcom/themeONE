@@ -46,5 +46,7 @@
     <cssFile>OPHContent/themes/themeONE/styles/icomoon/style.css</cssFile>
     <jsFile>OPHContent/themes/themeONE/custom-me.js</jsFile>
     <jsFile>OPHContent/cdn/ophelements/gps/gps.js</jsFile>
+    <jsFile>OPHContent/cdn/ophelements/signjs/sign.js</jsFile>
+	<jsFile>OPHContent/cdn/signature-pad-master/jquery.signaturepad.js</jsFile>
   </manifest>
 </sqroot>

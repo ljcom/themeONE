@@ -4,7 +4,7 @@
 
   <xsl:template match="/">
     <script>
-      $("#searchBox").val(getSearchText());
+      //$("#searchBox").val(getSearchText());
       var c=getQueryVariable('code').toLowerCase();
       try {
 

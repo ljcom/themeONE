@@ -147,6 +147,7 @@
       <xsl:apply-templates select="autoSuggestBox"/>
       <xsl:apply-templates select="tokenBox"/>
       <xsl:apply-templates select="radio"/>
+      <xsl:apply-templates select="signBox"/>
       <xsl:apply-templates select="getGPSBox"/>
       <xsl:apply-templates select="setGPSBox"/>
     </div>
@@ -156,16 +157,26 @@
            id ="{../@fieldName}"/>
 
   </xsl:template>
+  <xsl:template match="signBox">
+    <div class="sign" data-field="{../@fieldName}" style="border: 1px solid #ccc;">
+      <canvas class="pad" width="100%" height="85;background-color:#333">&#160;</canvas>
+      <input type="hidden" name="{../@fieldName}" id ="{../@fieldName}"
+             class="output" Value="{value}" data-old="{value}" />
+    </div>
+    
+    <input type="reset" value="clear" onclick="clearSign('sign')" />
+    <script>initSign('sign', '<xsl:value-of select="../@fieldName"/>');</script>
+  </xsl:template>
   <xsl:template match="getGPSBox">
     <input type="hidden" Value="{value}" data-type="hiddenBox" data-old="{value}" name="{../@fieldName}"
            id ="{../@fieldName}"/>
-    <div id="map" data-field="{../@fieldName}">&#160;</div>
+    <div id="map" data-field="{../@fieldName}" style="height:100px">&#160;</div>
     <script>initMap();</script>
   </xsl:template>
   <xsl:template match="setGPSBox">
     <input type="hidden" Value="{value}" data-type="hiddenBox" data-old="{value}" name="{../@fieldName}"
            id ="{../@fieldName}"/>
-    <div id="map">&#160;</div>
+    <div id="map" style="height:100px">&#160;</div>
   </xsl:template>
 
   <xsl:template match="checkBox">
