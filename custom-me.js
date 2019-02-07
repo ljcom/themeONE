@@ -104,10 +104,10 @@ function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, a
     var divname = 'collapse' + guid;
 
     if (isDelegator > 0) {
-        var x = '<div class="panel box browse-phone">#d1#</div>';
+        var x = '<div class="panel box browse-phone" style="border:0;margin:0">#d1#</div>';
     } else {
         isDelegator = 0;
-        var x = '<div class="panel box browse-phone">#d1##d2#</div>';
+        var x = '<div class="panel box browse-phone" style="border:0;margin:0">#d1##d2#</div>';
     }
 
     x = x.replace('#d1#', '<div class="box-header with-border ellipsis">#h4#</div>');
@@ -117,7 +117,7 @@ function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, a
     x = x.replace('#tx2#', tx2);
 
     x = x.replace('#d2#', '<div id="' + divname + '" class="panel-collapse collapse">#d21#</div>');
-    x = x.replace('#d21#', '<div class="box-body full-width-a">#d212#</div>');
+    x = x.replace('#d21#', '<div class="box-body full-width-a" style="padding:0">#d212#</div>');
 
     //x = x.replace('#d211#', '<div class="browse-status" style="background:gray; color:white; padding:10px; position:relative;">#tx3##a2#</div>');
     //x = x.replace('#d211#', '<div class="browse-status" style="background:gray; color:white; padding:10px; position:relative;">#tx3#<a href="#a4#" title="edit" style="position:absolute; top:10px; right:10px; font-size:17px; color:white;">#ix#</a></div>');
