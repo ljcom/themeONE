@@ -62,7 +62,7 @@
   </xsl:template>
 
   <xsl:template match="submenus/submenu[@type='treeview']">
-    <li class="treeview">
+    <li class="treeview dropdown">
       <a href="{translate(pageURL/., $uppercase, $smallcase)}">
         <span>
           <xsl:if test="(fa/.)!=''">
