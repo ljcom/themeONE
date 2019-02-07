@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
-	
+
 
   <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
@@ -13,7 +13,7 @@
       <xsl:otherwise>4</xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
-  
+
   <xsl:template match="sqroot">
     <script>
       $('.sidebar-toggle').click(function() {
@@ -24,8 +24,8 @@
     </script>
     <div style="display:none" id="pageName">&#xA0;</div>
     <div style="display:none" id="themeName">&#xA0;</div>
-	
-      <header class="main-header">
+
+    <header class="main-header">
       <a href="javascript:goHome();" class="logo visible-phone" style="text-align:left;">
         <span class="logo-mini" style="font-size:9px; text-align:center">
           <img width="30" src="OPHContent/themes/{header/info/themeFolder}/images/oph4_logo.png" alt="Logo Image" />
@@ -41,7 +41,8 @@
         <a href="#" class="sidebar-toggle visible-phone" data-toggle="push-menu" role="button" >
           <span class="sr-only">Toggle navigation</span>
         </a>
-        <div id ="button-menu-phone" class="unvisible-phone" style="color:white;  margin:0; display:inline-table; margin-top:15px; margin-left:10px" data-toggle="collapse" data-target="#mobilemenupanel">
+        <div id ="button-menu-phone" class="unvisible-phone" style="color:white;  margin:0; display:inline-table; margin-top:15px; margin-left:10px"
+             data-toggle="collapse" data-target="#mobilemenupanel">
           <a href="#" style="color:white;">
             <span>
               <img width="30" style="margin-top:-9px;" src="OPHContent/themes/{header/info/themeFolder}/images/oph4_logo.png" alt="Logo Image" />
@@ -58,10 +59,76 @@
               </button>
             </span>
           </div>
-          <div class="panel-group" id="accordion2">
+
+      <div class="navbar-collapse pull-left collapse in" id="navbar-collapse" aria-expanded="true" style="">
+          <ul class="nav navbar-nav sidebar-menu">
+            <xsl:for-each select="/sqroot/header/menus/menu[@code='sidebar']/submenus/submenu" >
+              <xsl:variable name="className">
+                <xsl:choose>
+                  <xsl:when test="(@type)='treeroot'">dropdown</xsl:when>
+                  <xsl:when test="(@type)='label'">header</xsl:when>
+                </xsl:choose>
+              </xsl:variable>
+
+              <li class="{$className}">
+                
+                <xsl:choose>
+                  <xsl:when test="(pageURL/.)!=''">
+                    <a href="{translate(pageURL/., $uppercase, $smallcase)}" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                      <xsl:if test="(fa/.)!=''">
+                        <span>
+                          <ix class="{fa/.}"></ix>&#160;
+                        </span>
+                      </xsl:if>
+                      <span class="info">
+                        <xsl:value-of select="caption/." />
+                      </span>
+                      <span class="pull-right-container">
+                        <xsl:if test="(@type)='treeroot'">
+                          <ix class="fa fa-angle-left pull-right"></ix>
+                        </xsl:if>
+                        <xsl:if test="nbReject">
+                          <small class="label pull-right bg-red">
+                            <xsl:value-of select="nbReject"/>
+                          </small>
+                        </xsl:if>
+                        <xsl:if test="nbAprv">
+                          <small class="label pull-right bg-green">
+                            <xsl:value-of select="nbAprv"/>
+                          </small>
+                        </xsl:if>
+                      </span>
+                    </a>
+                    <xsl:if test="(@type)='treeroot'">
+                      <ul class="dropdown-menu" role="menu">
+                        <xsl:apply-templates select="submenus/submenu[@type='treeview']" />&#160;
+                        <xsl:apply-templates select="submenus/submenu[@type='label']" />&#160;
+                      </ul>
+                    </xsl:if>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <span>
+                      <xsl:value-of select="caption/." />
+                    </span>
+                    <xsl:if test="tCount/.>0">
+                      <span class="pull-right-container">
+                        <span class="label label-primary pull-right">
+                          <xsl:value-of select="tCount/." />
+                        </span>
+                      </span>
+                    </xsl:if>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </li>
+            </xsl:for-each>
+            
+          </ul>
+        </div>
+          <!--ul class="sidebar-menu">
             <xsl:apply-templates select="header/menus/menu[@code='sidebar']/submenus/submenu" />
-            &#160;
-          </div>
+          </ul-->
+
+
         </div>
         <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
@@ -74,7 +141,9 @@
               <xsl:choose>
                 <xsl:when test="not(header/info/user/userId)">
                   <a href="#" data-toggle="modal" data-target="#login-modal">
-                    <span><ix class="fa fa-sign-in"></ix>&#160;</span>
+                    <span>
+                      <ix class="fa fa-sign-in"></ix>&#160;
+                    </span>
                     <span>Sign in</span>
                   </a>
                 </xsl:when>
@@ -91,7 +160,9 @@
                       <img src="OPHContent/documents/{header/info/account}/{header/info/user/userURL}" class="img-circle" alt="User Image"/>
                       <p>
                         <xsl:value-of select="header/info/user/userName"/>
-                        <small>Active since <xsl:value-of select="header/info/user/dateCreate"/></small>
+                        <small>
+                          Active since <xsl:value-of select="header/info/user/dateCreate"/>
+                        </small>
                       </p>
                     </li>
                     <!-- Menu Body -->
@@ -110,13 +181,17 @@
                     <li class="user-footer">
                       <div class="pull-left">
                         <a href="?code=profile" class="btn btn-default btn-flat">
-                          <span><ix class="fa fa-user"></ix></span>
-            						  <span>Profile</span>
+                          <span>
+                            <ix class="fa fa-user"></ix>
+                          </span>
+                          <span>Profile</span>
                         </a>
                       </div>
                       <div class="pull-right">
                         <a href="javascript:signOut()" class="btn btn-default btn-flat">
-                          <span><ix class="fa fa-power-off"></ix></span>
+                          <span>
+                            <ix class="fa fa-power-off"></ix>
+                          </span>
                           <span>Sign out</span>
                         </a>
                       </div>
@@ -174,7 +249,7 @@
       </div>
     </div>
     <!-- *** LOGIN MODAL END *** -->
-    
+
     <!-- *** NOTIFICATION MODAL -->
     <div id="notiModal" class="modal fade" role="dialog" tabindex="-1">
       <div class="modal-dialog">
@@ -206,7 +281,7 @@
         </div>
       </section>
     </aside>
-    
+
     <!-- Content Wrapper. Contains page content -->
     <div id="contentWrapper" class="content-wrapper">
       <div style="padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px">
@@ -248,7 +323,7 @@
     <div class="control-sidebar-bg">&#160;</div>
 
     <!-- ./wrapper -->
-	<script>
+    <script>
       $(document).ready(function(){
       $("#button-menu-phone").click(function(){
       $('#right-menu-phone').removeClass("in");
