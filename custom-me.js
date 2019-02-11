@@ -167,7 +167,7 @@ function fillMobileItem(code, guid, status, o allowedit, allowDelete, allowWipe,
         x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
     }
 
-    if (smode) {
+    if (smode='T') {
         var btname = 'ARCHIEVE';
         var btfn = 'force';
         if (status < 500 && status >= 400 && allowForce == 1 && isDelegator == 0) {
