@@ -574,7 +574,7 @@
         '<xsl:value-of select="@delete" />', 
         '<xsl:value-of select="@wipe" />', 
         '<xsl:value-of select="@force" />', 
-        '<xsl:value-of select="/sqroot/body/bodyContent/browse/info/isDelegator"/>');
+        '<xsl:value-of select="/sqroot/body/bodyContent/browse/info/isDelegator"/>', '<xsl:value-of select="$settingMode" />');
       </script>
 
       <xsl:if test="count(fields/field[@mandatory=0])>0">

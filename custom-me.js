@@ -91,7 +91,7 @@ function saveThemeONE(code, guid, location, formId) {
     })
 }
 
-function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, allowForce, isDelegator) {
+function fillMobileItem(code, guid, status, o allowedit, allowDelete, allowWipe, allowForce, isDelegator, smode) {
     var tx1 = '';
     $('td#mandatory' + guid).each(function (i, td) {
         tx1 += '<strong>' + $(td).data('title') + '</strong> ' + $(td).html() + ' &#183; ';
@@ -167,30 +167,31 @@ function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, a
         x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
     }
 
-    var btname = 'ARCHIEVE';
-    var btfn = 'force';
-    if (status < 500 && status >= 400 && allowForce == 1 && isDelegator == 0) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-archive"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
-    }
+    if (smode) {
+        var btname = 'ARCHIEVE';
+        var btfn = 'force';
+        if (status < 500 && status >= 400 && allowForce == 1 && isDelegator == 0) {
+            x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-archive"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+        }
 
-    var btname = 'SUBMIT';
-    var btfn = 'execute';
-    if (status == 0 || status == 300) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
-    }
+        var btname = 'SUBMIT';
+        var btfn = 'execute';
+        if (status == 0 || status == 300) {
+            x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+        }
 
-    var btname = 'APPROVE';
-    var btfn = 'execute';
-    if (isDelegator == 0 && status > 0 && status < 200) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
-    }
+        var btname = 'APPROVE';
+        var btfn = 'execute';
+        if (isDelegator == 0 && status > 0 && status < 200) {
+            x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+        }
 
-    var btname = 'REJECT';
-    var btfn = 'force';
-    if (isDelegator == 0 && status > 0 && status < 200) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:rejectPopup(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+        var btname = 'REJECT';
+        var btfn = 'force';
+        if (isDelegator == 0 && status > 0 && status < 200) {
+            x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:rejectPopup(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+        }
     }
-
     x = x.replace('#td#', '');
     $(x).appendTo("#accordionBrowse");
 }
