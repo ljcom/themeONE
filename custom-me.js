@@ -139,12 +139,16 @@ function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, a
     bt = '<td width="1" style="padding:0 10px;">#bt#</td>#td#';
     bt = bt.replace('#bt#', '<button type="button" class="btn btn-gray-a" style="background:#ccc; border:none;" onclick="#abt#">#btname#</button>');
 
-    var btname = "EDIT"
+    var btname = "VIEW"
     if (((allowedit == 1 && (status == 0 || status == 300))
         || (allowedit == 3 && (status < 400))
         || (allowedit == 4 && (status < 500))) && isDelegator == 0) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-pencil"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));
+        var btname = "EDIT";
+        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-pencil"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));    
     }
+    else x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-eye"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));
+
+    
 
     var btname = 'DELETE';
     var btfn = 'delete';
