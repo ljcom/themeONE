@@ -149,7 +149,7 @@ function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, a
         fa = "pencil";
     }
 
-    else x = x.replace('#td#', bt.replace('#btname#', '<ix class="far '+fa+'"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));
+    x = x.replace('#td#', bt.replace('#btname#', '<ix class="far '+fa+'"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));
 
     
 
