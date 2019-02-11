@@ -91,7 +91,7 @@ function saveThemeONE(code, guid, location, formId) {
     })
 }
 
-function fillMobileItem(code, guid, status, o allowedit, allowDelete, allowWipe, allowForce, isDelegator, smode) {
+function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, allowForce, isDelegator, smode) {
     var tx1 = '';
     $('td#mandatory' + guid).each(function (i, td) {
         tx1 += '<strong>' + $(td).data('title') + '</strong> ' + $(td).html() + ' &#183; ';
