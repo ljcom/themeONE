@@ -143,7 +143,7 @@ function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, a
     if (((allowedit == 1 && (status == 0 || status == 300))
         || (allowedit == 3 && (status < 400))
         || (allowedit == 4 && (status < 500))) && isDelegator == 0) {
-        var btname = "EDIT";
+        btname = "EDIT";
         x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-pencil"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));    
     }
     else x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-eye"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));
