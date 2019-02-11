@@ -568,7 +568,13 @@
       <xsl:apply-templates select="fields/field[@mandatory=1]" />
       <script>
         //put before mandatory section
-        fillMobileItem('<xsl:value-of select="@code"/>', '<xsl:value-of select="@GUID" />', '<xsl:value-of select="$state" />', '<xsl:value-of select="@edit" />', '<xsl:value-of select="@delete" />', '<xsl:value-of select="@wipe" />', '<xsl:value-of select="@force" />', '<xsl:value-of select="/sqroot/body/bodyContent/browse/info/isDelegator"/>');
+        fillMobileItem('<xsl:value-of select="@code"/>', '<xsl:value-of select="@GUID" />', 
+        '<xsl:value-of select="$state" />', 
+        '<xsl:value-of select="@edit" />', 
+        '<xsl:value-of select="@delete" />', 
+        '<xsl:value-of select="@wipe" />', 
+        '<xsl:value-of select="@force" />', 
+        '<xsl:value-of select="/sqroot/body/bodyContent/browse/info/isDelegator"/>');
       </script>
 
       <xsl:if test="count(fields/field[@mandatory=0])>0">
