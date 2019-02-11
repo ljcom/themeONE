@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
-  
+
 
   <xsl:output method="xml" indent="yes"/>
   <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
@@ -22,59 +22,59 @@
     <xsl:choose>
       <xsl:when test="/sqroot/body/bodyContent/form/info/permission/ShowDocInfo/.=1">
         <div class="user-panel">
-          <div class="pull-left image">
-            <xsl:variable name="sname">
-              <xsl:choose>
-                <xsl:when test="sqroot/header/info/code/shortName != ''">
-                  <xsl:value-of select="/sqroot/header/info/code/shortName" />
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:choose>
-
-                    <xsl:when test="sqroot/header/info/code/settingMode = 't' or sqroot/header/info/code/settingMode = 'T'">
-                      <xsl:value-of select="translate(substring(sqroot/header/info/code/id, 3, 4), $smallcase, $uppercase)" />
-                    </xsl:when>
-                    <xsl:otherwise>
-                      <xsl:value-of select="translate(substring(sqroot/header/info/code/id, 1, 2), $smallcase, $uppercase)" />
-                    </xsl:otherwise>
-                  </xsl:choose>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
-            <div class="image image-envi data-logo" style="border: 0px;">
-
-              <span class="fa-layers fa-fw">
-                <ix class="fas fa-2x fa-file fa-inverse"></ix>
-                <span class="fa-layers-text" data-fa-transform="shrink-11.5 down-3"
-                  style="font-weight:900;font-family:arial;font-size:9pt;color:black">
-                  <br/>
-                  <br/>
-                  <xsl:value-of select="translate(substring($sname, 1, 2), $smallcase, $uppercase)" />
-                  <br/>
-                  <xsl:value-of select="translate(substring($sname, 3, 2), $smallcase, $uppercase)" />
+          <div class="pull-left image image-envi data-logo" style="padding:0;  margin-left:7px; margin-top:2px; border: 0px;">
+            <xsl:choose>
+              <xsl:when test="sqroot/header/info/code/shortName != ''">
+                <span>
+                  <xsl:value-of select="translate(substring(sqroot/header/info/code/shortName, 1, 2), $smallcase, $uppercase)" />
+                  <br />
+                  <xsl:value-of select="translate(substring(sqroot/header/info/code/shortName, 3, 2), $smallcase, $uppercase)" />
                 </span>
-              </span>
-            </div>
+              </xsl:when>
+              <xsl:otherwise>
+                <span >
+                  <xsl:value-of select="translate(substring(sqroot/header/info/code/id, 1, 2), $smallcase, $uppercase)" />
+                  <br />
+                  <xsl:value-of select="translate(substring(sqroot/header/info/code/id, 3, 2), $smallcase, $uppercase)" />
+                </span>
+              </xsl:otherwise>
+            </xsl:choose>
           </div>
-          <div class="pull-left info">
-            <p>
-              <div class="dn-panel" data-toggle="tooltip" title="Doc Number" data-placement="right">
-                <xsl:if test="$settingmode='T'">
-                  <xsl:value-of select="sqroot/body/bodyContent/form/info/docNo"/>
-                </xsl:if>
-              </div>
-            </p>
-            
-            <a href="#">
-              <xsl:choose>
-                <xsl:when test="$settingmode='T'">
-                  <xsl:value-of select="sqroot/body/bodyContent/form/info/refNo/."/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </a>
+          <div class="pull-left info menu-environtment doc-type-f" style="padding:0;margin-left:-5px;">
+            <span>
+              <span style="font-size:9pt;">
+                <xsl:choose>
+                  <xsl:when test="$settingmode='T'">
+                    <xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <!--xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/-->
+                  </xsl:otherwise>
+                </xsl:choose>
+
+              </span>
+              <br />
+              <span style="font-size:14pt;">
+                <table class="fixed-table">
+                  <tr>
+                    <td id="summary{@GUID}">
+                      <xsl:choose>
+                        <xsl:when test="$settingmode='T'">
+                          <xsl:value-of select="sqroot/body/bodyContent/form/info/refNo/."/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
+                        </xsl:otherwise>
+                      </xsl:choose>
+                    </td>
+                  </tr>
+                </table>
+
+                <!--xsl:value-of select="sqroot/body/bodyContent/form/info/Description/."/-->
+              </span>
+
+
+            </span>
           </div>
         </div>
         <!-- search form -->
@@ -88,7 +88,6 @@
           </span>
         </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
-        <div class="input-group sidebar-form">
         <ul class="sidebar-menu">
 
           <xsl:if test="(sqroot/body/bodyContent/form/children) and (sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000'">
@@ -198,7 +197,7 @@
             </li>
           </xsl:if>
 
-      <xsl:if test="$settingmode!='C' and /sqroot/body/bodyContent/form/info/permission/ShowDocTalk/.=1">
+          <xsl:if test="$settingmode!='C' and /sqroot/body/bodyContent/form/info/permission/ShowDocTalk/.=1">
             <script>
               setTimeout(function () { refreshTalk('<xsl:value-of select="sqroot/body/bodyContent/form/info/GUID" />', '', 20); }, 1000 * 60);
             </script>
@@ -238,7 +237,7 @@
             </li>
           </xsl:if>
         </ul>
-        </div>
+
       </xsl:when>
       <xsl:otherwise>
         <script>
@@ -278,8 +277,8 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
-  
+
+
   <xsl:template match="sqroot/body/bodyContent/form/children">
     <xsl:apply-templates  select="child"/>
   </xsl:template>
@@ -293,7 +292,7 @@
     </a>
 
   </xsl:template>
-  
+
   <xsl:include href="_form_sidebar.xslt" />
   <xsl:include href="_menu.xslt" />
 </xsl:stylesheet>
