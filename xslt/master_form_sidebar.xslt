@@ -79,14 +79,14 @@
         </div>
         <!-- search form -->
 
-        <!--div class="input-group sidebar-form">
+        <div class="input-group sidebar-form">
           <input type="text" id="searchBox" name="searchBox" class="form-control" placeholder="Search..." onkeypress="return searchText(event,this.value);" value="" />
           <span class="input-group-btn">
             <button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="searchText(event);">
               <ix class="fa fa-search" aria-hidden="true"></ix>
             </button>
           </span>
-        </div-->
+        </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <div class="input-group sidebar-form">
         <ul class="sidebar-menu">

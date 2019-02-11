@@ -91,7 +91,7 @@ function saveThemeONE(code, guid, location, formId) {
     })
 }
 
-function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, allowForce, isDelegator) {
+function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, allowForce, isDelegator) {
     var tx1 = '';
     $('td#mandatory' + guid).each(function (i, td) {
         tx1 += '<strong>' + $(td).data('title') + '</strong> ' + $(td).html() + ' &#183; ';
@@ -140,13 +140,17 @@ function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, a
     bt = bt.replace('#bt#', '<button type="button" class="btn btn-gray-a" style="background:#ccc; border:none;" onclick="#abt#">#btname#</button>');
 
     var btname = "EDIT"
-    if (allowedit == 1 && isDelegator == 0) {
+    if (((allowedit == 1 && (status == 0 || status == 300))
+        || (allowedit == 3 && (status < 400))
+        || (allowedit == 4 && (status < 500))) && isDelegator == 0) {
         x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-pencil"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));
     }
 
     var btname = 'DELETE';
     var btfn = 'delete';
-    if (status < 500 && allowDelete == 1 && isDelegator == 0) {
+    if (((allowDelete == 1 && (status == 0 || status == 300))
+        || (allowDelete == 3 && (status < 400))
+        || (allowDelete == 4 && (status < 500))) && isDelegator == 0) {
         x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
     }
 
