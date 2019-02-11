@@ -88,6 +88,7 @@
           </span>
         </div-->
         <!-- sidebar menu: : style can be found in sidebar.less -->
+        <div class="input-group sidebar-form">
         <ul class="sidebar-menu">
 
           <xsl:if test="(sqroot/body/bodyContent/form/children) and (sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000'">
@@ -237,6 +238,7 @@
             </li>
           </xsl:if>
         </ul>
+        </div>
       </xsl:when>
       <xsl:otherwise>
         <script>
