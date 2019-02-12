@@ -201,11 +201,11 @@
               </xsl:choose>
             </li>
             <xsl:if test="/sqroot/header/info/code/ShowDocInfo=1">
-            <li>
+            <!--li>
               <a href="#" data-toggle="control-sidebar">
                 <ix class="fas fa-list"></ix>
               </a>
-            </li>
+            </li-->
             </xsl:if>
           </ul>
         </div>
