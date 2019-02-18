@@ -117,9 +117,6 @@
                   <button id="cell_button_download" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;"
                           onclick="downloadChild('{$lowerCode}', '')">DOWNLOAD</button>
                   <button id="cell_button_upload" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;" onclick="javascript:$('#import_hidden').click();">UPLOAD...</button>
-
-                  <!--<button type="button" class="buttonCream" id="download" name="download" onclick="javascript:PrintDirect('{$lowerCode}', '', 3, '', '', '');">DOWNLOAD</button>
-                  <button type="button" class="buttonCream" id="upload" name="upload" onclick="javascript:showSubBrowseView('{$lowerCode}','',1,'');">UPLOAD</button>-->
                   <input id ="import_hidden" name="import_hidden" type="file" data-code="{$lowerCode}" style="visibility: hidden; width: 0; height: 0;" multiple="" />
                 </xsl:if>
                 <xsl:if test="/sqroot/body/bodyContent/browse/info/nbPages > 1">
@@ -192,22 +189,17 @@
         x.push('isNullable=<xsl:value-of select="@isNullable"/>');
 
         columns_<xsl:value-of select="$lowerCode"/>.push(x);
-
       </script>
     </th>
   </xsl:template>
 
   <xsl:template match="sqroot/body/bodyContent/browse/content/row">
-
-    <tr id="tr1_{$lowerCode}{@GUID}" data-parent="#{$lowerCode}" data-target="#{$lowerCode}{@GUID}"
-        data-code="{$lowerCode}" data-guid="{@GUID}"
+    <tr id="tr1_{$lowerCode}{@GUID}" data-parent="#{$lowerCode}" data-target="#{$lowerCode}{@GUID}" data-code="{$lowerCode}" data-guid="{@GUID}"
         onmouseover="this.bgColor='lavender';this.style.cursor='pointer';" onmouseout="this.bgColor='white'">
 
       <xsl:if test="count(/sqroot/body/bodyContent/browse/children/child)>0">
         <td class="cell-parentSelector"></td>
-
       </xsl:if>
-
       <td class="cell-recordSelector"></td>
       <xsl:apply-templates select="fields/field"/>
     </tr>
@@ -215,7 +207,6 @@
       <td colspan="100">
       </td>
     </tr>
-
   </xsl:template>
 
   <xsl:template match="fields/field">
@@ -247,6 +238,10 @@
 							or (@isEditable=3 and $parentState&lt;400)
 							or (@isEditable=4 and ($parentState&lt;500)))">
         <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}">
+          <xsl:if test="@digit">
+            <xsl:attribute name="data-type">number</xsl:attribute>
+            <xsl:attribute name="placeholder">Enter Number Here</xsl:attribute>
+          </xsl:if>
           <xsl:attribute name="align">
             <xsl:choose>
               <xsl:when test="@align=0">left</xsl:when>
@@ -258,7 +253,15 @@
         </td>
       </xsl:when>
       <xsl:otherwise>
-        <td class="cell cell-disabled" data-id="{@id}" data-field="{@caption}">
+        <!--<td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}"
+            contenteditable="false"  >
+          <xsl:if test="@digit">
+            <xsl:attribute name="data-type">number</xsl:attribute>
+            <xsl:attribute name="placeholder">Enter Text Here</xsl:attribute>
+          </xsl:if>
+          --><!--<xsl:if test="@preview">
+            <xsl:attribute name="onclick">cell_preview('<xsl:value-of select="@preview" />', '<xsl:value-of select="../../@code" />', '<xsl:value-of select="../../@GUID" />', null)</xsl:attribute>
+          </xsl:if>--><!--
           <xsl:attribute name="align">
             <xsl:choose>
               <xsl:when test="@align=0">left</xsl:when>
@@ -267,10 +270,39 @@
             </xsl:choose>
           </xsl:attribute>
           <xsl:value-of select="$tbContent"/>
-        </td>
+        </td>-->
+        <xsl:choose>
+          <xsl:when test="@editor='select2'">
+            <td class="cell cell-editor-select2" data-id="{@id}" data-field="{@caption}" contenteditable="false">
+              <xsl:attribute name="align">
+                <xsl:choose>
+                  <xsl:when test="@align=0">left</xsl:when>
+                  <xsl:when test="@align=1">center</xsl:when>
+                  <xsl:when test="@align=2">right</xsl:when>
+                </xsl:choose>
+              </xsl:attribute>
+              <xsl:value-of select="$tbContent"/>
+            </td>
+          </xsl:when>
+          <xsl:otherwise>
+            <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}" 
+                contenteditable="false">
+              <xsl:if test="@digit">
+                <xsl:attribute name="data-type">number</xsl:attribute>
+                <xsl:attribute name="placeholder">Enter Text Here</xsl:attribute>
+              </xsl:if>
+              <xsl:attribute name="align">
+                <xsl:choose>
+                  <xsl:when test="@align=0">left</xsl:when>
+                  <xsl:when test="@align=1">center</xsl:when>
+                  <xsl:when test="@align=2">right</xsl:when>
+                </xsl:choose>
+              </xsl:attribute>
+              <xsl:value-of select="$tbContent"/>
+            </td>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:otherwise>
     </xsl:choose>
-
   </xsl:template>
-
 </xsl:stylesheet>

@@ -1,16 +1,7 @@
-function LoadNewPart(filename, id, code, sqlfilter, searchText, bpageno, showpage, sortOrder) {
-    if (filename == 'product') {
-        filename = filename + '_' + getCookie('browsetype');
-        bpageno = getCookie("bpageno");
-        sortOrder = getCookie("sortOrder");
-        showpage = getCookie("showpage");
-    }
-
-    if (bpageno == '' || bpageno == undefined) { bpageno = 1 }
-    if (showpage == '' || showpage == undefined) { showpage = 21 }
-    if (sortOrder == '' || sortOrder == undefined) { sortOrder = '' }
-    var xsldoc = 'OPHContent/themes/themeTwo/xslt/' + filename + '.xslt';
-    var xmldoc = 'OPHCore/api/?mode=browse' + '&code=' + code + '&sqlfilter=' + sqlfilter + '&bSearchText=' + searchText + '&bpageno=' + bpageno + '&showpage=' + showpage + '&sortOrder=' + sortOrder + '&date=' + getUnique();
+function LoadNewPart(filename, id, code, nbpage) {
+   
+    var xsldoc = 'OPHContent/themes/themeOne/xslt/' + filename + '.xslt';
+    var xmldoc = 'OPHCore/api/default.aspx?mode=browse&code=' + code + '&GUID=' + getGUID() + '&stateid=' + getState() + '&bPageNo=' + nbpage + '&bSearchText=' + getSearchText() + '&sqlFilter=' + getFilter() + '&sortOrder=' + getOrder() + unique;
 
     showXML(id, xmldoc, xsldoc, true, true, function () {
         if (typeof f == "function") f();
