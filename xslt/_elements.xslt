@@ -31,7 +31,7 @@
 
   <xsl:template match="formCol">
     <xsl:variable name="colMax">
-      <xsl:for-each select=".">
+      <xsl:for-each select="../formCol/.">
         <xsl:sort select="@colNo" data-type="number" order="descending"/>
         <xsl:if test="position() = 1">
           <xsl:value-of select="@colNo"/>
