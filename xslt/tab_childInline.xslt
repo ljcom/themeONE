@@ -39,9 +39,16 @@
       var columns_<xsl:value-of select="$lowerCode"/>=[];
       //setCookie('<xsl:value-of select="$lowerCode"/>_parent', '<xsl:value-of select="/sqroot/body/bodyContent/browse/info/filter"/>', 1);
       var <xsl:value-of select="$lowerCode"/>_parent='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/filter"/>';
+
+      
+      <xsl:if test="/sqroot/body/bodyContent/browse/info/buttons">
+        buttons=<xsl:value-of select="sqroot/body/bodyContent/browse/info/buttons"/>;
+        loadExtraButton(buttons, 'browse-action-button');
+      </xsl:if>
+      
     </script>
     <input type="hidden" name ="{$lowerCode}requiredname"/>
-    <input type="hidden" name ="{$lowerCode}requiredtblvalue"/>    
+    <input type="hidden" name ="{$lowerCode}requiredtblvalue"/>
     <xsl:apply-templates select="sqroot/body/bodyContent/browse/children" />
 
     <div class="row">
@@ -82,6 +89,11 @@
                       </xsl:if>
                       <th style="width:28px;" class="cell-recordSelectors"></th>
                       <xsl:apply-templates select="sqroot/body/bodyContent/browse/header"/>
+                      <xsl:if test="/sqroot/body/bodyContent/browse/info/buttons">
+                        <th id="actionHeader" class="text-right">
+                          <span>ACTION</span>
+                        </th>
+                      </xsl:if>
                     </tr>
                   </thead>
                   <tbody id="{$lowerCode}">
@@ -165,15 +177,15 @@
       <script>
         var x=[];
         <xsl:choose>
-        <xsl:when test="((@isEditable=1 and ($parentState=0 or $parentState=300 or not ($parentState))) 
+          <xsl:when test="((@isEditable=1 and ($parentState=0 or $parentState=300 or not ($parentState))) 
               or (@isEditable='2')
 							or (@isEditable=3 and ($parentState&lt;400 or not ($parentState)))
 							or (@isEditable=4 and ($parentState&lt;500 or not ($parentState))))">
-        x.push('editor=<xsl:value-of select="@editor"/>');
-		<xsl:if test="@isNullable=0">
-			document.getElementsByName(tblnm)[0].value = document.getElementsByName(tblnm)[0].value + ', <xsl:value-of select="@fieldName"/>'
-		</xsl:if>
-        </xsl:when>
+            x.push('editor=<xsl:value-of select="@editor"/>');
+            <xsl:if test="@isNullable=0">
+              document.getElementsByName(tblnm)[0].value = document.getElementsByName(tblnm)[0].value + ', <xsl:value-of select="@fieldName"/>'
+            </xsl:if>
+          </xsl:when>
           <xsl:otherwise>
             x.push('editor=');
           </xsl:otherwise>
@@ -187,8 +199,8 @@
         x.push('digit=<xsl:value-of select="@digit"/>');
         x.push('isNullable=<xsl:value-of select="@isNullable"/>');
 
-		columns_<xsl:value-of select="$lowerCode"/>.push(x);
-        
+        columns_<xsl:value-of select="$lowerCode"/>.push(x);
+
       </script>
     </th>
   </xsl:template>
@@ -201,11 +213,14 @@
 
       <xsl:if test="count(/sqroot/body/bodyContent/browse/children/child)>0">
         <td class="cell-parentSelector"></td>
-
       </xsl:if>
-
       <td class="cell-recordSelector"></td>
       <xsl:apply-templates select="fields/field"/>
+      <xsl:if test="/sqroot/body/bodyContent/browse/info/buttons">
+        <td class="browse-action-button text-right" style="white-space: nowrap;">
+
+        </td>
+      </xsl:if>
     </tr>
     <tr id="tr2_{$lowerCode}{@GUID}" style="display:none">
       <td colspan="100">

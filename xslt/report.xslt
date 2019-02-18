@@ -295,7 +295,7 @@ _________________________________________________________ -->
       </section>
     </aside>
     <!-- Content Wrapper. Contains page content -->
-    <div id="contentWrapper" class="content-wrapper" style="background:white">
+    <div id="contentWrapper" class="content-wrapper">
       <div style="padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px">
         <span>
           <ix class="fa fa-clock-o pull-left"></ix>

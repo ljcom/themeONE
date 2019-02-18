@@ -20,7 +20,7 @@ function saveThemeONE(code, guid, location, formId) {
             var pkvalue = document.getElementById("PK" + code).value;
             var parentkey = document.getElementById("PKID").value.split('child').join('');
             var pkey = $('#parent' + code).val();
-            var childKey = $('#childKey' + code).val()
+            var childKey = $('#childKey' + code).val();
         }
 
         //insert new form
@@ -32,7 +32,7 @@ function saveThemeONE(code, guid, location, formId) {
                 showMessage(msg);
             }
             loadChild(code, pkey, pkvalue, 1)
-            preview('1', getCode(), getGUID(), 'formheader', this);
+            preview('1', getCode(), getGUID(), '', this);
         }
         else if (retguid != "" && retguid != guid && location == 41) {
             //preview(1, code, guid, formId + code);
@@ -74,7 +74,7 @@ function saveThemeONE(code, guid, location, formId) {
                     });
                 } else {
                     loadChild(code, pkey, pkvalue, 1);
-                    preview('1', getCode(), getGUID(), 'formheader', this);
+                    preview('1', getCode(), getGUID(), '', this);
                 }
             }
         }
@@ -82,7 +82,7 @@ function saveThemeONE(code, guid, location, formId) {
     })
 }
 
-function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, allowForce, isDelegator) {
+function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, allowForce, isDelegator, smode) {
     var tx1 = '';
     $('td#mandatory' + guid).each(function (i, td) {
         tx1 += '<strong>' + $(td).data('title') + '</strong> ' + $(td).html() + ' &#183; ';
@@ -95,10 +95,10 @@ function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, a
     var divname = 'collapse' + guid;
 
     if (isDelegator > 0) {
-        var x = '<div class="panel box browse-phone">#d1#</div>';
+        var x = '<div class="panel box browse-phone" style="border:0;margin:0">#d1#</div>';
     } else {
         isDelegator = 0;
-        var x = '<div class="panel box browse-phone">#d1##d2#</div>';
+        var x = '<div class="panel box browse-phone" style="border:0;margin:0">#d1##d2#</div>';
     }
 
     x = x.replace('#d1#', '<div class="box-header with-border ellipsis">#h4#</div>');
@@ -108,7 +108,7 @@ function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, a
     x = x.replace('#tx2#', tx2);
 
     x = x.replace('#d2#', '<div id="' + divname + '" class="panel-collapse collapse">#d21#</div>');
-    x = x.replace('#d21#', '<div class="box-body full-width-a">#d212#</div>');
+    x = x.replace('#d21#', '<div class="box-body full-width-a" style="padding:0">#d212#</div>');
 
     //x = x.replace('#d211#', '<div class="browse-status" style="background:gray; color:white; padding:10px; position:relative;">#tx3##a2#</div>');
     //x = x.replace('#d211#', '<div class="browse-status" style="background:gray; color:white; padding:10px; position:relative;">#tx3#<a href="#a4#" title="edit" style="position:absolute; top:10px; right:10px; font-size:17px; color:white;">#ix#</a></div>');
@@ -130,14 +130,25 @@ function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, a
     bt = '<td width="1" style="padding:0 10px;">#bt#</td>#td#';
     bt = bt.replace('#bt#', '<button type="button" class="btn btn-gray-a" style="background:#ccc; border:none;" onclick="#abt#">#btname#</button>');
 
-    var btname = "EDIT"
-    if (allowedit == 1 && isDelegator == 0) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-pencil"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));
+    var btname = "VIEW";
+    var fa = "eye";
+    if (((allowedit == 1 && (status == 0 || status == 300))
+        || (allowedit == 3 && (status < 400))
+        || (allowedit == 4 && (status < 500))) && isDelegator == 0)
+    {
+        btname = "EDIT";
+        fa = "pencil";
     }
+
+    x = x.replace('#td#', bt.replace('#btname#', '<ix class="far '+fa+'"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));
+
+    
 
     var btname = 'DELETE';
     var btfn = 'delete';
-    if (status < 500 && allowDelete == 1 && isDelegator == 0) {
+    if (((allowDelete == 1 && (status == 0 || status == 300))
+        || (allowDelete == 3 && (status < 400))
+        || (allowDelete == 4 && (status < 500))) && isDelegator == 0) {
         x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
     }
 
@@ -147,30 +158,31 @@ function fillMobileItem(code, guid, Status, allowedit, allowDelete, allowWipe, a
         x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
     }
 
-    var btname = 'ARCHIEVE';
-    var btfn = 'force';
-    if (status < 500 && status >= 400 && allowForce == 1 && isDelegator == 0) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-archive"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
-    }
+    if (smode=='T') {
+        var btname = 'ARCHIEVE';
+        var btfn = 'force';
+        if (status < 500 && status >= 400 && allowForce == 1 && isDelegator == 0) {
+            x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-archive"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+        }
 
-    var btname = 'SUBMIT';
-    var btfn = 'execute';
-    if (status == 0 || status == 300) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
-    }
+        var btname = 'SUBMIT';
+        var btfn = 'execute';
+        if (status == 0 || status == 300) {
+            x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+        }
 
-    var btname = 'APPROVE';
-    var btfn = 'execute';
-    if (isDelegator == 0 && status > 0 && status < 200) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
-    }
+        var btname = 'APPROVE';
+        var btfn = 'execute';
+        if (isDelegator == 0 && status > 0 && status < 200) {
+            x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+        }
 
-    var btname = 'REJECT';
-    var btfn = 'force';
-    if (isDelegator == 0 && status > 0 && status < 200) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:rejectPopup(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+        var btname = 'REJECT';
+        var btfn = 'force';
+        if (isDelegator == 0 && status > 0 && status < 200) {
+            x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:rejectPopup(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+        }
     }
-
     x = x.replace('#td#', '');
     $(x).appendTo("#accordionBrowse");
 }
@@ -629,27 +641,34 @@ function select2editForm(ini) {
 }
 
 function changeSkinColor() {
+    var bodyClass
     if (getCookie('skinColor') != '')
-        var bodyClass = getCookie('skinColor')
+        bodyClass = getCookie('skinColor')
     else
-        var bodyClass = 'skin-blue';
+        bodyClass = 'skin-blue';
     $('body').addClass(bodyClass);
 }
 
 function loadExtraButton(buttons, location) {
+    var cval;
     $('td.' + location).each(function (i, td) {
         var a, bstate;
         buttons.forEach(function (v) {
             var url = v.url;
+            //check variable
             var arurl = url.match(/%+\w+(?:%)/g);
             if (arurl) {
                 arurl.forEach(function (val) {
                     val = val.split('%').join('');
 
                     if (val == 'guid') {
-                        var cval = $(td).parent().data(val);
-                    } else {
-                        var cval = $(td).parent().find("[data-field='" + val + "']").html();
+                        cval = $(td).parent().data(val);
+                    }
+                    else if (val == 'rid') {
+                        cval = $(td).parent().data("guid");
+                    }
+                    else {
+                        cval = $(td).parent().find("[data-field='" + val + "']").html();
                     }
 
                     if (cval) {
@@ -660,7 +679,7 @@ function loadExtraButton(buttons, location) {
             }
             a = "<a href=\"" + url + "\"><ix class='far " + v.icon + "' data-toggle=\"tooltip\" title='" + v.caption + "'/></a>";
             uo = (v.updateOnly == 1) ? 1 : 0;
-            bstate = v.state
+            bstate = v.state;
             if (bstate) {
                 bstate = bstate.split(' ').join('');
                 bstate = bstate.split(',');

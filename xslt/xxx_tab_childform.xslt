@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
   <xsl:output method="xml" indent="yes"/>
@@ -179,6 +179,7 @@
         </div>
       </div>
     </xsl:if>
+
   </xsl:template>
 
   <xsl:template match="formCols">
@@ -204,9 +205,12 @@
       <xsl:when test="$colMax=1 or $colMax=2">
         <div class="col-md-6" data-cm="{$colMax}">
           <xsl:if test="@colNo='1'">
+							
             <xsl:apply-templates select="formRows"/>
+			
           </xsl:if>
           <xsl:if test="@colNo='2'">
+							
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
         </div>
@@ -216,8 +220,15 @@
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
+					
+								
+				
           <xsl:if test="@colNo='2'">
             <xsl:apply-templates select="formRows"/>
+												
+				
+														
+				 
           </xsl:if>
           <xsl:if test="@colNo='3'">
             <xsl:apply-templates select="formRows"/>
@@ -226,6 +237,11 @@
       </xsl:when>
       <xsl:when test="$colMax=4">
         <div class="col-md-3" data-cm="{$colMax}">
+												
+				
+														
+				 
+					 
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
@@ -245,11 +261,9 @@
     </xsl:choose>
   </xsl:template>
   <xsl:template match="formRows">
-    <div class="box box-solid box-default">
-      <div class="box-body">
-        <xsl:apply-templates select="formRow"/>
-      </div>
-    </div>
+
+    <xsl:apply-templates select="formRow"/>
+
   </xsl:template>
 
   <xsl:template match="formRow ">
@@ -262,11 +276,7 @@
   </xsl:template>
 
   <xsl:template match="field">
-    <xsl:if test="@isNullable=0 and 
-                    ((@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
-                        or (@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+    <xsl:if test="@isNullable=0">
       <script>
         document.getElementsByName(tblnm)[0].value = document.getElementsByName(tblnm)[0].value + ', <xsl:value-of select="@fieldName"/>'
       </script>
@@ -274,26 +284,25 @@
 
     <xsl:variable name="fieldEnabled">
       <xsl:choose>
-        <xsl:when test ="((@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
-                        or (@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">enabled</xsl:when>
+        <xsl:when test="((@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (@isEditable='3' and $docState&lt;400)
+                        or (@isEditable='4' and $docState&lt;500))">enabled</xsl:when>
         <xsl:otherwise>disabled</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
 
-				
-    <xsl:if test ="$fieldEnabled='disabled'">
-      <script>
-        $('#<xsl:value-of select="@fieldName"/>').attr('disabled', 'disabled');
-        $('#<xsl:value-of select="@fieldName"/>').prop('disabled', true);
-      </script>
-    </xsl:if>
-				
+    <xsl:choose>
+      <xsl:when test ="$fieldEnabled='disabled'">
+        <script>
+          $('#<xsl:value-of select="@fieldName"/>').attr('disabled', true);
+        </script>
+      </xsl:when>
+    </xsl:choose>
+
     <div class="form-group {$fieldEnabled}-input">
       <xsl:apply-templates select="textBox"/>
       <xsl:apply-templates select="textEditor"/>
-      <xsl:apply-templates select="textArea"/>
       <xsl:apply-templates select="dateBox"/>
       <xsl:apply-templates select="dateTimeBox"/>
       <xsl:apply-templates select="timeBox"/>
@@ -301,7 +310,6 @@
       <xsl:apply-templates select="hiddenBox"/>
       <xsl:apply-templates select="checkBox"/>
       <xsl:apply-templates select="mediaBox"/>
-      <xsl:apply-templates select="imageBox"/>															
       <xsl:apply-templates select="autoSuggestBox"/>
       <xsl:apply-templates select="tokenBox"/>
       <xsl:apply-templates select="radio"/>
@@ -310,48 +318,99 @@
   <xsl:template match="hiddenBox">
     <input type="hidden" Value="{value}" data-type="hiddenBox" data-old="{value}" name="{../@fieldName}"
            id ="{../@fieldName}"/>
-  </xsl:template>
-
+    </xsl:template>
   <xsl:template match="checkBox">
     <!--Supaya bisa di serialize-->
     <input type="hidden" name="{../@fieldName}" id="{../@fieldName}" value="{value}"/>
     <!--Supaya bisa di serialize-->
 
-    
+    <input type="checkbox" value="{value}" id ="cb{../@fieldName}"  name="cb{../@fieldName}" data-type="checkBox" data-old="{value}" 
+	data-child="Y"
+      onchange="checkCB('{../@fieldName}');preview('{preview/.}', '{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}','form{/sqroot/body/bodyContent/form/info/code/.}', this);">
+      <xsl:if test="value=1">
+        <xsl:attribute name="checked">checked</xsl:attribute>
+      </xsl:if>
+    </input>
 
-    <label id="{../@fieldName}caption">
-      <input type="checkbox" value="{value}" id ="cb{../@fieldName}"  name="cb{../@fieldName}" data-type="checkBox" data-old="{value}"
-      data-child="Y"
-	  onchange="checkCB('{../@fieldName}');preview('{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);">
-        <xsl:if test="value=1">
-          <xsl:attribute name="checked">checked</xsl:attribute>
-        </xsl:if>
-      </input>
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
-    <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+    <xsl:if test="../@isNullable = 0">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
-
-    <label id="{../@fieldName}suffixCaption">
+    <label id="{../@fieldName}suffixCaption" name="{../@fieldName}suffixCaption">
       <xsl:value-of select="suffixCaption"/>
     </label>
 
-</xsl:template>
+  </xsl:template>
 
-  <xsl:template match="textEditor">
-    <label id="{../@fieldName}caption" data-toggle="collapse" data-target="#section_{@sectionNo}">
+  <xsl:template match="textBox">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
-    <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+    <xsl:if test="../@isNullable = 0">
+      <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
+    </xsl:if>
+    <!--digit-->
+    <xsl:variable name="tbContent">
+      <xsl:choose>
+        <xsl:when test="digit = 0 and value!=''">
+          <xsl:value-of select="format-number(value, '###,###,###,##0', 'dot-dec')"/>
+        </xsl:when>
+        <xsl:when test="digit  = 1 and value!=''">
+          <xsl:value-of select="format-number(value, '###,###,###,##0.0', 'dot-dec')"/>
+        </xsl:when>
+        <xsl:when test="digit  = 2 and value!=''">
+          <xsl:value-of select="format-number(value, '###,###,###,##0.00', 'dot-dec')"/>
+        </xsl:when>
+        <xsl:when test="digit  = 3 and value!=''">
+          <xsl:value-of select="format-number(value, '###,###,###,##0.000', 'dot-dec')"/>
+        </xsl:when>
+        <xsl:when test="digit  = 4 and value!=''">
+          <xsl:value-of select="format-number(value, '###,###,###,##0.0000', 'dot-dec')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="value"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="align">
+      <xsl:choose>
+        <xsl:when test="align=0">left</xsl:when>
+        <xsl:when test="align=1">center</xsl:when>
+        <xsl:when test="align=2">right</xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+
+    <!--default value-->
+    <xsl:variable name="thisvalue">
+      <xsl:choose>
+        <xsl:when  test="/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000' and defaultvalue != ''">
+          <xsl:value-of select="defaultvalue/." />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$tbContent" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <input type="text" class="form-control" Value="{$thisvalue}" name="{../@fieldName}"
+           data-old="{value/.}" 
+		   data-child="Y"
+           onblur="preview('{preview/.}', '{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}','form{/sqroot/body/bodyContent/form/info/code/.}', this);"
+           oninput="javascript:checkChanges(this)"
+           id ="{../@fieldName}">
+      <xsl:attribute name="style">
+        text-align:<xsl:value-of select="$align"/>
+      </xsl:attribute>
+    </input>
+  </xsl:template>
+
+  <xsl:template match="textEditor">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption" data-toggle="collapse" data-target="#section_{@sectionNo}">
+      <xsl:value-of select="titlecaption"/>
+    </label>
+    <xsl:if test="../@isNullable = 0">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -377,143 +436,32 @@
       $('#button_save2').show();
       $('#button_cancel2').show();
       }
-      preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);
+      preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);
       });
-    </script>			 
-  </xsl:template>
-
-  <xsl:template match="textBox">
-    <label id="{../@fieldName}caption">
-      <xsl:value-of select="titlecaption"/>
-    </label>
-    <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
-      <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
-    </xsl:if>
-
-	
-    <!--digit-->
-    <xsl:variable name="tbContent">
-      <xsl:choose>
-        <xsl:when test="digit = 0 and value!=''">
-          <xsl:value-of select="format-number(value, '###,###,###,##0', 'dot-dec')"/>
-        </xsl:when>
-        <xsl:when test="digit  = 1 and value!=''">
-          <xsl:value-of select="format-number(value, '###,###,###,##0.0', 'dot-dec')"/>
-        </xsl:when>
-        <xsl:when test="digit  = 2 and value!=''">
-          <xsl:value-of select="format-number(value, '###,###,###,##0.00', 'dot-dec')"/>
-        </xsl:when>
-        <xsl:when test="digit  = 3 and value!=''">
-          <xsl:value-of select="format-number(value, '###,###,###,##0.000', 'dot-dec')"/>
-        </xsl:when>
-        <xsl:when test="digit  = 4 and value!=''">
-          <xsl:value-of select="format-number(value, '###,###,###,##0.0000', 'dot-dec')"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="value"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
-    <xsl:variable name="align">
-      <xsl:choose>
-        <xsl:when test="align=0">left</xsl:when>
-        <xsl:when test="align=1">center</xsl:when>
-        <xsl:when test="align=2">right</xsl:when>
-      </xsl:choose>
-    </xsl:variable>
-
-    <!--default value-->
-    <xsl:variable name="thisvalue">
-      <xsl:choose>
-        <xsl:when  test="/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000' and defaultvalue != ''">
-          <xsl:value-of select="defaultvalue/." />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$tbContent" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
-    <input type="text" class="form-control" Value="{$thisvalue}" data-type="textBox" data-old="{$thisvalue}" name="{../@fieldName}"
-           data-child="Y"														
-           onblur="preview('{preview/.}','{/sqroot/header/info/code/id/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" id ="{../@fieldName}"
-           oninput="javascript:checkChanges(this)">
-      <xsl:attribute name="style">
-        text-align:<xsl:value-of select="$align"/>
-      </xsl:attribute>
-    </input>
-  </xsl:template>
-
-  <xsl:template match="textArea">
-    <label id="{../@fieldName}caption">
-      <xsl:value-of select="titlecaption"/>
-    </label>
-    <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000' or $settingMode='C' or $settingMode='M')) 
-                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
-      <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
-    </xsl:if>
-
-    <!--default value-->
-    <xsl:variable name="thisValue">
-      <xsl:choose>
-        <xsl:when  test="$cid = '00000000-0000-0000-0000-000000000000' and defaultvalue != ''">
-          <xsl:value-of select="defaultvalue/." />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:choose>
-            <xsl:when test="value and value != ''">
-              <xsl:value-of select="value"/>
-            </xsl:when>
-            <xsl:otherwise>&#160;</xsl:otherwise>
-          </xsl:choose>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
-    <textarea class="form-control" placeholder="input text..." name="{../@fieldName}" id ="{../@fieldName}" data-type="textArea" style="max-width:100%; min-width:100%; min-height:55px;"
-      onblur="preview('{preview/.}',getCode(), '{$cid}','', this);" oninput="javascript:checkChanges(this)" >
-      <xsl:value-of select="$thisValue"/>
-    </textarea>
-    <script>
-      $('#<xsl:value-of select="../@fieldName"/>').val($.trim($('#<xsl:value-of select="../@fieldName"/>').val()));
     </script>
-
   </xsl:template>
 
   <xsl:template match="dateBox">
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
-    <xsl:if test="../@isNullable = 0 and 
-					((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+    <xsl:if test="../@isNullable = 0">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
     <div class="input-group date">
       <div class="input-group-addon">
         <ix class="fa fa-calendar"></ix>
       </div>
-      <input type="text" class="form-control pull-right datepicker" id ="{../@fieldName}" name="{../@fieldName}" 
-		Value="{value}" data-type="dateBox" data-old="{value}"
-        data-child="Y"
-		onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);"
-        onchange="checkChanges(this)">
+      <input type="text" class="form-control pull-right datepicker" id ="{../@fieldName}" name="{../@fieldName}"
+             data-type="dateBox" data-old="{value}" Value="{value}" 
+			 data-child="Y"
+             onblur="preview('{preview/.}','{/sqroot/body/bodyContent/form/code/id}', '{/sqroot/body/bodyContent/form/info/GUID/.}','form{/sqroot/body/bodyContent/form/code/id}', this);" >
       </input>
     </div>
   </xsl:template>
 
   <xsl:template match="dateTimeBox">
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0">
@@ -524,39 +472,17 @@
         <ix class="fa fa-calendar"></ix>
       </div>
       <input type="text" class="form-control pull-right datetimepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" data-type="dateTimeBox" data-old="{value}"
-        onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
+        onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','formheader', this);" >
       </input>
     </div>
   </xsl:template>
 
-  <xsl:template match="passwordBox">
-    <label id="{../@fieldName}caption">
-      <xsl:value-of select="titlecaption"/>
-    </label>
-    <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
-      <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
-    </xsl:if>
-
-    <input type="password" class="form-control" Value="" data-type="textBox" data-old="" name="{../@fieldName}"
-           minlength="8" required="required" placeholder="8 characters minimum."
-      onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" id ="{../@fieldName}" autocomplete="false">
-    </input>
-
-  </xsl:template>
   <xsl:template match="timeBox">
     <script>//timebox</script>
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
-    <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+    <xsl:if test="../@isNullable = 0">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
     <div class="input-group date">
@@ -564,9 +490,9 @@
         <ix class="fa fa-clock-o"></ix>
       </div>
       <input type="text" class="form-control pull-right timepicker" id ="{../@fieldName}" name="{../@fieldName}"
-             data-type="timeBox" data-old="{value}" Value="{value}"
-             data-child="Y"
-			 onblur="preview('{preview/.}','{/sqroot/body/bodyContent/form/code/id}', '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
+             data-type="timeBox" data-old="{value}" Value="{value}" 
+			 data-child="Y"
+             onblur="preview('{preview/.}','{/sqroot/body/bodyContent/form/code/id}', '{/sqroot/body/bodyContent/form/info/GUID/.}','form{/sqroot/body/bodyContent/form/code/id}', this);" >
       </input>
     </div>
   </xsl:template>
@@ -594,8 +520,8 @@
       <label class="input-group-btn">
         <span class="btn btn-primary">
           Browse <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file" data-code="{/sqroot/body/bodyContent/form/info/code}" 
-		    data-child="Y" 
-		    style="display: none;" multiple="" />
+		  data-child="Y" 
+		  style="display: none;" multiple="" />
         </span>
       </label>
       <input id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" type="text" class="form-control" readonly="" />
@@ -611,21 +537,17 @@
   </xsl:template>
 
   <xsl:template match="autoSuggestBox">
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
 
-    <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+    <xsl:if test="../@isNullable = 0">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
     <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}"
-        data-type="selectBox" data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}" 
-		data-child="Y"
+      data-type="selectBox" data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}" 
+	  data-child="Y"
         onchange="autosuggest_onchange(this, '{preview/.}', '{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}','form{/sqroot/body/bodyContent/form/info/code/.}', this);">
 
       <option value="NULL">-----Select-----</option>
@@ -750,35 +672,32 @@
     </xsl:if>
     
     <script>
+
+      <!--$("#<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/><xsl:value-of select="../@fieldName"/>").select2({-->
       $("#<xsl:value-of select="../@fieldName"/>").select2({
-      placeholder: 'Select <xsl:value-of select="titlecaption"/>',
-      onAdd: function(x) {
-      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','', this);
-      },
-      onDelete: function(x) {
-      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','', this);
-      },																  
       ajax: {
+
       url:"OPHCORE/api/msg_autosuggest.aspx",
-  	  delay : 0, //500			
       data: function (params) {
       var query = {
-      code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
-      colkey:"<xsl:value-of select="../@fieldName"/>",
       search: params.term==undefined?'':params.term.toString().split('+').join('%2B'),
-      wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
-      wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
+      wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
+      wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() === undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
       parentCode: getCode(),
-      page: params.page
+      page: params.page,
+      code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
+      colkey:"<xsl:value-of select="../@fieldName"/>"
       }
+
       return query;
       },
       dataType: 'json',
+      //delay: 500
       }
       });
       <xsl:if test="value!=''">
         //deferreds.push(
-        autosuggest_setValue(deferreds, '<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
+        autosuggestSetValue(deferreds, '<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
         //);
       </xsl:if>
     </script>
@@ -831,17 +750,11 @@
       <xsl:if test="value">
         noPrepopulate<xsl:value-of select="../@fieldName"/>=0;
       </xsl:if>
-      var cURL<xsl:value-of select="../@fieldName"/>='OPHCore/api/msg_autosuggest.aspx?mode=token&amp;nbRow=0&amp;code=<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>&amp;colkey=<xsl:value-of select="../@fieldName"/>'
-      var dataForm = new FormData();
-      dataForm.append('search', '<xsl:value-of select="value"/>');
+      var cURL<xsl:value-of select="../@fieldName"/>='OPHCore/api/msg_autosuggest.aspx?mode=token&amp;code=<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>&amp;colkey=<xsl:value-of select="../@fieldName"/>&amp;search=<xsl:value-of select="value"/>'
 
       $(document).ready(function(){
       $.ajax({
       url: cURL<xsl:value-of select="../@fieldName"/>,
-	  method: 'POST',
-      data: dataForm,
-      processData: false,
-      contentType: false,				 
       dataType: 'json',
       success: function(data){
       if (noPrepopulate<xsl:value-of select="../@fieldName"/>==1) data='';
@@ -859,10 +772,10 @@
       onReady: function(x) {
       },
       onAdd: function(x) {
-      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','', this);
+      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
       },
       onDelete: function(x) {
-      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','', this);
+      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','formheader', this);
       }
       }
       );
@@ -871,15 +784,11 @@
       });
     </script>
 
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
       <xsl:value-of select="titlecaption"/>
     </label>
 
-    <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+    <xsl:if test="../@isNullable = 0">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -901,28 +810,17 @@
     </xsl:variable>
 
     <input type="text" class="form-control" Value="{$thisvalue}" data-type="tokenBox" data-old="{$thisvalue}" data-newJSON="" data-code="{code/.}" 
-	  data-child="Y"
+	data-child="Y"
       data-key="{key}" data-id="{id}" data-name="{name}"
       name="{../@fieldName}" id ="{../@fieldName}">
-      <xsl:choose>
-        <xsl:when test="((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and /sqroot/body/bodyContent/form/info/state/status/.&lt;400)
-                        or (../@isEditable='4' and /sqroot/body/bodyContent/form/info/state/status/.&lt;500))">
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:attribute name="disabled">disabled</xsl:attribute>
-        </xsl:otherwise>
-      </xsl:choose>
+
     </input>
   </xsl:template>
-  <xsl:template match="imageBox">
-  </xsl:template>	 
 
   <xsl:template match="radio">
     <xsl:variable name="radioVal">
       <xsl:choose>
-        <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
+        <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
           <xsl:value-of select="defaultvalue" />
         </xsl:when>
         <xsl:otherwise>
@@ -950,10 +848,10 @@
         <xsl:value-of select="titlecaption"/>
       </label>
       <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
-                        or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
         <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
       </xsl:if>
     </div>
@@ -974,55 +872,20 @@
   </xsl:template>
 
   <xsl:template match="radioSections/radioSection">
-												   
-    <xsl:variable name="pandis" select="count(radioRows)"/>
-    <xsl:variable name="radioVal1">
+    <label class="radio-inline">
       <xsl:choose>
-        <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
-          <xsl:value-of select="../../defaultvalue" />
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="../../value" />
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <xsl:choose>
-      <xsl:when test="@fieldName=$radioVal1">
-	    <xsl:choose>
-          <xsl:when test="radioRows">
-            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '@radioNo')" >
-              <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" checked="checked" />
-              <xsl:value-of select="@radioRowTitle"/>
-            </label>
-          </xsl:when>
-          <xsl:otherwise>
-            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '@radioNo')" >
-              <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" checked="checked" />
-              <xsl:value-of select="@radioRowTitle"/>
-            </label>
-          </xsl:otherwise>
-        </xsl:choose> 
+        <xsl:when test="@fieldName=../../value/.">
+          <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" checked="checked" />
           <script>
             $('#panel_<xsl:value-of select="../../../@fieldName" />_<xsl:value-of select="@radioNo" />').collapse('show');
           </script>
         </xsl:when>
         <xsl:otherwise>
-        <xsl:choose>
-          <xsl:when test="radioRows">
-            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}')" >
-              <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" />
-              <xsl:value-of select="@radioRowTitle"/>
-            </label>
-          </xsl:when>
-          <xsl:otherwise>
-            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}')" >
-              <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" />
-              <xsl:value-of select="@radioRowTitle"/>
-            </label>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:otherwise>
-    </xsl:choose>
+          <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" />
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:value-of select="@radioRowTitle"/>
+    </label>
     <script>
       $('#<xsl:value-of select="../../../@fieldName" />_<xsl:value-of select="@radioNo" />').click(function(){
       <xsl:value-of select="../../../@fieldName" />_hide('panel_<xsl:value-of select="../../../@fieldName" />_<xsl:value-of select="@radioNo" />');

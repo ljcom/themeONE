@@ -208,9 +208,10 @@
 
           </div>
 
-          <div class="row displayblock-phone">
+          <div class="row displayblock-phone" style="margin-top:10px">
+            <div class="col-xs-6 browse-dropdown-status">
             <xsl:if test="$settingMode='T'">
-              <div class="col-xs-6 browse-dropdown-status">
+              
                 <div class="dropdown">
                   <button id="statusFilter" class="dropdown-toggle" type="button" data-toggle="dropdown" >
                     <ix class="fa fa-file-text-o" aria-hidden="true"></ix>&#160;
@@ -245,8 +246,9 @@
                     </xsl:for-each>
                   </ul>
                 </div>
-              </div>
-            </xsl:if>
+              
+            </xsl:if>&#160;
+            </div>
             <div class="col-xs-6 text-right" style="padding-bottom:10px">
               <xsl:if test="sqroot/body/bodyContent/browse/info/permission/allowExport = 1">
                 <button id="btnExport" class="btn btn-success" data-clicked="0" onclick="window.location='?code={sqroot/header/info/code/id}&amp;mode=export'">
@@ -413,23 +415,13 @@
 
           <!-- browse for phone/tablet max width 768 -->
           <div class="row displayblock-phone">
-            <div class="col-md-12 full-width-a">
-              <div class="box box-solid" style="width:100%;">
-                <div class="box-body full-width-a">
-                  <div class="box-group" id="accordionBrowse">
+            <div class="col-md-12 full-width-a" id="accordionBrowse">
                     <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
                     <xsl:if test="sqroot/body/bodyContent/browse/info/permission/allowAccess/.=0">
                       <div class="alert alert-warning" align="center">
                         You don't have any access to see this list. Please ask the administrator for more information.
                       </div>
                     </xsl:if>
-                  </div>
-                </div>
-                <div class="box-footer clearfix">
-                  <ul class="pagination pagination-sm no-margin pull-right" id="mobilepagenumbers"></ul>
-                </div>
-                <!-- /.box-body -->
-              </div>
               <!-- /.box -->
             </div>
             <!-- /.col -->
@@ -643,7 +635,13 @@
       <xsl:apply-templates select="fields/field[@mandatory=1]" />
       <script>
         //put before mandatory section
-        fillMobileItem('<xsl:value-of select="@code"/>', '<xsl:value-of select="@GUID" />', '<xsl:value-of select="$state" />', '<xsl:value-of select="@edit" />', '<xsl:value-of select="@delete" />', '<xsl:value-of select="@wipe" />', '<xsl:value-of select="@force" />', '<xsl:value-of select="/sqroot/body/bodyContent/browse/info/isDelegator"/>');
+        fillMobileItem('<xsl:value-of select="@code"/>', '<xsl:value-of select="@GUID" />', 
+        '<xsl:value-of select="$state" />', 
+        '<xsl:value-of select="@edit" />', 
+        '<xsl:value-of select="@delete" />', 
+        '<xsl:value-of select="@wipe" />', 
+        '<xsl:value-of select="@force" />', 
+        '<xsl:value-of select="/sqroot/body/bodyContent/browse/info/isDelegator"/>', '<xsl:value-of select="$settingMode" />');
       </script>
 
       <xsl:if test="count(fields/field[@mandatory=0])>0">
