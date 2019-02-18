@@ -61,7 +61,7 @@
           </div>
 
       <div class="navbar-collapse pull-left collapse in" id="navbar-collapse" aria-expanded="true" style="">
-          <ul class="nav navbar-nav sidebar-menu">
+          <ul class="nav navbar-nav">
             <xsl:for-each select="/sqroot/header/menus/menu[@code='sidebar']/submenus/submenu" >
               <xsl:variable name="className">
                 <xsl:choose>
