@@ -44,7 +44,7 @@
     <jsFile>OPHContent/cdn/admin-LTE/js/app.min.js</jsFile>
     <cssFile>OPHContent/themes/themeONE/styles/icomoon/style.css</cssFile>
     <jsFile>OPHContent/themes/themeONE/custom-me.js</jsFile>
-    <!--jsFile>OPHContent/cdn/ophelements/gps/gps.js</jsFile-->
-    <!--jsFile>OPHContent/cdn/ophelements/signjs/sign.js</jsFile-->
+    <sFile>OPHContent/cdn/ophelements/gps/gps.js</jsFile>
+    <jsFile>OPHContent/cdn/ophelements/signjs/sign.js</jsFile>
   </manifest>
 </sqroot>
