@@ -170,7 +170,15 @@
         </li>
       </ol>
     </section>
-
+    <xsl:variable name="addCaption">
+      <xsl:choose>
+        <xsl:when test="sqroot/body/bodyContent/browse/info/addCaption != ''">
+          <xsl:value-of select ="sqroot/body/bodyContent/browse/info/addCaption/."/>
+        </xsl:when>
+        <xsl:otherwise>NEW DOCUMENT</xsl:otherwise>
+      </xsl:choose>
+      
+    </xsl:variable>
     <!-- Main content-->
     <section class="content">
       <!--Access Authority and Permission-->
@@ -201,7 +209,9 @@
                   <xsl:if test="sqroot/body/bodyContent/browse/info/permission/allowAdd = 0">
                     <xsl:attribute name="disabled">disabled</xsl:attribute>
                   </xsl:if>
-                  <strong>NEW DOCUMENT</strong>
+                  <strong>
+                    <xsl:value-of select ="$addCaption"/>
+                  </strong>
                 </button>
               </div>
             </div>
