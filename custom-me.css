@@ -1212,9 +1212,7 @@ svg:not(:root).svg-inline--fa {
     font-size: 1.5em;
 }
 
-.fa-4x {
-    font-size: 2em;
-}
+
 
 .fa-5x {
     font-size: 2.5em;
@@ -1424,33 +1422,37 @@ svg:not(:root).svg-inline--fa {
     width: auto;
 }
 
+.sidebar-collapse .fa-text-1x {
+    font-size: 0.42em;
+    font-weight: 900;
+    font-family: arial;
+    color: #333;
+    margin-top: 0.35em;
+    margin-left: -0.16em;
+    letter-spacing: -0.1em;
+    line-height: 0.85em;
+}
+
 .fa-text-1x {
     font-size: 0.45em;
     font-weight: 900;
     font-family: arial;
     color: #333;
-    margin-top: 0.7em;
-    margin-left: -0.12em;
+    margin-top: 0.59em;
+    margin-left: -0.1em;
     letter-spacing: -0.1em;
     line-height: 0.75em;
 }
 
-.fa-text-1x {
-    font-size: 0.5em;
-    font-weight: 900;
-    font-family: arial;
-    color: #333;
-    margin-top: 0.7em;
-    margin-left: 0.1em;
-    letter-spacing: -0.1em;
-    line-height: 0.75em;
-}
-
-.sidebar-collapse .fa-4x {
+.fa-4x {
     font-size: 1.5em;
 }
 
-.sidebar-collapse .fa-text-1x {
+.sidebar-collapse .fa-4x {
+    font-size: 1em;
+}
+
+/*.sidebar-collapse .fa-text-1x {
     font-size: 0.45em;
     font-weight: 900;
     font-family: arial;
@@ -1459,4 +1461,4 @@ svg:not(:root).svg-inline--fa {
     margin-left: -0.25em;
     letter-spacing: -0.1em;
     line-height: 0.78em;
-}
+}*/
