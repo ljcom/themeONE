@@ -67,6 +67,14 @@
 
       //preview(1, '<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','form<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', this);
 
+      function js_save(location) {
+      saveThemeONE('<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/." />',
+      '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/." />', location, '',
+      (function(d) {js_saveafter(d)}), (function(d) {js_savebefore(d)}));
+      }
+
+      function js_saveafter(d) {}
+      function js_savebefore(d) {}
     </script>
 
     <!-- Main content -->
@@ -84,10 +92,10 @@
               location: browse:10, header form:20, browse anak:30, browse form:40-->
 
             <xsl:if test="/sqroot/body/bodyContent/form/info/permission/allowAdd&gt;=1">
-              <button id="child_button_addSave" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 41, 'form{sqroot/body/bodyContent/form/info/code/.}');">SAVE &amp; ADD NEW</button>&#160;
+              <button id="child_button_addSave" class="btn btn-orange-a" onclick="js_save(41);">SAVE &amp; ADD NEW</button>&#160;
             </xsl:if>
 
-            <button id="child_button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 40, 'form{sqroot/body/bodyContent/form/info/code/.}');">SAVE</button>&#160;
+            <button id="child_button_save" class="btn btn-orange-a" onclick="js_save(40);">SAVE</button>&#160;
             <button id="child_button_cancel" class="btn btn-gray-a" onclick="closeChildForm('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}')">CANCEL</button>&#160;
 
             <xsl:if test="(/sqroot/body/bodyContent/form/info/GUID/.)!='00000000-0000-0000-0000-000000000000'">
@@ -102,12 +110,6 @@
           </div>
         </div>
 
-        <!--<div class="col-md-12 displayblock-phone" style="margin-bottom:20px;">
-          <div style="text-align:center">
-            <button id="child_button_save" class="btn btn-orange-a" onclick="saveThemeONE('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 40, 'form{sqroot/body/bodyContent/form/info/code/.}');">SAVE</button>&#160;
-            <button id="child_button_cancel" class="btn btn-gray-a" onclick="closeChildForm('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}')">CANCEL</button>
-          </div>
-        </div>-->
       </div>
       <!-- button view header -->
       <xsl:apply-templates select="sqroot/body/bodyContent/form/children/child"/>

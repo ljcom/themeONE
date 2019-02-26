@@ -109,7 +109,14 @@
       //loadScript('ophcontent/cdn/ophelements/gps/gps.js');
       
       <!--/xsl:if-->
-              
+	function js_save(location) {
+		saveThemeONE('<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/." />','<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/." />', location, '', 
+		(function(d) {js_saveafter(d)}), (function(d) {js_savebefore(d)}));
+	}
+	
+	function js_saveafter(d) {}
+	function js_savebefore(d) {}
+	  
     </script>
 
     <xsl:variable name="settingmode">
@@ -571,27 +578,16 @@
             <div style="text-align:left">
               <xsl:choose>
                 <!--location: 0 header; 1 child; 2 browse location: browse:10, header form:20, browse anak:30, browse form:40-->
-                <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
-                  <button id="button_save_{@pageNo}" class="btn btn-orange-a action-save" onclick="saveThemeONE('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 20, '');">SAVE</button>&#160;
-                  <button id="button_cancel_{@pageNo}" class="btn btn-gray-a action-cancel" onclick="saveCancel()">CANCEL</button>&#160;
-                </xsl:when>
-                <xsl:when test="/sqroot/body/bodyContent/form/info/state/status/. = 0 or /sqroot/body/bodyContent/form/info/state/status/. = ''">
-                  <button id="button_save_{@pageNo}" class="btn btn-orange-a action-save" onclick="saveThemeONE('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 20, '');">SAVE</button>&#160;
-                  <button id="button_cancel_{@pageNo}" class="btn btn-gray-a action-cancel" onclick="saveCancel()">CANCEL</button>&#160;
-                </xsl:when>
-                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 100 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt; 300">
-                  <button id="button_save_{@pageNo}" class="btn btn-orange-a action-save" onclick="saveThemeONE('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 20, '');">SAVE</button>&#160;
-                  <button id="button_cancel_{@pageNo}" class="btn btn-gray-a action-cancel" onclick="saveCancel()">CANCEL</button>&#160;
-                </xsl:when>
-                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) = 300">
-                  <button id="button_save_{@pageNo}" class="btn btn-orange-a action-save" onclick="saveThemeONE('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 20, '');">SAVE</button>&#160;
-                  <button id="button_cancel_{@pageNo}" class="btn btn-gray-a action-cancel" onclick="saveCancel()">CANCEL</button>&#160;
-                </xsl:when>
-                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 400 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 499">
-                  <button id="button_save_{@pageNo}" class="btn btn-orange-a action-save" onclick="saveThemeONE('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 20, '');">SAVE</button>&#160;
-                  <button id="button_cancel_{@pageNo}" class="btn btn-gray-a action-cancel" onclick="saveCancel()">CANCEL</button>&#160;
-                </xsl:when>
-                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 500 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 899">
+                <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'
+						or /sqroot/body/bodyContent/form/info/state/status/. = 0 
+						or /sqroot/body/bodyContent/form/info/state/status/. = ''
+						or ((/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 100 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt; 300
+						or ((/sqroot/body/bodyContent/form/info/state/status/.) = 300))
+						or ((/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 400 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 499)">
+                  <button id="button_save_{@pageNo}" class="btn btn-orange-a action-save" 
+				  onclick="js_save(20)">SAVE</button>&#160;
+                  <button id="button_cancel_{@pageNo}" class="btn btn-gray-a action-cancel" 
+				  onclick="saveCancel()">CANCEL</button>&#160;
                 </xsl:when>
                 <xsl:otherwise>
                   &#160;
@@ -602,25 +598,16 @@
           <div class="col-md-12 displayblock-phone device-xs visible-xs" style="margin-bottom:20px;">
             <div style="text-align:center">
               <xsl:choose>
-                <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
-                  <button id="button_save2" class="btn btn-orange-a btn-block action-save" onclick="saveThemeONE('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 20, '');">SAVE</button>
-                  <button id="button_cancel2" class="btn btn-gray-a btn-block action-cancel" onclick="saveCancel()">CANCEL</button>
-                </xsl:when>
-                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) = 0 or (/sqroot/body/bodyContent/form/info/state/status/.) = ''">
-                  <button id="button_save2" class="btn btn-orange-a btn-block action-save" onclick="saveThemeONE('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 20, '');">SAVE</button>
-                  <button id="button_cancel2" class="btn btn-gray-a btn-block action-cancel" onclick="saveCancel()">CANCEL</button>
-                </xsl:when>
-                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt; 99 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt; 199">
-                  <button id="button_save2" class="btn btn-orange-a btn-block action-save" onclick="saveThemeONE('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 20, '');">SAVE</button>
-                  <button id="button_cancel2" class="btn btn-gray-a btn-block action-cancel" onclick="saveCancel()">CANCEL</button>
-                </xsl:when>
-                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) = 300">
-                  <button id="button_save2" class="btn btn-orange-a btn-block action-save" onclick="saveThemeONE('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 20, '');">SAVE</button>
-                  <button id="button_cancel2" class="btn btn-gray-a btn-block action-cancel" onclick="saveCancel()">CANCEL</button>
-                </xsl:when>
-                <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 400 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 499">
-                  <button id="button_save2" class="btn btn-orange-a btn-block action-save" onclick="saveThemeONE('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 20, '');">SAVE</button>
-                  <button id="button_cancel2" class="btn btn-gray-a btn-block action-cancel" onclick="saveCancel()">CANCEL</button>
+                <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000' 
+				or (/sqroot/body/bodyContent/form/info/state/status/.) = 0 
+				or (/sqroot/body/bodyContent/form/info/state/status/.) = ''
+				or ((/sqroot/body/bodyContent/form/info/state/status/.) &gt; 99 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt; 199)
+				or ((/sqroot/body/bodyContent/form/info/state/status/.) = 300)
+				or ((/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 400 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 499)">
+                  <button id="button_save2" class="btn btn-orange-a btn-block action-save" 
+				  onclick="js_save(20);">SAVE</button>
+                  <button id="button_cancel2" class="btn btn-gray-a btn-block action-cancel" 
+				  onclick="saveCancel()">CANCEL</button>
                 </xsl:when>
                 <xsl:otherwise>
                   &#160;
