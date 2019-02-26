@@ -8,7 +8,7 @@ function LoadNewPart(filename, id, code, nbpage) {
     });
 }
 
-function saveThemeONE(code, guid, location, formId) {
+function saveThemeONE(code, guid, location, formId, afterSuccess, beforeStart) {
     //location: browse:10, header form:20, browse anak:30, browse form:40, save&add form anak: 41
 
     saveFunction(code, guid, location, formId, function (data) {
@@ -78,8 +78,10 @@ function saveThemeONE(code, guid, location, formId) {
                 }
             }
         }
+		
+		if (typeof afterSuccess === "function") afterSuccess(data);
 
-    })
+    }, beforeStart)
 }
 
 

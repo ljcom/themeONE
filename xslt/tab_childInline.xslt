@@ -45,7 +45,13 @@
         buttons=<xsl:value-of select="sqroot/body/bodyContent/browse/info/buttons"/>;
         loadExtraButton(buttons, 'browse-action-button');
       </xsl:if>
-      
+
+      function js_save() {
+      cell_save((function(d) {js_saveafter(d)}), (function(d) {js_savebefore(d)}));
+      }
+
+      function js_saveafter(d) {}
+      function js_savebefore(d) {}
     </script>
     <input type="hidden" name ="{$lowerCode}requiredname"/>
     <input type="hidden" name ="{$lowerCode}requiredtblvalue"/>
@@ -111,7 +117,7 @@
                   <button id="cell_button_add" class="btn btn-orange-a" style="margin-right:5px;margin-bottom:5px;"
                           onclick="cell_add('{$lowerCode}', columns_{$lowerCode}, {count(/sqroot/body/bodyContent/browse/children)}, this);">ADD</button>
                 </xsl:if>
-                <button id="cell_button_save" class="btn btn-orange-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="cell_save();">SAVE</button>
+                <button id="cell_button_save" class="btn btn-orange-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="js_save();">SAVE</button>
                 <button id="cell_button_cancel" class="btn btn-gray-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="cell_cancelSave()">CANCEL</button>
 
                 <xsl:if test="(
