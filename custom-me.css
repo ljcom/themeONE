@@ -1462,3 +1462,6 @@ svg:not(:root).svg-inline--fa {
     letter-spacing: -0.1em;
     line-height: 0.78em;
 }*/
+
+.grid-item { width: 25%; }
+.grid-item--width2 { width: 50%; }

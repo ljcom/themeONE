@@ -82,110 +82,6 @@ function saveThemeONE(code, guid, location, formId) {
     })
 }
 
-function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, allowForce, isDelegator, smode) {
-    var tx1 = '';
-    $('td#mandatory' + guid).each(function (i, td) {
-        tx1 += '<strong>' + $(td).data('title') + '</strong> ' + $(td).html() + ' &#183; ';
-    })
-
-
-    //var tx1 = $('td#mandatory' + guid).val();
-    var tx2 = '' + tx1 + ' ' + $('#summary' + guid).html();
-    var tx3 = '<b>WAIT FOR APPROVAL</b><br /><b>USER 3 </b>';
-    var divname = 'collapse' + guid;
-
-    if (isDelegator > 0) {
-        var x = '<div class="panel box browse-phone" style="border:0;margin:0">#d1#</div>';
-    } else {
-        isDelegator = 0;
-        var x = '<div class="panel box browse-phone" style="border:0;margin:0">#d1##d2#</div>';
-    }
-
-    x = x.replace('#d1#', '<div class="box-header with-border ellipsis">#h4#</div>');
-    x = x.replace('#h4#', '<h4 class="box-title">#a#</h4>');
-    x = x.replace('#a#', '<a data-toggle="collapse" data-parent="#accordionBrowse" href="#' + divname + '" style="color:black; text-transform: uppercase">#s##tx2#</a>');
-    x = x.replace('#s#', '');
-    x = x.replace('#tx2#', tx2);
-
-    x = x.replace('#d2#', '<div id="' + divname + '" class="panel-collapse collapse">#d21#</div>');
-    x = x.replace('#d21#', '<div class="box-body full-width-a" style="padding:0">#d212#</div>');
-
-    //x = x.replace('#d211#', '<div class="browse-status" style="background:gray; color:white; padding:10px; position:relative;">#tx3##a2#</div>');
-    //x = x.replace('#d211#', '<div class="browse-status" style="background:gray; color:white; padding:10px; position:relative;">#tx3#<a href="#a4#" title="edit" style="position:absolute; top:10px; right:10px; font-size:17px; color:white;">#ix#</a></div>');
-    //x = x.replace('#tx3#', tx3);
-    //x = x.replace('#a2#', '<a href="#" style="color:white; text-decoration:underline">see more</a><br /><br /><b>LAST COMMENT</b><br />WAIT FOR USER3<br /><br /><b>REQUESTED ON</b><br />ESRA MARTLIANTY (3 JAN 2016) <br /><a href="#a4#" title="edit" style="position:absolute; top:10px; right:10px; font-size:17px; color:white;">#ix#</a>');
-
-    //x = x.replace('#d211#', '<a href="#a4#" title="edit" style="position:absolute; top:10px; right:10px; font-size:17px; color:white;">#ix#</a>');
-
-    x = x.replace('#d212#', '<div style="text-align:center; display:block; background:gray; padding:10px 0;">#t#</div>');
-    x = x.replace('#t#', '<table style="width:100%">#tr#</table>');
-    x = x.replace('#tr#', '<tr><td>&#160;</td>#summary#<td>&#160;</td></tr><tr><td>&#160;</td>#td#<td>&#160;</td></tr>');
-
-    var sum = '';
-    $('div#approval-' + guid).each(function (i, div) {
-        sum += 'Level ' + $(div).data('level') + '<strong>' + $(div).data('username') + '</strong> ' + $(div).data('approvaldate') + ' ' + ' &#183; ';
-    })
-    x = x.replace('#summary#', sum);
-
-    bt = '<td width="1" style="padding:0 10px;">#bt#</td>#td#';
-    bt = bt.replace('#bt#', '<button type="button" class="btn btn-gray-a" style="background:#ccc; border:none;" onclick="#abt#">#btname#</button>');
-
-    var btname = "VIEW";
-    var fa = "eye";
-    if (((allowedit == 1 && (status == 0 || status == 300))
-        || (allowedit == 3 && (status < 400))
-        || (allowedit == 4 && (status < 500))) && isDelegator == 0)
-    {
-        btname = "EDIT";
-        fa = "pencil";
-    }
-
-    x = x.replace('#td#', bt.replace('#btname#', '<ix class="far '+fa+'"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));
-
-    
-
-    var btname = 'DELETE';
-    var btfn = 'delete';
-    if (((allowDelete == 1 && (status == 0 || status == 300))
-        || (allowDelete == 3 && (status < 400))
-        || (allowDelete == 4 && (status < 500))) && isDelegator == 0) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
-    }
-
-    var btname = 'WIPE';
-    var btfn = 'wipe';
-    if (status == 999 && allowWipe == 1 && isDelegator == 0) {
-        x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
-    }
-
-    if (smode=='T') {
-        var btname = 'ARCHIEVE';
-        var btfn = 'force';
-        if (status < 500 && status >= 400 && allowForce == 1 && isDelegator == 0) {
-            x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-archive"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
-        }
-
-        var btname = 'SUBMIT';
-        var btfn = 'execute';
-        if (status == 0 || status == 300) {
-            x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
-        }
-
-        var btname = 'APPROVE';
-        var btfn = 'execute';
-        if (isDelegator == 0 && status > 0 && status < 200) {
-            x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
-        }
-
-        var btname = 'REJECT';
-        var btfn = 'force';
-        if (isDelegator == 0 && status > 0 && status < 200) {
-            x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:rejectPopup(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
-        }
-    }
-    x = x.replace('#td#', '');
-    $(x).appendTo("#accordionBrowse");
-}
 
 function addpagenumber(pageid, currentpage, totalpages) {
     cp = parseInt(currentpage);
@@ -786,4 +682,285 @@ function btnWebcam(mode, idimg) {
 
     }
 
+}
+
+function switchBrowse(mode) {
+	if (mode == undefined) {
+		mode=getCookie('browseMode');
+		if (mode==undefined) mode=0;
+		
+		$('.listMode').removeClass('active');
+		$('.gridMode').removeClass('active');
+		
+		if (mode==0) {
+			$('.listMode').addClass('active');
+			$('.gridContent').css('display', 'none');
+			$('.listContent').css('display', 'block');
+		}
+		else {
+			$('.gridMode').addClass('active');
+			$('.listContent').css('display', 'none');
+			$('.gridContent').css('display', 'block');
+			
+			var $grid = $('.grid').isotope({
+			  // options
+			  itemSelector: '.grid-item',
+			  layoutMode: 'fitRows'
+			});
+			
+			// filter functions
+			var filterFns = {
+			  // show if number is greater than 50
+			  numberGreaterThan50: function() {
+				var number = $(this).find('.number').text();
+				return parseInt( number, 10 ) > 50;
+			  },
+			  // show if name ends with -ium
+			  ium: function() {
+				var name = $(this).find('.name').text();
+				return name.match( /ium$/ );
+			  }
+			};
+
+			// bind filter button click
+			$('.controls').on( 'click', 'button', function() {
+			  var filterValue = $( this ).attr('data-filter');
+			  // use filterFn if matches value
+			  filterValue = filterFns[ filterValue ] || filterValue;
+			  $grid.isotope({ filter: filterValue });
+			});
+			
+						
+			// change is-checked class on buttons
+			$('.button-group').each( function( i, buttonGroup ) {
+			  var $buttonGroup = $( buttonGroup );
+			  $buttonGroup.on( 'click', 'button', function() {
+				$buttonGroup.find('active').removeClass('active');
+				$( this ).addClass('active');
+			  });
+			});
+		}		
+	}
+	else {
+		loadContent(1);
+		setCookie('browseMode', mode, 0,0,15);
+	}
+}
+
+function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, allowForce, isDelegator, smode) {
+	mode=getCookie('browseMode');
+	var accountid='ecatalog';
+	if (mode==0) {
+		var tx1 = '';
+		$('td#mandatory' + guid).each(function (i, td) {
+			tx1 += '<strong>' + $(td).data('title') + '</strong> ' + $(td).html() + ' &#183; ';
+		})
+
+
+		//var tx1 = $('td#mandatory' + guid).val();
+		var tx2 = '' + tx1 + ' ' + $('#summary' + guid).html();
+		var tx3 = '<b>WAIT FOR APPROVAL</b><br /><b>USER 3 </b>';
+		var divname = 'collapse' + guid;
+
+		if (isDelegator > 0) {
+			var x = '<div class="panel box browse-phone" style="border:0;margin:0">#d1#</div>';
+		} else {
+			isDelegator = 0;
+			var x = '<div class="panel box browse-phone" style="border:0;margin:0">#d1##d2#</div>';
+		}
+	
+		x = x.replace('#d1#', '<div class="box-header with-border ellipsis">#h4#</div>');
+		x = x.replace('#h4#', '<h4 class="box-title">#a#</h4>');
+		x = x.replace('#a#', '<a data-toggle="collapse" data-parent="#accordionBrowse" href="#' + divname + '" style="color:black; text-transform: uppercase">#s##tx2#</a>');
+		x = x.replace('#s#', '');
+		x = x.replace('#tx2#', tx2);
+
+		x = x.replace('#d2#', '<div id="' + divname + '" class="panel-collapse collapse">#d21#</div>');
+		x = x.replace('#d21#', '<div class="box-body full-width-a" style="padding:0">#d212#</div>');
+
+		//x = x.replace('#d211#', '<div class="browse-status" style="background:gray; color:white; padding:10px; position:relative;">#tx3##a2#</div>');
+		//x = x.replace('#d211#', '<div class="browse-status" style="background:gray; color:white; padding:10px; position:relative;">#tx3#<a href="#a4#" title="edit" style="position:absolute; top:10px; right:10px; font-size:17px; color:white;">#ix#</a></div>');
+		//x = x.replace('#tx3#', tx3);
+		//x = x.replace('#a2#', '<a href="#" style="color:white; text-decoration:underline">see more</a><br /><br /><b>LAST COMMENT</b><br />WAIT FOR USER3<br /><br /><b>REQUESTED ON</b><br />ESRA MARTLIANTY (3 JAN 2016) <br /><a href="#a4#" title="edit" style="position:absolute; top:10px; right:10px; font-size:17px; color:white;">#ix#</a>');
+
+		//x = x.replace('#d211#', '<a href="#a4#" title="edit" style="position:absolute; top:10px; right:10px; font-size:17px; color:white;">#ix#</a>');
+
+		x = x.replace('#d212#', '<div style="text-align:center; display:block; background:gray; padding:10px 0;">#t#</div>');
+		x = x.replace('#t#', '<table style="width:100%">#tr#</table>');
+		x = x.replace('#tr#', '<tr><td>&#160;</td>#summary#<td>&#160;</td></tr><tr><td>&#160;</td>#td#<td>&#160;</td></tr>');
+
+		var sum = '';
+		$('div#approval-' + guid).each(function (i, div) {
+			sum += 'Level ' + $(div).data('level') + '<strong>' + $(div).data('username') + '</strong> ' + $(div).data('approvaldate') + ' ' + ' &#183; ';
+		})
+		x = x.replace('#summary#', sum);
+
+		bt = '<td width="1" style="padding:0 10px;">#bt#</td>#td#';
+		bt = bt.replace('#bt#', '<button type="button" class="btn btn-gray-a" style="background:#ccc; border:none;" onclick="#abt#">#btname#</button>');
+
+		var btname = "VIEW";
+		var fa = "eye";
+		if (((allowedit == 1 && (status == 0 || status == 300))
+			|| (allowedit == 3 && (status < 400))
+			|| (allowedit == 4 && (status < 500))) && isDelegator == 0)
+		{
+			btname = "EDIT";
+			fa = "pencil";
+		}
+
+		x = x.replace('#td#', bt.replace('#btname#', '<ix class="far '+fa+'"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));
+
+		
+
+		var btname = 'DELETE';
+		var btfn = 'delete';
+		if (((allowDelete == 1 && (status == 0 || status == 300))
+			|| (allowDelete == 3 && (status < 400))
+			|| (allowDelete == 4 && (status < 500))) && isDelegator == 0) {
+			x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+		}
+
+		var btname = 'WIPE';
+		var btfn = 'wipe';
+		if (status == 999 && allowWipe == 1 && isDelegator == 0) {
+			x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+		}
+
+		if (smode=='T') {
+			var btname = 'ARCHIEVE';
+			var btfn = 'force';
+			if (status < 500 && status >= 400 && allowForce == 1 && isDelegator == 0) {
+				x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-archive"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+			}
+
+			var btname = 'SUBMIT';
+			var btfn = 'execute';
+			if (status == 0 || status == 300) {
+				x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+			}
+
+			var btname = 'APPROVE';
+			var btfn = 'execute';
+			if (isDelegator == 0 && status > 0 && status < 200) {
+				x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+			}
+
+			var btname = 'REJECT';
+			var btfn = 'force';
+			if (isDelegator == 0 && status > 0 && status < 200) {
+				x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:rejectPopup(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+			}
+		}
+		x = x.replace('#td#', '');
+		$(x).appendTo("#accordionBrowse");
+	}
+	else {
+		var x = '<div class="grid-item cat2 cart3" style="margin: 5px; border: 1px solid #ccc; float: left; width:360px"><a target="_blank" href="ophcontent/documents/'+accountid+'/#d3#"><img src="ophcontent/documents/'+accountid+'/#d3#" style="width: 100%; height: auto;" width=400 height=400 alt="#d1#"></a><h4 class="name">#d1#</h4><p class="symbol">#d2#</p><p class="number">#d4#</p></div>';		
+		
+		$('td#mandatory' + guid).each(function (i, td) {
+			if (i==0) x=x.split('#d1#').join($(td).html());
+			if (i==1) x=x.split('#d2#').join($(td).html());			
+			if (i==2) x=x.split('#d3#').join($(td).html());
+			if (i>=3) x=x.split('#d4#').join('<strong>'+$(td).data('title')+'</strong>: '+$(td).html()+'<p class="number">#d4#</p>');
+		})
+		x=x.split('<p class="number">#d4#</p>').join('');
+
+		//if (isDelegator > 0) {
+		//	var x = '<div class="grid-item cat2 cart3" ><a target="_blank" href="#d3#""><img src="#d3#" alt="#d1#" width="600" height="400"></a><h3 class="name">#d1#</h3><p class="symbol">#d2#</p><p class="number">#d3#</p><p class="weight">200.59</p></div>';
+		//} else {
+		//	isDelegator = 0;
+		//	var x = '<div class="grid-item cat2 cart3" style="background:url(\'ophcontent/themes/themeone/images/oph4_logo.png\') no-repeat center #eee;"><h3 class="name">#d1#</h3><p class="symbol">#d2#</p><p class="number">#d3#</p><p class="weight">200.59</p></div>';
+		//}		
+		
+		
+		//x = x.replace('#d4#', tx4);
+		
+		/*
+		x = x.replace('#h4#', '<h4 class="box-title">#a#</h4>');
+		x = x.replace('#a#', '<a data-toggle="collapse" data-parent="#accordionBrowse" href="#' + divname + '" style="color:black; text-transform: uppercase">#s##tx2#</a>');
+		x = x.replace('#s#', '');
+		x = x.replace('#tx2#', tx2);
+
+		x = x.replace('#d2#', '<div id="' + divname + '" class="panel-collapse collapse">#d21#</div>');
+		x = x.replace('#d21#', '<div class="box-body full-width-a" style="padding:0">#d212#</div>');
+
+		//x = x.replace('#d211#', '<div class="browse-status" style="background:gray; color:white; padding:10px; position:relative;">#tx3##a2#</div>');
+		//x = x.replace('#d211#', '<div class="browse-status" style="background:gray; color:white; padding:10px; position:relative;">#tx3#<a href="#a4#" title="edit" style="position:absolute; top:10px; right:10px; font-size:17px; color:white;">#ix#</a></div>');
+		//x = x.replace('#tx3#', tx3);
+		//x = x.replace('#a2#', '<a href="#" style="color:white; text-decoration:underline">see more</a><br /><br /><b>LAST COMMENT</b><br />WAIT FOR USER3<br /><br /><b>REQUESTED ON</b><br />ESRA MARTLIANTY (3 JAN 2016) <br /><a href="#a4#" title="edit" style="position:absolute; top:10px; right:10px; font-size:17px; color:white;">#ix#</a>');
+
+		//x = x.replace('#d211#', '<a href="#a4#" title="edit" style="position:absolute; top:10px; right:10px; font-size:17px; color:white;">#ix#</a>');
+
+		x = x.replace('#d212#', '<div style="text-align:center; display:block; background:gray; padding:10px 0;">#t#</div>');
+		x = x.replace('#t#', '<table style="width:100%">#tr#</table>');
+		x = x.replace('#tr#', '<tr><td>&#160;</td>#summary#<td>&#160;</td></tr><tr><td>&#160;</td>#td#<td>&#160;</td></tr>');
+
+		var sum = '';
+		$('div#approval-' + guid).each(function (i, div) {
+			sum += 'Level ' + $(div).data('level') + '<strong>' + $(div).data('username') + '</strong> ' + $(div).data('approvaldate') + ' ' + ' &#183; ';
+		})
+		x = x.replace('#summary#', sum);
+
+		bt = '<td width="1" style="padding:0 10px;">#bt#</td>#td#';
+		bt = bt.replace('#bt#', '<button type="button" class="btn btn-gray-a" style="background:#ccc; border:none;" onclick="#abt#">#btname#</button>');
+
+		var btname = "VIEW";
+		var fa = "eye";
+		if (((allowedit == 1 && (status == 0 || status == 300))
+			|| (allowedit == 3 && (status < 400))
+			|| (allowedit == 4 && (status < 500))) && isDelegator == 0)
+		{
+			btname = "EDIT";
+			fa = "pencil";
+		}
+
+		x = x.replace('#td#', bt.replace('#btname#', '<ix class="far '+fa+'"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'formView\', 1, 10)'));
+
+		
+
+		var btname = 'DELETE';
+		var btfn = 'delete';
+		if (((allowDelete == 1 && (status == 0 || status == 300))
+			|| (allowDelete == 3 && (status < 400))
+			|| (allowDelete == 4 && (status < 500))) && isDelegator == 0) {
+			x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+		}
+
+		var btname = 'WIPE';
+		var btfn = 'wipe';
+		if (status == 999 && allowWipe == 1 && isDelegator == 0) {
+			x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-trash"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+		}
+
+		if (smode=='T') {
+			var btname = 'ARCHIEVE';
+			var btfn = 'force';
+			if (status < 500 && status >= 400 && allowForce == 1 && isDelegator == 0) {
+				x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-archive"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+			}
+
+			var btname = 'SUBMIT';
+			var btfn = 'execute';
+			if (status == 0 || status == 300) {
+				x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+			}
+
+			var btname = 'APPROVE';
+			var btfn = 'execute';
+			if (isDelegator == 0 && status > 0 && status < 200) {
+				x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:btn_function(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+			}
+
+			var btname = 'REJECT';
+			var btfn = 'force';
+			if (isDelegator == 0 && status > 0 && status < 200) {
+				x = x.replace('#td#', bt.replace('#btname#', '<ix class="far fa-check"></ix> ' + btname).replace('#abt#', 'javascript:rejectPopup(\'' + code + '\', \'' + guid + '\', \'' + btfn + '\', 1, 10)'));
+			}
+		}
+		x = x.replace('#td#', '');
+		*/
+		
+		$(x).appendTo(".grid");
+	}
+	
 }

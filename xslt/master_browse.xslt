@@ -74,6 +74,8 @@
         buttons=<xsl:value-of select="sqroot/body/bodyContent/browse/info/buttons"/>;
         loadExtraButton(buttons, 'browse-action-button');
       </xsl:if>
+	  
+  	  
     </script>
 
     <!--Delegator Action Modal-->
@@ -200,6 +202,13 @@
             </div>
             <div class="col-md-4 text-right" style="padding-bottom:10px">
               <div class="text-right">
+			    <button class="btn btn-default listMode" onclick="javascript:switchBrowse(0)">
+                  <ix class="fal fa-list"></ix>
+                </button>
+                <button class="btn btn-default gridMode" onclick="javascript:switchBrowse(1)">
+                  <ix class="fal fa-grip-horizontal"></ix>
+                </button>
+
                 <xsl:if test="sqroot/body/bodyContent/browse/info/permission/allowExport = 1">
                   <button id="btnExport" class="btn btn-success" data-clicked="0" onclick="window.location='?code={sqroot/header/info/code/id}&amp;mode=export'">
                     <strong>EXPORT DATA</strong>
@@ -310,10 +319,9 @@
           </xsl:if>
 
 
-          <!-- browse for pc/laptop -->
-          <div class="row visible-phone">
+          <!-- browse for pc/laptop list -->
+          <div class="row visible-phone listContent">
             <div class="col-md-12">
-              <div class="box">
                 <table id="tblBrowse" class="table table-condensed table-stripped dataTable">
                   <thead id="browseHead">
                     <tr>
@@ -413,18 +421,12 @@
                     </xsl:choose>
                   </tbody>
                 </table>
-                <xsl:if test="sqroot/body/bodyContent/browse/info/nbPages > 1">
-                  <div class="box-footer clearfix">
-                    <ul class="pagination pagination-sm no-margin pull-right" id="pagenumbers"></ul>
-                  </div>
-                </xsl:if>
-              </div>
             </div>
           </div>
-          <!-- browse for pc/laptop -->
+          <!-- browse for pc/laptop list -->
 
           <!-- browse for phone/tablet max width 768 -->
-          <div class="row displayblock-phone">
+          <div class="row displayblock-phone listContent">
             <div class="col-md-12 full-width-a" id="accordionBrowse">
                     <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
                     <xsl:if test="sqroot/body/bodyContent/browse/info/permission/allowAccess/.=0">
@@ -433,11 +435,29 @@
                       </div>
                     </xsl:if>
               <!-- /.box -->
+			  &#160;
             </div>
             <!-- /.col -->
           </div>
           <!-- browse for phone/tablet max width 768 -->
-
+		  
+		  <!--browse grid-->
+		  <div class="controls button-group gridContent">
+			<button class="btn" data-filter="*">all</button>
+			<button class="btn" data-filter=".cat1">cat1</button>
+			<button class="btn" data-filter=".cat2">cat2</button>
+			<button class="btn" data-filter=".cat3">cat3</button>
+		  </div>
+		  <div class="grid gridContent">&#160;
+		  </div>
+		  <!--browse grid-->
+		  <xsl:if test="sqroot/body/bodyContent/browse/info/nbPages > 1">
+			<div class="row visible-phone gridContent">
+				<div class="col-md-12">
+					<ul class="pagination pagination-sm no-margin pull-right" id="pagenumbers"></ul>
+				</div>
+			</div>	
+		</xsl:if>
         </xsl:when>
         <xsl:otherwise>
           <div class="callout callout-danger">
@@ -447,6 +467,9 @@
         </xsl:otherwise>
       </xsl:choose>
     </section>
+	<script>
+		switchBrowse();
+	</script>
 
   </xsl:template>
 
