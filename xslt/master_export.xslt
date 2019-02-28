@@ -39,7 +39,7 @@
     
     <section class="content-header visible-phone">
       <h1>
-        Export Data "<xsl:value-of select="$desc"/>"
+        Export/Import"<xsl:value-of select="$desc"/>"
       </h1>
       <ol class="breadcrumb">
         <li>
@@ -56,7 +56,7 @@
           </li>
         <li>
           <u>
-            Export Data "<xsl:value-of select="$desc"/>"
+            Export/Import"<xsl:value-of select="$desc"/>"
           </u>
         </li>
       </ol>
@@ -78,7 +78,7 @@
                     <a href="#tabDownload" data-toggle="tab">Download Template</a>
                   </li>
                   <li>
-                    <a href="#tabExport" data-toggle="tab" >Export Template</a>
+                    <a href="#tabExport" data-toggle="tab" >Upload Data</a>
                   </li>
                 </ul>              
             
@@ -115,7 +115,7 @@
                     <div class="row">
                       <div class="col-md-12">
                         <button id="btn_exp" class="btn btn-orange-a" onclick="javascript:$('#import_hidden').click();" data-loading-text="Exporting File...(Please wait)" autocomplete="off">
-                          Export Template Data
+                          Upload Data
                         </button>&#160;
                         <input id ="import_hidden" name="import_hidden" type="file" style="visibility: hidden; width: 0; height: 0;" multiple="" />
 
@@ -144,7 +144,7 @@
 				<button id="btn_impdata" class="btn btn-orange-a" onclick="downloadModule('{$code}', {$exportMode}, 1);">Download Data</button>&#160;
                 <button id="btn_imp" class="btn btn-orange-a" onclick="downloadModule('{$code}', {$exportMode}, 0);">Download Template</button>&#160;
                 <button id="btn_exp" class="btn btn-orange-a" onclick="javascript:$('#import_hidden').click();" data-loading-text="Exporting File...(Please wait)" autocomplete="off">
-                  Export Template Data
+                  Upload Data
                 </button>&#160;
                 <input id ="import_hidden" name="import_hidden" type="file" style="visibility: hidden; width: 0; height: 0;" multiple="" />
               </div>
@@ -235,7 +235,7 @@
       <div class="col-md-12">
         <div class="box" id="exportStatus">
           <div class="box-header">
-            <h3 class="box-title">Export Status</h3>
+            <h3 class="box-title">Upload Status</h3>
           </div>
           <div class="box-body">
             <table class="table table-bordered">

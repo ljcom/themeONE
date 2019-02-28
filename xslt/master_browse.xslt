@@ -209,11 +209,11 @@
                 </button-->
 
                   <xsl:if test="sqroot/body/bodyContent/browse/info/permission/allowExport = 1">
-                    <button id="btnImport" class="btn btn-success" data-clicked="0" onclick="genReport('{sqroot/header/info/code/id}','xls')" style="margin-right:5px;">
+                    <!--button id="btnImport" class="btn btn-success" data-clicked="0" onclick="genReport('{sqroot/header/info/code/id}','xls')" style="margin-right:5px;">
                       <strong>IMPORT DATA</strong>
-                    </button>
+                    </button-->
                     <button id="btnExport" class="btn btn-success" data-clicked="0" onclick="window.location='?code={sqroot/header/info/code/id}&amp;mode=export'" style="margin-right:5px;">
-                      <strong>EXPORT DATA</strong>
+                      <strong>EXPORT/IMPORT</strong>
                     </button>
                   </xsl:if>
                   <button id="newdoc" class="btn btn-warning" onclick="window.location='?code={sqroot/header/info/code/id}&amp;guid=00000000-0000-0000-0000-000000000000'">
