@@ -71,6 +71,9 @@
               <div id="exportNavTab" class="nav-tabs-custom">
                 <!--Menu Tab-->
                 <ul class="nav nav-tabs">
+				<li class="active">
+                    <a href="#tabDownloadData" data-toggle="tab">Download Data</a>
+                  </li>
                   <li class="active">
                     <a href="#tabDownload" data-toggle="tab">Download Template</a>
                   </li>
@@ -80,11 +83,21 @@
                 </ul>              
             
                 <div class="tab-content">
+				<!--Download data-->
+                  <div class="active tab-pane" id="tabDownloadData">
+                    <div class="row">
+                      <div class="col-md-12">
+					  
+                        <button id="btn_impdata" class="btn btn-orange-a" onclick="downloadModule('{$code}', {$exportMode}, 1);">Download Data</button>&#160;
+                      </div>
+                    </div>
+                  </div>  
                   <!--Download-->
                   <div class="active tab-pane" id="tabDownload">
                     <div class="row">
                       <div class="col-md-12">
-                        <button id="btn_imp" class="btn btn-orange-a" onclick="downloadModule('{$code}', {$exportMode});">Download Template</button>&#160;
+					  
+                        <button id="btn_imp" class="btn btn-orange-a" onclick="downloadModule('{$code}', {$exportMode}, 0);">Download Template</button>&#160;
                       </div>
                     </div>
                   </div>              
@@ -128,7 +141,8 @@
           <div class="row">
             <div class="col-md-12" style="margin-bottom:30px;margin-top:10px">
               <div style="text-align:left">
-                <button id="btn_imp" class="btn btn-orange-a" onclick="downloadModule('{$code}', {$exportMode});">Download Template</button>&#160;
+				<button id="btn_impdata" class="btn btn-orange-a" onclick="downloadModule('{$code}', {$exportMode}, 1);">Download Data</button>&#160;
+                <button id="btn_imp" class="btn btn-orange-a" onclick="downloadModule('{$code}', {$exportMode}, 0);">Download Template</button>&#160;
                 <button id="btn_exp" class="btn btn-orange-a" onclick="javascript:$('#import_hidden').click();" data-loading-text="Exporting File...(Please wait)" autocomplete="off">
                   Export Template Data
                 </button>&#160;

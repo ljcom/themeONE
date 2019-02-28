@@ -195,37 +195,38 @@
 
           <div class="row visible-phone">
             <!--Status and Button-->
-            <div class="col-md-4 btn-group visible-phone">
+            <div class="col-md-12 btn-group visible-phone">
               <xsl:if test="$settingMode='T'">
                 <xsl:apply-templates select="sqroot/body/bodyContent/browse/info/states/state/substate" />
               </xsl:if>&#160;
-            </div>
-            <div class="col-md-8 text-right" style="padding-bottom:10px">
-              <div class="text-right">
-			    <!--button class="btn btn-default listMode" onclick="javascript:switchBrowse(0)">
+              <div style="padding-bottom:10px;float:right">
+                
+                  <!--button class="btn btn-default listMode" onclick="javascript:switchBrowse(0)">
                   <ix class="fal fa-list"></ix>
                 </button>
                 <button class="btn btn-default gridMode" onclick="javascript:switchBrowse(1)">
                   <ix class="fal fa-grip-horizontal"></ix>
                 </button-->
 
-                <xsl:if test="sqroot/body/bodyContent/browse/info/permission/allowExport = 1">
-                  <button id="btnImport" class="btn btn-success" data-clicked="0" onclick="genReport('{sqroot/header/info/code/id}','xls')">
-                    <strong>IMPORT DATA</strong>
-                  </button>
-                  <button id="btnExport" class="btn btn-success" data-clicked="0" onclick="window.location='?code={sqroot/header/info/code/id}&amp;mode=export'">
-                    <strong>EXPORT DATA</strong>
-                  </button>
-                </xsl:if>
-                <button id="newdoc" class="btn btn-warning" onclick="window.location='?code={sqroot/header/info/code/id}&amp;guid=00000000-0000-0000-0000-000000000000'">
-                  <xsl:if test="sqroot/body/bodyContent/browse/info/permission/allowAdd = 0">
-                    <xsl:attribute name="disabled">disabled</xsl:attribute>
+                  <xsl:if test="sqroot/body/bodyContent/browse/info/permission/allowExport = 1">
+                    <button id="btnImport" class="btn btn-success" data-clicked="0" onclick="genReport('{sqroot/header/info/code/id}','xls')" style="margin-right:5px;">
+                      <strong>IMPORT DATA</strong>
+                    </button>
+                    <button id="btnExport" class="btn btn-success" data-clicked="0" onclick="window.location='?code={sqroot/header/info/code/id}&amp;mode=export'" style="margin-right:5px;">
+                      <strong>EXPORT DATA</strong>
+                    </button>
                   </xsl:if>
-                  <strong>
-                    <xsl:value-of select ="$addCaption"/>
-                  </strong>
-                </button>
+                  <button id="newdoc" class="btn btn-warning" onclick="window.location='?code={sqroot/header/info/code/id}&amp;guid=00000000-0000-0000-0000-000000000000'">
+                    <xsl:if test="sqroot/body/bodyContent/browse/info/permission/allowAdd = 0">
+                      <xsl:attribute name="disabled">disabled</xsl:attribute>
+                    </xsl:if>
+                    <strong>
+                      <xsl:value-of select ="$addCaption"/>
+                    </strong>
+                  </button>
+                
               </div>
+
             </div>
 
           </div>
