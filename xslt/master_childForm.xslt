@@ -16,7 +16,7 @@
   <xsl:variable name="settingMode" select="/sqroot/body/bodyContent/form/info/settingMode/." />
   <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/parentState/."/>
   <xsl:variable name="isRequester" select="/sqroot/body/bodyContent/form/info/document/isRequester"/>
-  <xsl:variable name="cid" select="/sqroot/body/bodyContent/form/info/GUID/."/>
+  <xsl:variable name="cid" select="translate(/sqroot/body/bodyContent/form/info/GUID/., 'ABCDEF', 'abcdef')"/>
 
   <xsl:template match="/">
     <!-- Content Header (Page header) -->

@@ -155,15 +155,15 @@
 
   <xsl:template match="sqroot/body/bodyContent/browse/content/row">
 
-    <tr id="tr1_{$lowerCode}{@GUID}" data-parent="#{$lowerCode}" data-target="#{$lowerCode}{@GUID}" data-code="{$lowerCode}" data-guid="{@GUID}"
+    <tr id="tr1_{$lowerCode}{translate(@GUID,'ABCDEF','abcdef')}" data-parent="#{$lowerCode}" data-target="#{$lowerCode}{translate(@GUID,'ABCDEF','abcdef')}" data-code="{$lowerCode}" data-guid="{translate(@GUID,'ABCDEF','abcdef')}"
         class="accordion-toggle cell"
         onmouseover="this.bgColor='lavender';this.style.cursor='pointer';" onmouseout="this.bgColor='white'">
       <td class="cell-recordSelector"></td>
       <xsl:apply-templates select="fields/field"/>
     </tr>
-    <tr id="tr2_{$lowerCode}{@GUID}">
+    <tr id="tr2_{$lowerCode}{translate(@GUID,'ABCDEF','abcdef')}">
       <td colspan="7" style="padding:0;">
-        <div class="browse-data accordian-body collapse" id="{$lowerCode}{@GUID}" aria-expanded="false">
+        <div class="browse-data accordian-body collapse" id="{$lowerCode}{translate(@GUID,'ABCDEF','abcdef')}" aria-expanded="false">
           Please Wait...
         </div>
       </td>
@@ -206,7 +206,7 @@
         </td>
       </xsl:when>
       <xsl:otherwise>
-        <td onclick="showChildForm('{$lowerCode}','{../../@GUID}', '{$lowerCode}');">
+        <td onclick="showChildForm('{$lowerCode}','{translate(../../@GUID, 'ABCDEF', 'abcdef')}', '{$lowerCode}');">
           <xsl:value-of select="$tbContent"/>&#160;
         </td>
       </xsl:otherwise>
