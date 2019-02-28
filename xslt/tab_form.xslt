@@ -7,6 +7,8 @@
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
   <xsl:decimal-format name="comma-dec" decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
+  <xsl:variable name="lowerCode"><xsl:value-of select="translate(/sqroot/body/bodyContent/form/info/code, $uppercase, $smallcase)"/></xsl:variable>
+  
   <xsl:variable name="allowAdd" select="/sqroot/body/bodyContent/form/info/permission/allowAdd" />
   <xsl:variable name="allowEdit" select="/sqroot/body/bodyContent/form/info/permission/allowEdit" />
   <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/form/info/permission/allowAccess" />
@@ -109,13 +111,13 @@
       //loadScript('ophcontent/cdn/ophelements/gps/gps.js');
       
       <!--/xsl:if-->
-	function js_save(location) {
+	function <xsl:value-of select="$lowerCode" />_save(location) {
 		saveThemeONE('<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/." />','<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/." />', location, '', 
-		(function(d) {js_saveafter(d)}), (function(d) {js_savebefore(d)}));
+		(function(d) {<xsl:value-of select="$lowerCode" />_saveafter(d)}), (function(d) {<xsl:value-of select="$lowerCode" />_savebefore(d)}));
 	}
 	
-	function js_saveafter(d) {}
-	function js_savebefore(d) {}
+	function <xsl:value-of select="$lowerCode" />_saveafter(d) {}
+	function <xsl:value-of select="$lowerCode" />_savebefore(d) {}
 	  
     </script>
 
@@ -585,7 +587,7 @@
 						or ((/sqroot/body/bodyContent/form/info/state/status/.) = 300))
 						or ((/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 400 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 499)">
                   <button id="button_save_{@pageNo}" class="btn btn-orange-a action-save" 
-				  onclick="js_save(20)">SAVE</button>&#160;
+				  onclick="{$lowerCode}_save(20)">SAVE</button>&#160;
                   <button id="button_cancel_{@pageNo}" class="btn btn-gray-a action-cancel" 
 				  onclick="saveCancel()">CANCEL</button>&#160;
                 </xsl:when>
@@ -605,7 +607,7 @@
 				or ((/sqroot/body/bodyContent/form/info/state/status/.) = 300)
 				or ((/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 400 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 499)">
                   <button id="button_save2" class="btn btn-orange-a btn-block action-save" 
-				  onclick="js_save(20);">SAVE</button>
+				  onclick="{$lowerCode}_save(20);">SAVE</button>
                   <button id="button_cancel2" class="btn btn-gray-a btn-block action-cancel" 
 				  onclick="saveCancel()">CANCEL</button>
                 </xsl:when>
