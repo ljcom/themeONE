@@ -7,6 +7,7 @@
   <xsl:variable name="uppercase" select="ABCDEFGHIJKLMNOPQRSTUVWXYZ" />
   <xsl:decimal-format name="comma-dec" decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
+  <xsl:variable name="lowerCode"><xsl:value-of select="translate(/sqroot/body/bodyContent/browse/info/code, $uppercase, $smallcase)"/></xsl:variable>
   <xsl:variable name="allowAdd" select="/sqroot/body/bodyContent/form/info/permission/allowAdd" />
   <xsl:variable name="allowEdit" select="/sqroot/body/bodyContent/form/info/permission/allowEdit" />
   <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/form/info/permission/allowAccess" />
@@ -18,7 +19,8 @@
   <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/status/."/>
   <xsl:variable name="isRequester" select="/sqroot/body/bodyContent/form/info/document/isRequester"/>
   <xsl:variable name="isApprover" select="/sqroot/body/bodyContent/form/info/document/isApprover"/>
-  <xsl:variable name="cid" select="/sqroot/body/bodyContent/form/info/GUID/."/>
+  <xsl:variable name="cid" select="translate(/sqroot/body/bodyContent/form/info/GUID/., 'ABCDEF', 'abcdef')"/>
+ 
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
     <script>
