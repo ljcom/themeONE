@@ -41,12 +41,12 @@
       var <xsl:value-of select="$lowerCode"/>_parent='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/filter"/>';
 
 
-      function js_save() {
-      cell_save((function(d) {js_saveafter(d)}), (function(d) {js_savebefore(d)}));
+      function <xsl:value-of select="$lowerCode" />_save() {
+      cell_save((function(d) {<xsl:value-of select="$lowerCode" />_saveafter(d)}), (function(d) {<xsl:value-of select="$lowerCode" />_savebefore(d)}));
       }
 
-      function js_saveafter(d) {}
-      function js_savebefore(d) {}
+      function <xsl:value-of select="$lowerCode" />_saveafter(d) {}
+      function <xsl:value-of select="$lowerCode" />_savebefore(d) {}
     </script>
     <input type="hidden" name ="{$lowerCode}requiredname"/>
     <input type="hidden" name ="{$lowerCode}requiredtblvalue"/>
@@ -111,7 +111,7 @@
                   <button id="cell_button_add" class="btn btn-orange-a" style="margin-right:5px;margin-bottom:5px;"
                           onclick="cell_add('{$lowerCode}', columns_{$lowerCode}, {count(/sqroot/body/bodyContent/browse/children)}, this);">ADD</button>
                 </xsl:if>
-                <button id="cell_button_save" class="btn btn-orange-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="js_save();">SAVE</button>
+                <button id="cell_button_save" class="btn btn-orange-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="{$lowerCode}_save();">SAVE</button>
                 <button id="cell_button_cancel" class="btn btn-gray-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="cell_cancelSave()">CANCEL</button>
 
                 <xsl:if test="(
