@@ -14,24 +14,28 @@
   <xsl:template match="/">
     <script>
       var code='<xsl:value-of select="$lowerCode"/>';
-      cell_init(code);
+		cell_init(code);
 
-      upload_init(code, function(data) {
-      var err=''; s=0;
-      $(data).find("sqroot").find("message").each(function (i) {
-      var item=$(data).find("sqroot").find("message").eq(i);
-      if ($(item).text()!='') err += $(item).text()+' ';
-      })
+		upload_init(code, function(data) {
+		var err=''; s=0;
+		//$(data).find("sqroot").find("messages").find("message").each(function (i) {
+		var item=$(data).find("sqroot").find("messages").find("message");
+		if ($(item).text()!='') err = $(item).text()+' ';
+		//})
 
-      $(data).find("sqroot").find("guid").each(function (i) {
-      var sn=$(data).find("sqroot").find("guid").eq(i);
-      if (sn!='') s++;
-      })
-      var msg='Upload Status: Success: '+s+(err==''?'':' Error: '+err);
-      showMessage(msg);
-      //setTimeout(function() {location.reload()}, 5000);
+		//$(data).find("sqroot").find("guid").each(function (i) {
+		//var sn=$(data).find("sqroot").find("guid").eq(i);
+		//if (sn!='') s++;
+		//})
+		var msg='';
 
-      var code='<xsl:value-of select="$lowerCode"/>';
+		if (err!='') msg='Upload Status: '+(err=='' ? '' : ' Error: '+err);
+		else msg='Update Status: Upload Successfully';
+
+		showMessage(msg);
+		//setTimeout(function() {location.reload()}, 5000);
+
+		var code='<xsl:value-of select="$lowerCode"/>';
       loadChild(code);
 
       });
@@ -41,13 +45,23 @@
       var <xsl:value-of select="$lowerCode"/>_parent='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/filter"/>';
 
 
-      function js_save() {
-      cell_save((function(d) {js_saveafter(d)}), (function(d) {js_savebefore(d)}));
-      }
+		function <xsl:value-of select="$lowerCode" />_save(t) {
+		//$(t).data('loading-text', $('#cell_button_add').text());
+		$(t).parent().children('button#cell_button_add').button('loading');
+		$(t).parent().children('button#cell_button_save').button('loading');
+		$(t).parent().children('button#cell_button_cancel').button('loading');
 
-      function js_saveafter(d) {}
-      function js_savebefore(d) {}
-    </script>
+
+		cell_save((function(d) {
+
+		<xsl:value-of select="$lowerCode" />_saveafter(d);
+
+		}), (function(d) {<xsl:value-of select="$lowerCode" />_savebefore(d)}));
+		}
+
+		function <xsl:value-of select="$lowerCode" />_saveafter(d) {}
+		function <xsl:value-of select="$lowerCode" />_savebefore(d) {}
+	</script>
     <input type="hidden" name ="{$lowerCode}requiredname"/>
     <input type="hidden" name ="{$lowerCode}requiredtblvalue"/>
     <xsl:apply-templates select="sqroot/body/bodyContent/browse/children" />
@@ -111,8 +125,8 @@
                   <button id="cell_button_add" class="btn btn-orange-a" style="margin-right:5px;margin-bottom:5px;"
                           onclick="cell_add('{$lowerCode}', columns_{$lowerCode}, {count(/sqroot/body/bodyContent/browse/children)}, this);">ADD</button>
                 </xsl:if>
-                <button id="cell_button_save" class="btn btn-orange-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="js_save();">SAVE</button>
-                <button id="cell_button_cancel" class="btn btn-gray-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="cell_cancelSave()">CANCEL</button>
+                <button id="cell_button_save" class="btn btn-orange-a" data-loading-text="SAVE (please wait...)" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="{$lowerCode}_save(this);">SAVE</button>
+                <button id="cell_button_cancel" class="btn btn-gray-a" data-loading-text="CANCEL" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="cell_cancelSave()">CANCEL</button>
 
                 <xsl:if test="(
                           ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and ($parentState &lt; 100 or not ($parentState)))
@@ -124,20 +138,20 @@
                 <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;=1 and (/sqroot/body/bodyContent/browse/info/permission/allowExport/.)=1" >
                   <button id="cell_button_download" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;"
                           onclick="downloadChild('{$lowerCode}', '')">DOWNLOAD</button>
-                  <button id="cell_button_upload" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;" onclick="javascript:$('#import_hidden').click();">UPLOAD...</button>
-                  <input id ="import_hidden" name="import_hidden" type="file" data-code="{$lowerCode}" style="visibility: hidden; width: 0; height: 0;" multiple="" />
+                  <button id="cell_button_upload" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;" onclick="javascript:$('#import_hidden_{$lowerCode}').click();">UPLOAD...</button>
+                  <input id ="import_hidden_{$lowerCode}" name="import_hidden_{$lowerCode}" type="file" data-code="{$lowerCode}" style="visibility: hidden; width: 0; height: 0;" multiple="" />
                 </xsl:if>
-                <xsl:if test="/sqroot/body/bodyContent/browse/info/nbPages > 1">
                   <ul class="pagination pagination-sm no-margin pull-right" id="childPageNo"></ul>
                   <script>
                     var code='<xsl:value-of select ="$lowerCode"/>';
                     var pageNo = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/pageNo"/>';
                     var nbPages = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/nbPages"/>';
-                    childPageNo('childPageNo', code, pageNo, nbPages);
-                    $('#searchBox_'+code).css('visibility', 'visible');
-                  </script>
-                </xsl:if>
-              </div>
+					  <xsl:if test="/sqroot/body/bodyContent/browse/info/nbPages > 1">
+						  childPageNo('childPageNo', code, pageNo, nbPages);
+					  </xsl:if>
+					  $('#searchBox_'+code).css('visibility', 'visible');
+				  </script>
+			  </div>
             </div>
           </div>
         </div>
