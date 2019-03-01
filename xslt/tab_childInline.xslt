@@ -213,8 +213,8 @@
 
   <xsl:template match="sqroot/body/bodyContent/browse/content/row">
 
-    <tr id="tr1_{$lowerCode}{@GUID}" data-parent="#{$lowerCode}" data-target="#{$lowerCode}{@GUID}"
-        data-code="{$lowerCode}" data-guid="{@GUID}"
+    <tr id="tr1_{$lowerCode}{translate(@GUID, 'ABCDEF', 'abcdef')}" data-parent="#{$lowerCode}" data-target="#{$lowerCode}{translate(@GUID, 'ABCDEF', 'abcdef')}"
+        data-code="{$lowerCode}" data-guid="{translate(@GUID, 'ABCDEF', 'abcdef')}"
         onmouseover="this.bgColor='lavender';this.style.cursor='pointer';" onmouseout="this.bgColor='white'">
 
       <xsl:if test="count(/sqroot/body/bodyContent/browse/children/child)>0">
@@ -228,7 +228,7 @@
         </td>
       </xsl:if>
     </tr>
-    <tr id="tr2_{$lowerCode}{@GUID}" style="display:none">
+    <tr id="tr2_{$lowerCode}{translate(@GUID, 'ABCDEF', 'abcdef')}" style="display:none">
       <td colspan="100">
       </td>
     </tr>
