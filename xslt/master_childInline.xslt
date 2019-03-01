@@ -193,6 +193,7 @@
         x.push('wf1=<xsl:value-of select="@wf1"/>');
         x.push('wf2=<xsl:value-of select="@wf2"/>');
         x.push('align=<xsl:value-of select="@align"/>');
+		x.push('style=<xsl:value-of select="@style"/>');
         x.push('digit=<xsl:value-of select="@digit"/>');
         x.push('isNullable=<xsl:value-of select="@isNullable"/>');
 
@@ -294,7 +295,7 @@
           </xsl:when>
           <xsl:otherwise>
             <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}" 
-                contenteditable="false">
+                style="{@style}" contenteditable="false">
               <xsl:if test="@digit">
                 <xsl:attribute name="data-type">number</xsl:attribute>
                 <xsl:attribute name="placeholder">Enter Text Here</xsl:attribute>
