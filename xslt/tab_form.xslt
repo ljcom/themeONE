@@ -7,6 +7,8 @@
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
   <xsl:decimal-format name="comma-dec" decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
+    <xsl:variable name="lowerCode"><xsl:value-of select="translate(/sqroot/body/bodyContent/form/info/code, $uppercase, $smallcase)"/></xsl:variable>
+
   <xsl:variable name="allowAdd" select="/sqroot/body/bodyContent/form/info/permission/allowAdd" />
   <xsl:variable name="allowEdit" select="/sqroot/body/bodyContent/form/info/permission/allowEdit" />
   <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/form/info/permission/allowAccess" />
@@ -17,7 +19,7 @@
   <xsl:variable name="settingMode" select="/sqroot/body/bodyContent/form/info/settingMode/." />
   <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/status/."/>
   <xsl:variable name="isApprover" select="/sqroot/body/bodyContent/form/info/document/isApprover"/>
-  <xsl:variable name="cid" select="/sqroot/body/bodyContent/form/info/GUID/."/>
+  <xsl:variable name="cid" select="translate(/sqroot/body/bodyContent/form/info/GUID/., 'ABCDEF', 'abcdef')"/>
   <xsl:variable name="colMax">
     <xsl:for-each select="/sqroot/body/bodyContent/form/formPages/formPage/formSections/formSection/formCols/formCol">
       <xsl:sort select="@colNo" data-type="number" order="descending"/>
@@ -109,13 +111,13 @@
       //loadScript('ophcontent/cdn/ophelements/gps/gps.js');
       
       <!--/xsl:if-->
-	function js_save(location) {
+	function <xsl:value-of select="$lowerCode" />_save(location) {
 		saveThemeONE('<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/." />','<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/." />', location, '', 
-		(function(d) {js_saveafter(d)}), (function(d) {js_savebefore(d)}));
+		(function(d) {<xsl:value-of select="$lowerCode" />_saveafter(d)}), (function(d) {<xsl:value-of select="$lowerCode" />_savebefore(d)}));
 	}
 	
-	function js_saveafter(d) {}
-	function js_savebefore(d) {}
+	function <xsl:value-of select="$lowerCode" />_saveafter(d) {}
+	function <xsl:value-of select="$lowerCode" />_savebefore(d) {}
 	  
     </script>
 
@@ -202,7 +204,7 @@
     <!--<h2 class="page-header">CASH</h2>-->
     <section class="content">
       <form role="form" id="formheader" enctype="multipart/form-data" onsubmit="return false">
-        <input type="hidden" id="cid" name="cid" value="{/sqroot/body/bodyContent/form/info/GUID/.}" />
+        <input type="hidden" id="cid" name="cid" value="{$cid}" />
         <input type="hidden" name ="{info/code/.}requiredname"/>
         <input type="hidden" name ="{info/code/.}requiredtblvalue"/>
       </form>
@@ -585,7 +587,7 @@
 						or ((/sqroot/body/bodyContent/form/info/state/status/.) = 300))
 						or ((/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 400 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 499)">
                   <button id="button_save_{@pageNo}" class="btn btn-orange-a action-save" 
-				  onclick="js_save(20)">SAVE</button>&#160;
+				  onclick="{$lowerCode}_save(20)">SAVE</button>&#160;
                   <button id="button_cancel_{@pageNo}" class="btn btn-gray-a action-cancel" 
 				  onclick="saveCancel()">CANCEL</button>&#160;
                 </xsl:when>
@@ -605,7 +607,7 @@
 				or ((/sqroot/body/bodyContent/form/info/state/status/.) = 300)
 				or ((/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 400 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 499)">
                   <button id="button_save2" class="btn btn-orange-a btn-block action-save" 
-				  onclick="js_save(20);">SAVE</button>
+				  onclick="{$lowerCode}_save(20);">SAVE</button>
                   <button id="button_cancel2" class="btn btn-gray-a btn-block action-cancel" 
 				  onclick="saveCancel()">CANCEL</button>
                 </xsl:when>
@@ -676,7 +678,7 @@
       </script>
 
 
-      <div class="box box-solid box-default" style="box-shadow:0px;border:none" id="child{code/.}{/sqroot/body/bodyContent/form/info/GUID/.}">
+      <div class="box box-solid box-default" style="box-shadow:0px;border:none" id="child{code/.}{$cid}">
         &#160;
       </div>
 

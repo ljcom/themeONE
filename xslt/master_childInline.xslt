@@ -61,7 +61,14 @@
 
 		function <xsl:value-of select="$lowerCode" />_saveafter(d) {}
 		function <xsl:value-of select="$lowerCode" />_savebefore(d) {}
-	</script>
+
+      function <xsl:value-of select="$lowerCode" />_save() {
+      cell_save((function(d) {<xsl:value-of select="$lowerCode" />_saveafter(d)}), (function(d) {<xsl:value-of select="$lowerCode" />_savebefore(d)}));
+      }
+
+      function <xsl:value-of select="$lowerCode" />_saveafter(d) {}
+      function <xsl:value-of select="$lowerCode" />_savebefore(d) {}
+    </script>
     <input type="hidden" name ="{$lowerCode}requiredname"/>
     <input type="hidden" name ="{$lowerCode}requiredtblvalue"/>
     <xsl:apply-templates select="sqroot/body/bodyContent/browse/children" />
@@ -127,6 +134,10 @@
                 </xsl:if>
                 <button id="cell_button_save" class="btn btn-orange-a" data-loading-text="SAVE (please wait...)" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="{$lowerCode}_save(this);">SAVE</button>
                 <button id="cell_button_cancel" class="btn btn-gray-a" data-loading-text="CANCEL" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="cell_cancelSave()">CANCEL</button>
+
+                <button id="cell_button_save" class="btn btn-orange-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="{$lowerCode}_save();">SAVE</button>
+                <button id="cell_button_cancel" class="btn btn-gray-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="cell_cancelSave()">CANCEL</button>
+
 
                 <xsl:if test="(
                           ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and ($parentState &lt; 100 or not ($parentState)))
