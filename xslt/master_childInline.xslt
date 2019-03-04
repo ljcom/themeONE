@@ -135,16 +135,13 @@
                 <button id="cell_button_save" class="btn btn-orange-a" data-loading-text="SAVE (please wait...)" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="{$lowerCode}_save(this);">SAVE</button>
                 <button id="cell_button_cancel" class="btn btn-gray-a" data-loading-text="CANCEL" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="cell_cancelSave()">CANCEL</button>
 
-                <button id="cell_button_save" class="btn btn-orange-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="{$lowerCode}_save();">SAVE</button>
-                <button id="cell_button_cancel" class="btn btn-gray-a" style="display:none; margin-right:5px;margin-bottom:5px;" onclick="cell_cancelSave()">CANCEL</button>
-
 
                 <xsl:if test="(
                           ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and ($parentState &lt; 100 or not ($parentState)))
                           or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='3' and ($parentState &lt; 400))
                           or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='4' and ($parentState &lt; 500))
                         )">
-                  <button id="cell_button_delete" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;" onclick="cell_delete('{$lowerCode}', this)">DELETE</button>
+                  <button id="cell_button_delete" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;"  data-loading-text="DELETE (please wait...)" onclick="cell_delete('{$lowerCode}', this)">DELETE</button>
                 </xsl:if>
                 <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;=1 and (/sqroot/body/bodyContent/browse/info/permission/allowExport/.)=1" >
                   <button id="cell_button_download" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;"
@@ -218,6 +215,7 @@
         x.push('wf1=<xsl:value-of select="@wf1"/>');
         x.push('wf2=<xsl:value-of select="@wf2"/>');
         x.push('align=<xsl:value-of select="@align"/>');
+        x.push('style=<xsl:value-of select="@style"/>');
         x.push('digit=<xsl:value-of select="@digit"/>');
         x.push('isNullable=<xsl:value-of select="@isNullable"/>');
 
@@ -270,7 +268,7 @@
               or (@isEditable='2' and ../../@GUID = '00000000-0000-0000-0000-000000000000')
 							or (@isEditable=3 and $parentState&lt;400)
 							or (@isEditable=4 and ($parentState&lt;500)))">
-        <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}">
+        <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" style="{@style}" data-wf1="{@wf1}" data-wf2="{@wf2}">
           <xsl:if test="@digit">
             <xsl:attribute name="data-type">number</xsl:attribute>
             <xsl:attribute name="placeholder">Enter Number Here</xsl:attribute>
@@ -306,7 +304,7 @@
         </td>-->
         <xsl:choose>
           <xsl:when test="@editor='select2'">
-            <td class="cell cell-editor-select2" data-id="{@id}" data-field="{@caption}" contenteditable="false">
+            <td class="cell cell-editor-select2" data-id="{@id}" data-field="{@caption}" style="{@style}" contenteditable="false">
               <xsl:attribute name="align">
                 <xsl:choose>
                   <xsl:when test="@align=0">left</xsl:when>
@@ -319,7 +317,7 @@
           </xsl:when>
           <xsl:otherwise>
             <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}" 
-                contenteditable="false">
+                style="{@style}" contenteditable="false">
               <xsl:if test="@digit">
                 <xsl:attribute name="data-type">number</xsl:attribute>
                 <xsl:attribute name="placeholder">Enter Text Here</xsl:attribute>

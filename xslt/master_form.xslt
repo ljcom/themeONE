@@ -168,7 +168,7 @@
             </xsl:otherwise>
           </xsl:choose>
         </li>
-        <xsl:if test="sqroot/body/bodyContent/form/info/GUID!='00000000-0000-0000-0000-000000000000'">
+        <xsl:if test="sqroot/body/bodyContent/form/info/GUID!='00000000-0000-0000-0000-000000000000' and $allowAdd>=1 ">
           <li>
             <a style="color:blue" href="?code={sqroot/body/bodyContent/form/info/code/.}&amp;guid=00000000-0000-0000-0000-000000000000">
               <span>
