@@ -197,12 +197,12 @@
                     <strong>EXPORT DATA</strong>
                   </button>
                 </xsl:if>
-                <button id="newdoc" class="btn btn-warning" onclick="window.location='?code={sqroot/header/info/code/id}&amp;guid=00000000-0000-0000-0000-000000000000'">
+                <!--<button id="newdoc" class="btn btn-warning" onclick="window.location='?code={sqroot/header/info/code/id}&amp;guid=00000000-0000-0000-0000-000000000000'">
                   <xsl:if test="sqroot/body/bodyContent/browse/info/permission/allowAdd = 0">
                     <xsl:attribute name="disabled">disabled</xsl:attribute>
                   </xsl:if>
                   <strong>NEW DOCUMENT</strong>
-                </button>
+                </button>-->
               </div>
             </div>
 
