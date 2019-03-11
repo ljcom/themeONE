@@ -28,6 +28,13 @@
   </xsl:template>
 
   <xsl:template match="formCol">
+	<xsl:if test="@rowTitle/.!=''">
+      <div class="col-md-12" data-toggle="collapse">
+        <h3>
+          <xsl:value-of select="@rowTitle/."/>&#160;
+        </h3>
+      </div>
+    </xsl:if>
     <xsl:variable name="colMax">
       <xsl:for-each select="../formCol/.">
         <xsl:sort select="@colNo" data-type="number" order="descending"/>
