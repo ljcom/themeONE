@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl"
->
+    xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl">
+	
   <xsl:decimal-format name="comma-dec" decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
   <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
@@ -215,7 +215,10 @@
         x.push('wf1=<xsl:value-of select="@wf1"/>');
         x.push('wf2=<xsl:value-of select="@wf2"/>');
         x.push('align=<xsl:value-of select="@align"/>');
-        x.push('style=<xsl:value-of select="@style"/>');
+
+		x.push('style=<xsl:value-of select="@style"/>');
+
+
         x.push('digit=<xsl:value-of select="@digit"/>');
         x.push('isNullable=<xsl:value-of select="@isNullable"/>');
 
