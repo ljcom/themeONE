@@ -354,7 +354,7 @@
         var parentKey='<xsl:value-of select ="parentkey/."/>';
         var GUID='<xsl:value-of select ="$cid"/>';
         var browsemode='<xsl:value-of select ="browseMode/."/>';
-        loadChild(code, parentKey, GUID, null, browsemode);
+        loadChild(code, parentKey, GUID, 1, browsemode);
       </script>
 
       <div class="box box-solid box-default" style="box-shadow:0px;border:none" id="child{code/.}{$cid}">

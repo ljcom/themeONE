@@ -7,7 +7,9 @@
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
   <xsl:decimal-format name="comma-dec" decimal-separator="," grouping-separator="."/>
   <xsl:decimal-format name="dot-dec" decimal-separator="." grouping-separator=","/>
-
+  <xsl:variable name="lowerCode">
+    <xsl:value-of select="translate(/sqroot/body/bodyContent/form/info/code, $uppercase, $smallcase)"/>
+  </xsl:variable>
   <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/form/info/permission/allowAccess" />
   <xsl:variable name="allowForce" select="/sqroot/body/bodyContent/form/info/permission/allowForce" />
   <xsl:variable name="allowDelete" select="/sqroot/body/bodyContent/form/info/permission/allowDelete" />
@@ -76,15 +78,15 @@
       <!--$.when($, deferreds).done(function() {
         preview(1, '<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','form<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', this);
       });-->
-	function <xsl:value-of select="{$lowerCode}" />_save(location) {
-		saveThemeONE('<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/." />',
-		'<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/." />', location, '', 
-		(function(d) {<xsl:value-of select="{$lowerCode}" />_saveafter(d)}), (function(d) {<xsl:value-of select="{$lowerCode}" />_savebefore(d)}));
-	}
-	
-	function <xsl:value-of select="{$lowerCode}" />_saveafter(d) {}
-	function <xsl:value-of select="{$lowerCode}" />_savebefore(d) {}
-	
+      function <xsl:value-of select="$lowerCode" />_save(location) {
+      saveThemeONE('<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/." />',
+      '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/." />', location, '',
+      (function(d) {<xsl:value-of select="$lowerCode" />_saveafter(d)}), (function(d) {<xsl:value-of select="$lowerCode" />_savebefore(d)}));
+      }
+
+      function <xsl:value-of select="$lowerCode" />_saveafter(d) {}
+      function <xsl:value-of select="$lowerCode" />_savebefore(d) {}
+
     </script>
 
     <!-- Main content -->
@@ -104,13 +106,13 @@
               location: browse:10, header form:20, browse anak:30, browse form:40-->
 
             <xsl:if test="(/sqroot/body/bodyContent/form/info/permission/allowAdd=1 and (/sqroot/body/bodyContent/form/info/state/parentState/.=0 or /sqroot/body/bodyContent/form/info/state/parentState/.=300))">
-              <button id="child_button_addSave" class="btn btn-orange-a" 
+              <button id="child_button_addSave" class="btn btn-orange-a"
 			  onclick="{$lowerCode}_save(41);">SAVE &amp; ADD NEW</button>&#160;
             </xsl:if>
-			<button id="child_button_save" class="btn btn-orange-a btn-none" 
-			onclick="{$lowerCode}_save(40);">SAVE</button>&#160;
-			<button id="child_button_cancel" class="btn btn-gray-a btn-none" 
-			onclick="closeChildForm('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}')">CANCEL</button>&#160;
+            <button id="child_button_save" class="btn btn-orange-a btn-none"
+            onclick="{$lowerCode}_save(40);">SAVE</button>&#160;
+            <button id="child_button_cancel" class="btn btn-gray-a btn-none"
+            onclick="closeChildForm('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}')">CANCEL</button>&#160;
             <xsl:if test="(/sqroot/body/bodyContent/form/info/GUID/.)!='00000000-0000-0000-0000-000000000000'">
               <script>
                 $('#child_button_addSave').hide();
@@ -246,12 +248,13 @@
         </script>
       </xsl:when>
     </xsl:choose>
-<script>
-//alert('<xsl:value-of select="@isEditable" />');
-</script>
+    <script>
+      //alert('<xsl:value-of select="@isEditable" />');
+    </script>
     <div class="form-group {$fieldEnabled}-input">
       <xsl:apply-templates select="textBox"/>
       <xsl:apply-templates select="textEditor"/>
+	  <xsl:apply-templates select="textArea"/>
       <xsl:apply-templates select="dateBox"/>
       <xsl:apply-templates select="dateTimeBox"/>
       <xsl:apply-templates select="timeBox"/>
@@ -267,7 +270,7 @@
   <xsl:template match="hiddenBox">
     <input type="hidden" Value="{value}" data-type="hiddenBox" data-old="{value}" name="{../@fieldName}"
            id ="{../@fieldName}"/>
-    </xsl:template>
+  </xsl:template>
 
   <xsl:template match="checkBox">
     <!--Supaya bisa di serialize-->
@@ -373,16 +376,16 @@
     <script type="text/javascript">
       CKEDITOR.replace('<xsl:value-of select="../@fieldName"/>');
       CKEDITOR.instances['<xsl:value-of select="../@fieldName"/>'].on('blur', function() {
-        var teOldData = $('#<xsl:value-of select="../@fieldName"/>').html();
-        var teData = CKEDITOR.instances['<xsl:value-of select="../@fieldName"/>'].getData();
-        teData = teData.trim();
-        $('#<xsl:value-of select="../@fieldName"/>').html(teData);
-        if (teOldData != teData) {
-          $('#child_button_save').show();
-          $('#child_button_addSave').show();
-          $('#child_button_cancel').show();
-        }
-        preview('{preview/.}',getCode(), '{$cid}','formheader', this);
+      var teOldData = $('#<xsl:value-of select="../@fieldName"/>').html();
+      var teData = CKEDITOR.instances['<xsl:value-of select="../@fieldName"/>'].getData();
+      teData = teData.trim();
+      $('#<xsl:value-of select="../@fieldName"/>').html(teData);
+      if (teOldData != teData) {
+      $('#child_button_save').show();
+      $('#child_button_addSave').show();
+      $('#child_button_cancel').show();
+      }
+      preview('{preview/.}',getCode(), '{$cid}','formheader', this);
       });
     </script>
     <!--<script type="text/javascript">
@@ -412,6 +415,46 @@
         </xsl:otherwise>
       </xsl:choose>
     </script>-->
+  </xsl:template>
+
+  
+  <xsl:template match="textArea">
+    <label id="{../@fieldName}caption">
+      <xsl:value-of select="titlecaption"/>
+    </label>
+    <xsl:if test="../@isNullable = 0 and 
+                    ((../@isEditable='1' and ($docState='' or $docState=0 or $docState=300 or $cid = '00000000-0000-0000-0000-000000000000' or $settingMode='C' or $settingMode='M')) 
+                        or (../@isEditable='2' and $cid = '00000000-0000-0000-0000-000000000000')
+                        or (../@isEditable='3' and ($docState&lt;400 or $cid = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and ($docState&lt;500 or $cid = '00000000-0000-0000-0000-000000000000')))">
+      <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
+    </xsl:if>
+
+    <!--default value-->
+    <xsl:variable name="thisValue">
+      <xsl:choose>
+        <xsl:when  test="$cid = '00000000-0000-0000-0000-000000000000' and defaultvalue != ''">
+          <xsl:value-of select="defaultvalue/." />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:choose>
+            <xsl:when test="value and value != ''">
+              <xsl:value-of select="value"/>
+            </xsl:when>
+            <xsl:otherwise>&#160;</xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <textarea class="form-control" placeholder="input text..." name="{../@fieldName}" id ="{../@fieldName}" data-type="textArea" style="max-width:100%; min-width:100%; min-height:55px;"
+      onblur="preview('{preview/.}',getCode(), '{$cid}','', this);" oninput="javascript:checkChanges(this)" >
+      <xsl:value-of select="$thisValue"/>
+    </textarea>
+    <script>
+      $('#<xsl:value-of select="../@fieldName"/>').val($.trim($('#<xsl:value-of select="../@fieldName"/>').val()));
+    </script>
+
   </xsl:template>
 
   <xsl:template match="dateBox">
@@ -635,7 +678,7 @@
         });
       </script>
     </xsl:if>
-    
+
     <script>
       try {
       $("#<xsl:value-of select="../@fieldName"/>").select2({
