@@ -272,7 +272,10 @@
             <p>Some text in the modal.</p>
           </div>
           <div class="modal-footer">
-            <button id="notiBtn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button id="modal-btn-close" type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+            <button id="modal-btn-cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+			<button id="modal-btn-confirm" type="button" class="btn btn-warning" data-dismiss="modal">Confirm</button>
+
           </div>
         </div>
 

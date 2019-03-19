@@ -265,7 +265,7 @@ function saveProfile(formId, code, guid) {
         }
     }).done(function (data) {
         var msg = $(data).find('messages').text();
-        var mdl = $('#allModal');
+        var mdl = $('#notiModal');
         $('#modal-btn-close').show();
         $('#modal-btn-cancel').hide();
         $('#modal-btn-confirm').hide();

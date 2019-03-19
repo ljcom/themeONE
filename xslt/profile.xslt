@@ -346,7 +346,9 @@
             <p>Some text in the modal.</p>
           </div>
           <div class="modal-footer">
-            <button id="notiBtn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button id="modal-btn-close" type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+            <button id="modal-btn-cancel" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+			<button id="modal-btn-confirm" type="button" class="btn btn-warning" data-dismiss="modal">Confirm</button>
           </div>
         </div>
       </div>
@@ -612,14 +614,14 @@
                           </div>
                           <div class="col-sm-2">
                             <button type="button" class="btn btn-warning" id="btn-del0" data-toggle="tooltip" title="Delete This Entry?" 
-                              data-target="#allModal" data-caption="Deleting Entry" data-msg="Are you sure you want to delete this entry ?" 
+                              data-target="#notiModal" data-caption="Deleting Entry" data-msg="Are you sure you want to delete this entry ?" 
                                 onclick="showModal(this, 'delete', 'formDelegate0', 'delechild0', '')" >
-                              <ix class="fa fa-trash-o" aria-hidden="true"></ix>
+                              <ix class="fal fa-trash" aria-hidden="true"></ix>
                             </button>
                             <button type="button" class="btn btn-success" id="btn-save0" data-toggle="tooltip" title="Save This Entry?" 
-                              data-target="#allModal" data-caption="Saving Entry" data-msg="Are you sure you want to save this entry ?" 
+                              data-target="#notiModal" data-caption="Saving Entry" data-msg="Are you sure you want to save this entry ?" 
                                 onclick="showModal(this, 'save', 'formDelegate0', 'delechild0', '')" disabled="disabled">
-                              <ix class="fa fa-floppy-o" aria-hidden="true"></ix>
+                              <ix class="fal fa-save" aria-hidden="true"></ix>
                             </button>
                           </div>  
                         </form>
@@ -825,12 +827,12 @@
             <input type="text" class="form-control" id="TokenModule{@no}" name="TokenModule{@no}" data-type="tokenBox" data-old-value="{tokenModule/value}" value="{tokenModule/value}" />
           </div>
           <div class="col-sm-2">
-            <button type="button" class="btn btn-warning" id="btn-del{@no}" data-toggle="tooltip" title="Delete This Entry?" data-target="#allModal" 
+            <button type="button" class="btn btn-warning" id="btn-del{@no}" data-toggle="tooltip" title="Delete This Entry?" data-target="#notiModal" 
               data-caption="Deleting Entry" data-msg="Are you sure you want to delete this entry ?" onclick="showModal(this, 'delete', 'formDelegate{@no}', 'delechild{@no}', '{@GUID}')" >
               <ix class="fa fa-trash-o" aria-hidden="true"></ix>
             </button>
             <button type="button" class="btn btn-success" id="btn-save{@no}" data-toggle="tooltip" title="Save This Entry?" 
-              data-target="#allModal" data-caption="Saving Entry" data-msg="Are you sure you want to save this entry ?" 
+              data-target="#notiModal" data-caption="Saving Entry" data-msg="Are you sure you want to save this entry ?" 
                 onclick="showModal(this, 'save', 'formDelegate{@no}', 'delechild{@no}', '{@GUID}')" disabled="disabled">
               <ix class="fa fa-floppy-o" aria-hidden="true"></ix>
             </button>
