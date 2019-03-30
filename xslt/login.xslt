@@ -32,7 +32,9 @@
       $("body").addClass("fixed");
 
       loadScript('OPHContent/cdn/admin-LTE/js/app.min.js');
+      document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
 
+	  
       if (getCookie('isWhiteAddress') == '0' || getCookie('isWhiteAddress') == undefined || getCookie('isWhiteAddress') == '') {
       loadScript('https://www.google.com/recaptcha/api.js');
       loadScript('https://apis.google.com/js/platform.js');
@@ -41,15 +43,14 @@
 
       //signoff();
 
-      document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
-
       if (getCookie("AutoUser")) {
       $('#autologin').css('display','block');
       $('#autoUser').html(getCookie("AutoUser"));
       }
       else {
       }
-    </script>
+
+	  </script>
 
     <div class="wrapper" style="background: rgba(38, 44, 44, 0.1);">
 

@@ -97,9 +97,6 @@
     </section>
     <script>
       $(function () {
-      $('.datepicker').datepicker({
-      autoclose: true
-      });
 
       <!--//iCheck for checkbox and radio inputs-->
       $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -151,18 +148,12 @@
   </xsl:template>
 
   <xsl:template match="fields/field">
-    <xsl:if test="textBox">
-      <xsl:apply-templates select="textBox"/>
-    </xsl:if>
-    <xsl:if test="dateBox">
-      <xsl:apply-templates select="dateBox"/>
-    </xsl:if>
-    <xsl:if test="checkBox">
-      <xsl:apply-templates select="checkBox"/>
-    </xsl:if>
-    <xsl:if test="autoSuggestBox">
-      <xsl:apply-templates select="autoSuggestBox"/>
-    </xsl:if>
+    <xsl:apply-templates select="textBox"/>
+    <xsl:apply-templates select="dateBox"/>
+    <xsl:apply-templates select="monthBox"/>
+    <xsl:apply-templates select="yearBox"/>
+    <xsl:apply-templates select="checkBox"/>
+    <xsl:apply-templates select="autoSuggestBox"/>
   </xsl:template>
 
   <xsl:template match="checkBox">
@@ -202,6 +193,10 @@
   </xsl:template>
 
   <xsl:template match="dateBox">
+    <script>
+      $('#<xsl:value-of select="../@fieldName" />').datepicker({autoclose: true});
+
+    </script>
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titleCaption"/>
     </label>
@@ -216,7 +211,65 @@
       </input>
     </div>
   </xsl:template>
+  <xsl:template match="monthBox">
+    <script>
+      $('#<xsl:value-of select="../@fieldName" />_month').datepicker(
+      {
+      autoclose: true,
+      format: 'M-yyyy',
+      startView:'year',
+      minViewMode:'months',
+      defaultDate: new Date('<xsl:value-of select="value" />')
+      }).on('change', function(){
+      $('#<xsl:value-of select="../@fieldName" />').val($('#<xsl:value-of select="../@fieldName" />_month').data('datepicker').getFormattedDate('mm/dd/yyyy'));
+      preview('{preview/.}',getCode(), null,'');
+      });
 
+    </script>
+    <label id="{../@fieldName}caption">
+      <xsl:value-of select="titleCaption"/>
+    </label>
+    <div class="input-group date">
+      <div class="input-group-addon">
+        <ix class="fa fa-calendar"></ix>
+      </div>
+      <input type="hidden" id ="{../@fieldName}" name="{../@fieldName}" value="{value}" />
+      <input type="text" class="form-control pull-right monthpicker" id ="{../@fieldName}_month" name="{../@fieldName}_month" placeholder="{titleCaption}">
+        <xsl:if test="../@isEditable=0">
+          <xsl:attribute name="disabled">disabled</xsl:attribute>
+        </xsl:if>
+      </input>
+    </div>
+  </xsl:template>
+  <xsl:template match="yearBox">
+    <script>
+      $('#<xsl:value-of select="../@fieldName" />_year').datepicker(
+      {
+      autoclose: true,
+      format: 'M-yyyy',
+      startView:'year',
+      minViewMode:'years',
+      defaultDate: new Date('<xsl:value-of select="value" />')
+      }).on('change', function(){
+      $('#<xsl:value-of select="../@fieldName" />').val($('#<xsl:value-of select="../@fieldName" />_year').data('datepicker').getFormattedDate('mm/dd/yyyy'));
+      preview('{preview/.}',getCode(), null,'');
+      });
+    </script>
+    <label id="{../@fieldName}caption">
+      <xsl:value-of select="titleCaption"/>
+    </label>
+    <div class="input-group date">
+      <div class="input-group-addon">
+        <ix class="fa fa-calendar"></ix>
+      </div>
+      <input type="hidden" id ="{../@fieldName}" name="{../@fieldName}" value="{value}" />
+      <input type="text" class="form-control pull-right yearpicker" id ="{../@fieldName}_year" name="{../@fieldName}_year" placeholder="{titleCaption}">
+        <xsl:if test="../@isEditable=0">
+          <xsl:attribute name="disabled">disabled</xsl:attribute>
+        </xsl:if>
+      </input>
+    </div>
+  </xsl:template>
   <xsl:template match="autoSuggestBox">
     <label id="{../@fieldName}caption">
       <xsl:value-of select="titleCaption"/>

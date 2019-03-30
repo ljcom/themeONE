@@ -149,13 +149,13 @@
                   <button id="cell_button_upload" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;" onclick="javascript:$('#import_hidden_{$lowerCode}').click();">UPLOAD...</button>
                   <input id ="import_hidden_{$lowerCode}" name="import_hidden_{$lowerCode}" type="file" data-code="{$lowerCode}" style="visibility: hidden; width: 0; height: 0;" multiple="" />
                 </xsl:if>
-                  <ul class="pagination pagination-sm no-margin pull-right" id="childPageNo"></ul>
+                  <ul class="pagination pagination-sm no-margin pull-right" id="{$lowerCode}_childPageNo"></ul>
                   <script>
                     var code='<xsl:value-of select ="$lowerCode"/>';
                     var pageNo = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/pageNo"/>';
                     var nbPages = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/nbPages"/>';
 					  <xsl:if test="/sqroot/body/bodyContent/browse/info/nbPages > 1">
-						  childPageNo('childPageNo', code, pageNo, nbPages);
+						  childPageNo('<xsl:value-of select="$lowerCode" />_childPageNo', code, pageNo, nbPages);
 					  </xsl:if>
 					  $('#searchBox_'+code).css('visibility', 'visible');
 				  </script>
