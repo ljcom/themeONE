@@ -64,6 +64,7 @@
       <xsl:apply-templates select="widget[@type='emailBox']" />
       <xsl:apply-templates select="widget[@type='graphFrame']" />
       <xsl:apply-templates select="widget[@type='taskBox']" />
+      <xsl:apply-templates select="widget[@type='listBox']" />
     </div>
   </xsl:template>
 
@@ -82,6 +83,7 @@
         runSmallBox<xsl:value-of select="contents/data/@dataId"/>();
       </script>
     </xsl:if>
+    
     <!-- small box -->
     <div class="small-box {@widgetBgColor}">
       <xsl:attribute name="style">
@@ -680,6 +682,85 @@
       });
     </script>-->
   </xsl:template>
+  
+  <!--listBox-->
+  <xsl:template match="widget[@type='listBox']">
+    <xsl:variable name="firstTab">
+      <xsl:value-of select="contents/data/@dataNo"/>
+    </xsl:variable>
+    
+    <div class="nav-tabs-custom">
+      <!-- Tabs within a box -->
+      <ul class="nav nav-tabs pull-right">
+        <xsl:for-each select="contents/data">
+          <li>
+            <xsl:if test="@dataNo=$firstTab">
+              <xsl:attribute name="class">active</xsl:attribute>
+            </xsl:if>
+            <a href="#chart{@dataNo}" data-toggle="tab">
+              <xsl:value-of select="@dataCaption" />
+            </a>
+          </li>
+        </xsl:for-each>
+        <li class="pull-left header">
+          <span>
+            <ix class="fa fa-inbox"></ix>
+          </span>&#160;<xsl:value-of select="@widgetTitle"/>
+        </li>
+      </ul>
+        <div class="box-body">
+          <ul class="products-list product-list-in-box">
+            <li class="item">
+            </li>
+          </ul>
+          <xsl:if test="@dataId">
+      <script>
+        function runListBox<xsl:value-of select="@dataId"/>() {
+        getWidgetData('<xsl:value-of select="@dataId"/>', function(data) {
+        var msg = $(data).children().find("result").text();
+        $('#data<xsl:value-of select="@dataId"/>').html(msg);
+        setTimeout(function () { runListBox<xsl:value-of select="@dataId"/>(); }, 1000*60);
+        }
+        );
+        }
 
+        runListBox<xsl:value-of select="@dataId"/>();
+      </script>
+    </xsl:if>
+              <!--<div class="product-info">
+                <a href="javascript:void(0)" class="product-title">
+                  Samsung TV
+                  <span class="label label-warning pull-right">$1800</span>
+                </a>
+                <span class="product-description">
+                  Samsung 32" 1080p 60Hz LED Smart HDTV.
+                </span>
+              </div>
+            </li>
+            <li class="item">
+              <div class="product-info">
+                <a href="javascript:void(0)" class="product-title">
+                  Bicycle
+                  <span class="label label-info pull-right">$700</span>
+                </a>
+                <span class="product-description">
+                  26" Mongoose Dolomite Men's 7-speed, Navy Blue.
+                </span>
+              </div>
+            </li>
+            <li class="item">              <div class="product-info">
+                <a href="javascript:void(0)" class="product-title">
+                  Xbox One <span
+          class="label label-danger pull-right">$350</span>
+                </a>
+                <span class="product-description">
+                  Xbox One Console Bundle with Halo Master Chief Collection.
+                </span>
+              </div>
+            </li>
+          </ul>-->
+        </div>
+      </div>
+  </xsl:template>
 
 </xsl:stylesheet>

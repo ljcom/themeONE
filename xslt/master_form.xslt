@@ -315,12 +315,15 @@
 
   <xsl:template match="sqroot/body/bodyContent">
     <div class="row">
+	
       <script>
         var code = "<xsl:value-of select="info/code/."/>";
         var tblnm =code+"requiredname";
       </script>
+	  
       <form role="form" id="formheader" enctype="multipart/form-data">
-        <input type="hidden" id="cid" name="cid" value="{$cid}" />
+      
+		<input type="hidden" id="cid" name="cid" value="{$cid}" />
         <input type="hidden" name ="{info/code/.}requiredname"/>
         <input type="hidden" name ="{info/code/.}requiredtblvalue"/>
 

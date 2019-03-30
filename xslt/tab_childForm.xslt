@@ -120,9 +120,6 @@
     <!-- /.content -->
 
 
-
-
-
   </xsl:template>
 
   <xsl:template match="sqroot/body/bodyContent">
