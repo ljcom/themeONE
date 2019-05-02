@@ -964,6 +964,7 @@ function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, a
 		
 		$(x).appendTo(".grid");
 	}
+	
 }
 function showMessage(msg, mode, fokus, afterClosed, afterClick) {
     var msgType;
