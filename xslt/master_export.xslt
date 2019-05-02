@@ -71,7 +71,7 @@
               <div id="exportNavTab" class="nav-tabs-custom">
                 <!--Menu Tab-->
                 <ul class="nav nav-tabs">
-				<li class="active">
+				<li>
                     <a href="#tabDownloadData" data-toggle="tab">Download Data</a>
                   </li>
                   <li class="active">
