@@ -345,7 +345,7 @@
   </xsl:template>
 
   <xsl:template match="child">
-    <xsl:if test="info/permission/allowBrowse='1'">
+    <xsl:if test="info/permission/allowBrowse&gt;=1">
       <input type="hidden" id="PKID" value="child{code/.}"/>
       <input type="hidden" id="filter{code/.}" value="{parentkey/.}='{$cid}'"/>
       <input type="hidden" id="parent{code/.}" value="{parentkey/.}"/>

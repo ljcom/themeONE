@@ -7,10 +7,10 @@
   </xsl:template>
 
   <xsl:template match="formSection ">
-    <xsl:if test="@rowTitle/.!=''">
+    <xsl:if test="@sectionTitle/.!=''">
       <div class="col-md-12" data-toggle="collapse" data-target="#section_{@sectionNo}">
         <h3>
-          <xsl:value-of select="@rowTitle/."/>&#160;
+          <xsl:value-of select="@sectionTitle/."/>&#160;
         </h3>
       </div>
     </xsl:if>
@@ -28,13 +28,7 @@
   </xsl:template>
 
   <xsl:template match="formCol">
-	<xsl:if test="@rowTitle/.!=''">
-      <div class="col-md-12" data-toggle="collapse">
-        <h3>
-          <xsl:value-of select="@rowTitle/."/>&#160;
-        </h3>
-      </div>
-    </xsl:if>
+
     <xsl:variable name="colMax">
       <xsl:for-each select="../formCol/.">
         <xsl:sort select="@colNo" data-type="number" order="descending"/>
@@ -47,11 +41,23 @@
     <xsl:choose>
       <xsl:when test="$colMax=0">
         <div class="col-md-12" data-cm="{$colMax}">
+	<xsl:if test="@rowTitle/.!=''">
+        <h3>
+          <xsl:value-of select="@rowTitle/."/>&#160;
+        </h3>
+    </xsl:if>
+		
           <xsl:apply-templates select="formRows"/>
         </div>
       </xsl:when>
       <xsl:when test="$colMax=1 or $colMax=2">
         <div class="col-md-6" data-cm="{$colMax}">
+	<xsl:if test="@rowTitle/.!=''">
+        <h3>
+          <xsl:value-of select="@rowTitle/."/>&#160;
+        </h3>
+    </xsl:if>
+		
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
@@ -62,6 +68,12 @@
       </xsl:when>
       <xsl:when test="$colMax=3">
         <div class="col-md-4" data-cm="{$colMax}">
+	<xsl:if test="@rowTitle/.!=''">
+        <h3>
+          <xsl:value-of select="@rowTitle/."/>&#160;
+        </h3>
+    </xsl:if>
+		
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
@@ -75,6 +87,12 @@
       </xsl:when>
       <xsl:when test="$colMax=4">
         <div class="col-md-3" data-cm="{$colMax}">
+	<xsl:if test="@rowTitle/.!=''">
+        <h3>
+          <xsl:value-of select="@rowTitle/."/>&#160;
+        </h3>
+    </xsl:if>
+		
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
@@ -712,6 +730,9 @@
       <option></option>
     </select>
 
+
+      
+    
     <!--AutoSuggest Add New Form Modal-->
     <xsl:if test="(@allowAdd&gt;=1 or @allowEdit=1) and ../@isEditable=1">
       <div id="addNew{../@fieldName}" class="modal fade" role="dialog">
@@ -816,6 +837,7 @@
       </xsl:if>
     </xsl:if>
 
+    
     <xsl:if test="@allowEdit=1">
       <span id="removeForm{../@fieldName}" style="cursor: pointer;margin: 8px 30px 0px 0px;position: absolute;top: 0px;right: 0px; display:none">
         <ix class="far fa-times" title= "Remove Selection" data-toggle="tooltip" onclick="javascript: $('#{../@fieldName}').val(null).trigger('change');$('#editForm{../@fieldName}').hide();$('#removeForm{../@fieldName}').hide();"></ix>
@@ -831,38 +853,66 @@
     </xsl:if>
 
     <script>
+	
       $("#<xsl:value-of select="../@fieldName"/>").select2({
-      placeholder: 'Select <xsl:value-of select="titlecaption"/>',
-      onAdd: function(x) {
-      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','', this);
-      },
-      onDelete: function(x) {
-      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','', this);
-      },
-      ajax: {
-      url:"OPHCORE/api/msg_autosuggest.aspx",
-      delay : 0, //500
-      data: function (params) {
-      var query = {
-      code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
-      colkey:"<xsl:value-of select="../@fieldName"/>",
-      search: params.term==undefined?'':params.term.toString().split('+').join('%2B'),
-      wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
-      wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
-      parentCode: getCode(),
-      page: params.page
-      }
-      return query;
-      },
-      dataType: 'json',
+        placeholder: 'Select <xsl:value-of select="titlecaption"/>',
+        onAdd: function(x) {
+            preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','', this);
+          },
+        onDelete: function(x) {
+            preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','', this);
+          },
+        
+        ajax: {
+		      url:"OPHCORE/api/msg_autosuggest.aspx",
+		      delay : 0, //500
+		      data: function (params) {
+			      var query = {
+				      code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
+				      colkey:"<xsl:value-of select="../@fieldName"/>",
+				      search: params.term==undefined?'':params.term.toString().split('+').join('%2B'),
+				      wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
+				      wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
+              parentCode: getCode(),
+              page: params.page
+        }
+        return query;
+        
+        },
+        dataType: 'json',
+        
+        /*
+        results: function (data) {
+            return {
+                results: $.map(data, function(obj) {
+                    return { id: obj.id, text: obj.text };
+                })
+            };
+        },*/
+
+          processResults: function (data, params) { 
+            params.page = params.page || 1;
+            return {
+              results: data.results,
+              pagination: {
+                more: data.more 
+                }     
+            };
+        }
+
       }
       });
+
+
       <xsl:if test="value!=''">
         //deferreds.push(
         autosuggest_setValue(deferreds, '<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
         //);
       </xsl:if>
     </script>
+
+    
+
   </xsl:template>
 
   <xsl:template match="tokenBox">

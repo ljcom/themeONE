@@ -170,6 +170,9 @@
                           </xsl:otherwise>
                         </xsl:choose>
                         &#160;<xsl:value-of select="name"/><!--(Lv. <xsl:value-of select="@level"/>)-->
+                        <xsl:if test="delegateName">
+                          &#160;<small>(delegated by <xsl:value-of select="delegateName"/>)</small>
+                        </xsl:if>
                         <br/>
                         <xsl:if test="@status =0">
                           &#160;

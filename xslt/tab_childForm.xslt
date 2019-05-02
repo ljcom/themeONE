@@ -630,6 +630,7 @@
       <option value="NULL">-----Select-----</option>
     </select>
 
+
     <!--AutoSuggest Add New Form Modal-->
     <xsl:if test="(@allowAdd&gt;=1 or @allowEdit=1) and ../@isEditable=1">
       <div id="addNew{../@fieldName}" class="modal fade" role="dialog">

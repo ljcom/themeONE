@@ -685,82 +685,67 @@
   
   <!--listBox-->
   <xsl:template match="widget[@type='listBox']">
-    <xsl:variable name="firstTab">
-      <xsl:value-of select="contents/data/@dataNo"/>
-    </xsl:variable>
-    
-    <div class="nav-tabs-custom">
-      <!-- Tabs within a box -->
-      <ul class="nav nav-tabs pull-right">
-        <xsl:for-each select="contents/data">
-          <li>
-            <xsl:if test="@dataNo=$firstTab">
-              <xsl:attribute name="class">active</xsl:attribute>
-            </xsl:if>
-            <a href="#chart{@dataNo}" data-toggle="tab">
-              <xsl:value-of select="@dataCaption" />
-            </a>
-          </li>
-        </xsl:for-each>
-        <li class="pull-left header">
-          <span>
-            <ix class="fa fa-inbox"></ix>
-          </span>&#160;<xsl:value-of select="@widgetTitle"/>
-        </li>
-      </ul>
-        <div class="box-body">
-          <ul class="products-list product-list-in-box">
-            <li class="item">
-            </li>
-          </ul>
-          <xsl:if test="@dataId">
+
+    <xsl:if test="contents/data/@dataId">  
       <script>
-        function runListBox<xsl:value-of select="@dataId"/>() {
-        getWidgetData('<xsl:value-of select="@dataId"/>', function(data) {
-        var msg = $(data).children().find("result").text();
-        $('#data<xsl:value-of select="@dataId"/>').html(msg);
-        setTimeout(function () { runListBox<xsl:value-of select="@dataId"/>(); }, 1000*60);
+        function runListBox<xsl:value-of select="contents/data/@dataId"/>() {
+        getWidgetData('<xsl:value-of select="contents/data/@dataId"/>', function(data) {
+        $(data).children().find("list").each(function(i) {
+        itemName=$(this).find("itemName").text();
+        number=$(this).find("number").text();
+        fa=$(this).find("fa").text();
+        label=$(this).find("label").text();
+        listr='&lt;li class=\"item\"&gt;'+
+            '&lt;div class=\"product-img\"&gt;'+
+              '&lt;ix class=\"fal '+fa+' fa-6x \"&gt;&lt;/ix&gt;'+
+            '&lt;/div&gt;'+
+            '&lt;div class=\"product-info\"&gt;'+
+              '&lt;a href=\"javascript:void(0)\" class=\"product-title\"&gt;'+
+                itemName+
+                '&lt;span class=\"label '+label+' pull-right\"&gt;'+number+'&lt;/span&gt;'+
+        '&lt;/a&gt;'+
+        /*'&lt;span class=\"product-description\"&gt;'+
+                'PlayStation 4 500GB Console (PS4)'+
+              '&lt;/span&gt;'+*/
+            '&lt;/div&gt;'+
+          '&lt;/li&gt;';
+        $('#listbox_<xsl:value-of select="contents/data/@dataId" />').append(listr);
+        })
+        //$('#data<xsl:value-of select="contents/data/@dataId"/>').html(msg);
         }
         );
         }
 
-        runListBox<xsl:value-of select="@dataId"/>();
+        runListBox<xsl:value-of select="contents/data/@dataId"/>();
       </script>
     </xsl:if>
-              <!--<div class="product-info">
-                <a href="javascript:void(0)" class="product-title">
-                  Samsung TV
-                  <span class="label label-warning pull-right">$1800</span>
-                </a>
-                <span class="product-description">
-                  Samsung 32" 1080p 60Hz LED Smart HDTV.
-                </span>
+    
+    
+      
+	  <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">
+                <xsl:value-of select="@widgetTitle" />
+              </h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
               </div>
-            </li>
-            <li class="item">
-              <div class="product-info">
-                <a href="javascript:void(0)" class="product-title">
-                  Bicycle
-                  <span class="label label-info pull-right">$700</span>
-                </a>
-                <span class="product-description">
-                  26" Mongoose Dolomite Men's 7-speed, Navy Blue.
-                </span>
-              </div>
-            </li>
-            <li class="item">              <div class="product-info">
-                <a href="javascript:void(0)" class="product-title">
-                  Xbox One <span
-          class="label label-danger pull-right">$350</span>
-                </a>
-                <span class="product-description">
-                  Xbox One Console Bundle with Halo Master Chief Collection.
-                </span>
-              </div>
-            </li>
-          </ul>-->
-        </div>
-      </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <ul class="products-list product-list-in-box listboxitem" id="listbox_{contents/data/@dataId}">
+              </ul>
+            </div>
+            <!-- /.box-body -->
+            <!--<div class="box-footer text-center">
+              <a href="javascript:void(0)" class="uppercase">View All Products</a>
+            </div>-->
+            <!-- /.box-footer -->
+          </div>
+          <!-- /.box -->
   </xsl:template>
 
 </xsl:stylesheet>
