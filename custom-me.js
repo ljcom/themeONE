@@ -966,3 +966,55 @@ function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, a
 	}
 	
 }
+function showMessage(msg, mode, fokus, afterClosed, afterClick) {
+    var msgType;
+    if (mode == undefined) mode = 1;
+    if (msg) {
+        if (mode == 1) msgType = 'notice';
+        else if (mode == 2) msgType = 'success';
+        else if (mode == 3) msgType = 'warning';
+        else if (mode == 4) msgType = 'error';
+        else if (mode == 10) msgType = 'confirm';
+
+        if (msg === '' && (mode == 4 || mode == 3)) msg = 'Time out.';
+
+        $("#notiTitle").text(msgType);
+        $("#notiContent").text(msg);
+        if (mode < 10) {
+            $('#modal-btn-close').show();
+            $('#modal-btn-cancel').hide();
+            $('#modal-btn-confirm').hide();
+        }
+        else {
+            $('#modal-btn-close').hide();
+            $('#modal-btn-cancel').show();
+            //$('#modal-btn-cancel').show();
+            $('#modal-btn-confirm').attr('onclick', function () {
+                afterClick();
+            }).show();
+        }
+
+
+        $("#notiModal").modal();
+
+        if (typeof afterClosed === "function") {
+            $("#notiModal").on("hidden.bs.modal", function (e) {
+                $("#notiModal").on("hidden.bs.modal", null);
+                afterClosed();
+
+            });
+        }
+
+        if (fokus || afterClosed) {
+            try {
+                document.getElementById('notiBtn').onclick = function () {
+                    if (fokus) $(fokus).focus();
+                    //if (typeof afterClosed === "function") afterClosed();
+                };
+            }
+            catch (e) {
+                //
+            }
+        }
+    }
+}
