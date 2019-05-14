@@ -547,59 +547,128 @@ function changeSkinColor() {
     $('body').addClass(bodyClass);
 }
 
-function loadExtraButton(buttons, location) {
+function loadExtraButton(buttons, divn, location) {
+		//location: 10=browse, 11: browse-summary, 20: form (master), 21: form (tab)
     var cval;
-    $('td.' + location).each(function (i, td) {
-        var a, bstate;
-        buttons.forEach(function (v) {
-            var url = v.url;
-            //check variable
-            var arurl = url.match(/%+\w+(?:%)/g);
-            if (arurl) {
-                arurl.forEach(function (val) {
-                    val = val.split('%').join('');
+	if (buttons) {
+		if (location == 10) {
+		$('td.' + divn).each(function (i, td) {
+			var a, bstate;
+			buttons.forEach(function (v) {
+				var url = v.url;
+				var loc = v.location;
+				//check variable
+				//check if loc=location, then run below
+				var arurl = url.match(/%+\w+(?:%)/g);
+				if (arurl) {
+					arurl.forEach(function (val) {
+						val = val.split('%').join('');
 
-                    if (val == 'guid') {
-                        cval = $(td).parent().data(val);
-                    }
-                    else if (val == 'rid') {
-                        cval = $(td).parent().data("guid");
-                    }
-                    else {
-                        cval = $(td).parent().find("[data-field='" + val + "']").html();
-                    }
+						if (val == 'guid') {
+							cval = $(td).parent().data(val);
+						}
+						else if (val == 'rid') {
+							cval = $(td).parent().data("guid");
+						}
+						else {
+							cval = $(td).parent().find("[data-field='" + val + "']").html();
+						}
 
-                    if (cval) {
-                        url = url.split('%' + val + '%').join(cval);
-                    }
+						if (cval) {
+							url = url.split('%' + val + '%').join(cval);
+						}
 
-                });
-            }
-            a = "<a href=\"" + url + "\"><ix class='far " + v.icon + "' data-toggle=\"tooltip\" title='" + v.caption + "'/></a>";
-            uo = (v.updateOnly == 1) ? 1 : 0;
-            bstate = v.state;
-            if (bstate) {
-                bstate = bstate.split(' ').join('');
-                bstate = bstate.split(',');
-                for (var i = 0; i < bstate.length; i++) {
-                    var gstate = (getState() == "") ? "0" : getState();
-                    if (gstate == bstate[i]) {
-                        if ($(td).find("a").find("." + v.icon).length > 0)
-                            $(td).find("a").find("." + v.icon).parent().attr("href", url);
-                        else
-                            if (uo == 0) $(td).append(a);
-                        return;
-                    }
-                }
-            } else {
-                if ($(td).find("a").find("." + v.icon).length > 0)
-                    $(td).find("a").find("." + v.icon).parent().attr("href", url);
-                else
-                    if (uo == 0) $(td).append(a);
-            }
-        });
-    });
+					});
+				}
+				//if (location==10 )
+					if (v.icon != null)
+						a = "<a href=\"" + url + "\"><ix class='far " + v.icon + "' data-toggle=\"tooltip\" title='" + v.caption + "'/></a>";
+					else
+						a = "<a href=\"" + url + "\">" + v.caption + "</a>";
+				//if (location==11 || location==20) a='<!--button type="button" class="btn btn-danger btn-flat" onclick="javascript:submitTalk('{@GUID}', '10')">Send</button-->'
+				uo = (v.updateOnly == 1) ? 1 : 0;
+				bstate = v.state;
+				if (bstate) {
+					bstate = bstate.split(' ').join('');
+					bstate = bstate.split(',');
+					for (var i = 0; i < bstate.length; i++) {
+						var gstate = (getState() == "") ? "0" : getState();
+						if (gstate == bstate[i]) {
+							if ($(td).find("a").find("." + v.icon).length > 0)
+								$(td).find("a").find("." + v.icon).parent().attr("href", url);
+							else
+								if (uo == 0) $(td).append(a);
+							return;
+						}
+					}
+				} else {
+					if ($(td).find("a").find("." + v.icon).length > 0)
+						$(td).find("a").find("." + v.icon).parent().attr("href", url);
+					else
+						if (uo == 0) $(td).append(a);
+				}
+			});
+		});
+		}
+		else if (location == 11 || location == 20 || location == 21){
+			$('div.' + divn).each(function (i, td) {
+				var a, bstate;
+				buttons.forEach(function (v) {
+					var url = v.url;
+					var loc = v.location;
+					//check variable
+					//check if loc=location, then run below
+					var arurl = url.match(/%+\w+(?:%)/g);
+					if (arurl) {
+						arurl.forEach(function (val) {
+							val = val.split('%').join('');
 
+							if (val == 'guid') {
+								cval = $(td).parent().data(val);
+							}
+							else if (val == 'rid') {
+								cval = $(td).parent().data("guid");
+							}
+							else {
+								cval = $(td).parent().find("[data-field='" + val + "']").html();
+							}
+
+							if (cval) {
+								url = url.split('%' + val + '%').join(cval);
+							}
+
+						});
+					}
+					//if (v.icon != null)
+					a = '<button type="button" class="btn btn-orange-a '+(location==21?'btn-block':'')+' btn-flat" onclick="'+url+'">'+v.caption+'</button>';
+					//else
+						//a = "<a href=\"" + url + "\">" + v.caption + "</a>";
+						
+					uo = (v.updateOnly == 1) ? 1 : 0;
+					bstate = v.state;
+					if (bstate) {
+					bstate = bstate.split(' ').join('');
+					bstate = bstate.split(',');
+					for (var i = 0; i < bstate.length; i++) {
+						var gstate = (getState() == "") ? "0" : getState();
+						if (gstate == bstate[i]) {
+							if ($(td).find("a").find("." + v.icon).length > 0)
+								$(td).find("a").find("." + v.icon).parent().attr("href", url);
+							else
+								if (uo == 0) $(td).append(a);
+							return;
+						}
+					}
+				} else {
+					if ($(td).find("a").find("." + v.icon).length > 0)
+						$(td).find("a").find("." + v.icon).parent().attr("href", url);
+					else
+						if (uo == 0) $(td).append(a);
+				}		
+				});
+			});
+		}
+	}
 }
 
 //checkbox pinned
@@ -1018,3 +1087,4 @@ function showMessage(msg, mode, fokus, afterClosed, afterClick) {
         }
     }
 }
+
