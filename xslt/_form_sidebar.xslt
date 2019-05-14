@@ -6,7 +6,7 @@
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
 
   <xsl:variable name="docStatus" select="/sqroot/body/bodyContent/form/info/state/status/." />
-  
+
   <xsl:template match="/">
     <xsl:variable name="settingmode">
       <xsl:value-of select="/sqroot/body/bodyContent/form/info/settingMode/."/>
@@ -95,15 +95,37 @@
       </div>
     </form-->
         <div class="input-group sidebar-form">
-          <input type="text" id="searchBox" name="searchBox" class="form-control" placeholder="Search..." onkeypress="return searchText(event, this.value);" value="" />
+          <input type="text" id="searchBox" name="searchBox" class="form-control" placeholder="Search..." onkeypress="return searchText(event, this.value, 20);" value="" />
           <span class="input-group-btn">
-            <button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="searchText(event);">
+            <button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="searchText(event, null, 20);">
               <ix class="fa fa-search" aria-hidden="true"></ix>
             </button>
           </span>
         </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
+          <li class="treeview hidden" id="tabSearchResult">
+            <a href="#">
+              <span>
+                <ix class="fa fa-search"></ix>
+              </span>
+              <span class="info">&#160;SEARCH RESULT</span>
+              <span class="pull-right-container">
+                <ix class="fa fa-angle-left pull-right"></ix>
+              </span>
+            </a>
+            <ul class="treeview-menu view-left-sidebar info" id="searchResult">
+                <li>
+                  <a class="info" href="#">
+                    <span>
+                      <ix class="fa fa-header"></ix>
+                    </span >No results
+                  </a>
+                </li>
+              
+            
+            </ul>
+          </li>
           <xsl:if test="(sqroot/body/bodyContent/form/children) and (sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000'">
             <li class="treeview" id ="gotoPanel">
               <a href="#">
@@ -117,13 +139,11 @@
               </a>
               <ul class="treeview-menu view-left-sidebar info">
                 <li>
-                  <a class="info" href="#" onclick="$(&quot;a[href='#tab_1']&quot;).click()">
+                  <a class="info" href="#">
                     <span>
                       <ix class="fa fa-header"></ix>
                     </span >&#160;HEADER
                   </a>
-                </li>
-                <li>
                   <xsl:apply-templates select="sqroot/body/bodyContent/form/children"/>
                 </li>
               </ul>
@@ -171,7 +191,9 @@
                         </xsl:choose>
                         &#160;<xsl:value-of select="name"/><!--(Lv. <xsl:value-of select="@level"/>)-->
                         <xsl:if test="delegateName">
-                          &#160;<small>(delegated by <xsl:value-of select="delegateName"/>)</small>
+                          &#160;<small>
+                            (delegated by <xsl:value-of select="delegateName"/>)
+                          </small>
                         </xsl:if>
                         <br/>
                         <xsl:if test="@status =0">
@@ -300,7 +322,7 @@
   </xsl:template>
 
   <xsl:template match="child">
-    <a href="#" onclick="$(&quot;a[href='#tab_{code/.}']&quot;).click()" >
+    <a href="#child{code/.}{//sqroot/header/info/GUID}">
       <span>
         <ix class="fa fa-list-alt"></ix>
       </span>&#160;
@@ -459,6 +481,6 @@
       <xsl:value-of select=" docattachment"/>
     </dd>
   </xsl:template>
-  
+
   <xsl:include href="_menu.xslt" />
 </xsl:stylesheet>
