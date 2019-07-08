@@ -196,7 +196,7 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="@editor='mediabox'">
+      <xsl:when test="@editor='mediabox' or @editor='imagebox'">
         <td>
           <xsl:if test=".!=''">
             <a class="text-muted" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={@caption}&#38;code={../../@code}&#38;GUID={../../@GUID}');">

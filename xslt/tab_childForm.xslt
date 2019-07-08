@@ -300,7 +300,8 @@
       <xsl:apply-templates select="hiddenBox"/>
       <xsl:apply-templates select="checkBox"/>
       <xsl:apply-templates select="mediaBox"/>
-      <xsl:apply-templates select="imageBox"/>															
+      <xsl:apply-templates select="imageBox"/>
+      <xsl:apply-templates select="profileBox"/>															
       <xsl:apply-templates select="autoSuggestBox"/>
       <xsl:apply-templates select="tokenBox"/>
       <xsl:apply-templates select="radio"/>
@@ -606,6 +607,135 @@
           <ix class="fa fa-paperclip"></ix>&#160;
         </button>
       </span>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="imageBox">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
+      <xsl:value-of select="titlecaption"/>
+    </label>
+    <xsl:if test="../@isNullable = 0">
+      <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
+    </xsl:if>
+    <!--default value-->
+    <xsl:variable name="thisvalue">
+      <xsl:choose>
+        <xsl:when  test="/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000' and defaultvalue != ''">
+          <xsl:value-of select="defaultvalue/." />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="value"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <div class="input-group">
+      <label class="input-group-btn">
+        <span class="btn btn-primary">
+          Browse <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file" data-code="{/sqroot/body/bodyContent/form/info/code}" data-child="Y" style="display: none;" multiple="" />
+        </span>
+      </label>
+      <input id ="{../@fieldName}" name="{../@fieldName}" value="{value}" data-old="{value}" type="text" class="form-control" readonly="" />
+      <span class="input-group-btn">
+        <button class="btn btn-secondary" type="button" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={../@fieldName}&#38;code={/sqroot/body/bodyContent/form/info/code/.}&#38;GUID={/sqroot/body/bodyContent/form/info/GUID/.}');">
+          <xsl:if test="/sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
+            <xsl:attribute name="disabled">disabled</xsl:attribute>
+          </xsl:if>
+          <ix class="fa fa-paperclip"></ix>&#160;
+        </button>
+      </span>
+    </div>
+    <style>
+      #img_<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/> {
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+      }
+
+      #myImg_<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>:hover {opacity: 0.7;}
+
+      /* The Modal (background) */
+      .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 100; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+      margin-top:50px;
+      }
+
+      .modal-content {
+      margin: auto;
+      display: block;
+      width: 80%;
+      max-width: 700px;
+      }
+
+      #caption_<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/> {
+      margin: auto;
+      display: block;
+      width: 80%;
+      max-width: 700px;
+      text-align: center;
+      color: #ccc;
+      padding: 10px 0;
+      height: 150px;
+      }
+
+      .modal-content, #caption_<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/> {
+      -webkit-animation-name: zoom;
+      -webkit-animation-duration: 0.6s;
+      animation-name: zoom;
+      animation-duration: 0.6s;
+      }
+
+      @-webkit-keyframes zoom {
+      from {-webkit-transform:scale(0)}
+      to {-webkit-transform:scale(1)}
+      }
+
+      @keyframes zoom {
+      from {transform:scale(0)}
+      to {transform:scale(1)}
+      }
+
+      /* The Close Button */
+      .close {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+      opacity:100;
+      }
+
+      .close:hover,
+      .close:focus {
+      color: #bbb;
+      text-decoration: none;
+      cursor: pointer;
+      }
+
+      @media only screen and (max-width: 700px){
+      .modal-content {
+      width: 100%;
+      }
+      }
+    </style>
+    <img id="img_{/sqroot/body/bodyContent/form/info/GUID/.}" onclick="popUpImg('{/sqroot/body/bodyContent/form/info/GUID/.}')" alt="{value}" src="ophcontent/documents/{/sqroot/header/info/account}/{value}" style="margin-top:10px;width:100%;border:5px gray solid;"></img>
+    <span style="color:blue;cursor:pointer;" onclick="popUpImg('{/sqroot/body/bodyContent/form/info/GUID/.}')">Click here to view the image.</span>
+    <div id="myImage_{/sqroot/body/bodyContent/form/info/GUID/.}" class="modal">
+      <span class="close" onclick="javascript:$('#myImage_{/sqroot/body/bodyContent/form/info/GUID/.}').hide();">X</span>
+      <img class="modal-content" id="img01_{/sqroot/body/bodyContent/form/info/GUID/.}"/>
+      <div id="caption_{/sqroot/body/bodyContent/form/info/GUID/.}"></div>
     </div>
   </xsl:template>
 
@@ -916,7 +1046,7 @@
       </xsl:choose>
     </input>
   </xsl:template>
-  <xsl:template match="imageBox">
+  <xsl:template match="profileBox">
   </xsl:template>	 
 
   <xsl:template match="radio">
