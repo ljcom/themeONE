@@ -43,7 +43,7 @@
       
       <xsl:if test="/sqroot/body/bodyContent/browse/info/buttons">
         buttons=<xsl:value-of select="sqroot/body/bodyContent/browse/info/buttons"/>;
-        loadExtraButton(buttons, 'browse-action-button');
+        loadExtraButton(buttons, 'browse-action-button',10);
       </xsl:if>
       </script>
     <div class="row">
@@ -158,7 +158,7 @@
   </xsl:template>
   
   <xsl:template match="sqroot/body/bodyContent/browse/content/row">
-    <tr id="tr1_{$lowerCode}{@GUID}" data-code="{$lowerCode}" data-guid="{@GUID}"
+    <tr id="tr1_{$lowerCode}{translate(@GUID, $uppercase, $smallcase)}" data-code="{$lowerCode}" data-guid="{@GUID}"
         onmouseover="this.bgColor='lavender';this.style.cursor='pointer';" onmouseout="this.bgColor='white'">
       <td class="cell-recordSelector"></td>
       <xsl:apply-templates select="fields/field"/>
@@ -203,7 +203,7 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="@editor='mediabox'">
+      <xsl:when test="@editor='mediabox' or @editor='imagebox'">
         <td>
           <xsl:if test=".!=''">
             <a class="text-muted" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={@caption}&#38;code={../../@code}&#38;GUID={../../@GUID}');">

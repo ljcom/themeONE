@@ -178,7 +178,7 @@
       <xsl:apply-templates select="hiddenBox"/>
       <xsl:apply-templates select="checkBox"/>
       <xsl:apply-templates select="mediaBox"/>
-      <xsl:apply-templates select="imageBox"/>
+      <xsl:apply-templates select="profileBox"/>
       <xsl:apply-templates select="autoSuggestBox"/>
       <xsl:apply-templates select="tokenBox"/>
       <xsl:apply-templates select="radio"/>
@@ -1053,7 +1053,7 @@
       </xsl:choose>
     </input>
   </xsl:template>
-  <xsl:template match="imageBox">
+  <xsl:template match="profileBox">
   </xsl:template>
 
 

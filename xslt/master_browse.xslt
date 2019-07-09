@@ -46,7 +46,7 @@
   </xsl:variable>
   <xsl:variable name="cSummary">
     <xsl:choose>
-      <xsl:when test="sqroot/body/bodyContent/browse/header/column[@mandatory=0]">1</xsl:when>
+      <xsl:when test="sqroot/body/bodyContent/browse/header/column[@mandatory=0] and sqroot/body/bodyContent/browse/info/permission/allowShowSummaryColumn = 1">1</xsl:when>
       <xsl:otherwise>0</xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
@@ -348,7 +348,7 @@
                     <xsl:if test="sqroot/body/bodyContent/browse/header/column[@mandatory=1]">
                       <xsl:apply-templates select="sqroot/body/bodyContent/browse/header/column[@mandatory=1]" />
                     </xsl:if>
-                    <xsl:if test="sqroot/body/bodyContent/browse/header/column[@mandatory=0]">
+                    <xsl:if test="sqroot/body/bodyContent/browse/header/column[@mandatory=0] and sqroot/body/bodyContent/browse/info/permission/allowShowSummaryColumn = 1">
                       <th class="text-left" style="background-color:white">SUMMARY</th>
                     </xsl:if>
                     <xsl:if test="sqroot/body/bodyContent/browse/info/isDelegated = 1">
@@ -692,7 +692,7 @@
         '<xsl:value-of select="/sqroot/body/bodyContent/browse/info/isDelegator"/>', '<xsl:value-of select="$settingMode" />');
       </script>
 
-      <xsl:if test="count(fields/field[@mandatory=0])>0">
+      <xsl:if test="count(fields/field[@mandatory=0])>0 and /sqroot/body/bodyContent/browse/info/permission/allowShowSummaryColumn = 1">
         <td class="expand-td" data-toggle="collapse" data-target="#brodeta-{@GUID}" data-parent="#brodeta-{@GUID}" style="cursor:pointer">
           <table class="fixed-table">
             <tr>
@@ -715,7 +715,7 @@
       </xsl:if>
 
       <xsl:if test="$settingMode='T'">
-        <td class="expand-td" style="text-align:center" data-toggle="collapse" data-target="#{@GUID}" data-parent="#{@GUID}">
+        <td class="expand-td" style="text-align:center;width:5%" data-toggle="collapse" data-target="#{@GUID}" data-parent="#{@GUID}">
           <a href="#" data-toggle="tooltip" title="{docStatus/.}">
             <span class="label label-{docStatus/@labelColor}">
               <xsl:value-of select="docStatus/@title" />
@@ -727,7 +727,7 @@
       <xsl:variable name="pageNo" select="/sqroot/body/bodyContent/browse/info/pageNo" />
 
       <xsl:if test="/sqroot/body/bodyContent/browse/info/isDelegator = 0">
-        <td class="browse-action-button text-right" style="white-space: nowrap;">
+        <td class="browse-action-button text-right" style="white-space: nowrap;width:5%">
 
           <!--Action Approval icons-->
           <xsl:if test="$settingMode='T'">
@@ -910,6 +910,7 @@
                   </xsl:if>
 
                   <!--Talks-->
+				  
                   <div style="max-width:300px;float:left;margin: 10px 10px 10px 10px;">
                     <xsl:attribute name="class">
                       <xsl:choose>
@@ -947,7 +948,7 @@
                       </div>
                     </div>
                   </div>
-
+				
                 </div>
               </div>
             </div>
