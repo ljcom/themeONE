@@ -447,7 +447,8 @@
       </xsl:choose>
     </xsl:variable>
 
-    <textarea class="form-control" placeholder="input text..." name="{../@fieldName}" id ="{../@fieldName}" data-type="textArea" style="max-width:100%; min-width:100%; min-height:55px;"
+    <textarea class="form-control" placeholder="input text..." name="{../@fieldName}" id ="{../@fieldName}" 
+	  data-type="textArea" style="max-width:100%; min-width:100%; min-height:55px;" rows="10"
       onblur="preview('{preview/.}',getCode(), '{$cid}','', this);" oninput="javascript:checkChanges(this)" >
       <xsl:value-of select="$thisValue"/>
     </textarea>

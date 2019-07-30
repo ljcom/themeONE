@@ -196,7 +196,7 @@
     <script>
       //loadScript('OPHContent/cdn/ophelements/signjs/sign.js');
       $.getScript('OPHContent/cdn/ophelements/signjs/sign.js', function() {
-      initSign('sign', '<xsl:value-of select="../@fieldName"/>');
+      try{initSign('sign', '<xsl:value-of select="../@fieldName"/>');}catch(e){}
       });
 
 
@@ -217,7 +217,7 @@
       //loadScript('OPHContent/cdn/ophelements/gps/gps.js');
       $.getScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyAuS1y9JVaVu0D_4gFw4U4V88e0HgqI_3A', function() {
       $.getScript('OPHContent/cdn/ophelements/gps/gps.js', function() {
-      initMap();
+      try{initMap();}catch(e){}
       })
       })
     </script>
@@ -472,7 +472,8 @@
       </xsl:choose>
     </xsl:variable>
 
-    <textarea class="form-control" placeholder="input text..." name="{../@fieldName}" id ="{../@fieldName}" data-type="textArea" style="max-width:100%; min-width:100%; min-height:55px;"
+    <textarea class="form-control" placeholder="input text..." name="{../@fieldName}" id ="{../@fieldName}" 
+	  data-type="textArea" style="max-width:100%; min-width:100%; min-height:55px;" rows="10"
       onblur="preview('{preview/.}',getCode(), '{$cid}','', this);" oninput="javascript:checkChanges(this)" >
       <xsl:value-of select="$thisValue"/>
     </textarea>
