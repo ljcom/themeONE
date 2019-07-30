@@ -239,16 +239,16 @@
               <div id="profileBox" class="box box-primary">
                 <div class="box-body box-profile">
                   <xsl:choose>
-                    <xsl:when test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/imageBox/. != ''">
+                    <xsl:when test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/profileBox/. != ''">
                       <xsl:variable name="imgName">
                         <xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName/."/>
                       </xsl:variable>
                       <xsl:variable name="imgVal">
-                        <xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/imageBox/value/."/>
+                        <xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/profileBox/value/."/>
                       </xsl:variable>
 
-                      <!--<xsl:value-of select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/imageBox/titlecaption"/>-->
-                      <div id="imageBox" style=" padding:5px;">
+                      <!--<xsl:value-of select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/profileBox/titlecaption"/>-->
+                      <div id="profileBox" style=" padding:5px;">
                         <div id="{$imgName}_camera">
                           <img style="width:100%" id="{$imgName}_camera_img">
                             <xsl:attribute name="src">
@@ -279,7 +279,7 @@
                           </img>
                         </div>
                         <form role="form" id="formwebcam" enctype="multipart/form-data" onsubmit="return false">
-                          <xsl:if test="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/imageBox/. != ''">
+                          <xsl:if test="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/profileBox/. != ''">
                             <input type="hidden" class="oph-webcam" id="{/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName/.}" name ="{/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName/.}"/>
                           </xsl:if>
 
@@ -349,7 +349,7 @@
                         <xsl:choose>
                           <xsl:when test="@fieldName=$fieldHead">
                           </xsl:when>
-                          <xsl:when test="imageBox">
+                          <xsl:when test="profileBox">
                           </xsl:when>
                           <xsl:otherwise>
                             <li class="list-group-item">
@@ -780,7 +780,7 @@
       <xsl:apply-templates select="hiddenBox"/>
       <xsl:apply-templates select="checkBox"/>
       <xsl:apply-templates select="mediaBox"/>
-      <xsl:apply-templates select="imageBox"/>
+      <xsl:apply-templates select="profileBox"/>
       <xsl:apply-templates select="autoSuggestBox"/>
       <xsl:apply-templates select="tokenBox"/>
       <xsl:apply-templates select="radio"/>
@@ -1263,7 +1263,7 @@
       </xsl:choose>
     </input>
   </xsl:template>
-  <xsl:template match="imageBox">
+  <xsl:template match="profileBox">
   </xsl:template>
 
   <xsl:template match="mediaBox">

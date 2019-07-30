@@ -559,7 +559,7 @@ function loadExtraButton(buttons, divn, location) {
 			buttons.forEach(function (v) {
 				var url = v.url;
 				var loc = v.location;
-				if(loc.includes("10") == false) {
+				if(loc==undefined || loc.includes("10") == false) {
 						return
 					}
 				//check variable
@@ -621,7 +621,7 @@ function loadExtraButton(buttons, divn, location) {
 				buttons.forEach(function (v) {
 					var url = v.url;
 					var loc = v.location;
-					if(loc.includes("11") == false) {
+					if(loc==undefined || loc.includes("11") == false) {
 						return
 					}
 					//check variable
@@ -682,7 +682,7 @@ function loadExtraButton(buttons, divn, location) {
 					var url = v.url;
 					var loc = v.location;
 					var btnid = v.id;
-					if(loc.includes("20") == false) {
+					if(loc==undefined || loc.includes("20") == false) {
 						return
 					}
 					//check variable
@@ -710,6 +710,7 @@ function loadExtraButton(buttons, divn, location) {
 					}
 					//if (v.icon != null)
 					a = '<span  id="'+v.id+'" ><button type="button" style="width:100%" class="btn btn-orange-a '+(location==21?'btn-block':'')+' btn-flat" onclick="'+url+'">'+v.caption+'</button></span>';
+					a = a.replace('%rid%',getGUID())
 					//else
 						//a = "<a href=\"" + url + "\">" + v.caption + "</a>";
 						
@@ -1188,5 +1189,5 @@ function showMessage(msg, mode, fokus, afterClosed, afterClick) {
       modal.style.display = "block";
       modalImg.src = img.src;
       captionText.innerHTML = img.alt;
-      
+      preview('1', getCode(), getGUID(), '', this);
   }

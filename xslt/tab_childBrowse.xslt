@@ -203,12 +203,27 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:choose>
-      <xsl:when test="@editor='mediabox' or @editor='imagebox'">
+      <xsl:when test="@editor='mediabox'">
         <td>
-          <xsl:if test=".!=''">
+          <xsl:if test=".!=''"> 
             <a class="text-muted" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={@caption}&#38;code={../../@code}&#38;GUID={../../@GUID}');">
               <ix class="fa fa-paperclip" title="Download" />
             </a>
+          </xsl:if>&#160;
+        </td>
+      </xsl:when>
+      <xsl:when test="@editor='imagebox'">
+        <td>
+          <xsl:if test=".!=''">
+            <a class="text-muted" onclick="javascript:popUpImg('{../../@GUID}');preview('{@preview}', '{../../@code}', '{../../@GUID}','', 'formheader');">
+              <ix class="far fa-eye" title="Show Image" /> 
+            </a>
+            <img id="img_{../../@GUID}" alt="{.}" src="ophcontent/documents/{/sqroot/header/info/account}/{.}" style="display:none;margin-top:10px;width:100%;border:5px gray solid;"></img>
+            <div id="myImage_{../../@GUID}" class="modal">
+              <span class="close" onclick="javascript:$('#myImage_{../../@GUID}').hide();">X</span>
+              <img class="modal-content" id="img01_{../../@GUID}"/>
+              <div id="caption_{../../@GUID}"></div>
+            </div>
           </xsl:if>&#160;
         </td>
       </xsl:when>

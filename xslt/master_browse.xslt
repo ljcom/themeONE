@@ -40,6 +40,7 @@
     </xsl:choose>
   </xsl:template>
 
+  
   <!--Table colspan-->
   <xsl:variable name="cMandatory">
     <xsl:value-of select="count(sqroot/body/bodyContent/browse/header/column[@mandatory=1])"/>
@@ -982,8 +983,8 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <td id="mandatory{../../@GUID}" class="expand-td browse-mandatory" data-toggle="collapse"
-        data-target="#brodeta-{../../@GUID}" data-parent="#brodeta-{../../@GUID}" style="cursor:pointer"
+    <td id="mandatory{../../@GUID}" class="expand-td browse-mandatory" data-toggle="collapse" 
+        data-target="#brodeta-{../../@GUID}" data-parent="#brodeta-{../../@GUID}" style="cursor:pointer;{@style}"
         data-field="{@caption}" data-title="{@title}">
       <xsl:choose>
         <xsl:when test="@editor='anchor'">

@@ -212,10 +212,7 @@
   </xsl:template>
   <xsl:template match="getGPSBox">
     <script>
-      //loadScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyAuS1y9JVaVu0D_4gFw4U4V88e0HgqI_3A', true, true);
-
-      //loadScript('OPHContent/cdn/ophelements/gps/gps.js');
-      $.getScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyAuS1y9JVaVu0D_4gFw4U4V88e0HgqI_3A', function() {
+      $.getScript('https://maps.googleapis.com/maps/api/js?key=##gpskey##', function() {
       $.getScript('OPHContent/cdn/ophelements/gps/gps.js', function() {
       initMap();
       })
@@ -228,7 +225,7 @@
   </xsl:template>
   <xsl:template match="setGPSBox">
     <script>
-      loadScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyAuS1y9JVaVu0D_4gFw4U4V88e0HgqI_3A', true, true);
+      loadScript('https://maps.googleapis.com/maps/api/js?key=##gpskey##', true, true);
       loadScript('OPHContent/cdn/ophelements/gps/gps.js');
       setTimeout(function() {initMap();}, 1000);
     </script>
