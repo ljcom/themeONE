@@ -520,9 +520,10 @@
               </xsl:for-each>
               <xsl:for-each select="sqroot/body/bodyContent/form/children/child">
                 <div class="tab-pane" id="tab_{code}">
-                  <xsl:if test="/sqroot/body/bodyContent/form/info/GUID !='00000000-0000-0000-0000-000000000000'">
-                    <xsl:apply-templates select="."/>
-
+                  <xsl:if test="/sqroot/body/bodyContent/form/info/GUID !='00000000-0000-0000-0000-000000000000' ">
+                    
+					<xsl:apply-templates select="."/>
+					
                   </xsl:if>
                   <!--<xsl:value-of select="code"/>-->
                 </div>
@@ -656,11 +657,11 @@
 
   <xsl:include href="_elements.xslt" />
 
-  <xsl:template match="sqroot/body/bodyContent/form/children">
+  <!-- <xsl:template match="sqroot/body/bodyContent/form/children"> -->
 
-    <xsl:apply-templates select="child"/>
+    <!-- <xsl:apply-templates select="child"/> -->
 
-  </xsl:template>
+  <!-- </xsl:template> -->
 
   <xsl:template match="child">
     <xsl:if test="info/permission/allowBrowse&gt;='1'">

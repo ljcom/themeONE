@@ -30,7 +30,7 @@
       })
 
       var msg= (err != '') ? 'Upload Error : ' + err : 'Upload Data Success'
-      showMessage(msg);
+      showMessage(msg,2);
       //setTimeout(function() {location.reload()}, 5000);
 
       var code='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>';
@@ -162,7 +162,7 @@
       <xsl:apply-templates select="fields/field"/>
     </tr>
     <tr id="tr2_{$lowerCode}{translate(@GUID,'ABCDEF','abcdef')}">
-      <td colspan="7" style="padding:0;">
+      <td colspan="100" style="padding:0;">
         <div class="browse-data accordian-body collapse" id="{$lowerCode}{translate(@GUID,'ABCDEF','abcdef')}" aria-expanded="false">
           Please Wait...
         </div>

@@ -550,7 +550,7 @@
       minViewMode:'months',
       defaultDate: new Date('<xsl:value-of select="value" />')
       }).on('change', function(){
-      $('#<xsl:value-of select="../@fieldName" />').val($('#<xsl:value-of select="../@fieldName" />_month').data('datepicker').getFormattedDate('mm/dd/yyyy'));
+      $('#<xsl:value-of select="../@fieldName" />').val($('#<xsl:value-of select="../@fieldName" />_month').data('datepicker').getFormattedDate('mmm/dd/yyyy'));
       preview('{preview/.}',getCode(), null,'');
       });
 
@@ -801,7 +801,7 @@
         <span class="select2-search select2-box--dropdown" id="select2-{../@fieldName}-addNew" style="display:none;">
           <ul class="select2-results__options" role="tree" aria-expanded="true" aria-hidden="false">
             <li class="select2-results__option" role="treeitem" aria-selected="false">
-              <a data-toggle="modal" data-target="#addNew{../@fieldName}" data-backdrop="static" data-action="new">
+              <a data-toggle="modal" data-target="#addNew{../@fieldName}" data-backdrop="false" data-action="new">
                 Add New <xsl:value-of select="titlecaption"/>
               </a>
             </li>
@@ -1132,13 +1132,15 @@
       <xsl:when test="@fieldName=$radioVal1">
         <xsl:choose>
           <xsl:when test="radioRows">
-            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '@radioNo')" >
+            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '@radioNo');
+                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
               <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" checked="checked" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>
           </xsl:when>
           <xsl:otherwise>
-            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '@radioNo')" >
+            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '@radioNo');
+                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
               <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" checked="checked" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>
@@ -1151,13 +1153,15 @@
       <xsl:otherwise>
         <xsl:choose>
           <xsl:when test="radioRows">
-            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}')" >
+            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}');
+                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
               <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>
           </xsl:when>
           <xsl:otherwise>
-            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}')" >
+            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}');
+                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
               <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>

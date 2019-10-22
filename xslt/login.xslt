@@ -148,7 +148,7 @@
                       <label>Password</label>
                       <input type="password" class="form-control" name ="{/sqroot/header/info/account}_pwd" id ="{/sqroot/header/info/account}_pwd" autocomplete="off" placeholder="password" onkeypress="return checkenter(event)"/>
                     </div>
-                    <div class="g-recaptcha" data-sitekey="6Ld9Qi8UAAAAAJKicrf2JhrOH3k5LkqxyCodIOWm"></div>
+                    <div class="g-recaptcha" data-sitekey="##recaptchakey##"></div>
                   </form>
                 </div>
                 <div class="box-footer clearfix">

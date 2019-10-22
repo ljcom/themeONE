@@ -1,3 +1,4 @@
+	
 function LoadNewPart(filename, id, code, nbpage) {
    
     var xsldoc = 'OPHContent/themes/themeOne/xslt/' + filename + '.xslt';
@@ -890,7 +891,7 @@ function switchBrowse(mode) {
 
 function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, allowForce, isDelegator, smode) {
 	mode=getCookie('browseMode');
-	var accountid='ecatalog';
+	var accountid='maxfour';
 	if (mode==0) {
 		var tx1 = '';
 		$('td#mandatory' + guid).each(function (i, td) {
@@ -1191,3 +1192,19 @@ function showMessage(msg, mode, fokus, afterClosed, afterClick) {
       captionText.innerHTML = img.alt;
       preview('1', getCode(), getGUID(), '', this);
   }
+  
+  function rejectPopup(code, GUID, action, page, location, formId, afterSuccess) {
+	$("#rejectModal").modal('show');
+	$("#rejectModal").appendTo('body');
+/*
+    $("#nModal").modal('show');
+    document.getElementById('rejectComment').onkeyup = function () {
+        $('#rejectBtn').css('visibility', $('#rejectComment').val() !== '' ? 'visible' : 'hidden');
+    };
+
+    document.getElementById('rejectBtn').onclick = function () {
+        var comment = $('#rejectComment').val();
+        btn_function(code, GUID, action, page, location, formId, comment, afterSuccess);
+    };
+	*/
+}

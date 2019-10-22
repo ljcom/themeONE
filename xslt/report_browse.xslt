@@ -150,6 +150,7 @@
   <xsl:template match="fields/field">
     <xsl:apply-templates select="textBox"/>
     <xsl:apply-templates select="dateBox"/>
+	<xsl:apply-templates select="datetimeBox"/>
     <xsl:apply-templates select="monthBox"/>
     <xsl:apply-templates select="yearBox"/>
     <xsl:apply-templates select="checkBox"/>
@@ -158,11 +159,13 @@
 
   <xsl:template match="checkBox">
     <!--Supaya bisa di serialize-->
-    <input type="hidden" name="{../@fieldName}" id="hidden{../@fieldName}" value="0"/>
+    <!--<input type="hidden" name="{../@fieldName}" id="hidden{../@fieldName}" value="0"/>-->
+    <input type="hidden" name="{../@fieldName}" id="{../@fieldName}" value="{value}"/>
     <!--Supaya bisa di serialize-->
 
 
-    <input type="checkbox"  value="{value}" id ="{../@fieldName}"  name="{../@fieldName}" onchange="checkCB('{../@fieldName}');preview('{preview/.}',getCode(), null,'');">
+    <input type="checkbox"  value="{value}" id ="cb{../@fieldName}"  name="cb{../@fieldName}" data-type="checkBox" data-old="{value}"
+           onchange="checkCB('{../@fieldName}');preview('{preview/.}',getCode(), null,'');">
       <xsl:if test="value=1">
         <xsl:attribute name="checked">checked</xsl:attribute>
       </xsl:if>
@@ -211,6 +214,25 @@
       </input>
     </div>
   </xsl:template>
+  <xsl:template match="datetimeBox">
+    <script>
+       $('.datetimepicker').datetimepicker();
+    </script>
+    <label id="{../@fieldName}caption">
+      <xsl:value-of select="titleCaption"/>
+    </label>
+    <div class="input-group date">
+      <div class="input-group-addon">
+        <ix class="fa fa-calendar"></ix>
+      </div>
+      <input type="text" class="form-control pull-right datetimepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" onblur="preview('{preview/.}',getCode(), null,'');" >
+        <xsl:if test="../@isEditable=0">
+          <xsl:attribute name="disabled">disabled</xsl:attribute>
+        </xsl:if>
+      </input>
+    </div>
+  </xsl:template>
+  
   <xsl:template match="monthBox">
     <script>
       $('#<xsl:value-of select="../@fieldName" />_month').datepicker(

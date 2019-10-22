@@ -10,6 +10,7 @@
   scrollbar-dark-shadow-color: #000;
 */
     -ms-overflow-style: -ms-autohiding-scrollbar;
+	
 }
 
 .dashboard-title {
@@ -1479,7 +1480,7 @@ svg:not(:root).svg-inline--fa {
       .modal {
       display: none; /* Hidden by default */
       position: fixed; /* Stay in place */
-      z-index: 100; /* Sit on top */
+      z-index: 10000; /* Sit on top */	//edit higher if still cannot work
       padding-top: 100px; /* Location of the box */
       left: 0;
       top: 0;
