@@ -121,8 +121,18 @@
 	  
 	<xsl:if test="sqroot/body/bodyContent/form/info/buttons">
 	buttons=<xsl:value-of select="sqroot/body/bodyContent/form/info/buttons"/>;
-    loadExtraButton(buttons, 'form-action-button', 21);	
+    loadExtraButton(buttons, 'form-action-button',20);	
 	</xsl:if>
+
+function autosuggest_defaultValue(SelectID, id, text) {
+	var newOption = new Option(text, id, true, true);
+	var InitialValue = id;
+	//$("#" + SelectID).data("old", InitialValue);
+	//$("#" + SelectID).val(InitialValue);
+	//$("#" + SelectID).data("oldtext", text);
+	$("#" + SelectID).append(newOption).trigger('change');
+} 
+	
     </script>
 
     <xsl:variable name="settingmode">
@@ -259,16 +269,16 @@
               <div id="profileBox" class="box box-primary">
                 <div class="box-body box-profile">
                   <xsl:choose>
-                    <xsl:when test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/imageBox/. != ''">
+                    <xsl:when test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/profileBox/. != ''">
                       <xsl:variable name="imgName">
                         <xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName/."/>
                       </xsl:variable>
                       <xsl:variable name="imgVal">
-                        <xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/imageBox/value/."/>
+                        <xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/profileBox/value/."/>
                       </xsl:variable>
 
-                      <!--<xsl:value-of select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/imageBox/titlecaption"/>-->
-                      <div id="imageBox" style=" padding:5px;">
+                      <!--<xsl:value-of select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/profileBox/titlecaption"/>-->
+                      <div id="profileBox" style=" padding:5px;">
                         <div id="{$imgName}_camera">
                           <img style="width:100%" id="{$imgName}_camera_img">
                             <xsl:attribute name="src">
@@ -299,7 +309,7 @@
                           </img>
                         </div>
                         <form role="form" id="formwebcam" enctype="multipart/form-data" onsubmit="return false">
-                          <xsl:if test="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/imageBox/. != ''">
+                          <xsl:if test="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/profileBox/. != ''">
                             <input type="hidden" class="oph-webcam" id="{/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName/.}" name ="{/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName/.}"/>
                           </xsl:if>
 
@@ -369,7 +379,7 @@
                         <xsl:choose>
                           <xsl:when test="@fieldName=$fieldHead">
                           </xsl:when>
-                          <xsl:when test="imageBox">
+                          <xsl:when test="profileBox">
                           </xsl:when>
                           <xsl:otherwise>
                             <li class="list-group-item">
@@ -520,9 +530,10 @@
               </xsl:for-each>
               <xsl:for-each select="sqroot/body/bodyContent/form/children/child">
                 <div class="tab-pane" id="tab_{code}">
-                  <xsl:if test="/sqroot/body/bodyContent/form/info/GUID !='00000000-0000-0000-0000-000000000000'">
-                    <xsl:apply-templates select="."/>
-
+                  <xsl:if test="/sqroot/body/bodyContent/form/info/GUID !='00000000-0000-0000-0000-000000000000' ">
+                    
+					<xsl:apply-templates select="."/>
+					
                   </xsl:if>
                   <!--<xsl:value-of select="code"/>-->
                 </div>
@@ -656,11 +667,11 @@
 
   <xsl:include href="_elements.xslt" />
 
-  <xsl:template match="sqroot/body/bodyContent/form/children">
+  <!-- <xsl:template match="sqroot/body/bodyContent/form/children"> -->
 
-    <xsl:apply-templates select="child"/>
+    <!-- <xsl:apply-templates select="child"/> -->
 
-  </xsl:template>
+  <!-- </xsl:template> -->
 
   <xsl:template match="child">
     <xsl:if test="info/permission/allowBrowse&gt;='1'">

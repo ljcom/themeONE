@@ -16,7 +16,7 @@
   <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/form/info/permission/allowWipe" />
   <xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/form/info/permission/allowOnOff" />
   <xsl:variable name="settingMode" select="/sqroot/body/bodyContent/form/info/settingMode/." />
-  <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/status/."/>
+  <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/parentState/."/>
   <xsl:variable name="isRequester" select="/sqroot/body/bodyContent/form/info/document/isRequester"/>
   <xsl:variable name="isApprover" select="/sqroot/body/bodyContent/form/info/document/isApprover"/>
   <xsl:variable name="cid" select="translate(/sqroot/body/bodyContent/form/info/GUID/., 'ABCDEF', 'abcdef')"/>
@@ -102,12 +102,23 @@
 		}), (function(d) {<xsl:value-of select="$lowerCode" />_savebefore(d)}));
 	}
 	
+	
 	function <xsl:value-of select="$lowerCode" />_saveafter(d) {}
 	function <xsl:value-of select="$lowerCode" />_savebefore(d) {}
 	<xsl:if test="sqroot/body/bodyContent/form/info/buttons">
 	buttons=<xsl:value-of select="sqroot/body/bodyContent/form/info/buttons"/>;
     loadExtraButton(buttons, 'form-action-button', 20);	
 	</xsl:if>
+	
+function autosuggest_defaultValue(SelectID, id, text) {
+	var newOption = new Option(text, id, true, true);
+	var InitialValue = id;
+	//$("#" + SelectID).data("old", InitialValue);
+	//$("#" + SelectID).val(InitialValue);
+	//$("#" + SelectID).data("oldtext", text);
+	$("#" + SelectID).append(newOption).trigger('change');
+} 
+	
 	
     </script>
 
@@ -129,16 +140,22 @@
 
 
     <section class="content-header">
+
       <h1 data-toggle="collapse" data-target="#header" id="header_title">
+	  <a href="javascript: loadBrowse('{sqroot/body/bodyContent/form/info/code/.}');">
+	    <span>
+	       <ix class="fa fa-arrow-left"></ix>
+	    </span>
+	  </a>	  
         <xsl:choose>
           <xsl:when test="sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
             <xsl:value-of select="$head" />&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>
           </xsl:when>
           <xsl:when test="(sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000' and $settingMode='T'">
-            <xsl:value-of select="$head" />&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
+            <xsl:value-of select="$head" />&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="$head" />&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
+            <xsl:value-of select="$head" />&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
           </xsl:otherwise>
         </xsl:choose>
 
@@ -199,50 +216,50 @@
             <xsl:choose>
               <!--location: 0 header; 1 child; 2 browse location: browse:10, header form:20, browse anak:30, browse form:40-->
               <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
-                <button id="button_save" class="btn btn-orange-a" data-loading-text="SAVE (please wait...)" onclick="{$lowerCode}_save(20);">
+                <button id="button_save" class="btn btn-orange-a" data-loading-text="SAVE (please wait...)" onclick="&#123;$lowerCode}_save(20,null,'',null, $(this));">
                   <xsl:value-of select="/sqroot/body/bodyContent/form/info/btnsavecaption"/> </button>&#160;
                 <button id="button_cancel" class="btn btn-gray-a" data-loading-text="CANCEL" onclick="saveCancel()">CANCEL</button>&#160;
               </xsl:when>
               <xsl:when test="$docState = 0 or $docState = ''">
-                <button id="button_save" class="btn btn-orange-a" data-loading-text="SAVE (please wait...)" onclick="{$lowerCode}_save(20);">
+                <button id="button_save" class="btn btn-orange-a" data-loading-text="SAVE (please wait...)" onclick="&#123;$lowerCode}_save(20,null,'',null, $(this));">
                   <xsl:value-of select="/sqroot/body/bodyContent/form/info/btnsavecaption"/> </button>&#160;
                 <button id="button_cancel" class="btn btn-gray-a" data-loading-text="CANCEL" onclick="saveCancel()">CANCEL</button>&#160;
                 <xsl:if test="($settingMode)='T' and ($docState) &lt; 400 ">
-                  <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>&#160;
+                  <button id="button_submit" class="btn btn-orange-a" data-loading-text="SUBMIT (please wait...)" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20,null,'',null, $(this));">SUBMIT</button>&#160;
                 </xsl:if>
                 <xsl:if test="(($allowDelete>=1) and ($docState=0 or $docState=300))
 							                or (($allowDelete>=4) and ($docState&lt;100 or $docState&gt;=300))">
-                  <button id="button_delete" class="btn btn-gray-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>&#160;
+                  <button id="button_delete" class="btn btn-gray-a" data-loading-text="DELETE (please wait...)" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}','{sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20,null,'',null, $(this));">DELETE</button>&#160;
                 </xsl:if>
               </xsl:when>
               <xsl:when test="($docState) &gt;= 100 and ($docState) &lt; 300">
-                <button id="button_save" class="btn btn-orange-a" data-loading-text="SAVE (please wait...)" onclick="{$lowerCode}_save(20);">
+                <button id="button_save" class="btn btn-orange-a" data-loading-text="SAVE (please wait...)" onclick="&#123;$lowerCode}_save(20,null,'',null, $(this));">
                   <xsl:value-of select="/sqroot/body/bodyContent/form/info/btnsavecaption"/> </button>&#160;
                 <button id="button_cancel" class="btn btn-gray-a" data-loading-text="CANCEL" onclick="saveCancel()">CANCEL</button>&#160;
                 <xsl:if test="$isApprover=1">
-                  <button id="button_approve" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">APPROVE</button>&#160;
-                  <button id="button_reject" class="btn btn-orange-a" onclick="rejectPopup('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">REJECT</button>&#160;
+                  <button id="button_approve" class="btn btn-orange-a" data-loading-text="APPROVE (please wait...)" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20,null,'',null, $(this));">APPROVE</button>&#160;
+                  <button id="button_reject" class="btn btn-orange-a" data-loading-text="REJECT (please wait...)" onclick="rejectPopup('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20);">REJECT</button>&#160;
                 </xsl:if>
               </xsl:when>
               <xsl:when test="($docState) = 300">
-                <button id="button_save" class="btn btn-orange-a" data-loading-text="SAVE (please wait...)" onclick="{$lowerCode}_save(20);">
+                <button id="button_save" class="btn btn-orange-a" data-loading-text="SAVE (please wait...)" onclick="&#123;$lowerCode}_save(20,null,'',null, $(this));">
                   <xsl:value-of select="/sqroot/body/bodyContent/form/info/btnsavecaption"/> </button>&#160;
                 <xsl:if test="$isRequester=1">
-                  <button id="button_submit" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">RE-SUBMIT</button>&#160;
+                  <button id="button_submit" class="btn btn-orange-a" data-loading-text="RE-SUBMIT (please wait...)" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20,null,'',null, $(this));">RE-SUBMIT</button>&#160;
                 </xsl:if>
                 <button id="button_cancel" class="btn btn-gray-a" data-loading-text="CANCEL" onclick="saveCancel()">CANCEL</button>&#160;&#160;
 
               </xsl:when>
               <xsl:when test="($docState) &gt;= 400 and ($docState) &lt;= 499">
-                <button id="button_save" class="btn btn-orange-a" data-loading-text="SAVE (please wait...)" onclick="{$lowerCode}_save(20);">
+                <button id="button_save" class="btn btn-orange-a" data-loading-text="SAVE (please wait...)" onclick="&#123;$lowerCode}_save(20,null,'',null, $(this));">
                   <xsl:value-of select="/sqroot/body/bodyContent/form/info/btnsavecaption"/> </button>&#160;
                 <button id="button_cancel" data-loading-text="CANCEL" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
                 <xsl:if test="$allowForce=1">
-                  <button id="button_close" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">CLOSE</button>&#160;
+                  <button id="button_close" class="btn btn-orange-a" data-loading-text="CLOSE (please wait...)" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20,null,'',null, $(this));">CLOSE</button>&#160;
                 </xsl:if>
               </xsl:when>
               <xsl:when test="($docState) &gt;= 500 and ($docState) &lt;= 899">
-                <button id="button_reopen" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'reopen', 1, 20)">REOPEN</button>&#160;
+                <button id="button_reopen" class="btn btn-orange-a" data-loading-text="REOPEN (please wait...)" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'reopen', 1, 20,null,'',null, $(this));">REOPEN</button>&#160;
               </xsl:when>
               <xsl:otherwise>
                 &#160;
@@ -255,36 +272,36 @@
           <div style="text-align:center">
             <xsl:choose>
               <xsl:when test="($cid) = '00000000-0000-0000-0000-000000000000'">
-                <button id="button_save2" data-loading-text="SAVE (please wait...)" class="btn btn-orange-a" onclick="{$lowerCode}_save(20);">
+                <button id="button_save2" data-loading-text="SAVE (please wait...)" class="btn btn-orange-a" onclick="&#123;$lowerCode}_save(20,null,'',null, $(this));">
                   <xsl:value-of select="/sqroot/body/bodyContent/form/info/btnsavecaption"/> </button>&#160;
                 <button id="button_cancel2" class="btn btn-gray-a" data-loading-text="CANCEL" onclick="saveCancel()">CANCEL</button>&#160;
               </xsl:when>
               <xsl:when test="($docState) = 0 or ($docState) = ''">
-                <button id="button_save2" data-loading-text="SAVE (please wait...)" class="btn btn-orange-a" onclick="{$lowerCode}_save(20);">
+                <button id="button_save2" data-loading-text="SAVE (please wait...)" class="btn btn-orange-a" onclick="&#123;$lowerCode}_save(20,null,'',null, $(this));">
                   <xsl:value-of select="/sqroot/body/bodyContent/form/info/btnsavecaption"/> </button>&#160;
                 <button id="button_cancel2" data-loading-text="CANCEL" class="btn btn-gray-a" onclick="saveCancel()">CANCEL</button>&#160;
                 <xsl:if test="($settingMode)='T' and ($docState) &lt; 400 ">
-                  <button id="button_submit2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">SUBMIT</button>&#160;
+                  <button id="button_submit2" class="btn btn-orange-a" data-loading-text="SUBMIT (please wait...)" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20,null,'',null, $(this));">SUBMIT</button>&#160;
                 </xsl:if>
               </xsl:when>
               <xsl:when test="($docState) &gt; 99 and ($docState) &lt; 199">
-                <button id="button_save2" data-loading-text="SAVE (please wait...)" class="btn btn-orange-a" onclick="{$lowerCode}_save(20);">
+                <button id="button_save2" data-loading-text="SAVE (please wait...)" class="btn btn-orange-a" onclick="&#123;$lowerCode}_save(20,null,'',null, $(this));">
                   <xsl:value-of select="/sqroot/body/bodyContent/form/info/btnsavecaption"/> </button>&#160;
                 <button id="button_cancel2" class="btn btn-gray-a" data-loading-text="CANCEL" onclick="saveCancel()">CANCEL</button>&#160;
-                <button id="button_approve2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20)">APPROVE</button>&#160;
+                <button id="button_approve2" class="btn btn-orange-a" data-loading-text="APPROVE (please wait...)" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'execute', 1, 20,null,'',null, $(this));">APPROVE</button>&#160;
               </xsl:when>
               <xsl:when test="($docState) = 300">
-                <button id="button_save2" data-loading-text="SAVE (please wait...)" class="btn btn-orange-a" onclick="{$lowerCode}_save(20);">
+                <button id="button_save2" data-loading-text="SAVE (please wait...)" class="btn btn-orange-a" onclick="&#123;$lowerCode}_save(20,null,'',null, $(this));">
                   <xsl:value-of select="/sqroot/body/bodyContent/form/info/btnsavecaption"/> </button>&#160;
                 <button id="button_cancel2" class="btn btn-gray-a" data-loading-text="CANCEL" onclick="saveCancel()">CANCEL</button>&#160;
-                <button id="button_reject2" class="btn btn-orange-a">REJECT</button>&#160;
+                <button id="button_reject2" class="btn btn-orange-a" data-loading-text="REJECT (please wait...)">REJECT</button>&#160;
               </xsl:when>
               <xsl:when test="($docState) &gt;= 400 and ($docState) &lt;= 499">
-                <button id="button_save2" data-loading-text="SAVE (please wait...)" class="btn btn-orange-a" onclick="{$lowerCode}_save(20);">
+                <button id="button_save2" data-loading-text="SAVE (please wait...)" class="btn btn-orange-a" onclick="&#123;$lowerCode}_save(20,null,'',null, $(this));">
                   <xsl:value-of select="/sqroot/body/bodyContent/form/info/btnsavecaption"/> </button>&#160;
                 <button id="button_cancel2" class="btn btn-gray-a" data-loading-text="CANCEL" onclick="saveCancel()">CANCEL</button>&#160;
                 <xsl:if test="$allowForce=1">
-                  <button id="button_close2" class="btn btn-orange-a" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20)">CLOSE</button>&#160;
+                  <button id="button_close2" class="btn btn-orange-a" data-loading-text="CLOSE (please wait...)" onclick="btn_function('{sqroot/body/bodyContent/form/info/code/.}', '{$cid}', 'force', 1, 20,null,'',null, $(this));">CLOSE</button>&#160;
                 </xsl:if>
               </xsl:when>
               <xsl:otherwise>
@@ -303,7 +320,7 @@
     </section>
 
     <!--reject modal-->
-    <div id="rejectModal" class="modal fade" role="dialog">
+    <div id="rejectModal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">

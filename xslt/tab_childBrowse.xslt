@@ -15,6 +15,7 @@
   <xsl:template match="/">
     <script>
       var code='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>';
+      
       cell_init(code);
 
       upload_init(code, function(data) {
@@ -28,22 +29,24 @@
       var sn=$(data).find("sqroot").find("guid").eq(i);
       if (sn!='') s++;
       })
-      var msg='Upload Status: Success: '+s+(err==''?'':' Error: '+err);
-      showMessage(msg);
+      //var msg='Upload Status: Success: '+s+(err==''?'':' Error: '+err);
+      var msg= (err != '') ? 'Upload Error : ' + err : 'Upload Data Success'
+      showMessage(msg,2);
       //setTimeout(function() {location.reload()}, 5000);
 
       var code='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>';
+      preview('1', getCode(), getGUID(),'', this);
       loadChild(code);
       });
 
       $(document).ready(function(){
-        if($('th[data-order="DESC"]').length == 1) $('th[data-order="DESC"]').append(' &lt;ix class="fa fa-sort-alpha-desc" /&gt;');
+      if($('th[data-order="DESC"]').length == 1) $('th[data-order="DESC"]').append(' &lt;ix class="fa fa-sort-alpha-desc" /&gt;');
         else if($('th[data-order="ASC"]').length == 1) $('th[data-order="ASC"]').append(' &lt;ix class="fa fa-sort-alpha-asc" /&gt;');
       });
       
       <xsl:if test="/sqroot/body/bodyContent/browse/info/buttons">
         buttons=<xsl:value-of select="sqroot/body/bodyContent/browse/info/buttons"/>;
-        loadExtraButton(buttons, 'browse-action-button');
+        loadExtraButton(buttons, 'browse-action-button',10);
       </xsl:if>
       </script>
     <div class="row">
@@ -158,7 +161,9 @@
   </xsl:template>
   
   <xsl:template match="sqroot/body/bodyContent/browse/content/row">
-    <tr id="tr1_{$lowerCode}{@GUID}" data-code="{$lowerCode}" data-guid="{@GUID}"
+  
+      <tr id="tr1_{$lowerCode}{translate(@GUID,'ABCDEF','abcdef')}" data-parent="#{$lowerCode}" data-target="#{$lowerCode}{translate(@GUID,'ABCDEF','abcdef')}" data-code="{$lowerCode}" data-guid="{translate(@GUID,'ABCDEF','abcdef')}"
+        class="accordion-toggle cell"
         onmouseover="this.bgColor='lavender';this.style.cursor='pointer';" onmouseout="this.bgColor='white'">
       <td class="cell-recordSelector"></td>
       <xsl:apply-templates select="fields/field"/>
@@ -166,17 +171,16 @@
         <td class="browse-action-button text-right" style="white-space: nowrap;">
 
         </td>
-      </xsl:if>
+      </xsl:if>	  
     </tr>
-    <tr id="tr2_{$lowerCode}{@GUID}">
-      <td colspan="7" style="padding:0;">
-        <div class="browse-data accordian-body collapse" id="{$lowerCode}{@GUID}" aria-expanded="false">
+    <tr id="tr2_{$lowerCode}{translate(@GUID,'ABCDEF','abcdef')}">
+      <td colspan="100" style="padding:0;">
+        <div class="browse-data accordian-body collapse" id="{$lowerCode}{translate(@GUID,'ABCDEF','abcdef')}" aria-expanded="false">
           Please Wait...
         </div>
       </td>
     </tr>
-
-
+  
   </xsl:template>
 
   <xsl:template match="fields/field">
@@ -205,10 +209,25 @@
     <xsl:choose>
       <xsl:when test="@editor='mediabox'">
         <td>
-          <xsl:if test=".!=''">
+          <xsl:if test=".!=''"> 
             <a class="text-muted" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={@caption}&#38;code={../../@code}&#38;GUID={../../@GUID}');">
               <ix class="fa fa-paperclip" title="Download" />
             </a>
+          </xsl:if>&#160;
+        </td>
+      </xsl:when>
+      <xsl:when test="@editor='imagebox'">
+        <td>
+          <xsl:if test=".!=''">
+            <a class="text-muted" onclick="javascript:popUpImg('{../../@GUID}');preview('{@preview}', '{../../@code}', '{../../@GUID}','', 'formheader');">
+              <ix class="far fa-eye" title="Show Image" /> 
+            </a>
+            <img id="img_{../../@GUID}" alt="{.}" src="ophcontent/documents/{/sqroot/header/info/account}/{.}" style="display:none;margin-top:10px;width:100%;border:5px gray solid;"></img>
+            <div id="myImage_{../../@GUID}" class="modal">
+              <span class="close" onclick="javascript:$('#myImage_{../../@GUID}').hide();preview('{@preview}99', '{../../@code}', '{../../@GUID}','', 'formheader');">X</span>
+              <img class="modal-content" id="img01_{../../@GUID}"/>
+              <div id="caption_{../../@GUID}"></div>
+            </div>
           </xsl:if>&#160;
         </td>
       </xsl:when>

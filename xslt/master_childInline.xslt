@@ -179,6 +179,7 @@
         var pcode='<xsl:value-of select ="$lowerCode"/>';
         var parentKey='<xsl:value-of select ="parentkey/."/>';
         var browsemode='<xsl:value-of select ="browseMode/."/>';
+		if (browsemode=='undefined') browsemode='';
         loadChild(code, parentKey, GUID, null, browsemode, pcode);
         }
       </script>

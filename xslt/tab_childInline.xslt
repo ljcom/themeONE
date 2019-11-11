@@ -43,7 +43,7 @@
       
       <xsl:if test="/sqroot/body/bodyContent/browse/info/buttons">
         buttons=<xsl:value-of select="sqroot/body/bodyContent/browse/info/buttons"/>;
-        loadExtraButton(buttons, 'browse-action-button');
+        loadExtraButton(buttons, 'browse-action-button',10);
       </xsl:if>
 
       function js_save() {
@@ -107,6 +107,8 @@
                   </tbody>
                 </table>
               </div>
+			  <div id="{$lowerCode}reportButton">
+			  </div>
               <!-- /.box-body -->
               <div class="box-footer clearfix">
                 <xsl:if test="(
@@ -166,6 +168,7 @@
         var pcode='<xsl:value-of select ="$lowerCode"/>';
         var parentKey='<xsl:value-of select ="parentkey/."/>';
         var browsemode='<xsl:value-of select ="browseMode/."/>';
+		if (browsemode=='undefined') browsemode='';
         loadChild(code, parentKey, GUID, null, browsemode, pcode);
         }
       </script>

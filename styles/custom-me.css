@@ -871,3 +871,6 @@ ul.pending-task-module li {
         border-radius: 0;
     }
 
+.modal-backdrop {
+	display: none;
+}

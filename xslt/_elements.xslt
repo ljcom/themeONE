@@ -6,7 +6,7 @@
     <xsl:apply-templates select="formSection"/>
   </xsl:template>
 
-  <xsl:template match="formSection ">
+  <xsl:template match="formSection">
     <xsl:if test="formCols/formCol/formRows">
       <div class="col-md-12 collapse in" id="section_{@sectionNo}">
         <div class="row">
@@ -23,6 +23,17 @@
 		  
         </div>
       </div>
+    </xsl:if>
+    <xsl:if test="formChildren/formChild">
+	  <xsl:if test="(/sqroot/body/bodyContent/form/info/GUID/.) != '00000000-0000-0000-0000-000000000000'">
+        <div class="col-md-12 collapse in" id="section_{@sectionNo}">
+          <div class="row">
+		
+            <xsl:apply-templates select="formChildren"/>
+		  
+          </div>
+        </div>
+	  </xsl:if>
     </xsl:if>
   </xsl:template>
 
@@ -178,7 +189,7 @@
       <xsl:apply-templates select="hiddenBox"/>
       <xsl:apply-templates select="checkBox"/>
       <xsl:apply-templates select="mediaBox"/>
-      <xsl:apply-templates select="imageBox"/>
+      <xsl:apply-templates select="profileBox"/>
       <xsl:apply-templates select="autoSuggestBox"/>
       <xsl:apply-templates select="tokenBox"/>
       <xsl:apply-templates select="radio"/>
@@ -212,10 +223,7 @@
   </xsl:template>
   <xsl:template match="getGPSBox">
     <script>
-      //loadScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyAuS1y9JVaVu0D_4gFw4U4V88e0HgqI_3A', true, true);
-
-      //loadScript('OPHContent/cdn/ophelements/gps/gps.js');
-      $.getScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyAuS1y9JVaVu0D_4gFw4U4V88e0HgqI_3A', function() {
+      $.getScript('https://maps.googleapis.com/maps/api/js?key=##gpskey##', function() {
       $.getScript('OPHContent/cdn/ophelements/gps/gps.js', function() {
       try{initMap();}catch(e){}
       })
@@ -228,7 +236,7 @@
   </xsl:template>
   <xsl:template match="setGPSBox">
     <script>
-      loadScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyAuS1y9JVaVu0D_4gFw4U4V88e0HgqI_3A', true, true);
+      loadScript('https://maps.googleapis.com/maps/api/js?key=##gpskey##', true, true);
       loadScript('OPHContent/cdn/ophelements/gps/gps.js');
       setTimeout(function() {initMap();}, 1000);
     </script>
@@ -554,7 +562,7 @@
       minViewMode:'months',
       defaultDate: new Date('<xsl:value-of select="value" />')
       }).on('change', function(){
-      $('#<xsl:value-of select="../@fieldName" />').val($('#<xsl:value-of select="../@fieldName" />_month').data('datepicker').getFormattedDate('mm/dd/yyyy'));
+      $('#<xsl:value-of select="../@fieldName" />').val($('#<xsl:value-of select="../@fieldName" />_month').data('datepicker').getFormattedDate('mmm/dd/yyyy'));
       preview('{preview/.}',getCode(), null,'');
       });
 
@@ -729,7 +737,8 @@
     <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}"
 	    data-type="selectBox" data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}"
         onchange="autosuggest_onchange(this, '{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}', '');" >
-      <option></option>
+      <!--option id="{value/.}" selected="selected"><xsl:value-of select="combovalue/."/></option-->
+	  <option></option>
     </select>
 
 
@@ -805,7 +814,7 @@
         <span class="select2-search select2-box--dropdown" id="select2-{../@fieldName}-addNew" style="display:none;">
           <ul class="select2-results__options" role="tree" aria-expanded="true" aria-hidden="false">
             <li class="select2-results__option" role="treeitem" aria-selected="false">
-              <a data-toggle="modal" data-target="#addNew{../@fieldName}" data-backdrop="static" data-action="new">
+              <a data-toggle="modal" data-target="#addNew{../@fieldName}" data-backdrop="false" data-action="new">
                 Add New <xsl:value-of select="titlecaption"/>
               </a>
             </li>
@@ -855,7 +864,7 @@
     </xsl:if>
 
     <script>
-	
+	//try{
       $("#<xsl:value-of select="../@fieldName"/>").select2({
         placeholder: 'Select <xsl:value-of select="titlecaption"/>',
         onAdd: function(x) {
@@ -905,11 +914,12 @@
       }
       });
 
-
+	//}
+	//catch (e) {}
+	
       <xsl:if test="value!=''">
-        //deferreds.push(
-        autosuggest_setValue(deferreds, '<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
-        //);
+        //autosuggest_setValue(deferreds, '<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
+		autosuggest_defaultValue('<xsl:value-of select="../@fieldName"/>','<xsl:value-of select='value'/>','<xsl:value-of select='translate(combovalue, "&#39;", "\&#39;")'/>') 
       </xsl:if>
     </script>
 
@@ -1054,7 +1064,7 @@
       </xsl:choose>
     </input>
   </xsl:template>
-  <xsl:template match="imageBox">
+  <xsl:template match="profileBox">
   </xsl:template>
 
 
@@ -1136,13 +1146,15 @@
       <xsl:when test="@fieldName=$radioVal1">
         <xsl:choose>
           <xsl:when test="radioRows">
-            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '@radioNo')" >
+            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '@radioNo');
+                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
               <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" checked="checked" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>
           </xsl:when>
           <xsl:otherwise>
-            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '@radioNo')" >
+            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '@radioNo');
+                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
               <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" checked="checked" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>
@@ -1155,13 +1167,15 @@
       <xsl:otherwise>
         <xsl:choose>
           <xsl:when test="radioRows">
-            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}')" >
+            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}');
+                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
               <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>
           </xsl:when>
           <xsl:otherwise>
-            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}')" >
+            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}');
+                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
               <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>
@@ -1185,6 +1199,32 @@
 
   <xsl:template match="radioRow/fields">
     <xsl:apply-templates select="field" />
+  </xsl:template>
+
+  <xsl:template match="formChildren">
+    <xsl:apply-templates select="formChild"/>
+  </xsl:template>
+
+  <xsl:template match="formChild">
+    <xsl:if test="info/permission/allowBrowse&gt;=1">
+      <input type="hidden" id="PKID" value="child{code/.}"/>
+      <input type="hidden" id="filter{code/.}" value="{parentkey/.}='{$cid}'"/>
+      <input type="hidden" id="parent{code/.}" value="{parentkey/.}"/>
+      <input type="hidden" id="PKName" value="{parentkey/.}"/>
+      <script>
+
+        var code='<xsl:value-of select ="code/."/>';
+        var parentKey='<xsl:value-of select ="parentkey/."/>';
+        var GUID='<xsl:value-of select ="$cid"/>';
+        var browsemode='<xsl:value-of select ="browseMode/."/>';
+        loadChild(code, parentKey, GUID, 1, browsemode);
+      </script>
+
+      <div class="box box-solid box-default" style="box-shadow:0px;border:none" id="child{translate(code/., $uppercase, $smallcase)}{$cid}">
+        &#160;
+      </div>
+
+    </xsl:if>
   </xsl:template>
 
 

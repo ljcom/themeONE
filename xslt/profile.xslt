@@ -442,7 +442,7 @@
                 </xsl:if>              
               </xsl:for-each>
               <div class="box-body box-profile" onmouseover="showUploadBox('uploadBox', 1);" onmouseout="showUploadBox('uploadBox', 0);">
-                <img class="profile-user-img img-responsive img-circle" src="OPHContent/documents/{sqroot/header/info/account}/{sqroot/body/bodyContent/info/foto}" alt="User profile picture"/>
+                <img class="profile-user-img img-responsive img-circle" src="OPHContent/documents/{sqroot/header/info/account}/{sqroot/body/bodyContent/browse/bodyContent/info/foto}" alt="User profile picture"/>
                 <h3 class="profile-username text-center">
                   <xsl:value-of select="sqroot/body/bodyContent/info/name"/>
                 </h3>
@@ -507,22 +507,22 @@
               <!--Menu Tab-->
               <ul class="nav nav-tabs">
                 <li class="active">
+                  <a href="#password" data-toggle="tab">Change Password</a>
+                </li>
+                <!--li>
                   <a href="#journal" data-toggle="tab">Journal</a>
                 </li>
                 <li>
                   <a href="#profile" data-toggle="tab">Profile</a>
-                </li>
+                </li-->
                 <li>
                   <a href="#delegation" data-toggle="tab">Delegation</a>
-                </li>
-                <li>
-                  <a href="#password" data-toggle="tab">Change Password</a>
                 </li>
               </ul>
               
               <div class="tab-content">
                 <!--Journal Content-->
-                <div class="active tab-pane" id="journal">
+                <div class="tab-pane" id="journal">
                   <ul class="timeline timeline-inverse">
                     <xsl:for-each select="sqroot/body/bodyContent/journal/item">
                       <xsl:choose>
@@ -640,7 +640,7 @@
                 </div>
 
                 <!--Password Content-->
-                <div class="tab-pane" id="password">
+                <div class="active tab-pane" id="password">
                   <form class="form-horizontal" id="formPass">
                     <div class="form-group">
                       <label for="curPass" class="col-sm-3 control-label">Current Password</label>

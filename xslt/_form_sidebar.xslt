@@ -322,7 +322,8 @@
   </xsl:template>
 
   <xsl:template match="child">
-    <a href="#child{code/.}{//sqroot/header/info/GUID}">
+    <a href="#child{code/.}{translate(//sqroot/header/info/GUID, $uppercase, $smallcase)}">
+	
       <span>
         <ix class="fa fa-list-alt"></ix>
       </span>&#160;
