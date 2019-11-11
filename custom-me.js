@@ -1,3 +1,10 @@
+setTimeout(function () { timeIsUp(); }, 1000 * 60 * 60);    //1 hour
+
+function timeIsUp() {
+	if (window.location.href.indexOf('mode=login')==-1)
+		window.location = 'index.aspx?env=acct&code=lockscreen';
+}
+	
 function LoadNewPart(filename, id, code, nbpage) {
    
     var xsldoc = 'OPHContent/themes/themeOne/xslt/' + filename + '.xslt';
@@ -129,13 +136,6 @@ function addpagenumber(pageid, currentpage, totalpages) {
     }
 }
 
-function timeIsUp() {
-    //lastPar = window.location;
-    //setCookie('lastPar', lastPar);
-    //setCookie("userId", "", 0, 0, 0);
-    window.location = 'index.aspx?env=acct&code=lockscreen';
-}
-setTimeout(function () { timeIsUp(); }, 1000 * 60 * 60);    //1 hour
 
 function isGuid(stringToTest) {
     if (stringToTest[0] === "{") {
@@ -559,6 +559,9 @@ function loadExtraButton(buttons, divn, location) {
 			buttons.forEach(function (v) {
 				var url = v.url;
 				var loc = v.location;
+				if(loc==undefined || loc.includes("10") == false) {
+						return
+					}
 				//check variable
 				//check if loc=location, then run below
 				var arurl = url.match(/%+\w+(?:%)/g);
@@ -618,6 +621,9 @@ function loadExtraButton(buttons, divn, location) {
 				buttons.forEach(function (v) {
 					var url = v.url;
 					var loc = v.location;
+					if(loc==undefined || loc.includes("11") == false) {
+						return
+					}
 					//check variable
 					//check if loc=location, then run below
 					var arurl = url.match(/%+\w+(?:%)/g);
@@ -645,10 +651,72 @@ function loadExtraButton(buttons, divn, location) {
 					a = '<button type="button" class="btn btn-orange-a '+(location==21?'btn-block':'')+' btn-flat" onclick="'+url+'">'+v.caption+'</button>';
 					//else
 						//a = "<a href=\"" + url + "\">" + v.caption + "</a>";
-						
 					uo = (v.updateOnly == 1) ? 1 : 0;
 					bstate = v.state;
 					if (bstate) {
+					bstate = bstate.split(' ').join('');
+					bstate = bstate.split(',');
+					for (var i = 0; i < bstate.length; i++) {
+						var gstate = (getState() == "" || getState() == undefined) ? "0" : getState();
+						if (gstate == bstate[i]) {
+							if ($(td).find("a").find("." + v.icon).length > 0)
+								$(td).find("a").find("." + v.icon).parent().attr("href", url);
+							else
+								if (uo == 0) $(td).append(a);
+							return;
+						}
+					}
+				} else {
+					if ($(td).find("a").find("." + v.icon).length > 0)
+						$(td).find("a").find("." + v.icon).parent().attr("href", url);
+					else
+						if (uo == 0) $(td).append(a);
+				}		
+				});
+			});
+		}
+		else if (location == 20){
+			$('div.' + divn).each(function (i, td) {
+				var a, bstate;
+				buttons.forEach(function (v) {
+					var url = v.url;
+					var loc = v.location;
+					var btnid = v.id;
+					if(loc==undefined || loc.includes("20") == false) {
+						return
+					}
+					//check variable
+					//check if loc=location, then run below
+					var arurl = url.match(/%+\w+(?:%)/g);
+					if (arurl != '')  {
+						arurl.forEach(function (val) {
+							val = val.split('%').join('');
+
+							if (val == 'guid') {
+								cval = $(td).parent().data(val);
+							}
+							else if (val == 'rid') {
+								cval = $(td).parent().data("guid");
+							}
+							else {
+								cval = $(td).parent().find("[data-field='" + val + "']").html();
+							}
+
+							if (cval) {
+								url = url.split('%' + val + '%').join(cval);
+							}
+
+						});
+					}
+					//if (v.icon != null)
+					a = '<span  id="'+v.id+'" ><button type="button" style="width:100%" class="btn btn-orange-a '+(location==21?'btn-block':'')+' btn-flat" onclick="'+url+'">'+v.caption+'</button></span>';
+					a = a.replace('%rid%',getGUID())
+					//else
+						//a = "<a href=\"" + url + "\">" + v.caption + "</a>";
+						
+					uo = (v.updateOnly == 1) ? 1 : 0;
+					bstate = v.state;
+				if (bstate) {
 					bstate = bstate.split(' ').join('');
 					bstate = bstate.split(',');
 					for (var i = 0; i < bstate.length; i++) {
@@ -822,7 +890,7 @@ function switchBrowse(mode) {
 
 function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, allowForce, isDelegator, smode) {
 	mode=getCookie('browseMode');
-	var accountid='ecatalog';
+	var accountid='maxfour';
 	if (mode==0) {
 		var tx1 = '';
 		$('td#mandatory' + guid).each(function (i, td) {
@@ -1110,3 +1178,32 @@ function showMessage(msg, mode, fokus, afterClosed, afterClick) {
     }
 }
 
+
+ function popUpImg(guid){
+      var modal = document.getElementById('myImage_'+guid);
+
+      var img = document.getElementById('img_'+guid);
+      var modalImg = document.getElementById('img01_'+guid);
+      var captionText = document.getElementById('caption_'+guid);
+     
+      modal.style.display = "block";
+      modalImg.src = img.src;
+      captionText.innerHTML = img.alt;
+      preview('1', getCode(), getGUID(), '', this);
+  }
+  
+  function rejectPopup(code, GUID, action, page, location, formId, afterSuccess) {
+	$("#rejectModal").modal('show');
+	$("#rejectModal").appendTo('body');
+/*
+    $("#nModal").modal('show');
+    document.getElementById('rejectComment').onkeyup = function () {
+        $('#rejectBtn').css('visibility', $('#rejectComment').val() !== '' ? 'visible' : 'hidden');
+    };
+
+    document.getElementById('rejectBtn').onclick = function () {
+        var comment = $('#rejectComment').val();
+        btn_function(code, GUID, action, page, location, formId, comment, afterSuccess);
+    };
+	*/
+}
