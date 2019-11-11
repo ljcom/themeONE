@@ -16,7 +16,7 @@
   <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/form/info/permission/allowWipe" />
   <xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/form/info/permission/allowOnOff" />
   <xsl:variable name="settingMode" select="/sqroot/body/bodyContent/form/info/settingMode/." />
-  <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/status/."/>
+  <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/parentState/."/>
   <xsl:variable name="isRequester" select="/sqroot/body/bodyContent/form/info/document/isRequester"/>
   <xsl:variable name="isApprover" select="/sqroot/body/bodyContent/form/info/document/isApprover"/>
   <xsl:variable name="cid" select="translate(/sqroot/body/bodyContent/form/info/GUID/., 'ABCDEF', 'abcdef')"/>
@@ -110,6 +110,16 @@
     loadExtraButton(buttons, 'form-action-button', 20);	
 	</xsl:if>
 	
+function autosuggest_defaultValue(SelectID, id, text) {
+	var newOption = new Option(text, id, true, true);
+	var InitialValue = id;
+	//$("#" + SelectID).data("old", InitialValue);
+	//$("#" + SelectID).val(InitialValue);
+	//$("#" + SelectID).data("oldtext", text);
+	$("#" + SelectID).append(newOption).trigger('change');
+} 
+	
+	
     </script>
 
     <xsl:variable name="head">
@@ -142,10 +152,10 @@
             <xsl:value-of select="$head" />&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>
           </xsl:when>
           <xsl:when test="(sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000' and $settingMode='T'">
-            <xsl:value-of select="$head" />&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
+            <xsl:value-of select="$head" />&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="$head" />&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
+            <xsl:value-of select="$head" />&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
           </xsl:otherwise>
         </xsl:choose>
 

@@ -1,3 +1,9 @@
+setTimeout(function () { timeIsUp(); }, 1000 * 60 * 60);    //1 hour
+
+function timeIsUp() {
+	if (window.location.href.indexOf('mode=login')==-1)
+		window.location = 'index.aspx?env=acct&code=lockscreen';
+}
 	
 function LoadNewPart(filename, id, code, nbpage) {
    
@@ -130,13 +136,6 @@ function addpagenumber(pageid, currentpage, totalpages) {
     }
 }
 
-function timeIsUp() {
-    //lastPar = window.location;
-    //setCookie('lastPar', lastPar);
-    //setCookie("userId", "", 0, 0, 0);
-    window.location = 'index.aspx?env=acct&code=lockscreen';
-}
-setTimeout(function () { timeIsUp(); }, 1000 * 60 * 60);    //1 hour
 
 function isGuid(stringToTest) {
     if (stringToTest[0] === "{") {

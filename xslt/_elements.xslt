@@ -6,7 +6,7 @@
     <xsl:apply-templates select="formSection"/>
   </xsl:template>
 
-  <xsl:template match="formSection ">
+  <xsl:template match="formSection">
     <xsl:if test="formCols/formCol/formRows">
       <div class="col-md-12 collapse in" id="section_{@sectionNo}">
         <div class="row">
@@ -23,6 +23,17 @@
 		  
         </div>
       </div>
+    </xsl:if>
+    <xsl:if test="formChildren/formChild">
+	  <xsl:if test="(/sqroot/body/bodyContent/form/info/GUID/.) != '00000000-0000-0000-0000-000000000000'">
+        <div class="col-md-12 collapse in" id="section_{@sectionNo}">
+          <div class="row">
+		
+            <xsl:apply-templates select="formChildren"/>
+		  
+          </div>
+        </div>
+	  </xsl:if>
     </xsl:if>
   </xsl:template>
 
@@ -725,7 +736,8 @@
     <select class="form-control select2" style="width: 100%;" name="{../@fieldName}" id="{../@fieldName}"
 	    data-type="selectBox" data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}"
         onchange="autosuggest_onchange(this, '{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}', '');" >
-      <option></option>
+      <!--option id="{value/.}" selected="selected"><xsl:value-of select="combovalue/."/></option-->
+	  <option></option>
     </select>
 
 
@@ -851,7 +863,7 @@
     </xsl:if>
 
     <script>
-	
+	//try{
       $("#<xsl:value-of select="../@fieldName"/>").select2({
         placeholder: 'Select <xsl:value-of select="titlecaption"/>',
         onAdd: function(x) {
@@ -901,11 +913,12 @@
       }
       });
 
-
+	//}
+	//catch (e) {}
+	
       <xsl:if test="value!=''">
-        //deferreds.push(
-        autosuggest_setValue(deferreds, '<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
-        //);
+        //autosuggest_setValue(deferreds, '<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
+		autosuggest_defaultValue('<xsl:value-of select="../@fieldName"/>','<xsl:value-of select='value'/>','<xsl:value-of select='translate(combovalue, "&#39;", "\&#39;")'/>') 
       </xsl:if>
     </script>
 
@@ -1185,6 +1198,32 @@
 
   <xsl:template match="radioRow/fields">
     <xsl:apply-templates select="field" />
+  </xsl:template>
+
+  <xsl:template match="formChildren">
+    <xsl:apply-templates select="formChild"/>
+  </xsl:template>
+
+  <xsl:template match="formChild">
+    <xsl:if test="info/permission/allowBrowse&gt;=1">
+      <input type="hidden" id="PKID" value="child{code/.}"/>
+      <input type="hidden" id="filter{code/.}" value="{parentkey/.}='{$cid}'"/>
+      <input type="hidden" id="parent{code/.}" value="{parentkey/.}"/>
+      <input type="hidden" id="PKName" value="{parentkey/.}"/>
+      <script>
+
+        var code='<xsl:value-of select ="code/."/>';
+        var parentKey='<xsl:value-of select ="parentkey/."/>';
+        var GUID='<xsl:value-of select ="$cid"/>';
+        var browsemode='<xsl:value-of select ="browseMode/."/>';
+        loadChild(code, parentKey, GUID, 1, browsemode);
+      </script>
+
+      <div class="box box-solid box-default" style="box-shadow:0px;border:none" id="child{translate(code/., $uppercase, $smallcase)}{$cid}">
+        &#160;
+      </div>
+
+    </xsl:if>
   </xsl:template>
 
 

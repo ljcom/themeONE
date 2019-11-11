@@ -123,6 +123,16 @@
 	buttons=<xsl:value-of select="sqroot/body/bodyContent/form/info/buttons"/>;
     loadExtraButton(buttons, 'form-action-button',20);	
 	</xsl:if>
+
+function autosuggest_defaultValue(SelectID, id, text) {
+	var newOption = new Option(text, id, true, true);
+	var InitialValue = id;
+	//$("#" + SelectID).data("old", InitialValue);
+	//$("#" + SelectID).val(InitialValue);
+	//$("#" + SelectID).data("oldtext", text);
+	$("#" + SelectID).append(newOption).trigger('change');
+} 
+	
     </script>
 
     <xsl:variable name="settingmode">
