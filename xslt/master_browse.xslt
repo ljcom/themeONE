@@ -709,7 +709,7 @@
             </tr>
           </table>
         </td>
-      
+      </xsl:if>
 
       <xsl:if test="docDelegate">
         <td class="expand-td" style="text-align:center" data-toggle="collapse" data-target="#{@GUID}" data-parent="#{@GUID}">
