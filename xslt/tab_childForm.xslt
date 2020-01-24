@@ -908,7 +908,8 @@
       });
       <xsl:if test="value!=''">
         //deferreds.push(
-        autosuggest_setValue(deferreds, '<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
+        //autosuggest_setValue(deferreds, '<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
+		autosuggest_defaultValue('<xsl:value-of select="../@fieldName"/>','<xsl:value-of select='value'/>','<xsl:value-of select='translate(combovalue, "&#39;", "\&#39;")'/>') 
         //);
       </xsl:if>
     </script>

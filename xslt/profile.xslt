@@ -19,8 +19,7 @@
     <div style="display:none" id="pageName">&#xA0;</div>
     <div style="display:none" id="themeName">&#xA0;</div>											
     <script>
-      Sideshow.config.language = "oph";
-      Sideshow.init();
+      sideShowInit();
       
       var meta = document.createElement('meta');
       meta.charset = "UTF-8";
@@ -58,111 +57,10 @@
 
 
 
-      Sideshow.registerWizard({
-      name: "ss_profile",
-      title: "Help Me to Use This Profile Page",
-      description: "We would like to help you how to use this profile.",
-      estimatedTime: "5 Minutes",
-      affects: [
-      function(){
-      return true;
-      }
-      ]
-      }).storyLine({
-      showStepPosition: true,
-      steps: [
-      {
-      title: "Welcome to Profile Page",
-      text: "Hello \"<xsl:value-of select="sqroot/header/info/user/userName"/>\", welcome to our profile page. Here, you can manage your account including photo profile, your biography, change password and delegation."
-            },
-            {
-	            title: "Photo Profile",
-	            text: "You can see your profile picture here. Now, try move your cursor inside the box.",
-              target: "#uploadBox",
-	            subject: "#profileBox",
-	            format:"markdown",
-              autoContinue: true, 
-              completingConditions: [
-		    	      function(){
-		    		      return $('#uploadBox').is(':visible');
-		    	      }
-		          ]              
-            },
-            {
-	            title: "Change Picture",
-	            text: "Did you see a button shown up? Yes, it is a button to change your profile picture. But, you can try it later ;)",
-	            subject: "#profileBox",
-              lockSubject:true,
-	            format:"markdown",
-              listeners: {
-		    	      beforeStep: function(){
-                  showUploadBox('uploadBox', 1);
-		    	      }
-		          }
-            },
-            {
-	            title: 'All About <xsl:value-of select="sqroot/header/info/user/userName"/>',
-	            text: "This is your information box. I'll tell you how to change it later.",
-	            subject: "#aboutMeBox",
-	            format:"markdown"	
-            },
-            {
-	            title: "Your Journal",
-	            text: "This is the list of your log activities for using this sites for a day.",
-	            subject: "#profileTabBox",
-              targets: "#journal h3",
-              lockSubject:true,
-	            format:"markdown",
-              listeners: {
-		    	      beforeStep: function(){
-                  $("#profileTabBox").children('div').children('ul').children('li').eq(0).children('a').click();
-		    	      }
-		          }	
-            },
-            {
-	            title: "Your Profile",
-	            text: "Here you can edit or change your profile as you wish",
-	            subject: "#profileTabBox",
-              lockSubject:true,
-              targets: "#formProfile input",
-	            format:"markdown",
-              listeners: {
-		    	      beforeStep: function(){
-                  $("#profileTabBox").children('div').children('ul').children('li').eq(1).children('a').click();
-		    	      }
-		          }	
-            },
-            {
-	            title: "Delegation",
-	            text: "Set Delegation is when you want to delegate your work to another user.",
-	            subject: "#profileTabBox",
-              lockSubject:true,
-	            format:"markdown",	
-              listeners: {
-		    	      beforeStep: function(){
-                  $("#profileTabBox").children('div').children('ul').children('li').eq(2).children('a').click();
-		    	      }
-		          }	
-            },
-            {
-	            title: "Change Password",
-	            text: "You can change your account password here.",
-	            subject: "#profileTabBox",
-              lockSubject:true,
-	            format:"markdown",	
-              listeners: {
-		    	      beforeStep: function(){
-                  $("#profileTabBox").children('div').children('ul').children('li').eq(3).children('a').click();
-		    	      }
-		          }	
-            },
-            {
-	            title: "Finish",
-	            text: "That's all <xsl:value-of select="sqroot/header/info/user/userName"/>, it's the end of my help guide. Thank you for let me help you. See you again :) ",
-            }
-	      ]
+      sideShowProfile('<xsl:value-of select="/sqroot/header/info/title"/>', '<xsl:value-of select="/sqroot/header/info/user/userName"/>');
+      $(document).ready(function () {
+      if (getQueryVariable('help') == 1) Sideshow.start();
       });
-
 
     </script>
 
@@ -221,7 +119,7 @@
             <li class="dropdown user user-menu">
               <xsl:choose>
                 <xsl:when test="not(sqroot/header/info/user/userId)">
-                  <a href="#" data-toggle="modal" data-target="#login-modal">
+                  <a href="?code=login">
                     <span>
                       <ix class="fa fa-sign-in"></ix>&#160;
                     </span>

@@ -19,8 +19,9 @@
     <div style="display:none" id="themeName">&#xA0;</div>
 
     <script>
-      Sideshow.config.language = "oph";
-      Sideshow.init();
+      //Sideshow.config.language = "oph";
+      //Sideshow.init();
+      sideShowInit();
 
       var meta = document.createElement('meta');
       meta.charset = "UTF-8";
@@ -110,7 +111,7 @@
             <li class="dropdown user user-menu">
               <xsl:choose>
                 <xsl:when test="not(sqroot/header/info/user/userId)">
-                  <a href="#" data-toggle="modal" data-target="#login-modal">
+                  <a href="?code=login">
                     <span>
                       <ix class="fa fa-sign-in"></ix>&#160;
                     </span>

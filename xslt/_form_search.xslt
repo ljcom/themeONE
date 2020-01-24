@@ -15,15 +15,21 @@
   <xsl:template match="/sqroot/body/bodyContent/browse/content/row">
     
     <li>
-      <a class="info" href="#" onclick="javascript:loadForm('{@code}', '{@GUID}')">
+      <a class="info" onclick="javascript:loadForm('{@code}', '{@GUID}')">
         <span>
           <ix class="fa fa-header"></ix>
-        </span><xsl:value-of select="fields/field/." />
+        </span>
+		<xsl:apply-templates select="fields/field" />
       </a>
     </li>
 
   </xsl:template>
   
+  <xsl:template match="fields/field" >
+	<xsl:if test=".!=''">
+	<xsl:value-of select="@title" />:&#160;<xsl:value-of select="." />&#160;<br/>
+	</xsl:if>
+  </xsl:template>
 </xsl:stylesheet>
 
 

@@ -35,6 +35,8 @@
       //loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
       //loadScript('OPHContent/cdn/select2/select2.full.min.js');
 
+      form_init();
+	  
       var xmldoc = ""
       var xsldoc = "OPHContent/themes/<xsl:value-of select="/sqroot/header/info/themeFolder"/>/xslt/" + getPage();
       <xsl:if test="sqroot/body/bodyContent/form/info/GUID!='00000000-0000-0000-0000-000000000000'">
@@ -92,7 +94,7 @@
       var c='<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>';
       getHash(c);
       setCookie('<xsl:value-of select="translate(/sqroot/body/bodyContent/form/info/code/., $uppercase, $smallcase)"/>_curstateid', '<xsl:value-of select="/sqroot/body/bodyContent/form/info/state/status/."/>');
-      $('body').addClass('sidebar-collapse').trigger('sidebar-animated');
+      
 
       var origin=window.location.origin;
       if (!(origin.substring(0,5)=='https' || origin.includes('localhost')))
@@ -123,7 +125,7 @@
 	buttons=<xsl:value-of select="sqroot/body/bodyContent/form/info/buttons"/>;
     loadExtraButton(buttons, 'form-action-button',20);	
 	</xsl:if>
-
+/*
 function autosuggest_defaultValue(SelectID, id, text) {
 	var newOption = new Option(text, id, true, true);
 	var InitialValue = id;
@@ -132,7 +134,7 @@ function autosuggest_defaultValue(SelectID, id, text) {
 	//$("#" + SelectID).data("oldtext", text);
 	$("#" + SelectID).append(newOption).trigger('change');
 } 
-	
+	*/
     </script>
 
     <xsl:variable name="settingmode">
@@ -201,7 +203,7 @@ function autosuggest_defaultValue(SelectID, id, text) {
             </xsl:otherwise>
           </xsl:choose>
         </li>
-        <xsl:if test="sqroot/body/bodyContent/form/info/GUID!='00000000-0000-0000-0000-000000000000'">
+        <xsl:if test="sqroot/body/bodyContent/form/info/GUID!='00000000-0000-0000-0000-000000000000' and $allowAdd>0">
           <li>
             <a style="color:blue" href="?code={/sqroot/body/bodyContent/form/info/code/.}&amp;guid=00000000-0000-0000-0000-000000000000">
               <span>
@@ -393,40 +395,7 @@ function autosuggest_defaultValue(SelectID, id, text) {
                       </xsl:for-each>
                     </ul>
                   </xsl:if>
-                  <xsl:if test="sqroot/body/bodyContent/form/query/reports/report">
-                    <xsl:for-each select="sqroot/body/bodyContent/form/query/reports/report">
-                      <xsl:variable name="qdisable">
-                        <xsl:choose>
-                          <xsl:when test="isVisible=1">
-                          </xsl:when>
-                          <xsl:otherwise>
-                            disabled
-                          </xsl:otherwise>
-                        </xsl:choose>
-                      </xsl:variable>
 
-                      <xsl:if test="allowPDF=1">
-                        <a href="javascript:genReport('{code}', 'pdf');" class="btn btn-primary btn-block {$qdisable}">
-                          <span>
-                            <ix class="fa fa-file-pdf"></ix>
-                          </span>
-                          <span>
-                            <b>
-                              <xsl:value-of select="description"/>
-                            </b>
-                          </span>
-                        </a>
-                      </xsl:if>
-                      <xsl:if test="allowXLS=1">
-                        <a href="javascript:genReport('{code}', 'xls');" class="btn btn-primary btn-block">
-                          <ix class="fa fa-file-spreadsheet"></ix>
-                          <b>
-                            <xsl:value-of select="description"/>
-                          </b>
-                        </a>
-                      </xsl:if>
-                    </xsl:for-each>
-                  </xsl:if>
                 </div>
 
               </div>
@@ -480,7 +449,42 @@ function autosuggest_defaultValue(SelectID, id, text) {
                         &#160;
                       </xsl:otherwise>
                     </xsl:choose>
-                &#160;
+                  <xsl:if test="sqroot/body/bodyContent/form/query/reports/report">
+                    <xsl:for-each select="sqroot/body/bodyContent/form/query/reports/report">
+                      <xsl:variable name="qdisable">
+                        <xsl:choose>
+                          <xsl:when test="isVisible=1">
+                          </xsl:when>
+                          <xsl:otherwise>
+                            disabled
+                          </xsl:otherwise>
+                        </xsl:choose>
+                      </xsl:variable>
+
+                      <xsl:if test="allowPDF=1">
+                        <a href="javascript:genReport('{code}', 'pdf');" class="btn btn-primary btn-block {$qdisable}">
+                          <span>
+                            <ix class="fa fa-file-pdf"></ix>
+                          </span>&#160;
+                          <span>
+                            <b>
+                              <xsl:value-of select="description"/>
+                            </b>
+                          </span>
+                        </a>
+                      </xsl:if>
+                      <xsl:if test="allowXLS=1">
+                        <a href="javascript:genReport('{code}', 'xls');" class="btn btn-gray-a btn-block">
+                          <span>
+							<ix class="fa fa-file-spreadsheet"></ix>
+						  </span>&#160;
+                          <b>
+                            <xsl:value-of select="description"/>
+                          </b>
+                        </a>
+                      </xsl:if>
+                    </xsl:for-each>
+                  </xsl:if>				
               </div>
             </div>
           </div>

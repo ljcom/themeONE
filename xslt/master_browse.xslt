@@ -200,8 +200,8 @@
         <xsl:when test="$allowAccess = 1">
           <xsl:if test="sqroot/body/bodyContent/browse/info/nbPages > 1">
             <script>
-              addpagenumber('pagenumbers', '<xsl:value-of select ="sqroot/body/bodyContent/browse/info/pageNo"/>', '<xsl:value-of select ="sqroot/body/bodyContent/browse/info/nbPages"/>')
-              addpagenumber('mobilepagenumbers', '<xsl:value-of select ="sqroot/body/bodyContent/browse/info/pageNo"/>', '<xsl:value-of select ="sqroot/body/bodyContent/browse/info/nbPages"/>')
+              addpagenumber('', '<xsl:value-of select ="sqroot/body/bodyContent/browse/info/pageNo"/>', '<xsl:value-of select ="sqroot/body/bodyContent/browse/info/nbPages"/>')
+              //addpagenumber('mobilepagenumbers', '<xsl:value-of select ="sqroot/body/bodyContent/browse/info/pageNo"/>', '<xsl:value-of select ="sqroot/body/bodyContent/browse/info/nbPages"/>')
             </script>
           </xsl:if>
 
@@ -244,7 +244,7 @@
           </div>
 
           <div class="row displayblock-phone" style="margin-top:10px">
-            <div class="col-xs-6 browse-dropdown-status">
+            <div class="col-xs-12 browse-dropdown-status">
               <xsl:if test="$settingMode='T'">
 
                 <div class="dropdown">
@@ -284,7 +284,7 @@
 
               </xsl:if>&#160;
             </div>
-            <div class="col-xs-6 text-right" style="padding-bottom:10px">
+            <div class="col-xs-12 text-right" style="padding-bottom:10px">
               <xsl:if test="sqroot/body/bodyContent/browse/info/permission/allowExport = 1">
                 <button id="btnExport" class="btn btn-success" data-clicked="0" onclick="window.location='?code={sqroot/header/info/code/id}&amp;mode=export'">
                   <strong>EXPORT DATA</strong>
@@ -441,11 +441,12 @@
               </table>
             </div>
           </div>
+          
           <!-- browse for pc/laptop list -->
 
           <!-- browse for phone/tablet max width 768 -->
           <div class="row displayblock-phone listContent">
-            <div class="col-md-12 full-width-a" id="accordionBrowse">
+            <div class="col-md-12 col-sm-12 col-xs-12 full-width-a" id="accordionBrowse">
               <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
               <xsl:if test="sqroot/body/bodyContent/browse/info/permission/allowAccess/.=0">
                 <div class="alert alert-warning" align="center">
@@ -471,7 +472,7 @@
           <!--browse grid-->
           <xsl:if test="sqroot/body/bodyContent/browse/info/nbPages > 1">
             <div class="row visible-phone">
-              <div class="col-md-12">
+              <div class="col-md-12 col-sm-12 col-xs-12">
                 <ul class="pagination pagination-sm no-margin pull-right" id="pagenumbers"></ul>
               </div>
             </div>
@@ -493,7 +494,8 @@
 
   <xsl:template match="sqroot/body/bodyContent/browse/info/filters">
     <div class="row">
-      <xsl:apply-templates select="comboFilter"/>
+      <xsl:apply-templates select="comboFilter[@editor='select2']"/>
+	  <xsl:apply-templates select="comboFilter[@editor='datepicker']"/>
     </div>
     <div class="row">
       <div class="col-md-12">
@@ -510,7 +512,34 @@
     </div>
   </xsl:template>
 
-  <xsl:template match="comboFilter">
+  <xsl:template match="comboFilter[@editor='datepicker']">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label id="label_{@id}">
+          <xsl:value-of select="@caption"/>
+        </label>
+        <label id="chain_{@id}" data-toggle="tooltip" style="display:none">
+          &#160;<ix class="far fa-link"></ix>
+        </label>
+		<div class="input-group date">
+          <div class="input-group-addon">
+            <ix class="fa fa-calendar"></ix>
+          </div>
+		  <input type="text" class="comboFilter datepicker" id="{@id}" name="{@id}" style="width: 100%;border-style:solid" data-old="{value}"
+		    value="{value}">
+          </input>
+		</div>
+      </div>
+    </div>
+    <span id="clear{@id}" style="cursor: pointer;margin: 8px 30px 0px 0px;position: absolute;top: 0px;right: 0px; display:none">
+      <ix class="far fa-times" title= "Clear Selection" data-toggle="tooltip"></ix>
+    </span>
+    <script>
+      $('.datepicker').datepicker({autoclose: true});
+    </script>	
+  </xsl:template>
+  
+  <xsl:template match="comboFilter[@editor='select2']">
     <div class="col-md-6">
       <div class="form-group">
         <label id="label_{@id}">
@@ -858,7 +887,7 @@
           <td colspan="{$tcolspan}" style="padding:0;">
             <div class="browse-data accordian-body collapse" id="brodeta-{@GUID}" style="cursor:default;">
               <div class="row">
-                <div class="col-md-12 full-width-a">
+                <div class="col-md-12 col-sm-12 col-xs-12 full-width-a">
                   <ix class="fa fa-refresh fa-spin"></ix> loading child...
                 </div>
               </div>
@@ -871,7 +900,7 @@
           <td colspan="{$tcolspan}" style="padding:0;">
             <div class="browse-data accordian-body collapse" id="brodeta-{@GUID}" style="cursor:default;">
               <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 full-width-a">
+                <div class="col-md-12 col-sm-12 col-xs-12 full-width-a">
 
                   <!--Summary-->
                   <xsl:if test="count(fields/field[@mandatory=0])>0">

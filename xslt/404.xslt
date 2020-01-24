@@ -5,6 +5,14 @@
 
   <xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
   <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
+  <xsl:variable name="colMenu">
+    <xsl:choose>
+      <xsl:when test="count(/sqroot/header/menus/menu[@code='primaryback']/submenus/submenu)=0">12</xsl:when>
+      <xsl:when test="count(/sqroot/header/menus/menu[@code='primaryback']/submenus/submenu)=1">12</xsl:when>
+      <xsl:when test="count(/sqroot/header/menus/menu[@code='primaryback']/submenus/submenu)=2">6</xsl:when>
+      <xsl:otherwise>4</xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
 
   <xsl:template match="/">
     <script>
@@ -63,181 +71,197 @@
       resetBrowseCookies();
       //loadContent(1);
     </script>
-    <!-- Page script -->
+    <xsl:apply-templates select="sqroot" />
+  </xsl:template>
+
+
+  <xsl:template match="sqroot">
+
+    <div style="display:none" id="pageName">&#xA0;</div>
+    <div style="display:none" id="themeName">&#xA0;</div>
 
     <header class="main-header">
-      <!-- Logo -->
       <a href="javascript:goHome();" class="logo visible-phone" style="text-align:left;">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini" style="font-size:9px; text-align:center">
           <img width="30" src="OPHContent/themes/{/sqroot/header/info/themeFolder}/images/oph4_logo.png" alt="Logo Image" />
         </span>
-        <!-- logo for regular state and mobile devices -->
         <span class="logo-lg" style="font-size:22px;">
           <div class="pull-left" style="margin-right:10px;">
             <img width="30" style="margin-top:-9px;" src="OPHContent/themes/{/sqroot/header/info/themeFolder}/images/oph4_logo.png" alt="Logo Image" />
           </div>
-          <xsl:value-of select="sqroot/header/info/account/." />
+          <xsl:value-of select="header/info/company" />
         </span>
       </a>
-      <!-- Header Navbar: style can be found in header.less -->
       <nav class="navbar navbar-static-top">
-        <!-- Sidebar toggle button-->
-        <a href="#" class="sidebar-toggle visible-phone" data-toggle="offcanvas" role="button" >
+        <a href="#" class="sidebar-toggle visible-phone" data-toggle="push-menu" role="button" >
           <span class="sr-only">Toggle navigation</span>
         </a>
-        <div id ="button-menu-phone" class="unvisible-phone" style="color:white;  margin:0; display:inline-table; margin-top:15px; margin-left:10px" data-toggle="collapse" data-target="#mobilemenupanel">
+        <div id ="button-menu-phone" class="unvisible-phone" style="color:white;  margin:0; display:inline-table; margin-top:15px; margin-left:10px"
+             data-toggle="collapse" data-target="#mobilemenupanel">
           <a href="#" style="color:white;">
             <span>
               <img width="30" style="margin-top:-9px;" src="OPHContent/themes/{/sqroot/header/info/themeFolder}/images/oph4_logo.png" alt="Logo Image" />
             </span>&#160;
-            <xsl:value-of select="sqroot/header/info/code/name"/>&#160;(<xsl:value-of select="sqroot/header/info/code/id"/>)<span class="caret"></span>
+            <xsl:value-of select="header/info/code/name"/>&#160;(<xsl:value-of select="header/info/code/id"/>)<span class="caret"></span>
           </a>
         </div>
-        <div class="accordian-body collapse top-menu-div" id="mobilemenupanel"
-        style="color:white; position:absolute; background:#222D32; z-index:100; width:100%; right:0px; top:50px; ">
-
-          <form action="#" method="get" class="sidebar-form">
-            <div class="input-group">
-              <input type="text" name="q" class="form-control" placeholder="Search..." />
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
-                  <ix class="fa fa-search" aria-hidden="true"></ix>
-                </button>
-              </span>
-            </div>
-          </form>
-          <div class="panel-group" id="accordion2">
-            <div class="panel top-menu-onphone" style="border-radius:0; margin-top:0;">
-              <a class="top-envi" data-toggle="collapse" data-parent="#accordion2" href="#collapse1a">
-                Inventory <span class="caret"></span>
-              </a>
-              <div id="collapse1a" class="panel-collapse collapse">
-                <ul>
-                  <li>
-                    <a href="browse.html">Consigment P &#038; D</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">Direct P &#038; D</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">PR\PVL Purchase</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">Product Request</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">Product Return</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">PKSP</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">Dumping of Stocks Authorization Form (DOSA)</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">Stock Adjustment</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="panel top-menu-onphone" style="border-radius:0; margin-top:0;">
-              <a class="top-envi" data-toggle="collapse" data-parent="#accordion2" href="#collapse2a">
-                HRD <span class="caret"></span>
-              </a>
-              <div id="collapse2a" class="panel-collapse collapse">
-                <ul>
-                  <li>
-                    <a href="browse.html">Request for Recruitment (HRRR)</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">Recruitment Confirmation Form (HRRC)</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">Employee Change Notice (HRCH)</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">Training Authorization Form (HRTR)</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">Employee Departure Approval Form (HRDP)</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">Personal Probationary Period Assessment Form (HRPA)</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">Personal Data Changes Form (HRDC)</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">Probationary Validate Form (HRVL)</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">Staff Sales Process (STAF)</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">Incentive Form (HRIC)</a>
-                  </li>
-                  <li>
-                    <a href="browse.html">Contact Reminder (HRCR)</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+        <div class="accordian-body collapse top-menu-div" id="mobilemenupanel" style="color:white; position:absolute; background:#222D32; z-index:100; width:100%; right:0px; top:50px; ">
+          <div class="input-group sidebar-form">
+            <input type="text" id="searchBox1" name="searchBox1" class="form-control" placeholder="Search..." onkeypress="return searchText(event,this.value);" value="" />
+            <span class="input-group-btn">
+              <button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="searchText(event);">
+                <ix class="fa fa-search" aria-hidden="true"></ix>
+              </button>
+            </span>
           </div>
+
+          <div class="navbar-collapse pull-left collapse in" id="navbar-collapse" aria-expanded="true" style="">
+            <ul class="nav navbar-nav">
+              <xsl:for-each select="/sqroot/header/menus/menu[@code='sidebar']/submenus/submenu" >
+                <xsl:variable name="className">
+                  <xsl:choose>
+                    <xsl:when test="(@type)='treeroot'">dropdown</xsl:when>
+                    <xsl:when test="(@type)='label'">header</xsl:when>
+                  </xsl:choose>
+                </xsl:variable>
+
+                <li class="{$className}">
+
+                  <xsl:choose>
+                    <xsl:when test="(pageURL/.)!=''">
+                      <a href="{translate(pageURL/., $uppercase, $smallcase)}" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <xsl:if test="(fa/.)!=''">
+                          <span>
+                            <ix class="{fa/.}"></ix>&#160;
+                          </span>
+                        </xsl:if>
+                        <span class="info">
+                          <xsl:value-of select="caption/." />
+                        </span>
+                        <span class="pull-right-container">
+                          <xsl:if test="(@type)='treeroot'">
+                            <ix class="fa fa-angle-left pull-right"></ix>
+                          </xsl:if>
+                          <xsl:if test="nbReject">
+                            <small class="label pull-right bg-red">
+                              <xsl:value-of select="nbReject"/>
+                            </small>
+                          </xsl:if>
+                          <xsl:if test="nbAprv">
+                            <small class="label pull-right bg-green">
+                              <xsl:value-of select="nbAprv"/>
+                            </small>
+                          </xsl:if>
+                        </span>
+                      </a>
+                      <xsl:if test="(@type)='treeroot'">
+                        <ul class="dropdown-menu" role="menu">
+                          <xsl:apply-templates select="submenus/submenu[@type='treeview']" />&#160;
+                          <xsl:apply-templates select="submenus/submenu[@type='label']" />&#160;
+                        </ul>
+                      </xsl:if>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <span>
+                        <xsl:value-of select="caption/." />
+                      </span>
+                      <xsl:if test="tCount/.>0">
+                        <span class="pull-right-container">
+                          <span class="label label-primary pull-right">
+                            <xsl:value-of select="tCount/." />
+                          </span>
+                        </span>
+                      </xsl:if>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </li>
+              </xsl:for-each>
+
+            </ul>
+          </div>
+          <!--ul class="sidebar-menu">
+            <xsl:apply-templates select="header/menus/menu[@code='sidebar']/submenus/submenu" />
+          </ul-->
+
+
         </div>
         <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
             <li>
-              <a href="#" id="button-menu-phone2" data-toggle="collapse" data-target="#right-menu-phone" class="unvisible-phone">
-                <ix class="fa fa-list"></ix>
+              <a style="cursor:pointer;" onclick="Sideshow.start();" data-toggle="tooltip" data-placement="bottom" title="Help?">
+                <ix class="fa fa-question-circle fa-lg"></ix>
               </a>
             </li>
-            <div class="collapse top-menu-div" id="right-menu-phone"
-            style="color:white; position:absolute; background:#222D32; z-index:90; width:100%; right:0px; top:50px; ">
-              <ul>
-                <xsl:apply-templates select="sqroot/header/menus/menu[@code='primary']" />
-              </ul>
-            </div>
-            <!-- Dashboard -->
-
-            <xsl:if test="count(sqroot/header/info/user/userName)=0">
-              <li>
-                <a href="#" data-toggle="modal" data-target="#login-modal">
-                  <span>
-                    <ix class="fa fa-sign-in"></ix>&#160;
-                  </span>
-                  <span>Sign in</span>
-                </a>
-              </li>
-            </xsl:if>
-
-            <li class="dropdown messages-menu visible-phone" style="margin-right:20px;">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="User Setting">
-                Welcome, <b>
-                  <xsl:value-of select="sqroot/header/info/user/userName" />
-                </b><span style="margin-right:10px;"></span>&#160;<ix class="fa fa-user"></ix>
-                <!-- <span class="label label-success">4</span> -->
-              </a>
-              <ul class="dropdown-menu" style="border:none; border-radius:0px;" id="dropdown-top">
-                <!-- <li class="header" style="background:#367FAA; color:white; text-align:right; border-radius:0; padding:10px 10px;">Welcome, <b>Administrator</b></li>
-              <li> -->
-                <!-- inner menu: contains the actual data -->
-                <!--<ul class="user-setting-menu" id="right-menu-phone1">-->
-                <li>
-                  <!-- start message -->
-                  <!--<span style="color:white">Act as :</span>-->
-                  <a href="ophcore/api/default.aspx?mode=signout">
+            <li class="dropdown user user-menu">
+              <xsl:choose>
+                <xsl:when test="not(/sqroot/header/info/user/userId)">
+                  <a href="?code=login">
                     <span>
-                      <ix class="fa fa-power-off"></ix>
-                    </span> Sign out
+                      <ix class="fa fa-sign-in"></ix>&#160;
+                    </span>
+                    <span>Sign in</span>
                   </a>
-                </li>
-                <!--<xsl:apply-templates select="sqroot/header/menus/menu[@code='primary']" />-->
-
-              </ul>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                    <img src="OPHContent/documents/{/sqroot/header/info/account}/{/sqroot/header/info/user/userURL}" class="user-image" alt="User Image"/>
+                    <span class="hidden-xs">
+                      <xsl:value-of select="/sqroot/header/info/user/userName"/>
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <!-- User image -->
+                    <li class="user-header">
+                      <img src="OPHContent/documents/{/sqroot/header/info/account}/{/sqroot/header/info/user/userURL}" class="img-circle" alt="User Image"/>
+                      <p>
+                        <xsl:value-of select="/sqroot/header/info/user/userName"/>
+                        <small>
+                          Active since <xsl:value-of select="/sqroot/header/info/user/dateCreate"/>
+                        </small>
+                      </p>
+                    </li>
+                    <!-- Menu Body -->
+                    <li class="user-body">
+                      <div class="row">
+                        <xsl:for-each select="/sqroot/header/menus/menu[@code='primaryback']/submenus/submenu">
+                          <div class="col-xs-{$colMenu} text-center">
+                            <a class="withBorder" href="{pageURL}">
+                              <xsl:value-of select="caption" />&#160;
+                            </a>
+                          </div>
+                        </xsl:for-each>
+                      </div>
+                    </li>
+                    <!-- Menu Footer-->
+                    <li class="user-footer">
+                      <div class="pull-left">
+                        <a href="?code=profile" class="btn btn-default btn-flat">
+                          <span>
+                            <ix class="fa fa-user"></ix>
+                          </span>
+                          <span>Profile</span>
+                        </a>
+                      </div>
+                      <div class="pull-right">
+                        <a href="javascript:signOut()" class="btn btn-default btn-flat">
+                          <span>
+                            <ix class="fa fa-power-off"></ix>
+                          </span>
+                          <span>Sign out</span>
+                        </a>
+                      </div>
+                    </li>
+                  </ul>
+                </xsl:otherwise>
+              </xsl:choose>
             </li>
-            <!-- Control Sidebar Toggle Button -->
-
+            <xsl:if test="/sqroot/header/info/code/ShowDocInfo=1">
+              <!--li>
+              <a href="#" data-toggle="control-sidebar">
+                <ix class="fas fa-list"></ix>
+              </a>
+            </li-->
+            </xsl:if>
           </ul>
         </div>
       </nav>
@@ -250,7 +274,7 @@ _________________________________________________________ -->
       <div class="modal-dialog modal-sm" role="document">
 
         <div class="modal-content">
-          <form id="signinForm" method="post">
+          <form id="signinForm" method="post" action="">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&#215;</button>
               <h4 class="modal-title" id="signinLabel">Sign in</h4>
@@ -264,12 +288,12 @@ _________________________________________________________ -->
                 <input type="password" class="form-control" id="pwd" placeholder="password" />
               </div>
 
-              <p class="text-center text-muted">Not registered yet?</p>
+              <!--p class="text-center text-muted">Not registered yet?</p>
               <p class="text-center text-muted">
                 <a href="customer-register.html">
                   <strong>Register now</strong>
                 </a>! It is easy and done in 1&#160;minute and gives you access to special discounts and much more!
-              </p>
+              </p-->
 
             </div>
             <div class="modal-footer">
@@ -309,12 +333,9 @@ _________________________________________________________ -->
         </h1>
         <ol class="breadcrumb">
           <li>
-            <a href="#">
+            <a href="?">
               <ix class="fa fa-dashboard"></ix> Home
             </a>
-          </li>
-          <li>
-            <a href="#">Examples</a>
           </li>
           <li class="active">404 error</li>
         </ol>
@@ -327,25 +348,26 @@ _________________________________________________________ -->
 
           <div class="error-content">
             <h3>
-              <span><ix class="fa fa-warning text-yellow"></ix>
+              <span>
+                <ix class="fa fa-warning text-yellow"></ix>
               </span> Oops! Page not found.
             </h3>
 
             <p>
               We could not find the page you were looking for.
-              Meanwhile, you may <a href="javascript:goHome()">return to dashboard</a> or try using the search form.
+              Meanwhile, you may <a href="?">return to HOME</a> or try using the search form.
             </p>
 
-            <form class="search-form">
+            <form class="search-form" action="?">
               <div class="input-group">
-                <input type="text" name="search" class="form-control" placeholder="Search"/>
+                <input type="text" name="code" class="form-control" placeholder="Search"/>
 
-                  <div class="input-group-btn">
-                    <button type="submit" name="submit" class="btn btn-warning btn-flat">
-                      <ix class="fa fa-search"></ix>
-                    </button>
-                  </div>
+                <div class="input-group-btn">
+                  <button type="submit" class="btn btn-warning btn-flat">
+                    <ix class="fa fa-search"></ix>
+                  </button>
                 </div>
+              </div>
               <!-- /.input-group -->
             </form>
           </div>
@@ -427,5 +449,5 @@ _________________________________________________________ -->
   </xsl:template>
 
 
-
+  <xsl:include href="_menu.xslt" />
 </xsl:stylesheet>

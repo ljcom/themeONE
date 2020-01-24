@@ -1551,3 +1551,8 @@ svg:not(:root).svg-inline--fa {
       width: 100%;
       }
       }
+
+.comboFilter {
+	border: 1px solid #D2D6DE;
+	border-radius: 0 0 0 0;
+}

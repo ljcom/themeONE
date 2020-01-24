@@ -172,7 +172,9 @@
     <xsl:if test ="$fieldEnabled='disabled'">
       <script>
         $('#<xsl:value-of select="@fieldName"/>').attr('disabled', 'disabled');
+		$('#cb<xsl:value-of select="@fieldName"/>').attr('disabled', 'disabled');
         $('#<xsl:value-of select="@fieldName"/>').prop('disabled', true);
+		$('cb#<xsl:value-of select="@fieldName"/>').prop('disabled', true);
       </script>
     </xsl:if>
 
@@ -187,6 +189,8 @@
 	  <xsl:apply-templates select="yearBox"/>
       <xsl:apply-templates select="passwordBox"/>
       <xsl:apply-templates select="hiddenBox"/>
+	  <xsl:apply-templates select="label"/>
+	  <xsl:apply-templates select="button"/>
       <xsl:apply-templates select="checkBox"/>
       <xsl:apply-templates select="mediaBox"/>
       <xsl:apply-templates select="profileBox"/>
@@ -202,6 +206,24 @@
     <input type="hidden" Value="{value}" data-type="hiddenBox" data-old="{value}" name="{../@fieldName}"
            id ="{../@fieldName}"/>
 
+  </xsl:template>
+  <xsl:template match="label">
+    <p><xsl:value-of select="titlecaption"/></p>
+
+  </xsl:template>
+  <xsl:template match="button">
+	<button class="btn {class}" type="button" onclick="javascript:preview('{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);">
+	  <xsl:choose>
+        <xsl:when test="fa">
+		  <ix class="{fa}">&#160;
+	        <xsl:value-of select="titlecaption"/>
+	      </ix>
+	    </xsl:when>
+		<xsl:otherwise>
+		  <xsl:value-of select="titlecaption"/>
+		</xsl:otherwise>
+      </xsl:choose>
+    </button>
   </xsl:template>
   <xsl:template match="signBox">
     <script>
@@ -519,7 +541,7 @@
       <input type="text" class="form-control pull-right datepicker" id ="{../@fieldName}" name="{../@fieldName}"
 		Value="{value}" data-type="dateBox" data-old="{value}"
         onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);"
-        onchange="checkChanges(this)">
+        onchange="checkChanges(this)" autocomplete="off">
       </input>
     </div>
   </xsl:template>

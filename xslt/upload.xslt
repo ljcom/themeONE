@@ -143,7 +143,7 @@
             <li class="dropdown user user-menu">
               <xsl:choose>
                 <xsl:when test="not(sqroot/header/info/user/userId)">
-                  <a href="#" data-toggle="modal" data-target="#login-modal">
+                  <a href="?code=login">
                     <span>
                       <ix class="fa fa-sign-in"></ix>&#160;
                     </span>

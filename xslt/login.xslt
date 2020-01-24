@@ -62,13 +62,13 @@
       else if (getQueryVariable("mode")=="3") $(".mode-forgotpassword").removeClass('hide');
       else if (getQueryVariable("mode")=="4") $(".mode-verifyemail").removeClass('hide');
       else if (getQueryVariable("mode")=="5") $(".mode-resetpassword").removeClass('hide');
-      else if ((getQueryVariable("mode")=="2" &amp;&amp; getCookie('multiAccount')!='0' &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')=='') || getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')=='' || getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')== null) {
+      else if ((getQueryVariable("mode")=="2" &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0' &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')=='') || getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')=='' || getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')== null) {
       setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 365,0,0);
       $(".mode-chooseaccount").removeClass('hide');
       }
       else $(".mode-login").removeClass('hide');
 
-      if (getCookie('multiAccount')!='0') $('#chooseLink').removeClass('hide');
+      if (getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0') $('#chooseLink').removeClass('hide');
 
       if (getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')!='') $('.box-title').html('<xsl:value-of select="sqroot/header/info/company"/> '+getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid'));
     </script>
@@ -171,7 +171,7 @@
                     <div class="g-recaptcha" data-sitekey="##recaptchakey##"></div>
                     <a href="?code=login&amp;mode=3">Forgot Password</a>
                     <br />
-                    <a class="hide" id="chooseLink" href="goToChoose();">Choose another account</a>
+                    <a class="hide" id="chooseLink" href="javascript:goToChoose();">Choose another account</a>
                   </form>
                 </div>
                 <div class="box-footer clearfix">
@@ -425,7 +425,7 @@
       }}
 
       function goToChoose() {
-        setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', 1, 1, 0);
+        setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 1, 1, 0);
         goTo('?code=login&amp;mode=2');
       }
     </script>

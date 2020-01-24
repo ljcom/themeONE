@@ -8,6 +8,9 @@
   <xsl:variable name="docStatus" select="/sqroot/body/bodyContent/form/info/state/status/." />
 
   <xsl:template match="/">
+	<script>
+	$('body').addClass('sidebar-collapse').trigger('sidebar-animated');
+	</script>
     <xsl:variable name="settingmode">
       <xsl:value-of select="/sqroot/body/bodyContent/form/info/settingMode/."/>
     </xsl:variable>
@@ -84,21 +87,14 @@
           </div>
         </div>
         <!-- search form -->
-        <!--form action="#" method="get" class="sidebar-form">
-      <div class="input-group">
-        <input type="text" id="searchBox" name="q" class="form-control" placeholder="Search..." />
-        <span class="input-group-btn">
-          <button type="submit" name="search" id="search-btn" class="btn btn-flat">
-            <ix class="fa fa-search" aria-hidden="true"></ix>
-          </button>
-        </span>
-      </div>
-    </form-->
         <div class="input-group sidebar-form">
           <input type="text" id="searchBox" name="searchBox" class="form-control" placeholder="Search..." onkeypress="return searchText(event, this.value, 20);" value="" />
           <span class="input-group-btn">
             <button type="button" name="search" id="search-btn" class="btn btn-flat" onclick="searchText(event, null, 20);">
               <ix class="fa fa-search" aria-hidden="true"></ix>
+            </button>
+			<button type="button" name="draft" id="draft-btn" class="btn btn-flat" onclick="loadSearchResult('', 1);">
+              <ix class="fa fa-pen-square" aria-hidden="true"></ix>
             </button>
           </span>
         </div>
