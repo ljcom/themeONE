@@ -51,7 +51,7 @@
           </div>
           <div class="pull-left info menu-environtment doc-type-f" style="padding:0;margin-left:10px;margin-left:10px">
             <span>
-              <span style="font-size:9pt;">
+              <span style="font-size:9pt;" id="docNo">
                 <xsl:choose>
                   <xsl:when test="$settingmode='T'">
                     <xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>&#160;
@@ -66,7 +66,7 @@
               <span style="font-size:14pt;">
                 <table class="fixed-table">
                   <tr>
-                    <td id="summary{@GUID}">
+                    <td id="docRefNo">
                       <xsl:choose>
                         <xsl:when test="$settingmode='T'">
                           <xsl:value-of select="sqroot/body/bodyContent/form/info/refNo/."/>

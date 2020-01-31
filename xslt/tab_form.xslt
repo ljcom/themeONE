@@ -125,16 +125,7 @@
 	buttons=<xsl:value-of select="sqroot/body/bodyContent/form/info/buttons"/>;
     loadExtraButton(buttons, 'form-action-button',20);	
 	</xsl:if>
-/*
-function autosuggest_defaultValue(SelectID, id, text) {
-	var newOption = new Option(text, id, true, true);
-	var InitialValue = id;
-	//$("#" + SelectID).data("old", InitialValue);
-	//$("#" + SelectID).val(InitialValue);
-	//$("#" + SelectID).data("oldtext", text);
-	$("#" + SelectID).append(newOption).trigger('change');
-} 
-	*/
+
     </script>
 
     <xsl:variable name="settingmode">
@@ -203,7 +194,7 @@ function autosuggest_defaultValue(SelectID, id, text) {
             </xsl:otherwise>
           </xsl:choose>
         </li>
-        <xsl:if test="sqroot/body/bodyContent/form/info/GUID!='00000000-0000-0000-0000-000000000000' and $allowAdd>0">
+        <xsl:if test="/sqroot/body/bodyContent/form/info/GUID!='00000000-0000-0000-0000-000000000000' and $allowAdd>0">
           <li>
             <a style="color:blue" href="?code={/sqroot/body/bodyContent/form/info/code/.}&amp;guid=00000000-0000-0000-0000-000000000000">
               <span>
@@ -516,7 +507,7 @@ function autosuggest_defaultValue(SelectID, id, text) {
                   <xsl:for-each select="sqroot/body/bodyContent/form/children/child">
                     <li>
                       <a href="#tab_{code}" data-toggle="tab"
-                         onclick="storeHash('{/sqroot/body/bodyContent/form/info/code/.}', '#tab_{code}');">
+                         onclick="storeHash('{/sqroot/body/bodyContent/form/info/code/.}', '#tab_{code}');loadChild('{code/.}', '{parentkey/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', null, '{browseMode/.}')">
                         <xsl:value-of select="childTitle"/>
                       </a>
                     </li>
@@ -685,10 +676,6 @@ function autosuggest_defaultValue(SelectID, id, text) {
       <input type="hidden" id="PKName" value="{parentkey/.}"/>
 
       <script>
-
-        //xmldoc = "OPHCORE/api/default.aspx?code=<xsl:value-of select ="code/."/>&amp;mode=browse&amp;sqlFilter=<xsl:value-of select ="parentkey/."/>='<xsl:value-of select ="/sqroot/body/bodyContent/form/info/GUID/."/>'"
-        //showXML('child<xsl:value-of select ="code/."/>', xmldoc, xsldoc + "_childBrowse.xslt", true, true, function () {});
-
         var code='<xsl:value-of select ="code/."/>';
         var parentKey='<xsl:value-of select ="parentkey/."/>';
         var GUID='<xsl:value-of select ="/sqroot/body/bodyContent/form/info/GUID/."/>';

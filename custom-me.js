@@ -644,7 +644,7 @@ function loadExtraButton(buttons, divn, location) {
                     }
                     //if (location==10 )
                     if (v.icon != null)
-                        a = "<b href=\"" + url + "\"><ix class='far " + v.icon + "' data-toggle=\"tooltip\" title='" + v.caption + "'/></a>";
+                        a = "<a href=\"" + url + "\"><ix class='far " + v.icon + "' data-toggle=\"tooltip\" title='" + v.caption + "'/></a>";
                     else
                         a = "<a href=\"" + url + "\">" + v.caption + "</a>";
                     //if (location==11 || location==20) a=' //button type="button" class="btn btn-danger btn-flat" onclick="javascript:submitTalk('{@GUID}', '10')">Send</button>'

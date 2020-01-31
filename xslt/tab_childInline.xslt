@@ -192,6 +192,7 @@
 							or (@isEditable=4 and ($parentState&lt;500 or not ($parentState))))">
             x.push('editor=<xsl:value-of select="@editor"/>');
             <xsl:if test="@isNullable=0">
+			if (document.getElementsByName(tblnm)[0])
               document.getElementsByName(tblnm)[0].value = document.getElementsByName(tblnm)[0].value + ', <xsl:value-of select="@fieldName"/>'
             </xsl:if>
           </xsl:when>
