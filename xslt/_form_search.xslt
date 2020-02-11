@@ -15,7 +15,7 @@
   <xsl:template match="/sqroot/body/bodyContent/browse/content/row">
     
     <li>
-      <a class="info" onclick="javascript:loadForm('{@code}', '{@GUID}')">
+      <a class="" onclick="javascript:loadForm('{@code}', '{@GUID}')">
         <span>
           <ix class="fa fa-header"></ix>
         </span>

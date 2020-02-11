@@ -453,7 +453,7 @@
                       </xsl:variable>
 
                       <xsl:if test="allowPDF=1">
-                        <a href="javascript:genReport('{code}', 'pdf');" class="btn btn-primary btn-block {$qdisable}">
+                        <a href="javascript:genReport('{code}', 'pdf', null, true);" class="btn btn-primary btn-block {$qdisable}">
                           <span>
                             <ix class="fa fa-file-pdf"></ix>
                           </span>&#160;
@@ -465,7 +465,7 @@
                         </a>
                       </xsl:if>
                       <xsl:if test="allowXLS=1">
-                        <a href="javascript:genReport('{code}', 'xls');" class="btn btn-gray-a btn-block">
+                        <a href="javascript:genReport('{code}', 'xls', null, true);" class="btn btn-gray-a btn-block">
                           <span>
 							<ix class="fa fa-file-spreadsheet"></ix>
 						  </span>&#160;
@@ -490,7 +490,7 @@
                     <xsl:if test="@pageNo=1">active</xsl:if>
                   </xsl:attribute>
                   <a href="#tab_{@pageNo}" data-toggle="tab"
-                     onclick="storeHash('{/sqroot/body/bodyContent/form/info/code/.}', '#tab_{@pageNo}');">
+                     onclick="storeHash('{/sqroot/body/bodyContent/form/info/code/.}', '#tab_{@pageNo}');reloadChild('{@pageNo}');">
                     <xsl:choose>
                       <xsl:when test="@pageTitle">
                         <xsl:value-of select="@pageTitle"/>
@@ -557,7 +557,7 @@
     <xsl:apply-templates select="formPages/formPage[@pageNo&lt;9]"/>
   </xsl:template>
 
-  <xsl:template match="formPages/formPage[@pageNo&lt;9]">
+  <xsl:template match="formPages/formPage[@pageNo&lt;10]">
     <div id="tab_{@pageNo}">
       <xsl:attribute name="class">
         <xsl:choose>
@@ -684,7 +684,7 @@
       </script>
 
 
-      <div class="box box-solid box-default" style="box-shadow:0px;border:none" id="child{code/.}{$cid}">
+      <div class="box box-solid box-default" data-code="{code/.}" data-parentKey="{parentkey/.}" data-guid="{$cid}" data-mode="{browseMode/.}" style="box-shadow:0px;border:none" id="child{code/.}{$cid}">
         &#160;
       </div>
 

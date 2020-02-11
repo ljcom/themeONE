@@ -79,7 +79,7 @@
       </xsl:when>
       <xsl:when test="$colMax=3">
         <div class="col-md-4" data-cm="{$colMax}">
-<xsl:if test="@colTitle/.!=''">
+	<xsl:if test="@colTitle/.!=''">
         <h4>
           <xsl:value-of select="@colTitle/."/>&#160;
         </h4>
@@ -905,7 +905,7 @@
 				      colkey:"<xsl:value-of select="../@fieldName"/>",
 				      search: params.term==undefined?'':params.term.toString().split('+').join('%2B'),
 				      wf1value: ('<xsl:value-of select='whereFields/wf1'/>'=='' || $("#<xsl:value-of select='whereFields/wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
-				      wf2value: ('<xsl:value-of select='whereFields/wf1'/>'=='' || $("#<xsl:value-of select='whereFields/wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
+				      wf2value: ('<xsl:value-of select='whereFields/wf2'/>'=='' || $("#<xsl:value-of select='whereFields/wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
               parentCode: getCode(),
               page: params.page
         }
@@ -1242,7 +1242,8 @@
         loadChild(code, parentKey, GUID, 1, browsemode);
       </script>
 
-      <div class="box box-solid box-default" style="box-shadow:0px;border:none" id="child{translate(code/., $uppercase, $smallcase)}{$cid}">
+      <div class="box box-solid box-default child" data-code="{code/.}" data-parentKey="{parentkey/.}" data-guid="{$cid}" data-mode="{browseMode/.}" 
+		style="box-shadow:0px;border:none" id="child{translate(code/., $uppercase, $smallcase)}{$cid}">
         &#160;
       </div>
 

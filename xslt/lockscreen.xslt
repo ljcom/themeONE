@@ -50,6 +50,9 @@
       }
       }
 
+		var n=new Date(Date.now());
+		$('#cp').html($('#cp').html().split('#year#').join(n.getFullYear()));
+
     </script>
     <!-- Automatic element centering -->
     <div class="lockscreen-wrapper">
@@ -96,9 +99,9 @@
       <div class="text-center">
         <a href="index.aspx">Or sign in as a different user</a>
       </div>
-      <div class="lockscreen-footer text-center">
+      <div id="cp" class="lockscreen-footer text-center">
         <strong>
-          Copyright &#169; 2019 <a href="#">OPERAHOUSE</a>.
+          Copyright &#169; #year# <a href="#">operahouse.systems</a>.
         </strong> All rights reserved.
 
       </div>

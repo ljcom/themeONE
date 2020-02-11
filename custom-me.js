@@ -1,7 +1,7 @@
 setTimeout(function () { timeIsUp(); }, 1000 * 60 * 60);    //1 hour
 
 function timeIsUp() {
-    if (window.location.href.indexOf('mode=login') === -1)
+    if (window.location.href.indexOf('mode=login') === -1 && loadThemeFolder()=='themeONE')
         window.location = 'index.aspx?env=acct&code=lockscreen';
 }
 
@@ -643,12 +643,17 @@ function loadExtraButton(buttons, divn, location) {
                         });
                     }
                     //if (location==10 )
-                    if (v.icon != null)
+					uo = (v.updateOnly == 1) ? 1 : 0;
+					uo = $(td).find("a:contains('"+v.caption+"')").length>0 ? 1 : uo;
+					if (v.icon) uo = $(td).find('ix.'+v.icon.split(' ').join('.')).length>0 ? 1 : uo;
+                    if (v.icon != null) {
                         a = "<a href=\"" + url + "\"><ix class='far " + v.icon + "' data-toggle=\"tooltip\" title='" + v.caption + "'/></a>";
-                    else
-                        a = "<a href=\"" + url + "\">" + v.caption + "</a>";
+					}
+                    else {
+                        a = "<a href=\"" + url + "\" title='" + v.caption + "'>" + v.caption + "</a>";
+					}
                     //if (location==11 || location==20) a=' //button type="button" class="btn btn-danger btn-flat" onclick="javascript:submitTalk('{@GUID}', '10')">Send</button>'
-                    uo = (v.updateOnly == 1) ? 1 : 0;
+                    
                     bstate = v.state;
                     if (bstate) {
                         bstate = bstate.split(' ').join('');

@@ -71,6 +71,10 @@
       if (getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0') $('#chooseLink').removeClass('hide');
 
       if (getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')!='') $('.box-title').html('<xsl:value-of select="sqroot/header/info/company"/> '+getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid'));
+
+		var n=new Date(Date.now());
+		$('#cp').html($('#cp').html().split('#year#').join(n.getFullYear()));
+
     </script>
 
     <div class="wrapper" style="background: rgba(38, 44, 44, 0.1);">
@@ -380,14 +384,14 @@
         <div class="pull-right hidden-xs">
           <b>Version</b> 4.0
         </div>
+		<div id="cp">
         <strong>
-          Copyright &#169; 2019 <a href="#">OPERAHOUSE</a>.
+          Copyright &#169; #year# <a href="#">operahouse.systems</a>.
         </strong> All rights reserved.
+		</div>
       </footer>
     </div>
 
-    <!-- jQuery 2.2.3 -->
-    <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
     <script>
       if (getCookie('isWhiteAddress') == '1') {
         $('#formlogin .g-recaptcha').remove();

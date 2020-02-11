@@ -29,6 +29,7 @@
       loadScript('OPHContent/cdn/select2/select2.full.min.js');
       var deferreds = [];
       cell_defer(deferreds);
+	  reloadQueryResult();
     </script>
 
     <section class="content-header visible-phone">
@@ -85,7 +86,9 @@
             <button class="btn btn-orange-a" onclick="submitfunction('',null,'{sqroot/body/bodyContent/query/info/code/.}');">SHOW</button>&#160;
           </div>
         </div>-->
-          </div>
+		</div>
+		<div id="ReportResult" class="row visible-phone listContent">
+        </div>
         </xsl:when>
         <xsl:otherwise>
           <div class="callout callout-danger">
@@ -121,19 +124,7 @@
     </script>
   </xsl:template>
 
-  <xsl:template match="sqroot/body/bodyContent/query/queryPages/queryPage/querySections/querySection">
-    <div class="row" id="reportParameter">
-      <div class="col-md-12">
-        <xsl:if test="@rowTitle">
-          <h2>
-            <xsl:value-of select="@rowTitle"/>
-          </h2>
-        </xsl:if>
-        <xsl:apply-templates select="queryCols/queryCol"/>
-        &#160;
-      </div>
-    </div>
-  </xsl:template>
+
 
   <xsl:template match="queryCols/queryCol">
     <div class="row">

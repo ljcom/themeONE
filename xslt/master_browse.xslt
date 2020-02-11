@@ -849,7 +849,7 @@
           <xsl:choose>
             <xsl:when test="$state &lt; 999">
               <xsl:choose>
-                <xsl:when test="(($allowEdit>=1 or $allowAdd>=1 or $allowDelete>=1) and (/sqroot/body/bodyContent/browse/info/curState/@substateCode=0 or /sqroot/body/bodyContent/browse/info/curState/@substateCode=300))
+                <xsl:when test="(($allowEdit>=1 or $allowAdd>=1 or $allowDelete>=1) and (/sqroot/body/bodyContent/browse/info/curState/@substateCode=0 or /sqroot/body/bodyContent/browse/info/curState/@substateCode=300 or not /sqroot/body/bodyContent/browse/info/curState/@substateCode))
 							              or (($allowEdit>=3 or $allowDelete>=3) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=400)
 							              or (($allowEdit>=4 or $allowAdd>=4 or $allowDelete>=4) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=500)">
                   <a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="Edit This">

@@ -189,18 +189,28 @@
   </xsl:template>
 
   <xsl:template match="formCols">
+  
     <xsl:apply-templates select="formCol"/>
   </xsl:template>
 
   <xsl:template match="formCol">
+    <xsl:variable name="colMax">
+      <xsl:for-each select="../formCol/.">
+        <xsl:sort select="@colNo" data-type="number" order="descending"/>
+        <xsl:if test="position() = 1">
+          <xsl:value-of select="@colNo"/>
+        </xsl:if>
+      </xsl:for-each>
+    </xsl:variable>
+
     <xsl:choose>
-      <xsl:when test="@colNo='0'">
-        <div class="col-md-12">
+      <xsl:when test="$colMax=0">
+        <div class="col-md-12" data-cm="{$colMax}">
           <xsl:apply-templates select="formRows"/>
         </div>
       </xsl:when>
-      <xsl:otherwise>
-        <div class="col-md-6">
+      <xsl:when test="$colMax=1 or $colMax=2">
+        <div class="col-md-6" data-cm="{$colMax}">
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
@@ -208,10 +218,40 @@
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
         </div>
-      </xsl:otherwise>
+      </xsl:when>
+      <xsl:when test="$colMax=3">
+        <div class="col-md-4" data-cm="{$colMax}">
+          <xsl:if test="@colNo='1'">
+            <xsl:apply-templates select="formRows"/>
+          </xsl:if>
+          <xsl:if test="@colNo='2'">
+            <xsl:apply-templates select="formRows"/>
+          </xsl:if>
+          <xsl:if test="@colNo='3'">
+            <xsl:apply-templates select="formRows"/>
+          </xsl:if>
+        </div>
+      </xsl:when>
+      <xsl:when test="$colMax=4">
+        <div class="col-md-3" data-cm="{$colMax}">
+          <xsl:if test="@colNo='1'">
+            <xsl:apply-templates select="formRows"/>
+          </xsl:if>
+          <xsl:if test="@colNo='2'">
+            <xsl:apply-templates select="formRows"/>
+          </xsl:if>
+          <xsl:if test="@colNo='3'">
+            <xsl:apply-templates select="formRows"/>
+          </xsl:if>
+          <xsl:if test="@colNo='4'">
+            <xsl:apply-templates select="formRows"/>
+          </xsl:if>
+        </div>
+      </xsl:when>
+
+
     </xsl:choose>
   </xsl:template>
-
   <xsl:template match="formRows">
     <xsl:apply-templates select="formRow"/>
   </xsl:template>

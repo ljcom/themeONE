@@ -60,6 +60,8 @@
       changeSkinColor;
 
       sideShowMaster('<xsl:value-of select="/sqroot/header/info/title"/>', '<xsl:value-of select="/sqroot/header/info/user/userName"/>');
+		var n=new Date(Date.now());
+		$('#cp').html($('#cp').html().split('#year#').join(n.getFullYear()));
 
     </script>
     <!-- Page script -->
@@ -300,9 +302,11 @@
       <div class="pull-right hidden-xs">
         <b>Version</b> 4.0
       </div>
+	  <div id="cp">
       <strong>
-        Copyright &#169; 2018 <a href="#">Operahouse</a>.
+        Copyright &#169; #year# <a href="#">operahouse.systems</a>.
       </strong> All rights reserved.
+	  </div>
     </footer>
 
     <!-- Control Sidebar -->

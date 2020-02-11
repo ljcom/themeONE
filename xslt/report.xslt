@@ -16,45 +16,49 @@
 
   <xsl:template match="/">
     <script>
-      sideShowInit();
-      //Sideshow.config.language = "oph";
-      //Sideshow.config.autoSkipIntro = true;
-      //Sideshow.init();
+		sideShowInit();
+		//Sideshow.config.language = "oph";
+		//Sideshow.config.autoSkipIntro = true;
+		//Sideshow.init();
 
-      var meta = document.createElement('meta');
-      meta.charset = "UTF-8";
-      loadMeta(meta);
+		var meta = document.createElement('meta');
+		meta.charset = "UTF-8";
+		loadMeta(meta);
 
-      var meta = document.createElement('meta');
-      meta.httpEquiv = "X-UA-Compatible";
-      meta.content = "IE=edge";
-      loadMeta(meta);
+		var meta = document.createElement('meta');
+		meta.httpEquiv = "X-UA-Compatible";
+		meta.content = "IE=edge";
+		loadMeta(meta);
 
-      var meta = document.createElement('meta');
-      meta.name = "viewport";
-      meta.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
-      loadMeta(meta);
+		var meta = document.createElement('meta');
+		meta.name = "viewport";
+		meta.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
+		loadMeta(meta);
 
-      changeSkinColor();
-      $("body").addClass("hold-transition");
-      $("body").addClass("sidebar-mini");
-      $("body").addClass("fixed");
+		changeSkinColor();
+		$("body").addClass("hold-transition");
+		$("body").addClass("sidebar-mini");
+		$("body").addClass("fixed");
 
-      loadScript('OPHContent/cdn/admin-LTE/js/app.min.js');
+		loadScript('OPHContent/cdn/admin-LTE/js/app.min.js');
 
-      document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
-      resetBrowseCookies();
-      var qcode = '<xsl:value-of select="/sqroot/header/info/id"/>';
-      loadReport(qcode);
+		document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
+		resetBrowseCookies();
+		var qcode = '<xsl:value-of select="/sqroot/header/info/id"/>';
+		loadReport(qcode);
 
-      setCookie('userURL', 'OPHContent/documents/<xsl:value-of select="sqroot/header/info/account" />/<xsl:value-of select="sqroot/header/info/user/userURL"/>', 7);
-      setCookie('userName', '<xsl:value-of select="sqroot/header/info/user/userName"/>', 7);
-      //setCookie('userId', '<xsl:value-of select="sqroot/header/info/user/userId"/>', 7);
+		setCookie('userURL', 'OPHContent/documents/<xsl:value-of select="sqroot/header/info/account" />/<xsl:value-of select="sqroot/header/info/user/userURL"/>', 7);
+		setCookie('userName', '<xsl:value-of select="sqroot/header/info/user/userName"/>', 7);
+		//setCookie('userId', '<xsl:value-of select="sqroot/header/info/user/userId"/>', 7);
 
-      sideShowReport('<xsl:value-of select="/sqroot/header/info/title"/>', '<xsl:value-of select="/sqroot/header/info/user/userName"/>');
-      $(document).ready(function () {
-      if (getQueryVariable('help') == 1) Sideshow.start();
-      });
+		sideShowReport('<xsl:value-of select="/sqroot/header/info/title"/>', '<xsl:value-of select="/sqroot/header/info/user/userName"/>');
+		$(document).ready(function () {
+		if (getQueryVariable('help') == 1) Sideshow.start();
+		});
+
+		var n=new Date(Date.now());
+		$('#cp').html($('#cp').html().split('#year#').join(n.getFullYear()));
+
     </script>
     <!-- Page script -->
 
@@ -247,9 +251,11 @@ _________________________________________________________ -->
       <div class="pull-right hidden-xs">
         <b>Version</b> 4.0
       </div>
+	  <div id="cp">
       <strong>
-        Copyright &#169; 2017 <a href="#">Operahouse</a>.
+        Copyright &#169; #year# <a href="#">operahouse.systems</a>.
       </strong> All rights reserved.
+	  </div>
     </footer>
 
     <!-- Control Sidebar -->

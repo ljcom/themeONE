@@ -110,7 +110,8 @@
                 <ix class="fa fa-angle-left pull-right"></ix>
               </span>
             </a>
-            <ul class="treeview-menu view-left-sidebar info" id="searchResult">
+            <ul class="treeview-menu view-left-sidebar info">
+			  <div class="direct-chat-messages" style="height:350px" id="searchResult">
                 <li>
                   <a class="info" href="#">
                     <span>
@@ -118,7 +119,7 @@
                     </span >No results
                   </a>
                 </li>
-              
+              </div>
             
             </ul>
           </li>

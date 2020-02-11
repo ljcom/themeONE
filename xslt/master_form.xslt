@@ -116,7 +116,7 @@ function autosuggest_defaultValue(SelectID, id, text) {
 	//$("#" + SelectID).data("old", InitialValue);
 	//$("#" + SelectID).val(InitialValue);
 	//$("#" + SelectID).data("oldtext", text);
-	$("#" + SelectID).append(newOption).trigger('change');
+	if (SelectID) $("#" + SelectID).append(newOption).trigger('change');
 } 
 	*/
 	

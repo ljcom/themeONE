@@ -402,6 +402,14 @@ tr.odd-tr {
         background: #c7e3fc; /*strip color*/
     }
 
+tr.odd2-tr {
+    background: white;
+}
+
+    tr.odd2-tr:nth-child(2n+1) {
+        background: #c7e3fc; /*strip color*/
+    }
+	
 div.browse-phone {
     background: #c7e3fc;
 }
@@ -654,7 +662,7 @@ ul.view-form-toggle {
     .sidebar-menu {
         overflow: hidden !important;
         overflow-y: scroll !important;
-        max-height: 640px !important; //height of menu sidebar
+        max-height: 740px !important; //height of menu sidebar
     }
 }
 

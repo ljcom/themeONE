@@ -62,6 +62,9 @@
       if (getQueryVariable('help') == 1) Sideshow.start();
       });
 
+		var n=new Date(Date.now());
+		$('#cp').html($('#cp').html().split('#year#').join(n.getFullYear()));
+
     </script>
 
     <!-- Page script -->
@@ -591,9 +594,11 @@
       <div class="pull-right hidden-xs">
         <b>Version</b> 4.0
       </div>
-      <strong>
-        Copyright &#169; 2017 <a href="#">Operahouse</a>.
-      </strong> All rights reserved.
+	  <div id="cp">
+		  <strong>
+			Copyright &#169; #year# <a href="#">operahouse.systems</a>.
+		  </strong> All rights reserved.
+	  </div>
     </footer>
 
     <!-- Control Sidebar -->

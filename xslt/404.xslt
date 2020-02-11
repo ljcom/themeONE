@@ -70,6 +70,10 @@
 
       resetBrowseCookies();
       //loadContent(1);
+	  
+		var n=new Date(Date.now());
+		$('#cp').html($('#cp').html().split('#year#').join(n.getFullYear()));
+	  
     </script>
     <xsl:apply-templates select="sqroot" />
   </xsl:template>
@@ -381,9 +385,11 @@ _________________________________________________________ -->
       <div class="pull-right hidden-xs">
         <b>Version</b> 4.0
       </div>
+	  <div id="cp">
       <strong>
-        Copyright &#169; 2017 <a href="#">Operahouse</a>.
+        Copyright &#169; #year# <a href="#">operahouse.systems</a>.
       </strong> All rights reserved.
+	  </div>
     </footer>
 
     <!-- Control Sidebar -->

@@ -186,7 +186,7 @@
 
   <xsl:template match="formCol">
     <xsl:variable name="colMax">
-      <xsl:for-each select=".">
+      <xsl:for-each select="../formCol/.">
         <xsl:sort select="@colNo" data-type="number" order="descending"/>
         <xsl:if test="position() = 1">
           <xsl:value-of select="@colNo"/>
@@ -896,8 +896,8 @@
       code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
       colkey:"<xsl:value-of select="../@fieldName"/>",
       search: params.term==undefined?'':params.term.toString().split('+').join('%2B'),
-      wf1value: ($("#<xsl:value-of select='whereFields/wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
-      wf2value: ($("#<xsl:value-of select='whereFields/wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
+      wf1value: ('<xsl:value-of select='whereFields/wf1'/>'=='' || $("#<xsl:value-of select='whereFields/wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
+      wf2value: ('<xsl:value-of select='whereFields/wf2'/>'=='' || $("#<xsl:value-of select='whereFields/wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
       parentCode: getCode(),
       page: params.page
       }
