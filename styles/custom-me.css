@@ -384,13 +384,13 @@ td.expand-table-an {
     /*border-top:3px #ccc solid;*/
 }
 
-tr.odd-tr {
+/*tr.odd-tr {
     background: white;
 }
 
     tr.odd-tr:nth-child(4n+1) {
         background: #c7e3fc; /*strip color*/
-    }
+    }*/
 
 div.browse-phone {
     background: #c7e3fc;
