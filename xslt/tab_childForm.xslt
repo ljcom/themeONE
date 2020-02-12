@@ -163,20 +163,34 @@
 
   </xsl:template>
 
-  <xsl:template match="formSection ">
-    <xsl:if test="@rowTitle/.!=''">
-      <div class="col-md-12" data-toggle="collapse" data-target="#section_{@sectionNo}">
-        <h3>
-          <xsl:value-of select="@rowTitle/."/>&#160;
-        </h3>
-      </div>
-    </xsl:if>
+  <xsl:template match="formSection">
     <xsl:if test="formCols/formCol/formRows">
       <div class="col-md-12 collapse in" id="section_{@sectionNo}">
         <div class="row">
+		
+		<xsl:if test="@sectionTitle/.!=''">
+			<div class="col-md-12">
+				<h3>
+					<xsl:value-of select="@sectionTitle/."/>&#160;
+				</h3>
+			</div>
+		</xsl:if>		
+	
           <xsl:apply-templates select="formCols"/>
+		  
         </div>
       </div>
+    </xsl:if>
+    <xsl:if test="formChildren/formChild">
+	  <xsl:if test="(/sqroot/body/bodyContent/form/info/GUID/.) != '00000000-0000-0000-0000-000000000000'">
+        <div class="col-md-12 collapse in" id="section_{@sectionNo}">
+          <div class="row">
+		
+            <xsl:apply-templates select="formChildren"/>
+		  
+          </div>
+        </div>
+	  </xsl:if>
     </xsl:if>
   </xsl:template>
 
@@ -197,11 +211,21 @@
     <xsl:choose>
       <xsl:when test="$colMax=0">
         <div class="col-md-12" data-cm="{$colMax}">
+	<xsl:if test="@colTitle/.!=''">
+        <h4>
+          <xsl:value-of select="@colTitle/."/>&#160;
+        </h4>
+    </xsl:if>		
           <xsl:apply-templates select="formRows"/>
         </div>
       </xsl:when>
       <xsl:when test="$colMax=1 or $colMax=2">
         <div class="col-md-6" data-cm="{$colMax}">
+	<xsl:if test="@colTitle/.!=''">
+        <h4>
+          <xsl:value-of select="@colTitle/."/>&#160;
+        </h4>
+    </xsl:if>		
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
@@ -212,6 +236,11 @@
       </xsl:when>
       <xsl:when test="$colMax=3">
         <div class="col-md-4" data-cm="{$colMax}">
+	<xsl:if test="@colTitle/.!=''">
+        <h4>
+          <xsl:value-of select="@colTitle/."/>&#160;
+        </h4>
+    </xsl:if>		
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
@@ -225,6 +254,11 @@
       </xsl:when>
       <xsl:when test="$colMax=4">
         <div class="col-md-3" data-cm="{$colMax}">
+<xsl:if test="@colTitle/.!=''">
+        <h4>
+          <xsl:value-of select="@colTitle/."/>&#160;
+        </h4>
+    </xsl:if>		
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
@@ -243,6 +277,7 @@
 
     </xsl:choose>
   </xsl:template>
+  
   <xsl:template match="formRows">
     <div class="box box-solid box-default">
       <div class="box-body">
@@ -1142,7 +1177,7 @@
         <xsl:otherwise>
         <xsl:choose>
           <xsl:when test="radioRows">
-            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}'):
+            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}');
                    preview('{@preview}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
               <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" />
               <xsl:value-of select="@radioRowTitle"/>
