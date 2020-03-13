@@ -35,7 +35,7 @@
 	  preview('1', getCode(), getGUID(),'', this);
       loadChild(code);
       });
-      });
+      
 	  
       $(document).ready(function(){
       if($('th[data-order="DESC"]').length == 1) $('th[data-order="DESC"]').append(' &lt;ix class="fa fa-sort-alpha-desc" /&gt;');
