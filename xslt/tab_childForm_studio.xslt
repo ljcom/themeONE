@@ -1142,7 +1142,7 @@
         <xsl:otherwise>
         <xsl:choose>
           <xsl:when test="radioRows">
-            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}');
+            <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}'):
                    preview('{@preview}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
               <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" />
               <xsl:value-of select="@radioRowTitle"/>

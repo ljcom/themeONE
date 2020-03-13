@@ -82,7 +82,7 @@
                           <ix class="{fa/.}"></ix>&#160;
                         </span>
                       </xsl:if>
-                      <span class="info">
+                      <span class="info" style="white-space:normal;">
                         <xsl:value-of select="caption/." />
                       </span>
                       <span class="pull-right-container">

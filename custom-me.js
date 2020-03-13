@@ -634,6 +634,8 @@ function loadExtraButton(buttons, divn, location) {
                             }
                             else {
                                 cval = $(td).parent().find("[data-field='" + val + "']").html();
+								//find in content summary
+								if (cval==null) cval = $(td).parent().next().find("[data-field='" + val + "']").html();
                             }
 
                             if (cval) {

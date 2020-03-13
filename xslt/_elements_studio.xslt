@@ -4,41 +4,88 @@
 
   <xsl:template match="formSections">
     <xsl:apply-templates select="formSection"/>
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="btn-group btn-group-sm studio-child" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+              New Section:
+            </button>
+            <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+              <ix class="fa fa-plus fa-sm"></ix>
+            </button>
+          </div>
+          <div class="btn-group btn-group-sm studio-child" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+              New Child:
+            </button>
+            <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+              <ix class="fa fa-plus fa-sm"></ix>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </xsl:template>
 
   <xsl:template match="formSection">
     <xsl:if test="formCols/formCol/formRows">
-      <div class="col-md-12 collapse in" id="section_{@sectionNo}">
+      <div class="col-md-12 collapse in drag-section" id="section_{@sectionNo}" draggable="true">
         <div class="row">
-		
-		<xsl:if test="@sectionTitle/.!=''">
-			<div class="col-md-12">
-				<h3>
-					<xsl:value-of select="@sectionTitle/."/>&#160;
-				</h3>
-			</div>
-		</xsl:if>		
-	
+          <div class="col-md-12">
+            <h3 style="display:inline">
+              <span contenteditable="true">
+                <xsl:choose>
+                  <xsl:when test="@sectionTitle/.!=''">
+                    <xsl:value-of select="@sectionTitle/."/>&#160;
+                  </xsl:when>
+                  <xsl:otherwise>
+                    Enter Section Title Here...
+                  </xsl:otherwise>
+                </xsl:choose>
+              </span>
+            </h3>
+            <div class="btn-group btn-group-sm studio-section" role="group" aria-label="Basic example">
+              <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+                Section:
+              </button>
+              <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+                <ix class="fa fa-plus fa-sm"></ix>
+              </button>
+              <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+                <ix class="fa fa-times fa-sm"></ix>
+              </button>
+            </div>
+
+          </div>
           <xsl:apply-templates select="formCols"/>
-		  
         </div>
       </div>
     </xsl:if>
     <xsl:if test="formChildren/formChild">
-	  <xsl:if test="(/sqroot/body/bodyContent/form/info/GUID/.) != '00000000-0000-0000-0000-000000000000'">
-        <div class="col-md-12 collapse in" id="section_{@sectionNo}">
-          <div class="row">
-		
-            <xsl:apply-templates select="formChildren"/>
-		  
-          </div>
+      <!--xsl:if test="(/sqroot/body/bodyContent/form/info/GUID/.) != '00000000-0000-0000-0000-000000000000'"-->
+      <div class="col-md-12 collapse in drag-child" id="section_{@sectionNo}" draggable="true">
+        <div class="row">
+
+          <xsl:apply-templates select="formChildren"/>
+
         </div>
-	  </xsl:if>
+      </div>
     </xsl:if>
+    <!--/xsl:if-->
   </xsl:template>
 
   <xsl:template match="formCols">
     <xsl:apply-templates select="formCol"/>
+    <div class="btn-group btn-group-sm studio-child" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+        New Column:
+      </button>
+      <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+        <ix class="fa fa-plus fa-sm"></ix>
+      </button>
+    </div>
   </xsl:template>
 
   <xsl:template match="formCol">
@@ -53,22 +100,58 @@
 
     <xsl:choose>
       <xsl:when test="$colMax=0">
-        <div class="col-md-12" data-cm="{$colMax}">
-	<xsl:if test="@colTitle/.!=''">
-        <h4>
-          <xsl:value-of select="@colTitle/."/>&#160;
-        </h4>
-    </xsl:if>		
+        <div class="col-md-12 drag-col" data-cm="{$colMax}" draggable="true" >
+          <h4 style="display:inline">
+            <span contenteditable="true">
+              <xsl:choose>
+                <xsl:when test="@colTitle/.!=''">
+                  <xsl:value-of select="@colTitle/."/>&#160;
+                </xsl:when>
+                <xsl:otherwise>
+                  Enter Column Title Here...
+                </xsl:otherwise>
+              </xsl:choose>
+            </span>
+          </h4>
+          <div class="btn-group btn-group-sm studio-column" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+              Column:
+            </button>
+            <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+              <ix class="fa fa-plus fa-sm"></ix>
+            </button>
+            <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+              <ix class="fa fa-times fa-sm"></ix>
+            </button>
+          </div>
           <xsl:apply-templates select="formRows"/>
         </div>
       </xsl:when>
       <xsl:when test="$colMax=1 or $colMax=2">
-        <div class="col-md-6" data-cm="{$colMax}">
-	<xsl:if test="@colTitle/.!=''">
-        <h4>
-          <xsl:value-of select="@colTitle/."/>&#160;
-        </h4>
-    </xsl:if>		
+        <div class="col-md-6 drag-col" data-cm="{$colMax}" draggable="true" >
+          <h4 style="display:inline">
+            <span contenteditable="true">
+              <xsl:choose>
+                <xsl:when test="@colTitle/.!=''">
+                  <xsl:value-of select="@colTitle/."/>&#160;
+                </xsl:when>
+                <xsl:otherwise>
+                  Enter Column Title Here...
+                </xsl:otherwise>
+              </xsl:choose>
+            </span>
+          </h4>
+          <div class="btn-group btn-group-sm studio-column" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+              Column:
+            </button>
+            <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+              <ix class="fa fa-plus fa-sm"></ix>
+            </button>
+            <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+              <ix class="fa fa-times fa-sm"></ix>
+            </button>
+          </div>
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
@@ -78,12 +161,30 @@
         </div>
       </xsl:when>
       <xsl:when test="$colMax=3">
-        <div class="col-md-4" data-cm="{$colMax}">
-	<xsl:if test="@colTitle/.!=''">
-        <h4>
-          <xsl:value-of select="@colTitle/."/>&#160;
-        </h4>
-    </xsl:if>		
+        <div class="col-md-4 drag-col" data-cm="{$colMax}" draggable="true" >
+          <h4 style="display:inline">
+            <span contenteditable="true">
+              <xsl:choose>
+                <xsl:when test="@colTitle/.!=''">
+                  <xsl:value-of select="@colTitle/."/>&#160;
+                </xsl:when>
+                <xsl:otherwise>
+                  Enter Column Title Here...
+                </xsl:otherwise>
+              </xsl:choose>
+            </span>
+          </h4>
+          <div class="btn-group btn-group-sm studio-column" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+              Column:
+            </button>
+            <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+              <ix class="fa fa-plus fa-sm"></ix>
+            </button>
+            <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+              <ix class="fa fa-times fa-sm"></ix>
+            </button>
+          </div>
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
@@ -96,12 +197,30 @@
         </div>
       </xsl:when>
       <xsl:when test="$colMax=4">
-        <div class="col-md-3" data-cm="{$colMax}">
-<xsl:if test="@colTitle/.!=''">
-        <h4>
-          <xsl:value-of select="@colTitle/."/>&#160;
-        </h4>
-    </xsl:if>		
+        <div class="col-md-3 drag-col" data-cm="{$colMax}" draggable="true" >
+          <h4 style="display:inline">
+            <span contenteditable="true">
+              <xsl:choose>
+                <xsl:when test="@colTitle/.!=''">
+                  <xsl:value-of select="@colTitle/."/>&#160;
+                </xsl:when>
+                <xsl:otherwise>
+                  Enter Column Title Here...
+                </xsl:otherwise>
+              </xsl:choose>
+            </span>
+          </h4>
+          <div class="btn-group btn-group-sm studio-column" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+              Column:
+            </button>
+            <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+              <ix class="fa fa-plus fa-sm"></ix>
+            </button>
+            <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+              <ix class="fa fa-times fa-sm"></ix>
+            </button>
+          </div>
           <xsl:if test="@colNo='1'">
             <xsl:apply-templates select="formRows"/>
           </xsl:if>
@@ -116,8 +235,6 @@
           </xsl:if>
         </div>
       </xsl:when>
-
-
     </xsl:choose>
   </xsl:template>
 
@@ -125,6 +242,10 @@
     <div class="box box-solid box-default">
       <div class="box-body">
         <xsl:apply-templates select="formRow"/>
+        <button type="button" class="btn btn-secondary"  style="padding:1px 5px">
+          <ix class="fa fa-plus fa-sm"></ix>
+          <span>Add Field</span>
+        </button>
       </div>
     </div>
   </xsl:template>
@@ -172,25 +293,25 @@
     <xsl:if test ="$fieldEnabled='disabled'">
       <script>
         $('#<xsl:value-of select="@fieldName"/>').attr('disabled', 'disabled');
-		$('#cb<xsl:value-of select="@fieldName"/>').attr('disabled', 'disabled');
+        $('#cb<xsl:value-of select="@fieldName"/>').attr('disabled', 'disabled');
         $('#<xsl:value-of select="@fieldName"/>').prop('disabled', true);
-		$('cb#<xsl:value-of select="@fieldName"/>').prop('disabled', true);
+        $('cb#<xsl:value-of select="@fieldName"/>').prop('disabled', true);
       </script>
     </xsl:if>
 
-    <div class="form-group {$fieldEnabled}-input">
+    <div class="form-group {$fieldEnabled}-input" draggable="true" >
       <xsl:apply-templates select="textBox"/>
       <xsl:apply-templates select="textEditor"/>
       <xsl:apply-templates select="textArea"/>
       <xsl:apply-templates select="dateBox"/>
       <xsl:apply-templates select="dateTimeBox"/>
       <xsl:apply-templates select="timeBox"/>
-	  <xsl:apply-templates select="monthBox"/>
-	  <xsl:apply-templates select="yearBox"/>
+      <xsl:apply-templates select="monthBox"/>
+      <xsl:apply-templates select="yearBox"/>
       <xsl:apply-templates select="passwordBox"/>
       <xsl:apply-templates select="hiddenBox"/>
-	  <xsl:apply-templates select="label"/>
-	  <xsl:apply-templates select="button"/>
+      <xsl:apply-templates select="label"/>
+      <xsl:apply-templates select="button"/>
       <xsl:apply-templates select="checkBox"/>
       <xsl:apply-templates select="mediaBox"/>
       <xsl:apply-templates select="profileBox"/>
@@ -208,20 +329,23 @@
 
   </xsl:template>
   <xsl:template match="label">
-    <p><xsl:value-of select="titlecaption"/></p>
+    <p contenteditable="true">
+      <xsl:value-of select="titlecaption"/>
+    </p>
 
   </xsl:template>
   <xsl:template match="button">
-	<button class="btn {class}" type="button" onclick="javascript:preview('{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);">
-	  <xsl:choose>
+    <button class="btn {class}" type="button" onclick="javascript:preview('{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);">
+      <xsl:choose>
         <xsl:when test="fa">
-		  <ix class="{fa}">&#160;
-	        <xsl:value-of select="titlecaption"/>
-	      </ix>
-	    </xsl:when>
-		<xsl:otherwise>
-		  <xsl:value-of select="titlecaption"/>
-		</xsl:otherwise>
+          <ix class="{fa}">
+            &#160;
+            <xsl:value-of select="titlecaption"/>
+          </ix>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="titlecaption"/>
+        </xsl:otherwise>
       </xsl:choose>
     </button>
   </xsl:template>
@@ -274,15 +398,27 @@
 
 
 
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" contenteditable="true">
       <input type="checkbox" value="{value}" id ="cb{../@fieldName}"  name="cb{../@fieldName}" data-type="checkBox" data-old="{value}"
-      onchange="checkCB('{../@fieldName}');preview('{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);">
+      onchange="checkCB('{../@fieldName}');preview('{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" contenteditable="true">
         <xsl:if test="value=1">
           <xsl:attribute name="checked">checked</xsl:attribute>
         </xsl:if>
       </input>
       <xsl:value-of select="titlecaption"/>
     </label>
+    <div class="btn-group btn-group-sm studio-field" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+        Field:
+      </button>
+      <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+        <ix class="fa fa-plus fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+        <ix class="fa fa-times fa-sm"></ix>
+      </button>
+    </div>
+
     <xsl:if test="../@isNullable = 0 and 
                     ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
@@ -298,14 +434,14 @@
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
-    <label id="{../@fieldName}_suffixCaption">
+    <label id="{../@fieldName}suffixCaption" contenteditable="true">
       <xsl:value-of select="suffixCaption"/>
     </label>
 
   </xsl:template>
 
   <xsl:template match="textEditor">
-    <label id="{../@fieldName}caption" data-toggle="collapse" data-target="#section_{@sectionNo}">
+    <label id="{../@fieldName}caption" data-toggle="collapse" data-target="#section_{@sectionNo}" contenteditable="true">
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
@@ -350,9 +486,9 @@
     </script>
   </xsl:template>
 
-  
+
   <xsl:template match="textArea">
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" contenteditable="true">
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
@@ -366,7 +502,7 @@
     <!--default value-->
     <xsl:variable name="thisValue">
       <xsl:choose>
-        <xsl:when  test="$cid = '00000000-0000-0000-0000-000000000000' and defaultvalue != ''">
+        <xsl:when test="$cid = '00000000-0000-0000-0000-000000000000' and defaultvalue != ''">
           <xsl:value-of select="defaultvalue/." />
         </xsl:when>
         <xsl:otherwise>
@@ -391,9 +527,51 @@
   </xsl:template>
 
   <xsl:template match="textBox">
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" contenteditable="true">
       <xsl:value-of select="titlecaption"/>
     </label>
+    <div class="btn-group btn-group-sm studio-field" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+        Field:
+      </button>
+      <div class="btn-group" role="group">
+        <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false" style="padding:1px 5px">
+          <ix class="fa fa-plus fa-sm"></ix>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+          <a class="dropdown-item" href="#" style="display:block">Textbox</a>
+          <a class="dropdown-item" href="#" style="display:block">Texteditor</a>
+          <a class="dropdown-item" href="#" style="display:block">Textarea</a>
+          <a class="dropdown-item" href="#" style="display:block">Passwordbox</a>
+          <a class="dropdown-item" href="#" style="display:block">Hiddenbox</a>
+          <a class="dropdown-item" href="#" style="display:block">Label</a>
+          <a class="dropdown-item" href="#" style="display:block">Button</a>
+          <a class="dropdown-item" href="#" style="display:block">Checkbox</a>
+          <a class="dropdown-item" href="#" style="display:block">Autosuggestbox</a>
+          <a class="dropdown-item" href="#" style="display:block">Tokenbox</a>
+          <a class="dropdown-item" href="#" style="display:block">Radio</a>
+          <a class="dropdown-item" href="#" style="display:block">Datebox</a>
+          <a class="dropdown-item" href="#" style="display:block">Datetimebox</a>
+          <a class="dropdown-item" href="#" style="display:block">Timebox</a>
+          <a class="dropdown-item" href="#" style="display:block">Monthbox</a>
+          <a class="dropdown-item" href="#" style="display:block">Yearbox</a>
+          <a class="dropdown-item" href="#" style="display:block">Mediabox</a>
+          <a class="dropdown-item" href="#" style="display:block">Profilebox</a>
+          <a class="dropdown-item" href="#" style="display:block">Signaturebox</a>
+          <a class="dropdown-item" href="#" style="display:block">GetGPSbox</a>
+          <a class="dropdown-item" href="#" style="display:block">SetGPSbox</a>
+        </div>
+      </div>
+      <button type="button" class="btn btn-secondary studio-setting" style="padding:1px 5px">
+        <ix class="fa fa-sliders-v fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+        <ix class="fa fa-times fa-sm"></ix>
+      </button>
+    </div>
+
+
     <xsl:if test="../@isNullable = 0 and 
                     ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
@@ -461,15 +639,29 @@
         text-align:<xsl:value-of select="$align"/>
       </xsl:attribute>
     </input>
-	<p id="{../@fieldName}_suffixCaption">
+    <p id="{../@fieldName}suffixCaption">
       <xsl:value-of select="suffixCaption"/>
     </p>
   </xsl:template>
 
   <xsl:template match="textArea">
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" contenteditable="true">
       <xsl:value-of select="titlecaption"/>
     </label>
+    <div class="btn-group btn-group-sm studio-field" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+        Field:
+      </button>
+      <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+        <ix class="fa fa-plus fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-setting" style="padding:1px 5px">
+        <ix class="fa fa-sliders-v fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+        <ix class="fa fa-times fa-sm"></ix>
+      </button>
+    </div>
     <xsl:if test="../@isNullable = 0 and 
                     ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
@@ -502,7 +694,7 @@
       </xsl:choose>
     </xsl:variable>
 
-    <textarea class="form-control" placeholder="input text..." name="{../@fieldName}" id ="{../@fieldName}" 
+    <textarea class="form-control" placeholder="input text..." name="{../@fieldName}" id ="{../@fieldName}"
 	  data-type="textArea" style="max-width:100%; min-width:100%; min-height:55px;" rows="10"
       onblur="preview('{preview/.}',getCode(), '{$cid}','', this);" oninput="javascript:checkChanges(this)" >
       <xsl:value-of select="$thisValue"/>
@@ -517,9 +709,23 @@
     <script>
       $('.datepicker').datepicker({autoclose: true});
     </script>
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" contenteditable="true">
       <xsl:value-of select="titlecaption"/>
     </label>
+    <div class="btn-group btn-group-sm studio-field" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+        Field:
+      </button>
+      <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+        <ix class="fa fa-plus fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-setting" style="padding:1px 5px">
+        <ix class="fa fa-sliders-v fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+        <ix class="fa fa-times fa-sm"></ix>
+      </button>
+    </div>
     <xsl:if test="../@isNullable = 0 and 
                     ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
@@ -543,16 +749,27 @@
         onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);"
         onchange="checkChanges(this)" autocomplete="off">
       </input>
-	  <p id="{../@fieldName}_suffixCaption">
-		<xsl:value-of select="suffixCaption"/>
-	  </p>
     </div>
   </xsl:template>
 
   <xsl:template match="dateTimeBox">
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" contenteditable="true">
       <xsl:value-of select="titlecaption"/>
     </label>
+    <div class="btn-group btn-group-sm studio-field" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+        Field:
+      </button>
+      <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+        <ix class="fa fa-plus fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-setting" style="padding:1px 5px">
+        <ix class="fa fa-sliders-v fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+        <ix class="fa fa-times fa-sm"></ix>
+      </button>
+    </div>
     <xsl:if test="../@isNullable = 0 and 
                     ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
@@ -574,9 +791,6 @@
       <input type="text" class="form-control pull-right datetimepicker" id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" data-type="dateTimeBox" data-old="{value}"
         onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
       </input>
-	  <p id="{../@fieldName}_suffixCaption">
-        <xsl:value-of select="suffixCaption"/>
-      </p>
     </div>
   </xsl:template>
 
@@ -595,9 +809,23 @@
       });
 
     </script>
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" contenteditable="true">
       <xsl:value-of select="titleCaption"/>
     </label>
+    <div class="btn-group btn-group-sm studio-field" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+        Field:
+      </button>
+      <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+        <ix class="fa fa-plus fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-setting" style="padding:1px 5px">
+        <ix class="fa fa-sliders-v fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+        <ix class="fa fa-times fa-sm"></ix>
+      </button>
+    </div>
     <div class="input-group date">
       <div class="input-group-addon">
         <ix class="fa fa-calendar"></ix>
@@ -624,9 +852,23 @@
       preview('{preview/.}',getCode(), null,'');
       });
     </script>
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" contenteditable="true">
       <xsl:value-of select="titleCaption"/>
     </label>
+    <div class="btn-group btn-group-sm studio-field" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+        Field:
+      </button>
+      <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+        <ix class="fa fa-plus fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-setting" style="padding:1px 5px">
+        <ix class="fa fa-sliders-v fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+        <ix class="fa fa-times fa-sm"></ix>
+      </button>
+    </div>
     <div class="input-group date">
       <div class="input-group-addon">
         <ix class="fa fa-calendar"></ix>
@@ -640,9 +882,23 @@
     </div>
   </xsl:template>
   <xsl:template match="passwordBox">
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" contenteditable="true">
       <xsl:value-of select="titlecaption"/>
     </label>
+    <div class="btn-group btn-group-sm studio-field" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+        Field:
+      </button>
+      <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+        <ix class="fa fa-plus fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-setting" style="padding:1px 5px">
+        <ix class="fa fa-sliders-v fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+        <ix class="fa fa-times fa-sm"></ix>
+      </button>
+    </div>
     <xsl:if test="../@isNullable = 0 and 
                     ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
@@ -662,16 +918,28 @@
            minlength="8" required="required" placeholder="8 characters minimum."
       onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" id ="{../@fieldName}" autocomplete="false">
     </input>
-    <p id="{../@fieldName}_suffixCaption">
-      <xsl:value-of select="suffixCaption"/>
-    </p>  
+
   </xsl:template>
 
   <xsl:template match="timeBox">
     <script>//timebox</script>
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" contenteditable="true">
       <xsl:value-of select="titlecaption"/>
     </label>
+    <div class="btn-group btn-group-sm studio-field" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+        Field:
+      </button>
+      <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+        <ix class="fa fa-plus fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-setting" style="padding:1px 5px">
+        <ix class="fa fa-sliders-v fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+        <ix class="fa fa-times fa-sm"></ix>
+      </button>
+    </div>
     <xsl:if test="../@isNullable = 0 and 
                     ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
@@ -695,17 +963,28 @@
              data-type="timeBox" data-old="{value}" Value="{value}"
              onblur="preview('{preview/.}','{/sqroot/body/bodyContent/form/code/id}', '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
       </input>
-	  <p id="{../@fieldName}_suffixCaption">
-        <xsl:value-of select="suffixCaption"/>
-      </p>
     </div>
   </xsl:template>
 
 
   <xsl:template match="mediaBox">
-    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption" contenteditable="true">
       <xsl:value-of select="titlecaption"/>
     </label>
+    <div class="btn-group btn-group-sm studio-field" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+        Field:
+      </button>
+      <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+        <ix class="fa fa-plus fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-setting" style="padding:1px 5px">
+        <ix class="fa fa-sliders-v fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+        <ix class="fa fa-times fa-sm"></ix>
+      </button>
+    </div>
     <xsl:if test="../@isNullable = 0 and 
                     ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
@@ -733,7 +1012,7 @@
     </xsl:variable>
 
     <div class="input-group">
-      <label class="input-group-btn">
+      <label class="input-group-btn" contenteditable="true">
         <span class="btn btn-primary">
           Browse <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file" data-code="{/sqroot/body/bodyContent/form/info/code}" data-child="Y" style="display: none;" multiple="" />
         </span>
@@ -750,9 +1029,23 @@
     </div>
   </xsl:template>
   <xsl:template match="autoSuggestBox">
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" contenteditable="true">
       <xsl:value-of select="titlecaption"/>
     </label>
+    <div class="btn-group btn-group-sm studio-field" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+        Field:
+      </button>
+      <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+        <ix class="fa fa-plus fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-setting" style="padding:1px 5px">
+        <ix class="fa fa-sliders-v fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+        <ix class="fa fa-times fa-sm"></ix>
+      </button>
+    </div>
     <xsl:if test="../@isNullable = 0 and 
                     ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
@@ -771,14 +1064,12 @@
 	    data-type="selectBox" data-old="{value/.}" data-oldText="{value/.}" data-value="{value/.}"
         onchange="autosuggest_onchange(this, '{preview/.}', getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}', '');" >
       <!--option id="{value/.}" selected="selected"><xsl:value-of select="combovalue/."/></option-->
-	  <option></option>
+      <option></option>
     </select>
-	  <p id="{../@fieldName}_suffixCaption">
-        <xsl:value-of select="suffixCaption"/>
-      </p>
 
-      
-    
+
+
+
     <!--AutoSuggest Add New Form Modal-->
     <xsl:if test="(@allowAdd&gt;=1 or @allowEdit=1) and ../@isEditable=1">
       <div id="addNew{../@fieldName}" class="modal fade" role="dialog">
@@ -883,7 +1174,7 @@
       </xsl:if>
     </xsl:if>
 
-    
+
     <xsl:if test="@allowEdit=1">
       <span id="removeForm{../@fieldName}" style="cursor: pointer;margin: 8px 30px 0px 0px;position: absolute;top: 0px;right: 0px; display:none">
         <ix class="far fa-times" title= "Remove Selection" data-toggle="tooltip" onclick="javascript: $('#{../@fieldName}').val(null).trigger('change');$('#editForm{../@fieldName}').hide();$('#removeForm{../@fieldName}').hide();"></ix>
@@ -899,66 +1190,66 @@
     </xsl:if>
 
     <script>
-	//try{
+      //try{
       $("#<xsl:value-of select="../@fieldName"/>").select2({
-        placeholder: 'Select <xsl:value-of select="titlecaption"/>',
-        onAdd: function(x) {
-            preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','', this);
-          },
-        onDelete: function(x) {
-            preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','', this);
-          },
-        
-        ajax: {
-		      url:"OPHCORE/api/msg_autosuggest.aspx",
-		      delay : 0, //500
-		      data: function (params) {
-			      var query = {
-				      code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
-				      colkey:"<xsl:value-of select="../@fieldName"/>",
-				      search: params.term==undefined?'':params.term.toString().split('+').join('%2B'),
-				      wf1value: ('<xsl:value-of select='whereFields/wf1'/>'=='' || $("#<xsl:value-of select='whereFields/wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
-				      wf2value: ('<xsl:value-of select='whereFields/wf2'/>'=='' || $("#<xsl:value-of select='whereFields/wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
-              parentCode: getCode(),
-              page: params.page
-        }
-        return query;
-        
-        },
-        dataType: 'json',
-        
-        /*
-        results: function (data) {
-            return {
-                results: $.map(data, function(obj) {
-                    return { id: obj.id, text: obj.text };
-                })
-            };
-        },*/
+      placeholder: 'Select <xsl:value-of select="titlecaption"/>',
+      onAdd: function(x) {
+      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','', this);
+      },
+      onDelete: function(x) {
+      preview('<xsl:value-of select="preview/."/>', getCode(), '<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/."/>','', this);
+      },
 
-          processResults: function (data, params) { 
-            params.page = params.page || 1;
-            return {
-              results: data.results,
-              pagination: {
-                more: data.more 
-                }     
-            };
-        }
+      ajax: {
+      url:"OPHCORE/api/msg_autosuggest.aspx",
+      delay : 0, //500
+      data: function (params) {
+      var query = {
+      code:"<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>",
+      colkey:"<xsl:value-of select="../@fieldName"/>",
+      search: params.term==undefined?'':params.term.toString().split('+').join('%2B'),
+      wf1value: ('<xsl:value-of select='whereFields/wf1'/>'=='' || $("#<xsl:value-of select='whereFields/wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
+      wf2value: ('<xsl:value-of select='whereFields/wf2'/>'=='' || $("#<xsl:value-of select='whereFields/wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
+      parentCode: getCode(),
+      page: params.page
+      }
+      return query;
+
+      },
+      dataType: 'json',
+
+      /*
+      results: function (data) {
+      return {
+      results: $.map(data, function(obj) {
+      return { id: obj.id, text: obj.text };
+      })
+      };
+      },*/
+
+      processResults: function (data, params) {
+      params.page = params.page || 1;
+      return {
+      results: data.results,
+      pagination: {
+      more: data.more
+      }
+      };
+      }
 
       }
       });
 
-	//}
-	//catch (e) {}
-	
+      //}
+      //catch (e) {}
+
       <xsl:if test="value!=''">
         //autosuggest_setValue(deferreds, '<xsl:value-of select="../@fieldName"/>','<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>','<xsl:value-of select='../@fieldName'/>', '<xsl:value-of select='value'/>', '<xsl:value-of select='whereFields/wf1'/>', '<xsl:value-of select='whereFields/wf2'/>')
-		autosuggest_defaultValue('<xsl:value-of select="../@fieldName"/>','<xsl:value-of select='value'/>','<xsl:value-of select='translate(combovalue, "&#39;", "\&#39;")'/>') 
+        autosuggest_defaultValue('<xsl:value-of select="../@fieldName"/>','<xsl:value-of select='value'/>','<xsl:value-of select='translate(combovalue, "&#39;", "\&#39;")'/>')
       </xsl:if>
     </script>
 
-    
+
 
   </xsl:template>
 
@@ -1048,10 +1339,23 @@
       });
     </script>
 
-    <label id="{../@fieldName}caption">
+    <label id="{../@fieldName}caption" contenteditable="true">
       <xsl:value-of select="titlecaption"/>
     </label>
-
+    <div class="btn-group btn-group-sm studio-field" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+        Field:
+      </button>
+      <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+        <ix class="fa fa-plus fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-setting" style="padding:1px 5px">
+        <ix class="fa fa-sliders-v fa-sm"></ix>
+      </button>
+      <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+        <ix class="fa fa-times fa-sm"></ix>
+      </button>
+    </div>
     <xsl:if test="../@isNullable = 0 and 
                     ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
@@ -1098,10 +1402,6 @@
         </xsl:otherwise>
       </xsl:choose>
     </input>
-	  <p id="{../@fieldName}_suffixCaption">
-        <xsl:value-of select="suffixCaption"/>
-      </p>
-	
   </xsl:template>
   <xsl:template match="profileBox">
   </xsl:template>
@@ -1134,9 +1434,23 @@
 
     </script>
     <div>
-      <label id="{../@fieldName}caption">
+      <label id="{../@fieldName}caption" contenteditable="true">
         <xsl:value-of select="titlecaption"/>
       </label>
+      <div class="btn-group btn-group-sm studio-radio" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+          Radio:
+        </button>
+        <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+          <ix class="fa fa-plus fa-sm"></ix>
+        </button>
+        <button type="button" class="btn btn-secondary studio-setting" style="padding:1px 5px">
+          <ix class="fa fa-sliders-v fa-sm"></ix>
+        </button>
+        <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+          <ix class="fa fa-times fa-sm"></ix>
+        </button>
+      </div>
       <xsl:if test="../@isNullable = 0 and 
                     ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
@@ -1186,14 +1500,14 @@
         <xsl:choose>
           <xsl:when test="radioRows">
             <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '@radioNo');
-                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
+                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);"  contenteditable="true">
               <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" checked="checked" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>
           </xsl:when>
           <xsl:otherwise>
             <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '@radioNo');
-                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
+                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);"  contenteditable="true">
               <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" checked="checked" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>
@@ -1207,14 +1521,14 @@
         <xsl:choose>
           <xsl:when test="radioRows">
             <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}');
-                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
+                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);"  contenteditable="true">
               <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>
           </xsl:when>
           <xsl:otherwise>
             <label class="radio-inline" for="{../../../@fieldName}_{@radioNo}" onclick="panel_display('{../../../@fieldName}', '{@radioNo}');
-                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" >
+                   preview('{../../preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);"  contenteditable="true">
               <input type="radio" name="{../../../@fieldName}" id="{../../../@fieldName}_{@radioNo}" value="{@fieldName}" />
               <xsl:value-of select="@radioRowTitle"/>
             </label>
@@ -1259,8 +1573,8 @@
         loadChild(code, parentKey, GUID, 1, browsemode);
       </script>
 
-      <div class="box box-solid box-default child" data-code="{code/.}" data-parentKey="{parentkey/.}" data-guid="{$cid}" data-mode="{browseMode/.}" 
-		style="box-shadow:0px;border:none" id="child{translate(code/., $uppercase, $smallcase)}{$cid}">
+      <div class="box box-solid box-default child" data-code="{code/.}" data-parentKey="{parentkey/.}" data-guid="{$cid}" data-mode="{browseMode/.}"
+		    style="box-shadow:0px;border:none" id="child{translate(code/., $uppercase, $smallcase)}{$cid}">
         &#160;
       </div>
 

@@ -20,7 +20,7 @@
     <section class="content-header">
       <h1>
         Dashboard
-        <small>Control panel</small>
+        <!--small>Control panel</small-->
       </h1>
       <ol class="breadcrumb">
         <li>
@@ -56,7 +56,7 @@
     </div>
   </xsl:template>
   <xsl:template match="widgetColumns/widgetColumn">
-    <div class="col-lg-{@colWidth} col-xs-12">      
+    <div class="col-md-{@colWidth} col-lg-{@colWidth} col-xs-12">      
       <xsl:apply-templates select="widget[@type='smallBox']" />
       <xsl:apply-templates select="widget[@type='graphBox']" />
       <xsl:apply-templates select="widget[@type='chatBox']" />
@@ -65,6 +65,8 @@
       <xsl:apply-templates select="widget[@type='graphFrame']" />
       <xsl:apply-templates select="widget[@type='taskBox']" />
       <xsl:apply-templates select="widget[@type='listBox']" />
+      <xsl:apply-templates select="widget[@type='SetupBox']" />
+      <xsl:apply-templates select="widget[@type='MostUsed']" />
     </div>
   </xsl:template>
 
@@ -248,7 +250,7 @@
       <!-- /.box-header -->
       <div class="box-body">
         <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
-        <ul class="todo-list">
+        <ul class="todo-list" data-widget="todo-list">
           <li>
             <!-- drag handle -->
             <span class="handle">
@@ -418,7 +420,9 @@
         <span>
           <ix class="fa fa-th"></ix>
         </span>&#160;
-        <h3 class="box-title">Sales Graph</h3>
+        <h3 class="box-title">
+          <xsl:value-of select="@widgetTitle" />
+        </h3>
 
         <div class="box-tools pull-right">
           <button type="button" class="btn bg-teal btn-sm" data-widget="collapse">
@@ -746,6 +750,160 @@
             <!-- /.box-footer -->
           </div>
           <!-- /.box -->
+  </xsl:template>
+
+  <!--SetupBox-->
+  <xsl:template match="widget[@type='SetupBox']">
+
+    <xsl:if test="contents/data/@dataId">
+      <script>
+        function runListBox<xsl:value-of select="contents/data/@dataId"/>() {
+        getWidgetData('<xsl:value-of select="contents/data/@dataId"/>', function(data) {
+        $(data).children().find("list").each(function(i) {
+        itemName=$(this).find("itemName").text();
+        number=$(this).find("number").text();
+        fa=$(this).find("fa").text();
+        label=$(this).find("label").text();
+        listr='&lt;li class=\"item\"&gt;'+
+        '&lt;div class=\"product-img\"&gt;'+
+        '&lt;ix class=\"fal '+fa+' fa-6x \"&gt;&lt;/ix&gt;'+
+        '&lt;/div&gt;'+
+        '&lt;div class=\"product-info\"&gt;'+
+        '&lt;a href=\"javascript:void(0)\" class=\"product-title\"&gt;'+
+        itemName+
+        '&lt;span class=\"label '+label+' pull-right\"&gt;'+number+'&lt;/span&gt;'+
+        '&lt;/a&gt;'+
+        /*'&lt;span class=\"product-description\"&gt;'+
+        'PlayStation 4 500GB Console (PS4)'+
+        '&lt;/span&gt;'+*/
+        '&lt;/div&gt;'+
+        '&lt;/li&gt;';
+        $('#listbox_<xsl:value-of select="contents/data/@dataId" />').append(listr);
+        })
+        //$('#data<xsl:value-of select="contents/data/@dataId"/>').html(msg);
+        }
+        );
+        }
+
+        runListBox<xsl:value-of select="contents/data/@dataId"/>();
+      </script>
+    </xsl:if>
+
+
+
+    <div class="box box-warning box-solid">
+      <div class="box-header with-border">
+        <h3 class="box-title">
+          <xsl:value-of select="@widgetTitle" />
+        </h3>
+
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse">
+            <i class="fa fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-box-tool" data-widget="remove">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <!--<ul class="products-list product-list-in-box listboxitem" id="listbox_{contents/data/@dataId}">
+        </ul>-->
+        <p style="text-center">Complete, Edit and Review Your Setup.</p>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:100%"> 100% </div>
+        </div>
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer text-center">
+              <!--<a href="javascript:void(0)" class="uppercase">View All Products</a>-->
+        <button type="button" class="btn btn-block btn-info btn-lg" onclick="#">Company Details</button>
+        <button type="button" class="btn btn-block btn-info btn-lg" onclick="#">Bank Details</button>
+        <button type="button" class="btn btn-block btn-info btn-lg" onclick="#">Customer Details</button>
+        <button type="button" class="btn btn-block btn-info btn-lg" onclick="#">Supplier Details</button>
+      </div>
+      <!-- /.box-footer -->
+    </div>
+    <!-- /.box -->
+  </xsl:template>
+
+  <!--SetupBox-->
+  <xsl:template match="widget[@type='MostUsed']">
+
+    <xsl:if test="contents/data/@dataId">
+      <script>
+        function runListBox<xsl:value-of select="contents/data/@dataId"/>() {
+        getWidgetData('<xsl:value-of select="contents/data/@dataId"/>', function(data) {
+        $(data).children().find("list").each(function(i) {
+        itemName=$(this).find("itemName").text();
+        number=$(this).find("number").text();
+        fa=$(this).find("fa").text();
+        label=$(this).find("label").text();
+        listr='&lt;li class=\"item\"&gt;'+
+        '&lt;div class=\"product-img\"&gt;'+
+        '&lt;ix class=\"fal '+fa+' fa-6x \"&gt;&lt;/ix&gt;'+
+        '&lt;/div&gt;'+
+        '&lt;div class=\"product-info\"&gt;'+
+        '&lt;a href=\"javascript:void(0)\" class=\"product-title\"&gt;'+
+        itemName+
+        '&lt;span class=\"label '+label+' pull-right\"&gt;'+number+'&lt;/span&gt;'+
+        '&lt;/a&gt;'+
+        /*'&lt;span class=\"product-description\"&gt;'+
+        'PlayStation 4 500GB Console (PS4)'+
+        '&lt;/span&gt;'+*/
+        '&lt;/div&gt;'+
+        '&lt;/li&gt;';
+        $('#listbox_<xsl:value-of select="contents/data/@dataId" />').append(listr);
+        })
+        //$('#data<xsl:value-of select="contents/data/@dataId"/>').html(msg);
+        }
+        );
+        }
+
+        runListBox<xsl:value-of select="contents/data/@dataId"/>();
+      </script>
+    </xsl:if>
+
+
+
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">
+          <xsl:value-of select="@widgetTitle" />
+        </h3>
+
+        <div class="box-tools pull-right">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse">
+            <i class="fa fa-minus"></i>
+          </button>
+          <button type="button" class="btn btn-box-tool" data-widget="remove">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body">
+        <!--<ul class="products-list product-list-in-box listboxitem" id="listbox_{contents/data/@dataId}">
+        </ul>-->
+        <p style="text-center">Find your most used feature here.</p>
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer text-center">
+        <!--<a href="javascript:void(0)" class="uppercase">View All Products</a>-->
+        <a class="btn btn-app">
+          <i class="fa fa-piggy-bank"></i> Finance
+        </a>
+        <a class="btn btn-app">
+          <i class="fa fa-table"></i> Accounting
+        </a>
+        <a class="btn btn-app">
+          <i class="fa fa-user"></i> Master
+        </a>
+      </div>
+      <!-- /.box-footer -->
+    </div>
+    <!-- /.box -->
   </xsl:template>
 
 </xsl:stylesheet>
