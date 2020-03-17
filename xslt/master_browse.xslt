@@ -601,8 +601,8 @@
       code:"<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code/."/>",
       colkey:"<xsl:value-of select="@id"/>",
       search: params.term==undefined?'':params.term.toString().split('+').join('%2B'),
-      wf1value: ($("#<xsl:value-of select='@wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='@wf1'/>").val()),
-      wf2value: ($("#<xsl:value-of select='@wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='@wf2'/>").val()),
+      wf1value: ('<xsl:value-of select='@wf1'/>'==''?'undefined':$("#<xsl:value-of select='@wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='@wf1'/>").val()),
+      wf2value: ('<xsl:value-of select='@wf2'/>'==''?'undefined':$("#<xsl:value-of select='@wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='@wf2'/>").val()),
       parentCode: getCode(),
       page: params.page
       }
@@ -846,29 +846,20 @@
           </xsl:choose>
 
           <!--edit things-->
-          <xsl:choose>
-            <xsl:when test="$state &lt; 999">
-              <xsl:choose>
-                <xsl:when test="(($allowEdit>=1 or $allowAdd>=1 or $allowDelete>=1) and (/sqroot/body/bodyContent/browse/info/curState/@substateCode=0 or /sqroot/body/bodyContent/browse/info/curState/@substateCode=300 or not /sqroot/body/bodyContent/browse/info/curState/@substateCode))
-							              or (($allowEdit>=3 or $allowDelete>=3) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=400)
-							              or (($allowEdit>=4 or $allowAdd>=4 or $allowDelete>=4) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=500)">
-                  <a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="Edit This">
-                    <ix class="fal fa-pencil-alt"></ix>
-                  </a>
-                </xsl:when>
-                <xsl:otherwise>
-                  <a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="View This">
-                    <ix class="fas fa-eye"></ix>
-                  </a>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-              <a href="#">
-                <ix class="fal fa-eye" style="color:LightGray"></ix>
-              </a>
-            </xsl:otherwise>
-          </xsl:choose>
+		  <xsl:choose>
+			<xsl:when test="(($allowEdit>=1 or $allowAdd>=1 or $allowDelete>=1) and (/sqroot/body/bodyContent/browse/info/curState/@substateCode=0 or /sqroot/body/bodyContent/browse/info/curState/@substateCode=300 or not /sqroot/body/bodyContent/browse/info/curState/@substateCode))
+									  or (($allowEdit>=3 or $allowDelete>=3) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=400)
+									  or (($allowEdit>=4 or $allowAdd>=4 or $allowDelete>=4) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=500)">
+			  <a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="Edit This">
+				<ix class="fal fa-pencil-alt"></ix>
+			  </a>
+			</xsl:when>
+			<xsl:otherwise>
+			  <a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="View This">
+				<ix class="fas fa-eye"></ix>
+			  </a>
+			</xsl:otherwise>
+		  </xsl:choose>
         </td>
       </xsl:if>
 
@@ -1059,10 +1050,17 @@
     </xsl:variable>
     <xsl:if test=". != ''">
       <span style="font-weight:bold;">
+		<xsl:attribute name="class">
+			<xsl:if test="@editor='hidden'">hide</xsl:if>
+		</xsl:attribute>	  	  
         <xsl:value-of select="@title" />
+		&#160;:&#160;
       </span>
-      &#160;:&#160;
+      
       <span data-field="{@caption}">
+		<xsl:attribute name="class">
+			<xsl:if test="@editor='hidden'">hide</xsl:if>
+		</xsl:attribute>	  
         <xsl:choose>
           <xsl:when test="@editor='anchor'">
             <a href="{$tbContent}">
@@ -1075,6 +1073,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </span>
+
     </xsl:if>
   </xsl:template>
 

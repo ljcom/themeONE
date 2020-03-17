@@ -30,18 +30,12 @@
       })
       var msg='Upload Status: Success: '+s+(err==''?'':' Error: '+err);
       showMessage(msg);
+      //setTimeout(function() {location.reload()}, 5000);
 
       var code='<xsl:value-of select="$lowerCode"/>';
-	  preview('1', getCode(), getGUID(),'', this);
       loadChild(code);
+
       });
-      
-	  
-      $(document).ready(function(){
-      if($('th[data-order="DESC"]').length == 1) $('th[data-order="DESC"]').append(' &lt;ix class="fa fa-sort-alpha-desc" /&gt;');
-        else if($('th[data-order="ASC"]').length == 1) $('th[data-order="ASC"]').append(' &lt;ix class="fa fa-sort-alpha-asc" /&gt;');
-      });
-	  
       var tblnm =code+"requiredname";
       var columns_<xsl:value-of select="$lowerCode"/>=[];
       //setCookie('<xsl:value-of select="$lowerCode"/>_parent', '<xsl:value-of select="/sqroot/body/bodyContent/browse/info/filter"/>', 1);
@@ -70,6 +64,17 @@
           <h3 class="dashboard-title" style="display:inline" contenteditable="true">
             <xsl:value-of select="sqroot/body/bodyContent/browse/info/description"/>
           </h3>
+          <div class="btn-group btn-group-sm studio-child" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+              Child:
+            </button>
+            <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+              <ix class="fa fa-plus fa-sm"></ix>
+            </button>
+            <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+              <ix class="fa fa-times fa-sm"></ix>
+            </button>
+          </div>
         </div>
         <div>
           <input style="width:200px; position:absolute; right:25px; top:5px; padding-right:25px;visibility:hidden" type="text" id="searchBox_{sqroot/body/bodyContent/browse/info/code}" name="searchBox_{sqroot/body/bodyContent/browse/info/code}"
@@ -188,7 +193,7 @@
   </xsl:template>
 
   <xsl:template match="column">
-    <th style="cursor:pointer;" onclick="sortBrowse(this, 'child', '{../../info/code}', '{@fieldName}')" data-order="{@order}">
+    <th>
       <xsl:value-of select="."/>
       <script>
         var x=[];

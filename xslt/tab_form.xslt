@@ -32,9 +32,6 @@
   <xsl:template match="/">
     <!-- Content Header (Page header) -->
     <script>
-      //loadScript('OPHContent/cdn/daterangepicker/daterangepicker.js');
-      //loadScript('OPHContent/cdn/select2/select2.full.min.js');
-
       form_init();
 	  
       var xmldoc = ""
@@ -114,8 +111,18 @@
       
       <!--/xsl:if-->
 	function <xsl:value-of select="$lowerCode" />_save(location) {
+		$('#button_save').button('loading');
+		$('#button_save2').button('loading');
+		$('#button_cancel').button('loading');
+		$('#button_cancel2').button('loading');	
 		saveThemeONE('<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/." />','<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/." />', location, '', 
-		(function(d) {<xsl:value-of select="$lowerCode" />_saveafter(d)}), (function(d) {<xsl:value-of select="$lowerCode" />_savebefore(d)}));
+		(function(d) {<xsl:value-of select="$lowerCode" />_saveafter(d);
+		$('#button_save').button('reset');
+		$('#button_save2').button('reset');
+		$('#button_cancel').button('reset');
+		$('#button_cancel2').button('reset');
+		
+		}), (function(d) {<xsl:value-of select="$lowerCode" />_savebefore(d)}));
 	}
 	
 	function <xsl:value-of select="$lowerCode" />_saveafter(d) {}
@@ -400,13 +407,27 @@
               </div>
               <!-- /.box-header -->
               <div class="box-body form-action-button">
+					<xsl:choose>
+					<!--location: 0 header; 1 child; 2 browse location: browse:10, header form:20, browse anak:30, browse form:40-->
+					<xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'
+							or /sqroot/body/bodyContent/form/info/state/status/. = 0 
+							or /sqroot/body/bodyContent/form/info/state/status/. = ''
+							or ((/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 100 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt; 300
+							or ((/sqroot/body/bodyContent/form/info/state/status/.) = 300))
+							or ((/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 400 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 499)">
+					  <button id="button_save" class="btn btn-orange-a btn-block action-save" data-loading-text="{/sqroot/body/bodyContent/form/info/btnsavecaption} (please wait...)"
+					  onclick="{$lowerCode}_save(20)"> <xsl:value-of select="/sqroot/body/bodyContent/form/info/btnsavecaption"/> </button>
+					  <button id="button_cancel" class="btn btn-gray-a btn-block action-cancel" data-loading-text="CANCEL"
+					  onclick="saveCancel()">CANCEL</button>
+					</xsl:when>
+					</xsl:choose>			  
                     <xsl:choose>
                       <!--location: 0 header; 1 child; 2 browse location: browse:10, header form:20, browse anak:30, browse form:40-->
                       <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
                       </xsl:when>
                       <xsl:when test="/sqroot/body/bodyContent/form/info/state/status/. = 0 or /sqroot/body/bodyContent/form/info/state/status/. = ''">
                         <xsl:if test="(/sqroot/body/bodyContent/form/info/settingMode/.)='T' and (/sqroot/body/bodyContent/form/info/state/status/.) &lt; 400 ">
-                          <button id="button_submit" class="btn btn-orange-a btn-block action-submit" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">SUBMIT</button>
+                          <button id="button_submit" class="btn btn-orange-a btn-block action-submit" data-loading-text="SUBMIT (please wait...)" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">SUBMIT</button>
                         </xsl:if>
                         <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))">
                           <button id="button_delete" class="btn btn-gray-a btn-block action-delete" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>
@@ -414,27 +435,27 @@
                       </xsl:when>
                       <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 100 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt; 300">
                         <xsl:if test="$isApprover=1">
-                          <button id="button_approve" class="btn btn-orange-a btn-block action-approve" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">APPROVE</button>
-                          <button id="button_reject" class="btn btn-gray-a btn-block action-reject" onclick="rejectPopup('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'force', 1, 20)">REJECT</button>
+                          <button id="button_approve" class="btn btn-orange-a btn-block action-approve" data-loading-text="APPROVE (please wait...)" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">APPROVE</button>
+                          <button id="button_reject" class="btn btn-gray-a btn-block action-reject" data-loading-text="REJECT (please wait...)" onclick="rejectPopup('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'force', 1, 20)">REJECT</button>
                         </xsl:if>
                       </xsl:when>
                       <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) = 300">
                         <xsl:if test="$isApprover=1">
-                          <button id="button_submit" class="btn btn-orange-a btn-block action-submit" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">RE-SUBMIT</button>
+                          <button id="button_submit" class="btn btn-orange-a btn-block action-submit" data-loading-text="RE-SUBMIT (please wait...)" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'execute', 1, 20)">RE-SUBMIT</button>
                         </xsl:if>
                       </xsl:when>
                       <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 400 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 499">
                         <xsl:if test="$allowForce=1">
-                          <button id="button_close" class="btn btn-orange-a btn-block action-close" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'force', 1, 20)">CLOSE</button>
+                          <button id="button_close" class="btn btn-orange-a btn-block action-close" data-loading-text="CLOSE (please wait...)" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'force', 1, 20)">CLOSE</button>
                         </xsl:if>
                         <xsl:if test="(($allowDelete>=1) and (/sqroot/body/bodyContent/form/info/state/status=0 or /sqroot/body/bodyContent/form/info/state/status=300))
 							                or (($allowDelete>=4) and (/sqroot/body/bodyContent/form/info/state/status&lt;100 or /sqroot/body/bodyContent/form/info/state/status&gt;=300))">
 
-                          <button id="button_delete" class="btn btn-gray-a btn-block action-delete" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>
+                          <button id="button_delete" class="btn btn-gray-a btn-block action-delete" data-loading-text="DELETE (please wait...)" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}','{/sqroot/body/bodyContent/form/info/GUID/.}', 'delete', 1, 20);">DELETE</button>
                         </xsl:if>
                       </xsl:when>
                       <xsl:when test="(/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 500 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 899">
-                        <button id="button_reopen" class="btn btn-orange-a btn-block action-reopen" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'reopen', 1, 20)">REOPEN</button>
+                        <button id="button_reopen" class="btn btn-orange-a btn-block action-reopen" data-loading-text="REOPEN (please wait...)" onclick="btn_function('{/sqroot/body/bodyContent/form/info/code/.}', '{/sqroot/body/bodyContent/form/info/GUID/.}', 'reopen', 1, 20)">REOPEN</button>
                       </xsl:when>
                       <xsl:otherwise>
                         &#160;
@@ -588,23 +609,7 @@
         <div class="row">
           <div class="col-sm-12 col-md-12 col-lg-12 visible-phone" style="margin-bottom:50px;">
             <div style="text-align:left">
-              <xsl:choose>
-                <!--location: 0 header; 1 child; 2 browse location: browse:10, header form:20, browse anak:30, browse form:40-->
-                <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'
-						or /sqroot/body/bodyContent/form/info/state/status/. = 0 
-						or /sqroot/body/bodyContent/form/info/state/status/. = ''
-						or ((/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 100 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt; 300
-						or ((/sqroot/body/bodyContent/form/info/state/status/.) = 300))
-						or ((/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 400 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 499)">
-                  <button id="button_save_{@pageNo}" class="btn btn-orange-a action-save" 
-				  onclick="{$lowerCode}_save(20)"> <xsl:value-of select="/sqroot/body/bodyContent/form/info/btnsavecaption"/> </button>&#160;
-                  <button id="button_cancel_{@pageNo}" class="btn btn-gray-a action-cancel" 
-				  onclick="saveCancel()">CANCEL</button>&#160;
-                </xsl:when>
-                <xsl:otherwise>
-                  &#160;
-                </xsl:otherwise>
-              </xsl:choose>
+
             </div>
           </div>
           <div class="col-md-12 displayblock-phone device-xs visible-xs" style="margin-bottom:20px;">
@@ -616,9 +621,9 @@
 				or ((/sqroot/body/bodyContent/form/info/state/status/.) &gt; 99 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt; 199)
 				or ((/sqroot/body/bodyContent/form/info/state/status/.) = 300)
 				or ((/sqroot/body/bodyContent/form/info/state/status/.) &gt;= 400 and (/sqroot/body/bodyContent/form/info/state/status/.) &lt;= 499)">
-                  <button id="button_save2" class="btn btn-orange-a btn-block action-save" 
+                  <button id="button_save2" class="btn btn-orange-a btn-block action-save" data-loading-text="{/sqroot/body/bodyContent/form/info/btnsavecaption} (please wait...)"
 				  onclick="{$lowerCode}_save(20);"> <xsl:value-of select="/sqroot/body/bodyContent/form/info/btnsavecaption"/> </button>
-                  <button id="button_cancel2" class="btn btn-gray-a btn-block action-cancel" 
+                  <button id="button_cancel2" class="btn btn-gray-a btn-block action-cancel" data-loading-text="CANCEL"
 				  onclick="saveCancel()">CANCEL</button>
                 </xsl:when>
                 <xsl:otherwise>

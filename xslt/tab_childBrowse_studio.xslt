@@ -15,26 +15,29 @@
   <xsl:template match="/">
     <script>
       var code='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>';
-      
+
       cell_init(code);
-
+      studio_init();
+      
       upload_init(code, function(data) {
-		  var err=''; s=0;
-		  $(data).find("sqroot").find("message").each(function (i) {
-			  var item=$(data).find("sqroot").find("message").eq(i);
-			  if ($(item).text()!='') err += $(item).text()+' ';
-		  })
+      var err=''; s=0;
+      $(data).find("sqroot").find("message").each(function (i) {
+      var item=$(data).find("sqroot").find("message").eq(i);
+      if ($(item).text()!='') err += $(item).text()+' ';
+      })
 
-		  $(data).find("sqroot").find("guid").each(function (i) {
-		  var sn=$(data).find("sqroot").find("guid").eq(i);
-		  if (sn!='') s++;
-		  })
-		  var msg= (err != '') ? 'Upload Error : ' + err : 'Upload Data Success'
-		  showMessage(msg,2);
+      $(data).find("sqroot").find("guid").each(function (i) {
+      var sn=$(data).find("sqroot").find("guid").eq(i);
+      if (sn!='') s++;
+      })
+      //var msg='Upload Status: Success: '+s+(err==''?'':' Error: '+err);
+      var msg= (err != '') ? 'Upload Error : ' + err : 'Upload Data Success'
+      showMessage(msg,2);
+      //setTimeout(function() {location.reload()}, 5000);
 
-		  var code='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>';
-		  preview('1', getCode(), getGUID(),'', this);
-		  loadChild(code);
+      var code='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>';
+      preview('1', getCode(), getGUID(),'', this);
+      loadChild(code);
       });
 
       $(document).ready(function(){
@@ -49,10 +52,21 @@
       </script>
     <div class="row">
       <div class="col-md-12">
-        <div class="box-header with-border" style="background:white" data-toggle="collapse" data-target="#content_{/sqroot/body/bodyContent/browse/info/code}">
-          <h3 class="dashboard-title">
+        <div class="box-header with-border" style="background:white">
+          <h3 class="dashboard-title" style="display:inline" contenteditable="true">
             <xsl:value-of select="sqroot/body/bodyContent/browse/info/description"/>
           </h3>
+          <div class="btn-group btn-group-sm studio-child" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary disabled" style="padding:1px 5px">
+              Child:
+            </button>
+            <button type="button" class="btn btn-secondary studio-add" style="padding:1px 5px">
+              <ix class="fa fa-plus fa-sm"></ix>
+            </button>
+            <button type="button" class="btn btn-secondary studio-remove" style="padding:1px 5px">
+              <ix class="fa fa-times fa-sm"></ix>
+            </button>
+          </div>
         </div>
         <div class="box-body">
           <input style="width:200px; position:absolute; right:25px; top:5px; padding-right:25px;visibility:hidden" type="text" id="searchBox_{sqroot/body/bodyContent/browse/info/code}" name="searchBox_{sqroot/body/bodyContent/browse/info/code}"
