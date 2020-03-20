@@ -370,9 +370,11 @@
                           <xsl:choose>
                             <xsl:when test="(/sqroot/body/bodyContent/form/info/GUID/.) = '00000000-0000-0000-0000-000000000000'">
                               <xsl:value-of select="textBox/defaultvalue" />
+							  <xsl:value-of select="dateBox/defaultvalue" />
                             </xsl:when>
                             <xsl:otherwise>
                               <xsl:value-of select="textBox/value" />
+							  <xsl:value-of select="dateBox/value" />
                             </xsl:otherwise>
                           </xsl:choose>
                         </xsl:variable>
@@ -384,6 +386,7 @@
                           <xsl:otherwise>
                             <li class="list-group-item">
                               <xsl:value-of select="textBox/titlecaption"/>
+							  <xsl:value-of select="dateBox/titlecaption"/>
                               <a class="pull-right" id="{@fieldName}">
                                 <xsl:value-of select="$HeadVal"/>&#160;
                               </a>

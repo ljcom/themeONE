@@ -48,8 +48,24 @@
     <!--</form>-->
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
-      <xsl:apply-templates select="sqroot/header/menus/menu[@code='sidebar']/submenus/submenu" />
+      <li class="treeview" id="tabMenu">
+		<a href="#">
+              <span>
+                <ix class="fa fa-bars"></ix>
+              </span>
+              <span class="info">&#160;MENU</span>
+              <span class="pull-right-container">
+                <ix class="fa fa-angle-left pull-right"></ix>
+              </span>
+		</a>
+		<ul class="treeview-menu browse-left-sidebar">
+			<xsl:apply-templates select="sqroot/header/menus/menu[@code='sidebar']/submenus/submenu" />
+		
+		</ul>			
+  	  </li>
     </ul>
+	
+	
   </xsl:template>
 
   <xsl:include href="_menu.xslt" />  

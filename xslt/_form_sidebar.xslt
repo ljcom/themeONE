@@ -51,38 +51,43 @@
           </div>
           <div class="pull-left info menu-environtment doc-type-f" style="padding:0;margin-left:10px;margin-left:10px">
             <span>
-              <span style="font-size:9pt;" id="docNo">
+              <div style="font-size:9pt;" id="docNo">
                 <xsl:choose>
                   <xsl:when test="$settingmode='T'">
-                    <xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>&#160;
+                    <xsl:value-of select="/sqroot/body/bodyContent/form/info/docNo/."/>&#160;
                   </xsl:when>
                   <xsl:otherwise>
                     <!--xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/-->&#160;
                   </xsl:otherwise>
                 </xsl:choose>
-
-              </span>
-              <br />
-              <span style="font-size:14pt;">
+              </div>
+              <div style="font-size:14pt;">
                 <table class="fixed-table">
                   <tr>
                     <td id="docRefNo">
                       <xsl:choose>
                         <xsl:when test="$settingmode='T'">
-                          <xsl:value-of select="sqroot/body/bodyContent/form/info/refNo/."/>
+                          <xsl:value-of select="/sqroot/body/bodyContent/form/info/refNo/."/>
                         </xsl:when>
                         <xsl:otherwise>
-                          <xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
+                          <xsl:value-of select="/sqroot/body/bodyContent/form/info/id/."/>
                         </xsl:otherwise>
                       </xsl:choose>
                     </td>
                   </tr>
                 </table>
-
                 <!--xsl:value-of select="sqroot/body/bodyContent/form/info/Description/."/-->
-              </span>
-
-
+              </div>
+			  <div style="font-size:9pt;" id="docDate">
+                <xsl:choose>
+                  <xsl:when test="$settingmode='T'">
+                    <xsl:value-of select="/sqroot/body/bodyContent/form/info/docDate/."/>&#160;
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <!--xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/-->&#160;
+                  </xsl:otherwise>
+                </xsl:choose>
+              </div>			  
             </span>
           </div>
         </div>
@@ -99,7 +104,9 @@
           </span>
         </div>
         <!-- sidebar menu: : style can be found in sidebar.less -->
+		
         <ul class="sidebar-menu">
+		  
           <li class="treeview hidden" id="tabSearchResult">
             <a href="#">
               <span>
@@ -123,6 +130,22 @@
             
             </ul>
           </li>
+		<li class="treeview" id="tabMenu">
+		<a href="#">
+              <span>
+                <ix class="fa fa-bars"></ix>
+              </span>
+              <span class="info">&#160;MENU</span>
+              <span class="pull-right-container">
+                <ix class="fa fa-angle-left pull-right"></ix>
+              </span>
+            </a>
+            <ul class="treeview-menu browse-left-sidebar">
+				<xsl:apply-templates select="sqroot/header/menus/menu[@code='sidebar']/submenus/submenu" />
+            
+            </ul>			
+		</li>
+
           <xsl:if test="(sqroot/body/bodyContent/form/children) and (sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000'">
             <li class="treeview" id ="gotoPanel">
               <a href="#">
