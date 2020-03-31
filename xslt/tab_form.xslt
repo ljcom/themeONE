@@ -133,6 +133,13 @@
     loadExtraButton(buttons, 'form-action-button',20);	
 	</xsl:if>
 
+	var docno='<xsl:value-of select="/sqroot/body/bodyContent/form/info/docNo/."/>';
+	if (docno!='') $('#docNo').html(docno);
+	var docrefno='<xsl:value-of select="/sqroot/body/bodyContent/form/info/refNo/."/>';
+	if (docrefno!='') $('#docRefNo').html(docrefno);
+	var docdate='<xsl:value-of select="/sqroot/body/bodyContent/form/info/docDate/."/>';
+	if (docdate!='') $('#docDate').html(docdate);
+
     </script>
 
     <xsl:variable name="settingmode">

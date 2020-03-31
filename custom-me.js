@@ -1177,7 +1177,7 @@ function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, a
 
 function showMessage(msg, mode, fokus, afterClosed, afterClick) {
     var msgType;
-    if (mode == undefined) mode = 1;
+    if (mode==0 || mode == undefined) mode = 1;
     if (msg) {
         if (mode == 1) msgType = 'info';
         else if (mode == 2) msgType = 'success';
