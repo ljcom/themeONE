@@ -638,7 +638,8 @@ ul.view-form-toggle {
 .sidebar-menu, .top-menu-div {
     overflow: hidden !important;
     overflow-y: scroll !important;
-    max-height: 420px !important;
+    max-height: 100% !important; 
+	height: 600px !important; //height of menu sidebar
     -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
@@ -662,7 +663,8 @@ ul.view-form-toggle {
     .sidebar-menu {
         overflow: hidden !important;
         overflow-y: scroll !important;
-        max-height: 740px !important; //height of menu sidebar
+        max-height: 100% !important; 
+		height: 600px !important; //height of menu sidebar
     }
 }
 
@@ -684,7 +686,8 @@ ul.view-form-toggle {
     .sidebar-menu {
         overflow: hidden !important;
         overflow-y: scroll !important;
-        max-height: 400px !important;
+        max-height: 100% !important; 
+		height: 600px !important; //height of menu sidebar
     }
 
     .full-width-a {

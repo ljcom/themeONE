@@ -19,7 +19,7 @@
                 <ix class="{fa/.}"></ix>&#160;
               </span>
             </xsl:if>
-            <span class="info">
+            <span class="info" style="display:inline">
               <xsl:value-of select="caption/." />
             </span>
             <span class="pull-right-container">
@@ -46,7 +46,7 @@
           </xsl:if>
         </xsl:when>
         <xsl:otherwise>
-          <span>
+          <span style="display:inline">
             <xsl:value-of select="caption/." />
           </span>
           <xsl:if test="tCount/.>0">
@@ -69,7 +69,7 @@
             <ix class="{fa/.}"></ix>&#160;
           </xsl:if>
         </span>
-        <span class="info">
+        <span class="info" style="display:inline">
             <xsl:value-of select="caption/." />&#160;
         </span>
         <span class="pull-right-container">
@@ -94,7 +94,7 @@
             <ix class="{fa/.}"></ix>&#160;
           </span>
         </xsl:if>
-        <span class="info">
+        <span class="info" style="display:inline">
           <xsl:value-of select="caption/." />
         </span>
         &#160;

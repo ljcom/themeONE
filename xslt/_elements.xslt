@@ -1009,14 +1009,14 @@
         noPrepopulate<xsl:value-of select="../@fieldName"/>=0;
       </xsl:if>
       var cURL<xsl:value-of select="../@fieldName"/>='OPHCore/api/msg_autosuggest.aspx?mode=token&amp;nbRow=0&amp;code=<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>&amp;colkey=<xsl:value-of select="../@fieldName"/>'
-      var dataForm = new FormData();
-      dataForm.append('search', '<xsl:value-of select="value"/>');
+      var dataForm_<xsl:value-of select="../@fieldName"/> = new FormData();
+      dataForm_<xsl:value-of select="../@fieldName"/>.append('search', '<xsl:value-of select="value"/>');
 
       $(document).ready(function(){
       $.ajax({
       url: cURL<xsl:value-of select="../@fieldName"/>,
       method: 'POST',
-      data: dataForm,
+      data: dataForm_<xsl:value-of select="../@fieldName"/>,
       processData: false,
       contentType: false,
       dataType: 'json',

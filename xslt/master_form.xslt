@@ -109,16 +109,14 @@
 	buttons=<xsl:value-of select="sqroot/body/bodyContent/form/info/buttons"/>;
     loadExtraButton(buttons, 'form-action-button', 20);	
 	</xsl:if>
-	/*
-function autosuggest_defaultValue(SelectID, id, text) {
-	var newOption = new Option(text, id, true, true);
-	var InitialValue = id;
-	//$("#" + SelectID).data("old", InitialValue);
-	//$("#" + SelectID).val(InitialValue);
-	//$("#" + SelectID).data("oldtext", text);
-	if (SelectID) $("#" + SelectID).append(newOption).trigger('change');
-} 
-	*/
+
+	var docno='<xsl:value-of select="/sqroot/body/bodyContent/form/info/docNo/."/>';
+	if (docno!='') $('#docNo').html(docno);
+	var docrefno='<xsl:value-of select="/sqroot/body/bodyContent/form/info/refNo/."/>';
+	if (docrefno!='') $('#docRefNo').html(docrefno);
+	var docdate='<xsl:value-of select="/sqroot/body/bodyContent/form/info/docDate/."/>';
+	if (docdate!='') $('#docDate').html(docdate);
+	
 	
     </script>
 
