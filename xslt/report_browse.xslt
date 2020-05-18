@@ -71,13 +71,13 @@
             <div class="col-md-12" style="margin-bottom:30px;margin-top:30px">
               <div style="text-align:left">
                 <xsl:if test="$isPDF = 1">
-                  <button id="btnPDF" class="btn btn-orange-a" onclick="genReport('{$code}','pdf');">SHOW PDF</button>&#160;
+                  <button id="btnPDF" data-loading-text="SHOW PDF (please wait...)" class="btn btn-orange-a" onclick="$('#btnPDF').button('loading');genReport('{$code}','pdf');">SHOW PDF</button>&#160;
                 </xsl:if>
                 <xsl:if test="$isXLS = 1">
-                  <button id="btnXLS" class="btn btn-orange-a" onclick="genReport('{$code}','xls');">SHOW XLS</button>&#160;
+                  <button id="btnXLS" data-loading-text="SHOW XLS (please wait...)" class="btn btn-orange-a" onclick="$('#btnXLS').button('loading');genReport('{$code}','xls');">SHOW XLS</button>&#160;
                 </xsl:if>
                 <xsl:if test="$isXLS = 2">
-                  <button id="btnXLS" class="btn btn-orange-a" onclick="genReport('{$code}','xlstemplate');">SHOW XLS</button>&#160;
+                  <button id="btnXLS" data-loading-text="SHOW XLS (please wait...)" class="btn btn-orange-a" onclick="$('#btnXLS').button('loading');genReport('{$code}','xlstemplate');">SHOW XLS</button>&#160;
                 </xsl:if>
               </div>
             </div>

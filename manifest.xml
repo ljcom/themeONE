@@ -33,7 +33,7 @@
     <jsFile>OPHContent/cdn/upclick/upclick-min.js</jsFile>
     <jsFile>OPHContent/cdn/select2/select2.full.js</jsFile>
     <jsFile>OPHContent/cdn/ckeditor/ckeditor.js</jsFile>
-    <jsFile>OPHContent/cdn/ophelements/celljs/cell.js</jsFile>
+    <jsFile>OPHContent/cdn/ophelements/celljs/cell.js?v=3</jsFile>
     <jsFile>OPHContent/cdn/ophelements/ophupload/ophupload.js</jsFile>
     <jsFile>OPHContent/cdn/bootstrap/datetimepicker/bootstrap-datetimepicker.min.js</jsFile>
     <jsFile>OPHContent/cdn/sideshow/distr/dependencies/jazz.min.js</jsFile>

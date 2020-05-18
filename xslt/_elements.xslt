@@ -1252,11 +1252,11 @@
       <input type="hidden" id="PKName" value="{parentkey/.}"/>
       <script>
 
-        var code='<xsl:value-of select ="code/."/>';
-        var parentKey='<xsl:value-of select ="parentkey/."/>';
-        var GUID='<xsl:value-of select ="$cid"/>';
-        var browsemode='<xsl:value-of select ="browseMode/."/>';
-        loadChild(code, parentKey, GUID, 1, browsemode);
+        //var code='<xsl:value-of select ="code/."/>';
+        //var parentKey='<xsl:value-of select ="parentkey/."/>';
+        //var GUID='<xsl:value-of select ="$cid"/>';
+        //var browsemode='<xsl:value-of select ="browseMode/."/>';
+        //loadChild(code, parentKey, GUID, 1, browsemode);
       </script>
 
       <div class="box box-solid box-default child" data-code="{code/.}" data-parentKey="{parentkey/.}" data-guid="{$cid}" data-mode="{browseMode/.}" 

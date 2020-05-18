@@ -1264,8 +1264,8 @@ function popUpImg(guid) {
 function rejectPopup(code, GUID, action, page, location, formId, afterSuccess) {
     $("#rejectModal").modal('show');
     $("#rejectModal").appendTo('body');
-    /*
-        $("#nModal").modal('show');
+    
+        //$("#nModal").modal('show');
         document.getElementById('rejectComment').onkeyup = function () {
             $('#rejectBtn').css('visibility', $('#rejectComment').val() !== '' ? 'visible' : 'hidden');
         };
@@ -1274,7 +1274,7 @@ function rejectPopup(code, GUID, action, page, location, formId, afterSuccess) {
             var comment = $('#rejectComment').val();
             btn_function(code, GUID, action, page, location, formId, comment, afterSuccess);
         };
-        */
+        
 }
 
 

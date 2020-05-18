@@ -666,7 +666,7 @@
             <textarea id="rejectComment" placeholder="Enter your reject reason." class="form-control">&#160;</textarea>
           </div>
           <div class="modal-footer">
-            <button id="rejectBtn" type="button" class="btn btn-secondary" data-dismiss="modal" style="visibility:hidden">Reject</button>
+            <button id="rejectBtn" type="button" class="btn btn-orange-a" data-dismiss="modal" style="visibility:hidden">Reject</button>
             <button id="rejectCancelBtn" type="button" class="btn btn-primary btn-default" data-dismiss="modal">Cancel</button>
           </div>
         </div>
@@ -691,11 +691,11 @@
       <input type="hidden" id="PKName" value="{parentkey/.}"/>
 
       <script>
-        var code='<xsl:value-of select ="code/."/>';
-        var parentKey='<xsl:value-of select ="parentkey/."/>';
-        var GUID='<xsl:value-of select ="/sqroot/body/bodyContent/form/info/GUID/."/>';
-        var browsemode='<xsl:value-of select ="browseMode/."/>';
-        loadChild(code, parentKey, GUID, null, browsemode);
+        //var code='<xsl:value-of select ="code/."/>';
+        //var parentKey='<xsl:value-of select ="parentkey/."/>';
+        //var GUID='<xsl:value-of select ="/sqroot/body/bodyContent/form/info/GUID/."/>';
+        //var browsemode='<xsl:value-of select ="browseMode/."/>';
+        //loadChild(code, parentKey, GUID, null, browsemode);
       </script>
 
 
