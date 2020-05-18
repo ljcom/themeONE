@@ -215,6 +215,7 @@
         x.push('align=<xsl:value-of select="@align"/>');
         x.push('digit=<xsl:value-of select="@digit"/>');
         x.push('isNullable=<xsl:value-of select="@isNullable"/>');
+        x.push('guid=<xsl:value-of select="@guid"/>');													  
 
         columns_<xsl:value-of select="$lowerCode"/>.push(x);
 
@@ -274,7 +275,7 @@
               or (@isEditable='2' and ../../@GUID = '00000000-0000-0000-0000-000000000000')
 							or (@isEditable=3 and $parentState&lt;400)
 							or (@isEditable=4 and ($parentState&lt;500)))">
-        <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}">
+        <td class="cell cell-editor-{@editor}" data-id="{@guid}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}">
           <xsl:attribute name="align">
             <xsl:choose>
               <xsl:when test="@align=0">left</xsl:when>
