@@ -72,7 +72,7 @@
           </h3>
         </div>
         <div>
-          <input style="width:200px; position:absolute; right:25px; top:5px; padding-right:25px;visibility:hidden" type="text" id="searchBox_{sqroot/body/bodyContent/browse/info/code}" name="searchBox_{sqroot/body/bodyContent/browse/info/code}"
+          <input style="width:200px; position:absolute; right:25px; top:5px; padding-right:25px;" type="text" id="searchBox_{sqroot/body/bodyContent/browse/info/code}" name="searchBox_{sqroot/body/bodyContent/browse/info/code}"
             class="form-control" placeholder="Enter search key..." value="{sqroot/body/bodyContent/browse/info/search}"
               onkeypress="searchTextChild(event, this.value, '{sqroot/body/bodyContent/browse/info/code}');" />
           <button id="clear{sqroot/body/bodyContent/browse/info/code}" type="button" class="btn btn-flat" style="position:absolute; right:25px; top:5px; background:none; border:none; display:none" >
@@ -250,19 +250,19 @@
   <xsl:template match="fields/field">
     <xsl:variable name="tbContent">
       <xsl:choose>
-        <xsl:when test="@digit = 0 and .!=''">
+        <xsl:when test="@digit = 0 and .!='' and @editor='textbox'">
           <xsl:value-of select="format-number(., '###,###,###,##0', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="@digit  = 1 and .!=''">
+        <xsl:when test="@digit  = 1 and .!='' and @editor='textbox'">
           <xsl:value-of select="format-number(., '###,###,###,##0.0', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="@digit  = 2 and .!=''">
+        <xsl:when test="@digit  = 2 and .!='' and @editor='textbox'">
           <xsl:value-of select="format-number(., '###,###,###,##0.00', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="@digit  = 3 and .!=''">
+        <xsl:when test="@digit  = 3 and .!='' and @editor='textbox'">
           <xsl:value-of select="format-number(., '###,###,###,##0.000', 'dot-dec')"/>
         </xsl:when>
-        <xsl:when test="@digit  = 4 and .!=''">
+        <xsl:when test="@digit  = 4 and .!='' and @editor='textbox'">
           <xsl:value-of select="format-number(., '###,###,###,##0.0000', 'dot-dec')"/>
         </xsl:when>
         <xsl:otherwise>
