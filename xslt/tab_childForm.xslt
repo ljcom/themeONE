@@ -163,7 +163,14 @@
 
   </xsl:template>
 
-  <xsl:template match="formSection">
+  <xsl:template match="formSection ">
+    <xsl:if test="@sectionTitle/.!=''">
+      <div class="col-md-12" data-toggle="collapse" data-target="#section_{@sectionNo}">
+        <h3>
+          <xsl:value-of select="@rowTitle/."/>&#160;
+        </h3>
+      </div>
+    </xsl:if>
     <xsl:if test="formCols/formCol/formRows">
       <div class="col-md-12 collapse in" id="section_{@sectionNo}">
         <div class="row">
@@ -191,8 +198,42 @@
           </div>
         </div>
 	  </xsl:if>
-    </xsl:if>
   </xsl:template>
+
+  <xsl:template match="formChildren">
+    <xsl:apply-templates select="formChild"/>
+  </xsl:template>
+  <xsl:template match="formChild">
+     <input type="hidden" id="CPKID" value="gchild{code/.}"/>
+    <input type="hidden" id="childKey{code/.}" value="{parentkey/.}"/>
+    <input type="hidden" id="filter{code/.}" value="{parentkey/.}='{/sqroot/body/bodyContent/form/info/GUID/.}'"/>
+    <input type="hidden" id="parent{code/.}" value="{parentkey/.}"/>
+    <script>
+
+      //xmldoc = "OPHCORE/api/default.aspx?code=<xsl:value-of select ="code/."/>&amp;mode=browse&amp;sqlFilter=<xsl:value-of select ="parentkey/."/>='<xsl:value-of select ="/sqroot/body/bodyContent/form/info/GUID/."/>'"
+      //showXML('child<xsl:value-of select ="code/."/>', xmldoc, xsldoc + "_childBrowse.xslt", true, true, function () {});
+
+      var code='<xsl:value-of select ="code/."/>';
+      var parentKey='<xsl:value-of select ="parentkey/."/>';
+      var GUID='<xsl:value-of select ="/sqroot/body/bodyContent/form/info/GUID/."/>';
+      var browsemode='<xsl:value-of select ="browseMode/."/>';
+      loadChild(code, parentKey, GUID, null, browsemode);
+    </script>
+
+    <!--div class="col-md-12">
+      <div class="box" style="border-top:none;" id="section2">
+        <div class="box-header with-border" style="background:none">
+          <h3 class="dashboard-title">
+            <xsl:value-of select="childTitle/."/>
+          </h3>
+        </div>
+      </div-->
+    <div class="box box-solid box-default visible-phone" style="box-shadow:0px;border:none;" id="child{code/.}{/sqroot/body/bodyContent/form/info/GUID/.}" data-parentguid="{/sqroot/body/bodyContent/form/info/GUID/.}">
+      &#160;
+    </div>
+    <!--/div-->
+  </xsl:template>
+
 
   <xsl:template match="formCols">
     <xsl:apply-templates select="formCol"/>
