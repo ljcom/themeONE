@@ -277,11 +277,9 @@
                 <div class="box-body box-profile">
                   <xsl:choose>
                     <xsl:when test="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/profileBox/. != ''">
-                      <xsl:variable name="imgName">
-                        <xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName/."/>
+                      <xsl:variable name="imgName"><xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/@fieldName/."/>
                       </xsl:variable>
-                      <xsl:variable name="imgVal">
-                        <xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/profileBox/value/."/>
+                      <xsl:variable name="imgVal"><xsl:value-of select="/sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/profileBox/value/."/>
                       </xsl:variable>
 
                       <!--<xsl:value-of select="sqroot/body/bodyContent/form/formPages/formPage[@pageNo=10]/formSections/formSection[@sectionNo=1]/formCols/formCol[@colNo=1]/formRows/formRow[@rowNo=1]/fields/field/profileBox/titlecaption"/>-->
@@ -290,11 +288,9 @@
                           <img style="width:100%" id="{$imgName}_camera_img">
                             <xsl:attribute name="src">
                               <xsl:choose>
-                                <xsl:when test="$imgVal!=''">
-                                  ophcontent/documents/<xsl:value-of select="/sqroot/header/info/account" />/<xsl:value-of select="$imgVal" />
+                                <xsl:when test="$imgVal!=''">ophcontent/documents/<xsl:value-of select="/sqroot/header/info/account" />/<xsl:value-of select="$imgVal" />
                                 </xsl:when>
-                                <xsl:otherwise>
-                                  ophcontent/themes/themeone/images/blank-person.png
+                                <xsl:otherwise>ophcontent/themes/themeone/images/no-data.png
                                 </xsl:otherwise>
                               </xsl:choose>
                             </xsl:attribute>
@@ -309,7 +305,7 @@
                                   ophcontent/documents/<xsl:value-of select="/sqroot/header/info/account" />/<xsl:value-of select="$imgVal" />
                                 </xsl:when>
                                 <xsl:otherwise>
-                                  ophcontent/themes/themeone/images/blank-person.png
+                                  ophcontent/themes/themeone/images/no-data.png
                                 </xsl:otherwise>
                               </xsl:choose>
                             </xsl:attribute>
@@ -678,11 +674,12 @@
   <xsl:include href="_elements.xslt" />
 
   <!-- <xsl:template match="sqroot/body/bodyContent/form/children"> -->
-
+<!--move to elements-->
     <!-- <xsl:apply-templates select="child"/> -->
 
   <!-- </xsl:template> -->
-
+  
+  <!--this for older children -->
   <xsl:template match="child">
     <xsl:if test="info/permission/allowBrowse&gt;='1'">
       <input type="hidden" id="PKID" value="child{code/.}"/>

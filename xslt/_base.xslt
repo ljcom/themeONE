@@ -190,7 +190,7 @@
                         </a>
                       </div>
                       <div class="pull-right">
-                        <a href="javascript:signOut()" class="btn btn-default btn-flat">
+                        <a href="javascript:signOut(null, null, '##gsigninclientid##')" class="btn btn-default btn-flat">
                           <span>
                             <ix class="fa fa-power-off"></ix>
                           </span>

@@ -201,8 +201,9 @@
           <xsl:if test=".!=''">
             <a class="text-muted" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={@caption}&#38;code={../../@code}&#38;GUID={../../@GUID}');">
               <ix class="fa fa-paperclip" title="Download" />
-            </a>
-          </xsl:if>&#160;
+            </a>&#160;
+			<xsl:value-of select="." />
+          </xsl:if>
         </td>
       </xsl:when>
       <xsl:otherwise>
