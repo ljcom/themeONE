@@ -43,7 +43,7 @@
 	<jsFile>OPHContent/cdn/chartjs/chart.bundle.min.js</jsFile>
     <jsFile>OPHContent/cdn/admin-LTE/js/app.min.js</jsFile>
     <!--cssFile>OPHContent/themes/themeONE/styles/icomoon/style.css</cssFile-->
-    <jsFile>OPHContent/themes/themeONE/custom-me.js</jsFile>
+    <jsFile>OPHContent/themes/themeONE/custom-me.js?v=3</jsFile>
 	<jsFile>OPHContent/cdn/CodeSeven-toastr/build/toastr.min.js</jsFile>
 	<cssFile>OPHContent/cdn/CodeSeven-toastr/build/toastr.min.css</cssFile>
 	<!--<jsFile>OPHContent/cdn/isotope/isotope.pkgd.min.js</jsFile>-->

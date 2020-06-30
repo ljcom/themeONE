@@ -209,7 +209,7 @@
       </script>
 
       <div class="row">
-        <div class="col-md-12 col-lg-12" style="margin-bottom:50px;">
+        <div class="col-md-12 col-lg-12 visible-phone" style="margin-bottom:50px;">
           <div style="text-align:left form-action-button">
             <xsl:choose>
               <!--location: 0 header; 1 child; 2 browse location: browse:10, header form:20, browse anak:30, browse form:40-->

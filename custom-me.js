@@ -895,9 +895,9 @@ function btnWebcam(mode, idimg) {
 
 }
 
-function switchBrowse(mode) {
+function switchBrowse(mode, code) {
     if (mode == undefined) {
-        mode = getCookie('browseMode');
+        mode = getCookie(code.toLowerCase()+'_browseMode');
         if (mode == undefined) mode = 0;
 
         $('.listMode').removeClass('active');
@@ -954,12 +954,12 @@ function switchBrowse(mode) {
     }
     else {
         loadContent(1);
-        setCookie('browseMode', mode, 0, 0, 15);
+        setCookie(code.toLowerCase()+'_browseMode', mode, 0, 0, 15);
     }
 }
 
 function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, allowForce, isDelegator, smode) {
-    mode = getCookie('browseMode');
+    mode = getCookie(code.toLowerCase()+'_browseMode');
     var accountid = 'maxfour';
     if (mode == 0 || mode == null) {
         var tx1 = '';
@@ -969,7 +969,7 @@ function fillMobileItem(code, guid, status, allowedit, allowDelete, allowWipe, a
 
 
         //var tx1 = $('td#mandatory' + guid).val();
-        var tx2 = '' + tx1 + ' ' + $('#summary' + guid).html();
+        var tx2 = '' + tx1 + ' ' + ($('#summary' + guid).length==0?'':$('#summary' + guid).html());
         var tx3 = '<b>WAIT FOR APPROVAL</b><br /><b>USER 3 </b>';
         var divname = 'collapse' + guid;
 
