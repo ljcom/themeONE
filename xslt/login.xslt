@@ -5,7 +5,7 @@
   <xsl:template match="/">
 
     <script>
-
+	  //loadScript('https://apis.google.com/js/platform.js?onload=init');
       var meta = document.createElement('meta');
       meta.charset = "UTF-8";
       loadMeta(meta);
@@ -20,11 +20,8 @@
       meta.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
       loadMeta(meta);
 
-      var meta = document.createElement('meta');
-      meta.name = "google-signin-client_id";
-      meta.content = "234818231644-j4feqpc6c3gg0iks95808eg5nutlfquu.apps.googleusercontent.com";
-      loadMeta(meta);
 
+	
       changeSkinColor();
       //$("body").addClass("skin-blue");
       $("body").addClass("hold-transition");
@@ -54,26 +51,53 @@
       if ($('body').hasClass('sidebar-collapse')) $('body').removeClass('sidebar-collapse');
       else $('body').addClass('sidebar-collapse');
       });
-
-      if (getQueryVariable("mode")=="1") {
-      setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 365,0,0);
-      $(".mode-createaccount").removeClass('hide');
+	  var mode=getQueryVariable("mode");
+	  var gmode='';
+      if (mode=="1") {
+		setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 365,0,0);
+		$(".mode-createaccount").removeClass('hide');
+		//$(".gsignup").addClass('g-signin2');
+		gmode='gsignup';
+	
+		
       }
-      else if (getQueryVariable("mode")=="3") $(".mode-forgotpassword").removeClass('hide');
-      else if (getQueryVariable("mode")=="4") $(".mode-verifyemail").removeClass('hide');
-      else if (getQueryVariable("mode")=="5") $(".mode-resetpassword").removeClass('hide');
-      else if ((getQueryVariable("mode")=="2" &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0' &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')=='') || getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')=='' || getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')== null) {
-      setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 365,0,0);
-      $(".mode-chooseaccount").removeClass('hide');
+      else if (mode=="3") $(".mode-forgotpassword").removeClass('hide');
+      else if (mode=="4") $(".mode-verifyemail").removeClass('hide');
+      else if (mode=="5") $(".mode-resetpassword").removeClass('hide');
+      else if ((mode=="2" &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0' &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')=='') || getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')=='' || getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')== null) {
+		  setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 365,0,0);
+		  $(".mode-chooseaccount").removeClass('hide');
+		  
       }
-      else $(".mode-login").removeClass('hide');
-
+      else {
+		$(".mode-login").removeClass('hide');
+		//$(".gsignin").addClass('g-signin2');
+		//renderGButton('gsignin');
+		gmode='gsignin';
+	  }
       if (getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0') $('#chooseLink').removeClass('hide');
 
       if (getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')!='') $('.box-title').html('<xsl:value-of select="sqroot/header/info/company"/> '+getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid'));
 
 		var n=new Date(Date.now());
 		$('#cp').html($('#cp').html().split('#year#').join(n.getFullYear()));
+
+	//google signin
+	
+	//window.onLoadCallback = function(){	  
+	  
+	  gSigninInit('##gsigninclientid##', function() {
+		var a2 = gapi.auth2.getAuthInstance();
+		if (a2.isSignedIn.get()) {
+			a2.signOut().then(function () {
+				//a2.disconnect();		
+				if (gmode!='')	  renderGButton(gmode);
+			});	
+		}
+		else if (gmode!='')	  renderGButton(gmode);
+	  });
+	//}
+	//google signin - end
 
     </script>
 
@@ -184,6 +208,8 @@
                       onclick="javascript: signIn('{/sqroot/header/info/account}')"
                       class="btn btn-orange-a">SUBMIT</button>&#160;
                     <button class="btn btn-gray-a" onclick="clearLoginText();">CLEAR</button>
+					<div class="btn" id="gsignin" data-onsuccess="signInGConnect" data-theme="dark"></div>
+
                   </div>
                 </div>
               </div>
@@ -225,6 +251,7 @@
                       <label>Confirm Password</label>
                       <input type="password" class="form-control" name ="confirmpwd" id ="confirmpwd" autocomplete="off" placeholder="password" onkeypress="return checkEnterSignUp(event)"/-->
                     </div>
+					
                     <div class="g-recaptcha" data-sitekey="##recaptchakey##"></div>
                     <a href="?code=login&amp;mode=2">Choose existing account</a>
                   </form>
@@ -235,7 +262,9 @@
                       onclick="signUp('{/sqroot/header/info/account}');"
                       class="btn btn-orange-a">SUBMIT</button>&#160;
                     <button class="btn btn-gray-a" onclick="clearLoginText();">CLEAR</button>
+					<div class="btn" id="gsignup" data-onsuccess="signUpGConnect" data-theme="dark"></div>
                   </div>
+				  
                 </div>
               </div>
             </div>

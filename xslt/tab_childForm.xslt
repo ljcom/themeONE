@@ -37,7 +37,47 @@
       defaultTime: false
       });
 
-      upload_init('<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>');
+      upload_init('<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>', 
+		//success
+		function() {
+			if (!$('.meter').hasClass('hide'))
+				$('.meter').addClass('hide');
+			$('.meter').find('div').width(0);
+			showMessage('Upload completed.',2);
+		}, 
+		//error
+		function(err) {
+			if (!$('.meter').hasClass('hide'))
+				$('.meter').addClass('hide');
+			$('.meter').find('div').width(0);
+			showMessage('Upload failed. ('+err+')',4);
+		}, 
+		//progress
+		function() {
+			if ($('.meter').hasClass('hide'))
+				$('.meter').removeClass('hide');
+			var percent = $('.meter').width() *(event.loaded / event.total);
+		   //_("fortschritt").value = Math.round(percent);
+		   //_("fortschritt_txt").innerHTML = Math.round(percent)+"% done...";
+			//showMessage('Upload:'+percent+'%');
+			$(".meter > span").each(function() {
+				$(this)
+					//.data("origWidth", $(this).width())
+					.width($(this).width())
+					.animate({
+						width: percent
+					}, 1200);
+			});			
+			
+		}, 
+		//beforeSend
+		function(data) {
+			$(".meter > span").each(function() {
+				$(this)
+					.width(0);
+			});			
+		}, 
+		'<xsl:value-of select="/sqroot/body/bodyContent/form/info/meta/uploadMaxSize/."/>');
 
 
       $(function () {
@@ -198,6 +238,7 @@
           </div>
         </div>
 	  </xsl:if>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="formChildren">
@@ -669,14 +710,16 @@
     <div class="input-group">
       <label class="input-group-btn">
         <span class="btn btn-primary">
-          Browse <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file" data-code="{/sqroot/body/bodyContent/form/info/code}" 
+          Browse 
+		  <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file" data-code="{/sqroot/body/bodyContent/form/info/code}" 
 		    data-child="Y" 
 		    style="display: none;" multiple="" />
         </span>
+		
       </label>
       <input id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" type="text" class="form-control" readonly="" />
       <span class="input-group-btn">
-        <button class="btn btn-secondary" type="button" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={../@fieldName}&#38;code={/sqroot/body/bodyContent/form/info/code/.}&#38;GUID={/sqroot/body/bodyContent/form/info/GUID/.}');">
+        <button id ="{../@fieldName}_progress" class="btn btn-secondary" type="button" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={../@fieldName}&#38;code={/sqroot/body/bodyContent/form/info/code/.}&#38;GUID={/sqroot/body/bodyContent/form/info/GUID/.}');">
           <xsl:if test="/sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
             <xsl:attribute name="disabled">disabled</xsl:attribute>
           </xsl:if>
@@ -684,6 +727,9 @@
         </button>
       </span>
     </div>
+	<div class="meter nostripes hide" style="height:10px">
+			<span style="visibility:none;width: 1%;position:absolute;top:0;left:0"></span>
+		</div>
   </xsl:template>
 
   <xsl:template match="imageBox">

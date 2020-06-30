@@ -18,6 +18,8 @@
     <cssFile>OPHContent/cdn/sideshow/distr/fonts/sideshow-fontface.min.css</cssFile>
     <cssFile>OPHContent/cdn/sideshow/distr/stylesheets/sideshow.min.css</cssFile>
     <cssFile>OPHContent/themes/themeONE/custom-me.css</cssFile>
+	<cssFile>OPHContent/cdn/ophelements/ophupload/ophupload.css</cssFile>
+	
     <jsFile>OPHContent/cdn/bootstrap/js/bootstrap.min.js</jsFile>
     <jsFile>OPHContent/cdn/input-mask/jquery.inputmask.js</jsFile>
     <jsFile>OPHContent/cdn/input-mask/jquery.inputmask.date.extensions.js</jsFile>
@@ -33,8 +35,8 @@
     <jsFile>OPHContent/cdn/upclick/upclick-min.js</jsFile>
     <jsFile>OPHContent/cdn/select2/select2.full.js</jsFile>
     <jsFile>OPHContent/cdn/ckeditor/ckeditor.js</jsFile>
-    <jsFile>OPHContent/cdn/ophelements/celljs/cell.js?v=3</jsFile>
-    <jsFile>OPHContent/cdn/ophelements/ophupload/ophupload.js</jsFile>
+    <jsFile>OPHContent/cdn/ophelements/celljs/cell.js?v=8</jsFile>
+    <jsFile>OPHContent/cdn/ophelements/ophupload/ophupload.js?v=12</jsFile>
     <jsFile>OPHContent/cdn/bootstrap/datetimepicker/bootstrap-datetimepicker.min.js</jsFile>
     <jsFile>OPHContent/cdn/sideshow/distr/dependencies/jazz.min.js</jsFile>
     <jsFile>OPHContent/cdn/sideshow/distr/dependencies/pagedown.min.js</jsFile>

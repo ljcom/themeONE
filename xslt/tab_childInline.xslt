@@ -212,6 +212,7 @@
         x.push('defaultValue=<xsl:value-of select="@defaultValue"/>');
         x.push('wf1=<xsl:value-of select="@wf1"/>');
         x.push('wf2=<xsl:value-of select="@wf2"/>');
+		x.push('radioOptions=<xsl:value-of select="@radioOptions"/>');
         x.push('align=<xsl:value-of select="@align"/>');
         x.push('digit=<xsl:value-of select="@digit"/>');
         x.push('isNullable=<xsl:value-of select="@isNullable"/>');
@@ -275,7 +276,7 @@
               or (@isEditable='2' and ../../@GUID = '00000000-0000-0000-0000-000000000000')
 							or (@isEditable=3 and $parentState&lt;400)
 							or (@isEditable=4 and ($parentState&lt;500)))">
-        <td class="cell cell-editor-{@editor}" data-id="{@guid}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}">
+        <td class="cell cell-editor-{@editor}" data-id="{@guid}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}" data-radiooptions="{@radioOptions}">
           <xsl:attribute name="align">
             <xsl:choose>
               <xsl:when test="@align=0">left</xsl:when>
