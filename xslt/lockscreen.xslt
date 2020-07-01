@@ -61,7 +61,8 @@
           <xsl:value-of select="sqroot/header/info/company"/>&#160;
           <b>
             <xsl:value-of select="sqroot/header/info/productName" />
-          </b>
+          </b><br/>
+		  <xsl:value-of select="sqroot/header/info/suba" />
         </a>
       </div>
       <!-- User name -->

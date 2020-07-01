@@ -208,7 +208,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                    <img src="OPHContent/documents/{/sqroot/header/info/account}/{/sqroot/header/info/user/userURL}" class="user-image" alt="User Image"/>
+                    <img src="OPHContent/documents/{/sqroot/header/info/suba}/{/sqroot/header/info/user/userURL}" class="user-image" alt="User Image"/>
                     <span class="hidden-xs">
                       <xsl:value-of select="/sqroot/header/info/user/userName"/>
                     </span>
@@ -216,7 +216,7 @@
                   <ul class="dropdown-menu">
                     <!-- User image -->
                     <li class="user-header">
-                      <img src="OPHContent/documents/{/sqroot/header/info/account}/{/sqroot/header/info/user/userURL}" class="img-circle" alt="User Image"/>
+                      <img src="OPHContent/documents/{/sqroot/header/info/suba}/{/sqroot/header/info/user/userURL}" class="img-circle" alt="User Image"/>
                       <p>
                         <xsl:value-of select="/sqroot/header/info/user/userName"/>
                         <small>

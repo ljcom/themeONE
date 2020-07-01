@@ -51,7 +51,10 @@
       if ($('body').hasClass('sidebar-collapse')) $('body').removeClass('sidebar-collapse');
       else $('body').addClass('sidebar-collapse');
       });
+	  
+	  setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '<xsl:value-of select="/sqroot/header/info/suba"/>', 365,0,0);
 	  var mode=getQueryVariable("mode");
+	  if (mode=='' || mode==undefined) mode=2;
 	  var gmode='';
       if (mode=="1") {
 		setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 365,0,0);
@@ -64,7 +67,10 @@
       else if (mode=="3") $(".mode-forgotpassword").removeClass('hide');
       else if (mode=="4") $(".mode-verifyemail").removeClass('hide');
       else if (mode=="5") $(".mode-resetpassword").removeClass('hide');
-      else if ((mode=="2" &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0' &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')=='') || getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')=='' || getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')== null) {
+      else if ((mode=="6" &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0') ||
+		(mode=="2" &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0'	
+			&amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')=='')) {
+			
 		  setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 365,0,0);
 		  $(".mode-chooseaccount").removeClass('hide');
 		  
@@ -155,7 +161,7 @@
             </div>
           </div-->
           <div class="row equal">
-            <div class="col-md-6" id="autologin" style="display:none">
+            <div class="col-md-6 col-sm-12 col-xs-12" id="autologin" style="display:none">
               <div class="box box-solid box-default">
                 <div class="box-header">
                   <h3 class="box-title">Windows login</h3>
@@ -178,7 +184,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 mode-login hide" style="float:none;margin:auto;">
+            <div class="col-md-6 col-sm-12 col-xs-12 mode-login hide" style="float:none;margin:auto;">
               <div class="box box-solid box-primary">
                 <div class="box-header">
                   <h1>
@@ -222,7 +228,7 @@
               </script>
             </div-->
 
-            <div class="col-md-6 mode-createaccount hide" style="float:none;margin:auto;">
+            <div class="col-md-6 col-sm-12 col-xs-12 mode-createaccount hide" style="float:none;margin:auto;">
               <div class="box box-solid box-primary">
                 <div class="box-header">
                   <h1>
@@ -269,7 +275,7 @@
               </div>
             </div>
 
-            <div class="col-md-6 mode-chooseaccount hide" style="float:none;margin:auto;">
+            <div class="col-md-6 col-sm-12 col-xs-12 mode-chooseaccount hide" style="float:none;margin:auto;">
               <div class="box box-solid box-primary">
                 <div class="box-header">
                   <h1>
@@ -296,7 +302,7 @@
               </div>
             </div>
 
-            <div class="col-md-6 mode-forgotpassword hide" style="float:none;margin:auto;">
+            <div class="col-md-6 col-sm-12 col-xs-12 mode-forgotpassword hide" style="float:none;margin:auto;">
               <div class="box box-solid box-primary">
                 <div class="box-header">
                   <h1>
@@ -324,7 +330,7 @@
               </div>
             </div>
 
-            <div class="col-md-6 mode-verifyemail hide" style="float:none;margin:auto;">
+            <div class="col-md-6 col-sm-12 col-xs-12 mode-verifyemail hide" style="float:none;margin:auto;">
               <div class="box box-solid box-primary">
                 <div class="box-header">
                   <h1>
@@ -351,7 +357,7 @@
               </div>
             </div>
 
-            <div class="col-md-6 mode-resetpassword hide" style="float:none;margin:auto;">
+            <div class="col-md-6 col-sm-12 col-xs-12 mode-resetpassword hide" style="float:none;margin:auto;">
               <div class="box box-solid box-primary">
                 <div class="box-header">
                   <h1>
@@ -459,7 +465,7 @@
 
       function goToChoose() {
         setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 1, 1, 0);
-        goTo('?code=login&amp;mode=2');
+        goTo('?code=login&amp;mode=6');
       }
     </script>
 

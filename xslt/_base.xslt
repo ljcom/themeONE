@@ -37,6 +37,7 @@
             <img width="30" style="margin-top:-9px;" src="OPHContent/themes/{header/info/themeFolder}/images/oph4_logo.png" alt="Logo Image" />
           </div>
           <xsl:value-of select="header/info/company" />
+		  <xsl:value-of select="header/info/suba" />
         </span>
       </a>
       <nav class="navbar navbar-static-top">

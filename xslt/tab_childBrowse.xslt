@@ -200,6 +200,9 @@
         <xsl:when test="@digit  = 4 and .!=''">
           <xsl:value-of select="format-number(., '###,###,###,##0.0000', 'dot-dec')"/>
         </xsl:when>
+		<xsl:when test="@editor='textEditor' or @editor='textArea'">
+			<xsl:value-of select="substring(.,1,100)"/>
+		</xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="."/>
         </xsl:otherwise>
@@ -222,7 +225,7 @@
             <a class="text-muted" onclick="javascript:popUpImg('{../../@GUID}');preview('{@preview}', '{../../@code}', '{../../@GUID}','', 'formheader');">
               <ix class="far fa-eye" title="Show Image" /> 
             </a>
-            <img id="img_{../../@GUID}" alt="{.}" src="ophcontent/documents/{/sqroot/header/info/account}/{.}" style="display:none;margin-top:10px;width:100%;border:5px gray solid;"></img>
+            <img id="img_{../../@GUID}" alt="{.}" src="OPHContent/documents/{/sqroot/header/info/suba}/{.}" style="display:none;margin-top:10px;width:100%;border:5px gray solid;"></img>
             <div id="myImage_{../../@GUID}" class="modal">
               <span class="close" onclick="javascript:$('#myImage_{../../@GUID}').hide();preview('{@preview}99', '{../../@code}', '{../../@GUID}','', 'formheader');">X</span>
               <img class="modal-content" id="img01_{../../@GUID}"/>

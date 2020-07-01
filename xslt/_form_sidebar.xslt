@@ -366,7 +366,7 @@
         </span>
       </div>
       <!-- /.direct-chat-info -->
-      <img class="direct-chat-img" src="OPHContent/documents/{/sqroot/header/info/account}/{@talkUserProfile}" alt="{talkUser}"/>
+      <img class="direct-chat-img" src="OPHContent/documents/{/sqroot/header/info/suba}/{@talkUserProfile}" alt="{talkUser}"/>
       <!-- /.direct-chat-img -->
       <div class="direct-chat-text">
         <xsl:value-of select="@comment"/>

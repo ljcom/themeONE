@@ -711,7 +711,7 @@
       }
       }
     </style>
-    <img id="img_{/sqroot/body/bodyContent/form/info/GUID/.}" onclick="popUpImg('{/sqroot/body/bodyContent/form/info/GUID/.}')" alt="{value}" src="ophcontent/documents/{/sqroot/header/info/account}/{value}" style="margin-top:10px;width:100%;border:5px gray solid;"></img>
+    <img id="img_{/sqroot/body/bodyContent/form/info/GUID/.}" onclick="popUpImg('{/sqroot/body/bodyContent/form/info/GUID/.}')" alt="{value}" src="OPHContent/documents/{/sqroot/header/info/suba}/{value}" style="margin-top:10px;width:100%;border:5px gray solid;"></img>
     <span style="color:blue;cursor:pointer;" onclick="popUpImg('{/sqroot/body/bodyContent/form/info/GUID/.}')">Click here to view the image.</span>
     <div id="myImage_{/sqroot/body/bodyContent/form/info/GUID/.}" class="modal">
       <span class="close" onclick="javascript:$('#myImage_{/sqroot/body/bodyContent/form/info/GUID/.}').hide();">X</span>

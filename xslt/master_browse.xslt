@@ -930,7 +930,7 @@
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="fields/field[@editor='profilebox']">
-		<img src="ophContent/documents/{/sqroot/header/info/account}/{.}" style="height:50px" alt="" />
+		<img src="OPHContent/documents/{/sqroot/header/info/suba}/{.}" style="height:50px" alt="" />
 	</xsl:template>
 	<xsl:template match="fields/field[@mandatory=1]">
 		<xsl:variable name="tbContent">
@@ -970,7 +970,7 @@
 			</td>
 		</xsl:if>
 		<xsl:if test="@editor= 'profilebox'">
-			<img src="ophContent/documents/{/sqroot/header/info/account}/{.}" style="height:50px" 
+			<img src="OPHContent/documents/{/sqroot/header/info/suba}/{.}" style="height:50px" 
 				onerror="this.src = 'ophcontent/themes/themeone/images/no-data.png';"
 				alt="" />
 		</xsl:if>
@@ -1027,7 +1027,7 @@
 			
 		</xsl:if>
 		<xsl:if test="@editor= 'profilebox'">
-			<img src="ophContent/documents/{/sqroot/header/info/account}/{.}" style="height:50px" 
+			<img src="OPHContent/documents/{/sqroot/header/info/suba}/{.}" style="height:50px" 
 				onerror="this.src = 'ophcontent/themes/themeone/images/no-data.png';"
 				alt="" />
 		</xsl:if>
@@ -1118,7 +1118,7 @@
 							<xsl:value-of select="@talkDateCaption"/>
 						</span>
 					</div>
-					<img class="direct-chat-img" src="OPHContent/documents/{/sqroot/header/info/account}/{@talkUserProfile}" alt="{talkUser}"/>
+					<img class="direct-chat-img" src="OPHContent/documents/{/sqroot/header/info/suba}/{@talkUserProfile}" alt="{talkUser}"/>
 					<div class="direct-chat-text">
 						<xsl:value-of select="@comment"/>
 					</div>
@@ -1134,7 +1134,7 @@
 							<xsl:value-of select="@talkDateCaption"/>
 						</span>
 					</div>
-					<img class="direct-chat-img" src="OPHContent/documents/{/sqroot/header/info/account}/{@talkUserProfile}" alt="{talkUser}"/>
+					<img class="direct-chat-img" src="OPHContent/documents/{/sqroot/header/info/suba}/{@talkUserProfile}" alt="{talkUser}"/>
 					<div class="direct-chat-text">
 						<xsl:value-of select="@comment"/>
 					</div>
