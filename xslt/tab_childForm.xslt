@@ -472,7 +472,7 @@
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
-    <textarea id ="{../@fieldName}" name ="{../@fieldName}" class="form-control">
+    <textarea id ="{../@fieldName}" name ="{../@fieldName}" class="form-control" data-child="Y">
       <xsl:choose>
         <xsl:when test="value != ''">
           <xsl:value-of select="value"/>
@@ -595,8 +595,9 @@
       </xsl:choose>
     </xsl:variable>
 
-    <textarea class="form-control" placeholder="input text..." name="{../@fieldName}" id ="{../@fieldName}" data-type="textArea" style="max-width:100%; min-width:100%; min-height:55px;"
-      onblur="preview('{preview/.}',getCode(), '{$cid}','', this);" oninput="javascript:checkChanges(this)" >
+    <textarea class="form-control" placeholder="input text..." name="{../@fieldName}" id ="{../@fieldName}" data-type="textArea"  data-child="Y" 
+		style="max-width:100%; min-width:100%; min-height:55px;"
+		onblur="preview('{preview/.}',getCode(), '{$cid}','', this);" oninput="javascript:checkChanges(this)" >
       <xsl:value-of select="$thisValue"/>
     </textarea>
     <script>

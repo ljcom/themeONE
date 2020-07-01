@@ -18,7 +18,9 @@
       
       cell_init(code);
 
-      upload_init(code, function(data) {
+      upload_init(code, 
+		//success
+		function(data) {
 		  var err=''; s=0;
 		  $(data).find("sqroot").find("message").each(function (i) {
 			  var item=$(data).find("sqroot").find("message").eq(i);
@@ -35,7 +37,41 @@
 		  var code='<xsl:value-of select="/sqroot/body/bodyContent/browse/info/code"/>';
 		  preview('1', getCode(), getGUID(),'', this);
 		  loadChild(code);
-      });
+		},
+		//error
+		function(err) {
+			if (!$('.meter').hasClass('hide'))
+				$('.meter').addClass('hide');
+			$('.meter').find('div').width(0);
+			showMessage('Upload failed. ('+err+')',4);
+		}, 
+		//progress
+		function() {
+			if ($('.meter').hasClass('hide'))
+				$('.meter').removeClass('hide');
+			var percent = $('.meter').width() *(event.loaded / event.total);
+		   //_("fortschritt").value = Math.round(percent);
+		   //_("fortschritt_txt").innerHTML = Math.round(percent)+"% done...";
+			//showMessage('Upload:'+percent+'%');
+			$(".meter > span").each(function() {
+				$(this)
+					//.data("origWidth", $(this).width())
+					.width($(this).width())
+					.animate({
+						width: percent
+					}, 1200);
+			});			
+			
+		}, 
+		//beforeSend
+		function(data) {
+			$(".meter > span").each(function() {
+				$(this)
+					.width(0);
+			});			
+		}, 
+		'<xsl:value-of select="/sqroot/body/bodyContent/form/info/meta/uploadMaxSize/."/>'		
+	  );
 
       $(document).ready(function(){
       if($('th[data-order="DESC"]').length == 1) $('th[data-order="DESC"]').append(' &lt;ix class="fa fa-sort-alpha-desc" /&gt;');
@@ -130,6 +166,9 @@
                   <!--<button type="button" class="buttonCream" id="download" name="download" onclick="javascript:PrintDirect('{/sqroot/body/bodyContent/browse/info/code}', '', 3, '', '', '');">DOWNLOAD</button>
                   <button type="button" class="buttonCream" id="upload" name="upload" onclick="javascript:showSubBrowseView('{/sqroot/body/bodyContent/browse/info/code}','',1,'');">UPLOAD</button>-->
                   <input id ="import_hidden" name="import_hidden" type="file" data-code="{$lowerCode}" style="visibility: hidden; width: 0; height: 0;" multiple="" />
+				  <div class="meter nostripes hide" style="height:10px">
+					<span style="visibility:none;width: 1%;position:absolute;top:0;left:0"></span>
+				  </div>
                 </xsl:if>
                 <xsl:if test="/sqroot/body/bodyContent/browse/info/nbPages > 1">
                   <ul class="pagination pagination-sm no-margin pull-right" id="childPageNo"></ul>
@@ -200,9 +239,7 @@
         <xsl:when test="@digit  = 4 and .!=''">
           <xsl:value-of select="format-number(., '###,###,###,##0.0000', 'dot-dec')"/>
         </xsl:when>
-		<xsl:when test="@editor='textEditor' or @editor='textArea'">
-			<xsl:value-of select="substring(.,1,100)"/>
-		</xsl:when>
+		
         <xsl:otherwise>
           <xsl:value-of select="."/>
         </xsl:otherwise>
@@ -215,7 +252,8 @@
             <a class="text-muted" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={@caption}&#38;code={../../@code}&#38;GUID={../../@GUID}');">
               <ix class="fa fa-paperclip" title="Download" />
             </a>&#160;
-			<xsl:value-of select="." />
+			<div style="width:100px;overflow:hidden"><xsl:value-of select="." />
+			</div>
           </xsl:if>&#160;
         </td>
       </xsl:when>
@@ -234,6 +272,13 @@
           </xsl:if>&#160;
         </td>
       </xsl:when>
+	  <xsl:when test="@editor='textEditor' or @editor='textArea'">
+		<td style="width:100px" onclick="showChildForm('{$lowerCode}','{../../@GUID}', '{$lowerCode}');">
+		  <div style="width:200px;overflow:hidden">
+            <xsl:value-of select="$tbContent"/>&#160;
+		  </div>
+        </td>
+		</xsl:when>
       <xsl:otherwise>
         <td onclick="showChildForm('{$lowerCode}','{../../@GUID}', '{$lowerCode}');">
           <xsl:value-of select="$tbContent"/>&#160;

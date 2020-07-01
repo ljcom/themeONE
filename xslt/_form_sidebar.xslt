@@ -310,7 +310,7 @@
 
         <div class="user-panel">
           <div class="pull-left image">
-            <img src="OPHContent/documents/{sqroot/header/info/account}/{sqroot/header/info/user/userURL}" class="img-circle" alt="User Image" />
+            <img src="OPHContent/documents/{sqroot/header/info/suba}/{sqroot/header/info/user/userURL}" class="img-circle" alt="User Image" />
           </div>
           <div class="pull-left info">
             <p>

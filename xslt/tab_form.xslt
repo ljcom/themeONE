@@ -288,7 +288,7 @@
                           <img style="width:100%" id="{$imgName}_camera_img">
                             <xsl:attribute name="src">
                               <xsl:choose>
-                                <xsl:when test="$imgVal!=''">ophcontent/documents/<xsl:value-of select="/sqroot/header/info/account" />/<xsl:value-of select="$imgVal" />
+                                <xsl:when test="$imgVal!=''">ophcontent/documents/<xsl:value-of select="/sqroot/header/info/suba" />/<xsl:value-of select="$imgVal" />
                                 </xsl:when>
                                 <xsl:otherwise>ophcontent/themes/themeone/images/no-data.png
                                 </xsl:otherwise>
