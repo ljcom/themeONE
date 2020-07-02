@@ -136,16 +136,18 @@ function addpagenumber(pageid, currentpage, totalpages) {
     }
 }
 
-function childPageNo(pageid, code, currentpage, totalpages) {
+function childPageNo(pageid, code, currentpage, totalpages, filter) {
     var result = "";
-    var mode = '&quot;' + getCookie(code.toLowerCase() + '_browseMode') + '&quot;';
+    var mode = '&quot;' + mode!=undefined?getCookie(code.toLowerCase() + '_browseMode'):'' + '&quot;';
     var before = "";
     var after = "";
-    var filter;
-    try {
-        filter = eval(code + '_parent');
-    }
-    catch (e) { }
+    //var filter;
+    //try {
+        //filter = eval(code + '_parent');
+    //}
+    //catch (e) { }
+	//if (guid)
+		//guid='&quot;' + guid + '&quot;';
     if (filter) {
         var d = filter.split('=');
         parentKey = '&quot;' + d[0] + '&quot;';

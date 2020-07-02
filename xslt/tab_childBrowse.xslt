@@ -176,7 +176,9 @@
                     var code='<xsl:value-of select ="$lowerCode"/>';
                     var pageNo = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/pageNo"/>';
                     var nbPages = '<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/nbPages"/>';
-                    childPageNo('childPageNo', code, pageNo, nbPages);
+					var filter='<xsl:value-of select ="/sqroot/body/bodyContent/browse/info/filter"/>';
+					
+                    childPageNo('childPageNo', code, pageNo, nbPages, filter);
                     $('#searchBox_'+code).css('visibility', 'visible');
                   </script>
                 </xsl:if>
