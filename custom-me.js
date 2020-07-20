@@ -162,6 +162,7 @@ function childPageNo(pageid, code, currentpage, totalpages, filter) {
 
     setCookie(code.toLowerCase()+'_TotalPages', totalpages, 1, 0, 0);
     code = '&quot;' + code + '&quot;';
+	mode = '&quot;' + mode + '&quot;';
     
 
     if (currentpage != 1) result += "<li><a href='javascript:loadChild(" + code + "," + parentKey + "," + guid + "," + (parseInt(currentpage) - 1) + "," + mode + ")'>&#171;</a></li>";
