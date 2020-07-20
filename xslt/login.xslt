@@ -27,6 +27,8 @@
       $("body").addClass("hold-transition");
       //$("body").addClass("sidebar-collapse");
       $("body").addClass("layout-top-nav");
+	  $("body").css("height:100%");
+	  $("html").css("height:100%");
 
       loadScript('OPHContent/cdn/admin-LTE/js/app.min.js');
       document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
@@ -64,12 +66,11 @@
 	
 		
       }
-      else if (mode=="3") $(".mode-forgotpassword").removeClass('hide');
-      else if (mode=="4") $(".mode-verifyemail").removeClass('hide');
-      else if (mode=="5") $(".mode-resetpassword").removeClass('hide');
-      else if ((mode=="6" &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0') ||
-		(mode=="2" &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0'	
-			&amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')=='')) {
+      else if (mode=="4" &amp;&amp; getQueryVariable("email")!='' &amp;&amp; getQueryVariable("email")!=undefined) $(".mode-verifyemail").removeClass('hide');
+      else if (mode=="3" || (mode=="4" &amp;&amp; (getQueryVariable("email")=='' || getQueryVariable("email")==undefined))) $(".mode-forgotpassword").removeClass('hide');
+      else if (mode=="5" &amp;&amp; (getQueryVariable("expired")=='1' || (getQueryVariable("email")!='' &amp;&amp; getQueryVariable("secret")!='' 
+		&amp;&amp; getQueryVariable("email")!=undefined &amp;&amp; getQueryVariable("secret")!=undefined))) $(".mode-resetpassword").removeClass('hide');
+      else if ((mode=="6" &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0')) {
 			
 		  setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 365,0,0);
 		  $(".mode-chooseaccount").removeClass('hide');
@@ -107,7 +108,7 @@
 
     </script>
 
-    <div class="wrapper" style="background: rgba(38, 44, 44, 0.1);">
+    <div class="wrapper" style="background: rgba(38, 44, 44, 0.1);height:100%">
 
       <!--header class="main-header">
         <a href="javascript:goHome();" class="logo visible-phone" style="text-align:left;"></a>
@@ -149,7 +150,7 @@
       <!-- *** NOTIFICATION MODAL END -->
 
       <!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper" style="background:white">
+      <div class="content-wrapper" style="background:white;height:100%">
         <section class="content">
           <!--div class="row">
             <div class="col-md-4">

@@ -3,6 +3,7 @@
 	<xsl:output method="xml" indent="yes"/>
 	<xsl:variable name="smallcase" select="abcdefghijklmnopqrstuvwxyz"/>
 	<xsl:variable name="uppercase" select="ABCDEFGHIJKLMNOPQRSTUVWXYZ"/>
+	
 	<xsl:variable name="lowerCode">
 		<xsl:value-of select="translate(/sqroot/body/bodyContent/browse/info/code, $uppercase, $smallcase)"/>
 	</xsl:variable>
@@ -76,9 +77,8 @@
 			<xsl:otherwise>0</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	<xsl:variable name="tcolspan" select="$cMandatory + $cProfile + $cSummary + $cDelegated + $cDelegator + $tMode + 2"/>
+	<xsl:variable name="tcolspan" select="$cMandatory + $cProfile + $cSummary + $cDelegated + $cDelegator + $tMode + 1"/>
 	<xsl:template match="/">
-		<!--Re-Modeled by eLs-->
 		<script>
 			setCookie('stateid','<xsl:value-of select="$state"/>', 0, 1, 0);
 			<xsl:if test="sqroot/body/bodyContent/browse/info/buttons">
@@ -87,6 +87,7 @@
 				loadExtraButton(buttons, 'browse-action-button2', 11);
 			</xsl:if>
 			function <xsl:value-of select="$lowerCode"/>_custom(d) {}
+			var children<xsl:value-of select="$lowerCode"/>=[];
 		</script>
 		<style>
 			.browse-action-button2 a{
@@ -94,6 +95,7 @@
 			padding:5px;
 			}
 		</style>
+		<xsl:apply-templates select="sqroot/body/bodyContent/browse/children/child" />
 		<!--Delegator Action Modal-->
 		<xsl:if test="sqroot/body/bodyContent/browse/info/isDelegator = 1">
 			<div id="delegatorModal" class="modal fade" role="dialog">
@@ -194,7 +196,7 @@
 			</xsl:choose>
 		</xsl:variable>
 		<!-- Main content-->
-		<section class="content">
+		<section class="content" style="min-height:20px">
 			<!--Access Authority and Permission-->
 			<xsl:choose>
 				<xsl:when test="$allowAccess = 1">
@@ -288,149 +290,53 @@
 							</button>
 						</div>
 					</div>
-					<!--Browse Filters-->
-					<xsl:if test="sqroot/body/bodyContent/browse/info/filters">
-						<div class="row">
-							<div class="col-md-12">
-								<div id="bfBox">
-									<xsl:attribute name="class">
-										<xsl:choose>
-											<xsl:when test="sqroot/body/bodyContent/browse/info/filters/*/value">box box-default</xsl:when>
-											<xsl:otherwise>box box-default collapsed-box</xsl:otherwise>
-										</xsl:choose>
-									</xsl:attribute>
-									<div class="box-header with-border">
-										<button id="btnAdvancedFilter" type="button" class="btn btn-box-tool" data-widget="collapse">
-											<ix aria-hidden="true">
-												<xsl:attribute name="class">
-													<xsl:choose>
-														<xsl:when test="sqroot/body/bodyContent/browse/info/filters/*/value">fa fa-minus</xsl:when>
-														<xsl:otherwise>fa fa-plus</xsl:otherwise>
-													</xsl:choose>
-												</xsl:attribute>
-											</ix>
-											Advanced Filters
-											<xsl:if test="sqroot/body/bodyContent/browse/info/filters/*/value">(ACTIVE)</xsl:if>
-										</button>
-									</div>
-									<div class="box-body">
-										<form id="formFilter">
-											<xsl:apply-templates select="sqroot/body/bodyContent/browse/info/filters"/>
-										</form>
-									</div>
+					<!-- browse for pc/laptop list -->
+					<div class="row visible-phone listContent">
+						<div class="col-md-5">
+							<div id="treeBox" class="box box-primary">
+								<div class="box-body box-tree">
+									<table id="tblBrowse" class="table table-condensed table-stripped dataTable">
+										<thead id="browseHead">
+											<tr>
+												<xsl:if test="sqroot/body/bodyContent/browse/info/isDelegator = 0">
+													<th style="width:10px;background-color:white" name="th_checkbox">
+														<input type="checkbox" id="pinnedAll" class="pinned header fal fa-square fa-lg" onclick="checkedBox(this)"/>
+													</th>
+												</xsl:if>
+												<xsl:if test="sqroot/body/bodyContent/browse/header/column[@editor='profilebox']">
+													<th title="Image" style="background-color:white">Image</th>
+												</xsl:if>
+												<xsl:if test="sqroot/body/bodyContent/browse/header/column[@mandatory=1]">
+													<xsl:apply-templates select="sqroot/body/bodyContent/browse/header/column[@mandatory=1]"/>
+												</xsl:if>
+											</tr>
+										</thead>
+										<tbody id="browseContent">
+											<xsl:choose>
+												<xsl:when test="sqroot/body/bodyContent/browse/content/row">
+													<xsl:apply-templates select="sqroot/body/bodyContent/browse/content/row"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<tr>
+														<td align="center" colspan="{$tcolspan}">
+															<div id="noData" class="alert alert-warning">
+																There is no data available.
+																<xsl:if test="$state=0">
+																	<a href="#" onclick="window.location='?code={sqroot/header/info/code/id}&amp;guid=00000000-0000-0000-0000-000000000000'">Create a new one?</a>
+																</xsl:if>
+															</div>
+														</td>
+													</tr>
+												</xsl:otherwise>
+											</xsl:choose>
+										</tbody>
+									</table>
 								</div>
 							</div>
 						</div>
-					</xsl:if>
-					<!-- browse for pc/laptop list -->
-					<div class="row visible-phone listContent">
-						<div class="col-md-12">
-							<table id="tblBrowse" class="table table-condensed table-stripped dataTable">
-								<thead id="browseHead">
-									<tr>
-										<xsl:if test="sqroot/body/bodyContent/browse/info/isDelegator = 0">
-											<th style="width:10px;background-color:white" name="th_checkbox">
-												<input type="checkbox" id="pinnedAll" class="pinned header fal fa-square fa-lg" onclick="checkedBox(this)"/>
-											</th>
-										</xsl:if>
-										<xsl:if test="sqroot/body/bodyContent/browse/header/column[@editor='profilebox']">
-											<th title="Image" style="background-color:white">Image</th>
-										</xsl:if>
-										<xsl:if test="sqroot/body/bodyContent/browse/header/column[@mandatory=1]">
-											<xsl:apply-templates select="sqroot/body/bodyContent/browse/header/column[@mandatory=1]"/>
-										</xsl:if>
-										<xsl:choose>
-											<!--<xsl:when test="sqroot/body/bodyContent/browse/header/column[@mandatory!=0] or sqroot/body/bodyContent/browse/info/permission/allowShowSummaryColumn = 0">-->
-											<xsl:when test="sqroot/body/bodyContent/browse/info/permission/allowShowSummaryColumn = 0">
-											</xsl:when>
-											<xsl:otherwise>
-												<th class="text-left" style="background-color:white">SUMMARY</th>
-											</xsl:otherwise>
-										</xsl:choose>
-										<xsl:if test="sqroot/body/bodyContent/browse/info/isDelegated = 1">
-											<th style="background-color:white">&#160;</th>
-										</xsl:if>
-										<xsl:if test="$settingMode='T'">
-											<th style="background-color:white">&#160;</th>
-										</xsl:if>
-										<xsl:if test="sqroot/body/bodyContent/browse/info/isDelegator = 0">
-											<th id="actionHeader" class="text-right" style="background-color:white">
-												<span>ACTION</span>
-												<!--action button all, keep hidden for a while-->
-												<div style="display:none;">
-													<xsl:if test="$settingMode='T' and $allowAll=1">
-														<xsl:choose>
-															<xsl:when test="/sqroot/body/bodyContent/browse/info/curState/@substateCode=0 or /sqroot/body/bodyContent/browse/info/curState/@substateCode=300">
-																<a href="javascript:btn_function('{/sqroot/header/info/code/id}', null, 'execute', '1', 10)" data-toggle="tooltip">
-																	<xsl:attribute name="title">
-																		<xsl:choose>
-																			<xsl:when test="/sqroot/body/bodyContent/browse/info/curState/@substateCode=0">Submit All</xsl:when>
-																			<xsl:when test="/sqroot/body/bodyContent/browse/info/curState/@substateCode=300">Re-submit All</xsl:when>
-																		</xsl:choose>
-																	</xsl:attribute>
-																	<ix class="fa fa-check"/>
-																</a>
-															</xsl:when>
-															<xsl:when test="$state &gt;= 100 and $state &lt;300">
-																<a href="javascript:btn_function('{/sqroot/header/info/code/id}', null, 'execute', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="Approve All">
-																	<ix class="fa fa-check"/>
-																</a>
-																<a href="javascript:rejectPopup('{/sqroot/header/info/code/id}', null, 'force', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="Reject All">
-																	<ix class="fa fa-times"/>
-																</a>
-															</xsl:when>
-															<xsl:when test="$allowForce = 1 and $state &gt;= 400 and $state &lt; 500">
-																<a href="javascript:btn_function('{/sqroot/header/info/code/id}', null, 'force', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="Close All">
-																	<ix class="fa fa-archive"/>
-																</a>
-															</xsl:when>
-															<xsl:when test="$allowForce = 1 and $state = 500">
-																<a href="javascript:btn_function('{/sqroot/header/info/code/id}', null, 'reopen', '{sqroot/body/bodyContent/browse/info/pageNo}', 10)" data-toggle="tooltip" title="ReOpen All">
-																	<ix class="fa fa-undo"/>
-																</a>
-															</xsl:when>
-														</xsl:choose>
-													</xsl:if>
-													<xsl:if test="$allowOnOff = 1 and $allowDelete = 1 and $state &lt; 500 and docStatus/@isOwner=1">
-														<a href="#" onclick="btn_function('{sqroot/body/bodyContent/browse/info/code}', null, 'inactivate', {sqroot/body/bodyContent/browse/info/pageNo}, 10)">
-															<ix class="fa fa-toggle-on fa-lg" data-toggle="tooltip" title="Inactivated All" data-placement="left"/>
-														</a>
-													</xsl:if>
-													<xsl:if test="$state = 999">
-														<a href="#" onclick="btn_function('{sqroot/body/bodyContent/browse/info/code}', null, 'restore', {sqroot/body/bodyContent/browse/info/pageNo}, 10)">
-															<ix class="fa fa-toggle-off fa-lg" data-toggle="tooltip" title="Re-Activated All" data-placement="left"/>
-														</a>
-														<xsl:if test="$allowWipe = 1">
-															<a href="#" onclick="btn_function('{sqroot/body/bodyContent/browse/info/code}', null, 'wipe', {sqroot/body/bodyContent/browse/info/pageNo}, 10)">
-																<ix class="fa fa-tras fa-lg" data-toggle="tooltip" title="Wiped All" data-placement="left"/>
-															</a>
-														</xsl:if>
-													</xsl:if>
-												</div>
-											</th>
-										</xsl:if>
-									</tr>
-								</thead>
-								<tbody id="browseContent">
-									<xsl:choose>
-										<xsl:when test="sqroot/body/bodyContent/browse/content/row">
-											<xsl:apply-templates select="sqroot/body/bodyContent/browse/content/row"/>
-										</xsl:when>
-										<xsl:otherwise>
-											<tr>
-												<td align="center" colspan="{$tcolspan}">
-													<div id="noData" class="alert alert-warning">
-														There is no data available.
-														<xsl:if test="$state=0">
-															<a href="#" onclick="window.location='?code={sqroot/header/info/code/id}&amp;guid=00000000-0000-0000-0000-000000000000'">Create a new one?</a>
-														</xsl:if>
-													</div>
-												</td>
-											</tr>
-										</xsl:otherwise>
-									</xsl:choose>
-								</tbody>
-							</table>
+						<!--detail-->
+						<div class="col-md-7" id="sideForm">
+							form detail here...
 						</div>
 					</div>
 					<!-- browse for pc/laptop list -->
@@ -670,20 +576,79 @@
 		STATUS
 		<xsl:value-of select="translate(titleCaption/., $smallcase, $uppercase)"/>
 	</xsl:template>
+	<xsl:template match="sqroot/body/bodyContent/browse/children/child">
+		<script>
+			var code='<xsl:value-of select="code/."/>';
+			var title='<xsl:value-of select="childTitle/."/>';
+			var parentKey='<xsl:value-of select="parentkey/."/>';
+			
+			children<xsl:value-of select="$lowerCode"/>.push({code:code.toLowerCase(), title:title, parentKey:parentKey});
+					
+		</script>
+	</xsl:template>
 	<xsl:template match="sqroot/body/bodyContent/browse/content/row">
-		<tr class="odd-tr" data-guid="{@GUID}">
+				<script>
+					
+					var GUID='<xsl:value-of select="@GUID" />';
+					var parentCode='<xsl:value-of select="@code/." />';
+					$('#brodeta-'+GUID.toLowerCase()).on('shown.bs.collapse', function() {
+						var GUID='<xsl:value-of select="@GUID" />';
+						//if (!$('#brodeta-'+GUID.toLowerCase()).hasClass('in')) {
+							var parentCode='<xsl:value-of select="@code/." />';
+							divname='sideForm';
+							xmldoc='ophCore/api/default.aspx?mode=form&amp;code='+parentCode+'&amp;guid='+GUID;
+							xsldoc='ophCore/api/loadTheme.aspx?code='+parentCode+'&amp;theme=' + loadThemeFolder() + '&amp;page='+getPage() + '_form';
+							showXML(divname, xmldoc, xsldoc, true, true);
+							for (i = 0; i &lt; children<xsl:value-of select="$lowerCode"/>.length; i++) {
+								var GUID='<xsl:value-of select="@GUID" />';
+													
+								//$('#children'+parentCode+GUID.toLowerCase()).append('x');						
+								loadChild(children<xsl:value-of select="$lowerCode"/>[i].code, children<xsl:value-of select="$lowerCode"/>[i].parentKey, GUID.toLowerCase(), 1, 'tree');
+							}
+						//}
+					}).on('show.bs.collapse', function() {
+						//alert('collapse');
+					});
+					
+					$('#children'+parentCode+(GUID.toLowerCase())).html('');					
+					
+					for (i = 0; i &lt; children<xsl:value-of select="$lowerCode"/>.length; i++) {
+						var GUID='<xsl:value-of select="@GUID" />';
+						var code=children<xsl:value-of select="$lowerCode"/>[i].code;
+						var childEl=
+							'&lt;div class="row" style="max-width:1000px;margin: 10px 10px 10px 10px;"&gt;'+								
+								'&lt;div class="md-col-12"&gt;'+
+									'&lt;h3 class="box-title"&gt;'+
+										''+children<xsl:value-of select="$lowerCode"/>[i].title+''+
+									'&lt;/h3&gt;'+		
+								'&lt;/div&gt;'+									
+								'&lt;div class="md-col-12" id="child'+code+GUID.toLowerCase()+'"&gt;'+
+
+									
+									'&lt;ix class="fa fa-refresh fa-spin"/&gt; loading child...'+
+								'&lt;/div&gt;'+
+								
+							'&lt;/div&gt;'+		
+						'';
+						$('#children'+parentCode+GUID.toLowerCase()).append(childEl);	
+					}
+					
+				</script>
+				
+		<tr data-guid="{@GUID}">
 			<xsl:if test="/sqroot/body/bodyContent/browse/info/isDelegator = 0">
 				<td>
 					<input type="checkbox" data-code="{@code}" data-guid="{@GUID}" class="pinned fal fa-square" onclick="checkedBox(this)"/>
 				</td>
 			</xsl:if>
+			<!--ganti icon-->
 			<xsl:if test="fields/field[@editor='profilebox']">
 				<td>
 					<xsl:apply-templates select="fields/field[@editor='profilebox']"/>
 				</td>
 			</xsl:if>
 			<xsl:apply-templates select="fields/field[@mandatory=1]"/>
-			<script>
+			<!--script>
 				//put before mandatory section
 				fillMobileItem('<xsl:value-of select="@code"/>', '<xsl:value-of select="@GUID"/>',
 				'<xsl:value-of select="$state"/>',
@@ -692,252 +657,22 @@
 				'<xsl:value-of select="@wipe"/>',
 				'<xsl:value-of select="@force"/>',
 				'<xsl:value-of select="/sqroot/body/bodyContent/browse/info/isDelegator"/>', '<xsl:value-of select="$settingMode"/>');
-			</script>
-			<xsl:choose>
-				<xsl:when test="sqroot/body/bodyContent/browse/header/column[@mandatory!=0] or /sqroot/body/bodyContent/browse/info/permission/allowShowSummaryColumn = 0">
-				</xsl:when>
-				<xsl:otherwise>
-					<td class="expand-td" data-toggle="collapse" data-target="#brodeta-{@GUID}" data-parent="#brodeta-{@GUID}" style="cursor:pointer">
-						<table class="fixed-table">
-							<tr>
-								<td id="summary{@GUID}" name="summary" class="browse-summary">
-									<xsl:if test="count(fields/field[@mandatory=0])>0">
-										<xsl:apply-templates select="fields/field[@mandatory=0]"/>
-									</xsl:if>&#160;
-								</td>
-							</tr>
-						</table>
-					</td>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:if test="docDelegate">
-				<td class="expand-td" style="text-align:center" data-toggle="collapse" data-target="#{@GUID}" data-parent="#{@GUID}">
-					<a href="#" data-toggle="tooltip" title="{docDelegate/.}">
-						<span class="label label-{docDelegate/@labelColor}">
-							<xsl:value-of select="docDelegate/@title"/>
-						</span>
-					</a>
-				</td>
-			</xsl:if>
-			<xsl:if test="$settingMode='T'">
-				<td class="expand-td" style="text-align:center;width:5%" data-toggle="collapse" data-target="#{@GUID}" data-parent="#{@GUID}">
-					<a href="#" data-toggle="tooltip" title="{docStatus/.}">
-						<span class="label label-{docStatus/@labelColor}">
-							<xsl:value-of select="docStatus/@title"/>
-						</span>
-					</a>
-				</td>
-			</xsl:if>
+			</script-->
 			<xsl:variable name="pageNo" select="/sqroot/body/bodyContent/browse/info/pageNo"/>
-			<xsl:if test="/sqroot/body/bodyContent/browse/info/isDelegator = 0">
-				<td class="browse-action-button text-right" style="white-space: nowrap;width:5%">
-					<!--Action Approval icons-->
-					<xsl:if test="$settingMode='T'">
-						<xsl:choose>
-							<xsl:when test="($state=0 or $state=300) and (docStatus/@isOwner=1 or $cDelegated=1)">
-								<a href="javascript:btn_function('{@code}', '{@GUID}', 'execute', '{$pageNo}', 10)" data-toggle="tooltip">
-									<xsl:attribute name="title">
-										<xsl:choose>
-											<xsl:when test="$state=0">Submit This</xsl:when>
-											<xsl:when test="$state=300">Re-submit This</xsl:when>
-										</xsl:choose>
-									</xsl:attribute>
-									<ix class="fa fa-check"/>
-								</a>
-							</xsl:when>
-							<xsl:when test="$state &gt;= 100 and $state &lt; 300 and (docStatus/@isOwner=0 or $cDelegated=1)">
-								<a href="javascript:btn_function('{@code}', '{@GUID}', 'execute', '{$pageNo}', 10)" data-toggle="tooltip" title="Approve This">
-									<ix class="fa fa-check"/>
-								</a>
-								<a href="javascript:rejectPopup('{@code}', '{@GUID}', 'force', '{$pageNo}', 10)" data-toggle="tooltip" title="Reject This">
-									<ix class="fa fa-times"/>
-								</a>
-							</xsl:when>
-							<xsl:when test="$allowForce = 1 and $state &gt;= 400 and $state &lt; 500">
-								<a href="javascript:btn_function('{@code}', '{@GUID}', 'force', '{$pageNo}', 10)" data-toggle="tooltip" title="Close This">
-									<ix class="fa fa-archive"/>
-								</a>
-							</xsl:when>
-							<xsl:when test="$allowForce = 1 and $state = 500">
-								<a href="javascript:btn_function('{@code}', '{@GUID}', 'reopen', '{$pageNo}', 10)" data-toggle="tooltip" title="ReOpen This">
-									<ix class="fa fa-undo"/>
-								</a>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:if>
-					<!--delete things-->
-					<xsl:choose>
-						<!--allow delete-->
-						<xsl:when test="$settingMode!='T' and $allowDelete = 1 and $state = 0">
-							<a href="javascript:btn_function('{@code}', '{@GUID}', 'inactivate', '{$pageNo}', 10)" data-toggle="tooltip" title="Inactivate This">
-								<ix class="fa fa-toggle-on" title="Inactive"/>
-							</a>
-						</xsl:when>
-						<xsl:when test="$settingMode='T' and $allowDelete = 1 and $state = 0 and docStatus/@isOwner=1">
-							<a href="javascript:btn_function('{@code}', '{@GUID}', 'delete', '{$pageNo}', 10)" data-toggle="tooltip" title="Delete This">
-								<ix class="fa fa-trash" title="Delete"/>
-							</a>
-						</xsl:when>
-						<xsl:when test="$state = 999">
-							<a href="javascript:btn_function('{@code}', '{@GUID}', 'restore', '{$pageNo}', 10)" data-toggle="tooltip" title="Reactivate This">
-								<ix class="fa fa-toggle-off" title="Reactivate"/>
-							</a>
-							<xsl:if test="$allowWipe = 1">
-								<a href="javascript:btn_function('{@code}', '{@GUID}', 'wipe', '{$pageNo}', 10)" data-toggle="tooltip" title="Delete This Permanently">
-									<ix class="fa fa-trash" title="Delete"/>
-								</a>
-							</xsl:if>
-						</xsl:when>
-						<!--not allow delete-->
-						<xsl:when test="$allowOnOff = 1 and $allowDelete = 0 and $state &lt; 500">
-							<a href="#" style="display:none;">
-								<ix class="fa fa-toggle-on" style="color:LightGray"/>
-							</a>
-						</xsl:when>
-						<xsl:when test="$allowOnOff = 0 and $allowDelete = 0 and $state &lt; 500">
-							<a href="#">
-								<ix class="fa fa-trash" style="color:LightGray"/>
-							</a>
-						</xsl:when>
-						<xsl:when test="$state = 999">
-							<a href="#">
-								<ix class="fa fa-undo" style="color:lightgray"/>
-							</a>
-							<a href="#">
-								<ix class="fa fa-trash" style="color:LightGray"/>
-							</a>
-						</xsl:when>
-					</xsl:choose>
-					<!--edit things-->
-					<xsl:choose>
-						<xsl:when test="(($allowEdit>=1 or $allowAdd>=1 or $allowDelete>=1) and (/sqroot/body/bodyContent/browse/info/curState/@substateCode=0 or /sqroot/body/bodyContent/browse/info/curState/@substateCode=300 or not /sqroot/body/bodyContent/browse/info/curState/@substateCode))
-									  or (($allowEdit>=3 or $allowDelete>=3) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=400)
-									  or (($allowEdit>=4 or $allowAdd>=4 or $allowDelete>=4) and /sqroot/body/bodyContent/browse/info/curState/@substateCode&lt;=500)">
-							<a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="Edit This">
-								<ix class="fal fa-pencil-alt"/>
-							</a>
-						</xsl:when>
-						<xsl:otherwise>
-							<a id="edit_{@GUID}" href="index.aspx?code={@code}&#38;guid={@GUID}" data-toggle="tooltip" title="View This">
-								<ix class="fas fa-eye"/>
-							</a>
-						</xsl:otherwise>
-					</xsl:choose>
-				</td>
-			</xsl:if>
 		</tr>
-		<xsl:choose>
-			<xsl:when test="/sqroot/body/bodyContent/browse/info/browseMode=2">
-				<script>
-					$('#brodeta-<xsl:value-of select="@GUID"/>').on('shown.bs.collapse', function() {
-					//alert('shown');
-					}).on('show.bs.collapse', function() {
-					//alert('collapse');
-					});
-				</script>
-				<tr class="tr-detail">
-					<td colspan="{$tcolspan}" style="padding:0;">
-						<div class="browse-data accordian-body collapse" id="brodeta-{@GUID}" style="cursor:default;">
-							<div class="row">
-								<div class="col-md-12 col-sm-12 col-xs-12 full-width-a">
-									<ix class="fa fa-refresh fa-spin"/> loading child...
-								</div>
-							</div>
+		
+		<tr id="tr2_{$lowerCode}{translate(@GUID,'ABCDEF','abcdef')}" class="tr-detail">
+			<td colspan="{$tcolspan}" style="padding:0;">
+				<div class="browse-data accordian-body collapse" id="brodeta-{translate(@GUID,'ABCDEF','abcdef')}" style="cursor:default;">
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12 full-width-a" id="children{@code/.}{translate(@GUID,'ABCDEF','abcdef')}">
+							loading...
 						</div>
-					</td>
-				</tr>
-			</xsl:when>
-			<xsl:otherwise>
-				<tr class="tr-detail">
-					<td colspan="{$tcolspan}" style="padding:0;">
-						<div class="browse-data accordian-body collapse" id="brodeta-{@GUID}" style="cursor:default;">
-							<div class="row">
-								<div class="col-md-12 col-sm-12 col-xs-12 full-width-a">
-									<!--Summary-->
-									<xsl:if test="count(fields/field[@mandatory=0])>0">
-										<div class="box box-primary box-solid" style="max-width:600px;float:left;margin: 10px 10px 10px 10px;">
-											<div class="box-header with-border">
-												<h3 class="box-title">Content Summary</h3>
-												<div class="box-tools pull-right">
-													<button class="btn btn-box-tool" data-widget="collapse">
-														<ix class="fa fa-minus"/>
-													</button>
-												</div>
-											</div>
-											<div class="box-body">
-												<xsl:apply-templates select="fields/field[@mandatory=0]"/>
-											</div>
-											<div class="box-footer">
-												<div class="input-group">
-													<span class="browse-action-button2">
-														<!--button type="button" class="btn btn-danger btn-flat" onclick="javascript:submitTalk('{@GUID}', '10')">Send</button-->
-													</span>
-												</div>
-											</div>
-										</div>
-									</xsl:if>
-									<!--Status Approval-->
-									<xsl:if test="approvals/approval">
-										<div class="box box-warning box-solid" style="max-width:300px;float:left;margin: 10px 10px 10px 10px;">
-											<div class="box-header with-border">
-												<h3 class="box-title">Approval List</h3>
-												<div class="box-tools pull-right">
-													<button class="btn btn-box-tool" data-widget="collapse">
-														<ix class="fa fa-minus"/>
-													</button>
-												</div>
-											</div>
-											<div class="box-body">
-												<div class="direct-chat-msg">
-													<xsl:apply-templates select="approvals"/>
-												</div>
-											</div>
-										</div>
-									</xsl:if>
-									<!--Talks-->
-									<div style="max-width:300px;float:left;margin: 10px 10px 10px 10px;">
-										<xsl:attribute name="class">
-											<xsl:choose>
-												<xsl:when test="talks/talk">box box-danger box-solid direct-chat direct-chat-danger</xsl:when>
-												<xsl:otherwise>box box-danger box-solid direct-chat direct-chat-danger collapsed-box</xsl:otherwise>
-											</xsl:choose>
-										</xsl:attribute>
-										<div class="box-header with-border">
-											<h3 class="box-title">Document Talk</h3>
-											<div class="box-tools pull-right">
-												<button class="btn btn-box-tool" data-widget="collapse">
-													<ix>
-														<xsl:attribute name="class">
-															<xsl:choose>
-																<xsl:when test="talks/talk">fa fa-minus</xsl:when>
-																<xsl:otherwise>fa fa-plus</xsl:otherwise>
-															</xsl:choose>
-														</xsl:attribute>
-													</ix>
-												</button>
-											</div>
-										</div>
-										<div class="box-body">
-											<div class="direct-chat-messages" id="chatMessages{@GUID}">
-												<xsl:apply-templates select="talks/talk"/>
-											</div>
-										</div>
-										<div class="box-footer">
-											<div class="input-group">
-												<input type="text" id="message{@GUID}" name="message" placeholder="Type Message ..." class="form-control" onkeypress="javascript:enterTalk('{@GUID}', event, '10')"/>
-												<span class="input-group-btn">
-													<button type="button" class="btn btn-danger btn-flat" onclick="javascript:submitTalk('{@GUID}', '10')">Send</button>
-												</span>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-			</xsl:otherwise>
-		</xsl:choose>
+					</div>
+				</div>
+			</td>
+		</tr>
+
 	</xsl:template>
 	<xsl:template match="fields/field[@editor='profilebox']">
 		<img src="OPHContent/documents/{$suba}/{.}" style="height:50px" alt=""/>
@@ -966,7 +701,8 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:if test="@editor!= 'profilebox'">
-			<td id="mandatory{../../@GUID}" class="expand-td browse-mandatory" data-toggle="collapse" data-target="#brodeta-{../../@GUID}" data-parent="#brodeta-{../../@GUID}" style="cursor:pointer;{@style}" data-field="{@caption}" data-title="{@title}">
+			<td id="mandatory{../../@GUID}" class="expand-td browse-mandatory" data-toggle="collapse" data-target="#brodeta-{translate(../../@GUID,'ABCDEF','abcdef')}" 
+				data-parent="#brodeta-{../../@GUID}" style="cursor:pointer;{@style}" data-field="{@caption}" data-title="{@title}">
 				<xsl:choose>
 					<xsl:when test="@editor='anchor'">
 						<a href="{$tbContent}">

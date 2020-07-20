@@ -288,10 +288,9 @@
                           <img style="width:100%" id="{$imgName}_camera_img">
                             <xsl:attribute name="src">
                               <xsl:choose>
-                                <xsl:when test="$imgVal!=''">ophcontent/documents/<xsl:value-of select="/sqroot/header/info/suba" />/<xsl:value-of select="$imgVal" />
-                                </xsl:when>
-                                <xsl:otherwise>ophcontent/themes/themeone/images/no-data.png
-                                </xsl:otherwise>
+                                <xsl:when test="$imgVal!='' and /sqroot/header/info/suba!=''">ophcontent/documents/<xsl:value-of select="/sqroot/header/info/suba" />/<xsl:value-of select="$imgVal" /></xsl:when>
+								<xsl:when test="$imgVal!='' and /sqroot/header/info/account!=''">ophcontent/documents/<xsl:value-of select="/sqroot/header/info/account" />/<xsl:value-of select="$imgVal" /></xsl:when>
+                                <xsl:otherwise>ophcontent/themes/themeone/images/no-data.png</xsl:otherwise>
                               </xsl:choose>
                             </xsl:attribute>
                           </img>
@@ -696,7 +695,8 @@
       </script>
 
 
-      <div class="box box-solid box-default" data-code="{code/.}" data-parentKey="{parentkey/.}" data-guid="{$cid}" data-mode="{browseMode/.}" style="box-shadow:0px;border:none" id="child{code/.}{$cid}">
+      <div class="box box-solid box-default" data-code="{code/.}" data-parentKey="{parentkey/.}" data-guid="{$cid}" data-mode="{browseMode/.}" 
+		style="box-shadow:0px;border:none" id="child{code/.}{$cid}">
         &#160;
       </div>
 
