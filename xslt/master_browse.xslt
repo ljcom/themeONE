@@ -19,6 +19,16 @@
 	<xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/browse/info/permission/allowOnOff"/>
 	<xsl:variable name="allowAll" select="/sqroot/body/bodyContent/browse/info/permission/allowAll"/>
 	<xsl:variable name="settingMode" select="/sqroot/header/info/code/settingMode"/>
+	<xsl:variable name="suba">
+		<xsl:choose>
+			<xsl:when test="/sqroot/header/info/suba">
+				<xsl:value-of select="/sqroot/header/info/suba"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="/sqroot/header/info/account"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 	<xsl:template name="string-replace-all">
 		<xsl:param name="text"/>
 		<xsl:param name="replace"/>
@@ -667,11 +677,11 @@
 					<input type="checkbox" data-code="{@code}" data-guid="{@GUID}" class="pinned fal fa-square" onclick="checkedBox(this)"/>
 				</td>
 			</xsl:if>
-      <xsl:if test="fields/field[@editor='profilebox']">
-			  <td>
-			  <xsl:apply-templates select="fields/field[@editor='profilebox']"/>
-			  </td>
-      </xsl:if>
+			<xsl:if test="fields/field[@editor='profilebox']">
+				<td>
+					<xsl:apply-templates select="fields/field[@editor='profilebox']"/>
+				</td>
+			</xsl:if>
 			<xsl:apply-templates select="fields/field[@mandatory=1]"/>
 			<script>
 				//put before mandatory section
@@ -930,7 +940,7 @@
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="fields/field[@editor='profilebox']">
-		<img src="OPHContent/documents/{/sqroot/header/info/suba}/{.}" style="height:50px" alt="" />
+		<img src="OPHContent/documents/{$suba}/{.}" style="height:50px" alt=""/>
 	</xsl:template>
 	<xsl:template match="fields/field[@mandatory=1]">
 		<xsl:variable name="tbContent">
@@ -970,9 +980,7 @@
 			</td>
 		</xsl:if>
 		<xsl:if test="@editor= 'profilebox'">
-			<img src="OPHContent/documents/{/sqroot/header/info/suba}/{.}" style="height:50px" 
-				onerror="this.src = 'ophcontent/themes/themeone/images/no-data.png';"
-				alt="" />
+			<img src="OPHContent/documents/{$suba}/{.}" style="height:50px" onerror="this.src = 'ophcontent/themes/themeone/images/no-data.png';" alt=""/>
 		</xsl:if>
 	</xsl:template>
 	<xsl:template match="fields/field[@mandatory='0']">
@@ -1024,12 +1032,9 @@
 					</xsl:choose>
 				</span>
 			</xsl:if>
-			
 		</xsl:if>
 		<xsl:if test="@editor= 'profilebox'">
-			<img src="OPHContent/documents/{/sqroot/header/info/suba}/{.}" style="height:50px" 
-				onerror="this.src = 'ophcontent/themes/themeone/images/no-data.png';"
-				alt="" />
+			<img src="OPHContent/documents/{$suba}/{.}" style="height:50px" onerror="this.src = 'ophcontent/themes/themeone/images/no-data.png';" alt=""/>
 		</xsl:if>
 	</xsl:template>
 	<xsl:template match="approvals">
@@ -1118,7 +1123,7 @@
 							<xsl:value-of select="@talkDateCaption"/>
 						</span>
 					</div>
-					<img class="direct-chat-img" src="OPHContent/documents/{/sqroot/header/info/suba}/{@talkUserProfile}" alt="{talkUser}"/>
+					<img class="direct-chat-img" src="OPHContent/documents/{$suba}/{@talkUserProfile}" alt="{talkUser}"/>
 					<div class="direct-chat-text">
 						<xsl:value-of select="@comment"/>
 					</div>
@@ -1134,7 +1139,7 @@
 							<xsl:value-of select="@talkDateCaption"/>
 						</span>
 					</div>
-					<img class="direct-chat-img" src="OPHContent/documents/{/sqroot/header/info/suba}/{@talkUserProfile}" alt="{talkUser}"/>
+					<img class="direct-chat-img" src="OPHContent/documents/{$suba}/{@talkUserProfile}" alt="{talkUser}"/>
 					<div class="direct-chat-text">
 						<xsl:value-of select="@comment"/>
 					</div>
