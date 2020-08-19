@@ -1,4 +1,4 @@
-setTimeout(function () { timeIsUp(); }, 1000 * 60 * 60);    //1 hour
+setTimeout(function () { timeIsUp(); }, 1000 * 60 * 60*12);    //12 hour
 
 function timeIsUp() {
     if (window.location.href.indexOf('mode=login') === -1 && loadThemeFolder()=='themeONE')
