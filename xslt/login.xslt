@@ -92,7 +92,7 @@
 	//google signin
 	
 	//window.onLoadCallback = function(){	  
-	  
+	  /*
 	  gSigninInit('##gsigninclientid##', function() {
 		var a2 = gapi.auth2.getAuthInstance();
 		if (a2.isSignedIn.get()) {
@@ -102,7 +102,10 @@
 			});	
 		}
 		else if (gmode!='')	  renderGButton(gmode);
+		
 	  });
+	  */
+	  
 	//}
 	//google signin - end
 
