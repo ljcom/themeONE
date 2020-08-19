@@ -919,13 +919,13 @@
 				      search: params.term==undefined?'':params.term.toString().split('+').join('%2B'),
 				      wf1value: ('<xsl:value-of select='whereFields/wf1'/>'=='' || $("#<xsl:value-of select='whereFields/wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val()),
 				      wf2value: ('<xsl:value-of select='whereFields/wf2'/>'=='' || $("#<xsl:value-of select='whereFields/wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val()),
-              parentCode: getCode(),
-              page: params.page
-        }
-        return query;
+					  parentCode: getCode(),
+                      page: params.page
+				  }
+				  return query;
         
-        },
-        dataType: 'json',
+			  },
+			  dataType: 'json',
         
         /*
         results: function (data) {
@@ -1011,6 +1011,8 @@
       var cURL<xsl:value-of select="../@fieldName"/>='OPHCore/api/msg_autosuggest.aspx?mode=token&amp;nbRow=0&amp;code=<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/."/>&amp;colkey=<xsl:value-of select="../@fieldName"/>'
       var dataForm_<xsl:value-of select="../@fieldName"/> = new FormData();
       dataForm_<xsl:value-of select="../@fieldName"/>.append('search', '<xsl:value-of select="value"/>');
+	  dataForm_<xsl:value-of select="../@fieldName"/>.append('wf1value', '<xsl:value-of select='whereFields/wf1'/>'=='' || $("#<xsl:value-of select='whereFields/wf1'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf1'/>").val());
+	  dataForm_<xsl:value-of select="../@fieldName"/>.append('wf2value', '<xsl:value-of select='whereFields/wf2'/>'=='' || $("#<xsl:value-of select='whereFields/wf2'/>").val() == undefined ? "" : $("#<xsl:value-of select='whereFields/wf2'/>").val());
 
       $(document).ready(function(){
       $.ajax({
