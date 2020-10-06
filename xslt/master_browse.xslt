@@ -87,6 +87,27 @@
 				loadExtraButton(buttons, 'browse-action-button2', 11);
 			</xsl:if>
 			function <xsl:value-of select="$lowerCode"/>_custom(d) {}
+
+			//pages calculation
+			var nbPages='<xsl:value-of select="sqroot/body/bodyContent/browse/info/nbPages" />';
+			var curPg = parseInt('<xsl:value-of select ="sqroot/body/bodyContent/browse/info/pageNo"/>');
+
+			setCookie('nbPages', nbPages, 0, 1, 0);
+			nbPages=parseInt(nbPages);
+			if (nbPages==0 || nbPages==curPg) {
+				if (!$('#loadingnextpage').hasClass('hide')) $('#loadingnextpage').addClass('hide');
+			}
+			else {
+				if ($('#loadingnextpage').hasClass('hide')) $('#loadingnextpage').removeClass('hide');
+			}
+			var nbRows=parseInt('<xsl:value-of select="sqroot/body/bodyContent/browse/info/nbRows/." />');
+			var tRows=parseInt('<xsl:value-of select="sqroot/body/bodyContent/browse/info/TotalRows/." />');
+			var cRows=parseInt($('#nbProd').html());
+			if (curPg==1) cRows=0;
+			if (isBigger(cRows+nbRows, tRows)) nbRows=tRows-cRows;
+			$('#nbProd').html(cRows+nbRows);
+			$('#ttlProd').html(tRows);
+
 		</script>
 		<style>
 			.browse-action-button2 a{
@@ -391,7 +412,7 @@
 															</xsl:when>
 														</xsl:choose>
 													</xsl:if>
-													<xsl:if test="$allowOnOff = 1 and $allowDelete = 1 and $state &lt; 500 and docStatus/@isOwner=1">
+													<xsl:if test="$allowOnOff = 1 and $allowDelete = 1 and $state &lt; 500">
 														<a href="#" onclick="btn_function('{sqroot/body/bodyContent/browse/info/code}', null, 'inactivate', {sqroot/body/bodyContent/browse/info/pageNo}, 10)">
 															<ix class="fa fa-toggle-on fa-lg" data-toggle="tooltip" title="Inactivated All" data-placement="left"/>
 														</a>
@@ -475,6 +496,11 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</section>
+
+		<div class="row" style="padding: 10px 40px 20px 40px">
+			<button id="loadingnextpage" class="btn btn-block btn-primary btn-lg hide">LOADING NEXT PAGE</button>
+		</div>
+
 		<!--script>
 		switchBrowse();
 	</script-->

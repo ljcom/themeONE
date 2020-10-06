@@ -74,7 +74,7 @@
     <xsl:apply-templates select="sqroot/body/bodyContent/browse/children" />
 
     <xsl:variable name="documentstatus">
-      <xsl:value-of select="/sqroot/body/bodyContent/form/info/state/status/."/>
+      <xsl:value-of select="/sqroot/body/bodyContent/form/info/state/parentState/."/>
     </xsl:variable>
 
     <div class="row">
@@ -145,7 +145,7 @@
                 </xsl:if>
                 <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;=1 and (/sqroot/body/bodyContent/browse/info/permission/allowExport/.)=1" >
                   <button id="cell_button_download" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;"
-                          onclick="downloadChild('{$lowerCode}', '')">DOWNLOAD</button>
+                          onclick="downloadChild('{$lowerCode}', this)">DOWNLOAD</button>
                   <button id="cell_button_upload" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;" onclick="javascript:$('#import_hidden_{$lowerCode}').click();">UPLOAD...</button>
                   <input id ="import_hidden_{$lowerCode}" name="import_hidden_{$lowerCode}" type="file" data-code="{$lowerCode}" style="visibility: hidden; width: 0; height: 0;" multiple="" />
                 </xsl:if>

@@ -138,7 +138,7 @@
                 </xsl:if>
                 <xsl:if test="(/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)&gt;=1 and (/sqroot/body/bodyContent/browse/info/permission/allowExport/.)=1" >
                   <button id="cell_button_download" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;"
-                          onclick="downloadChild('{$lowerCode}', '')">DOWNLOAD</button>
+                          onclick="downloadChild('{$lowerCode}', this)">DOWNLOAD</button>
                   <button id="cell_button_upload" class="btn btn-gray-a" style="margin-right:5px;margin-bottom:5px;" onclick="javascript:$('#import_hidden').click();">UPLOAD...</button>
 
                   <!--<button type="button" class="buttonCream" id="download" name="download" onclick="javascript:PrintDirect('{$lowerCode}', '', 3, '', '', '');">DOWNLOAD</button>

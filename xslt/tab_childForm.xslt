@@ -14,7 +14,7 @@
   <xsl:variable name="allowWipe" select="/sqroot/body/bodyContent/form/info/permission/allowWipe" />
   <xsl:variable name="allowOnOff" select="/sqroot/body/bodyContent/form/info/permission/allowOnOff" />
   <xsl:variable name="settingmode" select="/sqroot/body/bodyContent/form/info/settingMode/." />
-  <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/status/."/>
+  <xsl:variable name="docState" select="/sqroot/body/bodyContent/form/info/state/parentState/."/>
   <xsl:variable name="isRequester" select="/sqroot/body/bodyContent/form/info/document/isRequester"/>
   <xsl:variable name="cid" select="/sqroot/body/bodyContent/form/info/GUID/."/>
 
@@ -379,10 +379,10 @@
 
   <xsl:template match="field">
     <xsl:if test="@isNullable=0 and 
-                    ((@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                    ((@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/parentState/.='' or /sqroot/body/bodyContent/form/info/state/parentState/.=0 or /sqroot/body/bodyContent/form/info/state/parentState/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+                        or (@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <script>
         document.getElementsByName(tblnm)[0].value = document.getElementsByName(tblnm)[0].value + ', <xsl:value-of select="@fieldName"/>'
       </script>
@@ -390,10 +390,10 @@
 
     <xsl:variable name="fieldEnabled">
       <xsl:choose>
-        <xsl:when test ="((@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+        <xsl:when test ="((@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/parentState/.='' or /sqroot/body/bodyContent/form/info/state/parentState/.=0 or /sqroot/body/bodyContent/form/info/state/parentState/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">enabled</xsl:when>
+                        or (@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">enabled</xsl:when>
         <xsl:otherwise>disabled</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -447,10 +447,10 @@
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/parentState/.='' or /sqroot/body/bodyContent/form/info/state/parentState/.=0 or /sqroot/body/bodyContent/form/info/state/parentState/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -465,10 +465,10 @@
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/parentState/.='' or /sqroot/body/bodyContent/form/info/state/parentState/.=0 or /sqroot/body/bodyContent/form/info/state/parentState/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -504,10 +504,10 @@
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/parentState/.='' or /sqroot/body/bodyContent/form/info/state/parentState/.=0 or /sqroot/body/bodyContent/form/info/state/parentState/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -611,10 +611,10 @@
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
-					((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+					((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/parentState/.='' or /sqroot/body/bodyContent/form/info/state/parentState/.=0 or /sqroot/body/bodyContent/form/info/state/parentState/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
     <div class="input-group date">
@@ -652,10 +652,10 @@
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/parentState/.='' or /sqroot/body/bodyContent/form/info/state/parentState/.=0 or /sqroot/body/bodyContent/form/info/state/parentState/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -671,10 +671,10 @@
       <xsl:value-of select="titlecaption"/>
     </label>
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/parentState/.='' or /sqroot/body/bodyContent/form/info/state/parentState/.=0 or /sqroot/body/bodyContent/form/info/state/parentState/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
     <div class="input-group date">
@@ -868,10 +868,10 @@
     </label>
 
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/parentState/.='' or /sqroot/body/bodyContent/form/info/state/parentState/.=0 or /sqroot/body/bodyContent/form/info/state/parentState/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -1132,10 +1132,10 @@
     </label>
 
     <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/parentState/.='' or /sqroot/body/bodyContent/form/info/state/parentState/.=0 or /sqroot/body/bodyContent/form/info/state/parentState/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
       <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
     </xsl:if>
 
@@ -1161,10 +1161,10 @@
       data-key="{key}" data-id="{id}" data-name="{name}"
       name="{../@fieldName}" id ="{../@fieldName}">
       <xsl:choose>
-        <xsl:when test="((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+        <xsl:when test="((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/parentState/.='' or /sqroot/body/bodyContent/form/info/state/parentState/.=0 or /sqroot/body/bodyContent/form/info/state/parentState/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and /sqroot/body/bodyContent/form/info/state/status/.&lt;400)
-                        or (../@isEditable='4' and /sqroot/body/bodyContent/form/info/state/status/.&lt;500))">
+                        or (../@isEditable='3' and /sqroot/body/bodyContent/form/info/state/parentState/.&lt;400)
+                        or (../@isEditable='4' and /sqroot/body/bodyContent/form/info/state/parentState/.&lt;500))">
         </xsl:when>
         <xsl:otherwise>
           <xsl:attribute name="disabled">disabled</xsl:attribute>
@@ -1206,10 +1206,10 @@
         <xsl:value-of select="titlecaption"/>
       </label>
       <xsl:if test="../@isNullable = 0 and 
-                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/status/.='' or /sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
+                    ((../@isEditable='1' and (/sqroot/body/bodyContent/form/info/state/parentState/.='' or /sqroot/body/bodyContent/form/info/state/parentState/.=0 or /sqroot/body/bodyContent/form/info/state/parentState/.=300 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')) 
                         or (../@isEditable='2' and /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')
-                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
+                        or (../@isEditable='3' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;400 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
+                        or (../@isEditable='4' and (/sqroot/body/bodyContent/form/info/state/parentState/.&lt;500 or /sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000')))">
         <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
       </xsl:if>
     </div>
