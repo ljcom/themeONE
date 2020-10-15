@@ -14,6 +14,7 @@
   <xsl:variable name="allowAccess" select="/sqroot/body/bodyContent/query/info/permission/allowAccess" />
   <xsl:variable name="isPDF" select="/sqroot/body/bodyContent/query/info/permission/allowPDF" />
   <xsl:variable name="isXLS" select="/sqroot/body/bodyContent/query/info/permission/allowXLS" />
+  <xsl:variable name="isHTM" select="/sqroot/body/bodyContent/query/info/permission/allowHTM" />
   <xsl:variable name="par">
     <xsl:for-each select="/sqroot/body/bodyContent/query/queryPages/queryPage/querySections/querySection/queryCols/queryCol/queryRows/.">
       <xsl:text>**</xsl:text>
@@ -78,6 +79,9 @@
                 </xsl:if>
                 <xsl:if test="$isXLS = 2">
                   <button id="btnXLS" data-loading-text="SHOW XLS (please wait...)" class="btn btn-orange-a" onclick="$('#btnXLS').button('loading');genReport('{$code}','xlstemplate');">SHOW XLS</button>&#160;
+                </xsl:if>
+                <xsl:if test="$isHTM = 1">
+                  <button id="btnHTM" data-loading-text="SHOW HTM (please wait...)" class="btn btn-orange-a" onclick="$('#btnHTM').button('loading');genReport('{$code}','htm','',1);">SHOW HTM</button>&#160;
                 </xsl:if>
               </div>
             </div>

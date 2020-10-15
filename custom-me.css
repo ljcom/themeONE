@@ -1584,4 +1584,18 @@ svg:not(:root).svg-inline--fa {
   //outline: 1px solid slategrey;
   background-color: #3C8DBC;
 }
+.searchres a:hover{
+	color:white;
+	cursor:pointer;
+	
+}
+/* .container */
+			/* { */
+				/* width: 100%; */
+				/* max-width: 680px; /* 800 */ */
+				/* text-align: center; */
+				/* margin: 0 auto; */
+			/* } */
 
+				
+            

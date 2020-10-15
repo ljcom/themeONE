@@ -14,7 +14,7 @@
   </xsl:template>
   <xsl:template match="/sqroot/body/bodyContent/browse/content/row">
     
-    <li>
+    <li class="searchres">
       <a class="" onclick="javascript:loadForm('{@code}', '{@GUID}')">
         <span>
           <ix class="fa fa-header"></ix>

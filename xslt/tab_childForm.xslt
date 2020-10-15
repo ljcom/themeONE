@@ -177,7 +177,7 @@
     <input type="hidden" name ="{info/code/.}requiredtblvalue"/>
 	<input type="hidden" id="chid" name="chid" value="{/sqroot/body/bodyContent/form/info/GUID/.}" />
     <div class="col-md-12" id="child">
-      <form role="form" id="form{info/code/.}">
+      <form role="form" id="form{info/code/.}" class="test boxx has-advanced-upload">
         <input type="hidden" name="{info/parentKey/.}" id="PK{info/code/.}" value=""/>
         <script>
           var childCode = 'child' + code;
@@ -417,6 +417,7 @@
       <xsl:apply-templates select="hiddenBox"/>
       <xsl:apply-templates select="checkBox"/>
       <xsl:apply-templates select="mediaBox"/>
+      <xsl:apply-templates select="mediaBoxmulti"/>
       <xsl:apply-templates select="imageBox"/>
       <xsl:apply-templates select="profileBox"/>															
       <xsl:apply-templates select="autoSuggestBox"/>
@@ -708,6 +709,119 @@
       </xsl:choose>
     </xsl:variable>
 
+    <div class="input-group">
+      <label class="input-group-btn">
+        <span class="btn btn-primary">
+          Browse 
+		  <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file" data-code="{/sqroot/body/bodyContent/form/info/code}" 
+		    data-child="Y" 
+		    style="display: none;" multiple="" />
+        </span>
+		
+      </label>
+      <input id ="{../@fieldName}" name="{../@fieldName}" Value="{value}" type="text" class="form-control" readonly="" />
+      <span class="input-group-btn">
+        <button id ="{../@fieldName}_progress" class="btn btn-secondary" type="button" onclick="javascript:popTo('OPHcore/api/msg_download.aspx?fieldAttachment={../@fieldName}&#38;code={/sqroot/body/bodyContent/form/info/code/.}&#38;GUID={/sqroot/body/bodyContent/form/info/GUID/.}');">
+          <xsl:if test="/sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
+            <xsl:attribute name="disabled">disabled</xsl:attribute>
+          </xsl:if>
+          <ix class="fa fa-paperclip"></ix>&#160;
+        </button>
+      </span>
+    </div>
+	<div class="meter nostripes hide" style="height:10px">
+			<span style="visibility:none;width: 1%;position:absolute;top:0;left:0"></span>
+		</div>
+  </xsl:template>
+  
+  <xsl:template match="mediaBoxmulti">
+    <style>
+        #box {
+        width: 100%;
+        height: 300px;
+        display: inline-block;
+        background: #E7F0F4;
+        color: #fff;
+        transition: all .3s;
+        overflow: auto;
+        text-align: left;
+        padding: 10px 0;
+        box-sizing: border-box;
+        border: 5px dotted #ccc;
+      }
+
+      #box.entered {
+        box-shadow: inset 0 0 10px #aaa;
+      }
+
+      #box .words {
+        padding: 0 10px;
+        font-size: 1.5rem;
+        color: #204A5D
+      }
+
+      #box code {
+        background: #1C90F3;
+        white-space: nowrap;
+        color: #204A5D;
+        display: inline-block;
+        padding: 0 3px;
+        line-height: 1.4;
+        border-radius: 3px;
+      }
+
+      #box .file-name {
+        color: #204A5D;
+        font-size: 14px;
+        line-height: 1.8;
+        max-width: 400px;
+        padding: 0 10px;
+        box-sizing: border-box;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      #box .file-name:before {
+        content: '\1F4CE';
+        display: inline-block;
+        margin-right: 5px;
+      }
+    </style>
+    <script> 
+      var fieldid = '<xsl:value-of select="../@fieldName"/>_hidden';
+      droptest(fieldid)
+   </script>
+    <label id="{../@fieldName}caption" name="{../@fieldName}caption">
+      <xsl:value-of select="titlecaption"/>
+    </label>
+    <br/>
+    <xsl:if test="../@isNullable = 0">
+      <span id="rfm_{../@fieldName}" style="color:red;float:right;">required field</span>
+    </xsl:if>
+    <!--default value-->
+    <xsl:variable name="thisvalue">
+      <xsl:choose>
+        <xsl:when  test="/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000' and defaultvalue != ''">
+          <xsl:value-of select="defaultvalue/." />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="value"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <div id="box" class="animated bounceIn">
+      <div class="fallback">
+        <input id ="{../@fieldName}_hidden" name="{../@fieldName}_hidden" type="file"  data-field="{../@fieldName}"  data-code="{/sqroot/body/bodyContent/form/info/code}" data-child="Y" style="display: none;" multiple="" />
+      </div>
+      <div class="words">
+        <p>
+          <b>Choose a file</b> or drag it here</p>
+      </div>
+      <div class="files"></div>
+    </div>
+    <br/>
+   
     <div class="input-group">
       <label class="input-group-btn">
         <span class="btn btn-primary">

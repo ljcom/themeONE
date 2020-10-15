@@ -146,6 +146,8 @@
                           ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='1' and ($parentState &lt; 100 or not ($parentState)))
                           or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='3' and ($parentState &lt; 400))
                           or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='4' and ($parentState &lt; 500))
+                          or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='5' and ($parentState &gt; 0  and $parentState &lt; 400))
+                          or ((/sqroot/body/bodyContent/browse/info/permission/allowAdd/.)='6' and ($parentState = 400))
                         )">
                   <button class="btn btn-orange-a accordion-toggle" data-toggle="collapse"
                           data-target="#{$lowerCode}00000000-0000-0000-0000-000000000000"
@@ -155,6 +157,8 @@
                           ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='1' and ($parentState &lt; 100 or not ($parentState)))
                           or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='3' and ($parentState &lt; 400))
                           or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='4' and ($parentState &lt; 500))
+                           or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='5' and ($parentState &gt; 0  and $parentState &lt; 400))
+                          or ((/sqroot/body/bodyContent/browse/info/permission/allowDelete/.)='6' and ($parentState = 400))
                         )">
                   <button class="btn btn-gray-a" onclick="cell_delete('{$lowerCode}', this)">DELETE</button>&#160;
                 </xsl:if>

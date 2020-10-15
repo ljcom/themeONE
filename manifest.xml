@@ -37,6 +37,7 @@
     <jsFile>OPHContent/cdn/ckeditor/ckeditor.js</jsFile>
     <jsFile>OPHContent/cdn/ophelements/celljs/cell.js?v=8</jsFile>
     <jsFile>OPHContent/cdn/ophelements/ophupload/ophupload.js?v=13</jsFile>
+    <jsFile>OPHContent/cdn/file-dropzone/file-dropzone.js</jsFile>
     <jsFile>OPHContent/cdn/bootstrap/datetimepicker/bootstrap-datetimepicker.min.js</jsFile>
     <jsFile>OPHContent/cdn/sideshow/distr/dependencies/jazz.min.js</jsFile>
     <jsFile>OPHContent/cdn/sideshow/distr/dependencies/pagedown.min.js</jsFile>
