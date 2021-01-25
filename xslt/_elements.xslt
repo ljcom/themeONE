@@ -234,6 +234,10 @@
 
 
     </script>
+
+    <label id="{../@fieldName}caption">
+      <xsl:value-of select="titlecaption"/>
+    </label>	
     <div class="sign" data-field="{../@fieldName}" style="border: 1px solid #ccc;">
       <canvas class="pad" width="100%" height="85;background-color:#333">&#160;</canvas>
       <input type="hidden" name="{../@fieldName}" id ="{../@fieldName}"
@@ -1162,7 +1166,7 @@
         <xsl:for-each select="radioSections/radioSection">
           <!--<xsl:if test="radioSections/radioSection/radioRows/radioRow">-->
           <div id="panel_{../../../@fieldName}_{@radioNo}" class="box collapse" style="box-shadow:none;border:none;padding-bottom:0;padding-top:0;margin-bottom:0">
-            <xsl:apply-templates select="radioRows/radioRow/fields" />
+            <xsl:apply-templates select="radioRows/radioRow/fields" />&#160;
           </div>
           <!--</xsl:if>-->
         </xsl:for-each>

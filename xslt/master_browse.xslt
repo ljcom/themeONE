@@ -746,12 +746,17 @@
 				</td>
 			</xsl:if>
 			<xsl:if test="$settingMode='T'">
-				<td class="expand-td" style="text-align:center;width:5%" data-toggle="collapse" data-target="#{@GUID}" data-parent="#{@GUID}">
+				<td class="expand-td" style="text-align:left;width:5%" data-toggle="collapse" data-target="#{@GUID}" data-parent="#{@GUID}">
 					<a href="#" data-toggle="tooltip" title="{docStatus/.}">
 						<span class="label label-{docStatus/@labelColor}">
 							<xsl:value-of select="docStatus/@title"/>
 						</span>
 					</a>
+					<xsl:if test="count(talks/talk)">
+						<span data-toggle="tooltip" title="Chat" class="badge bg-aqua">
+							<ix style="fa fa-chat"><xsl:value-of select="count(talks/talk)" /></ix>
+						</span>
+					</xsl:if>
 				</td>
 			</xsl:if>
 			<xsl:variable name="pageNo" select="/sqroot/body/bodyContent/browse/info/pageNo"/>

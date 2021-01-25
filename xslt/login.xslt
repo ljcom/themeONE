@@ -27,6 +27,7 @@
       $("body").addClass("hold-transition");
       //$("body").addClass("sidebar-collapse");
       $("body").addClass("layout-top-nav");
+      $("body").addClass("fixed");	  
 	  $("body").css("height:100%");
 	  $("html").css("height:100%");
 

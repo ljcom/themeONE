@@ -272,43 +272,10 @@
               or (@isEditable='2' and ../../@GUID = '00000000-0000-0000-0000-000000000000')
 							or (@isEditable=3 and $parentState&lt;400)
 							or (@isEditable=4 and ($parentState&lt;500)))">
-        <td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" style="{@style}" data-wf1="{@wf1}" data-wf2="{@wf2}">
-          <xsl:if test="@digit">
-            <xsl:attribute name="data-type">number</xsl:attribute>
-            <xsl:attribute name="placeholder">Enter Number Here</xsl:attribute>
-          </xsl:if>
-          <xsl:attribute name="align">
-            <xsl:choose>
-              <xsl:when test="@align=0">left</xsl:when>
-              <xsl:when test="@align=1">center</xsl:when>
-              <xsl:when test="@align=2">right</xsl:when>
-            </xsl:choose>
-          </xsl:attribute>
-          <xsl:value-of select="$tbContent"/>
-        </td>
-      </xsl:when>
-      <xsl:otherwise>
-        <!--<td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}"
-            contenteditable="false"  >
-          <xsl:if test="@digit">
-            <xsl:attribute name="data-type">number</xsl:attribute>
-            <xsl:attribute name="placeholder">Enter Text Here</xsl:attribute>
-          </xsl:if>
-          --><!--<xsl:if test="@preview">
-            <xsl:attribute name="onclick">cell_preview('<xsl:value-of select="@preview" />', '<xsl:value-of select="../../@code" />', '<xsl:value-of select="../../@GUID" />', null)</xsl:attribute>
-          </xsl:if>--><!--
-          <xsl:attribute name="align">
-            <xsl:choose>
-              <xsl:when test="@align=0">left</xsl:when>
-              <xsl:when test="@align=1">center</xsl:when>
-              <xsl:when test="@align=2">right</xsl:when>
-            </xsl:choose>
-          </xsl:attribute>
-          <xsl:value-of select="$tbContent"/>
-        </td>-->
+
         <xsl:choose>
           <xsl:when test="@editor='select2'">
-            <td class="cell cell-editor-select2" data-id="{@id}" data-field="{@caption}" style="{@style}" contenteditable="false">
+            <td class="cell cell-editor-select2" data-id="{@guid}" data-field="{@caption}" data-preview="{@preview}" style="{@style}" contenteditable="false">
               <xsl:attribute name="align">
                 <xsl:choose>
                   <xsl:when test="@align=0">left</xsl:when>
@@ -337,6 +304,27 @@
             </td>
           </xsl:otherwise>
         </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <!--<td class="cell cell-editor-{@editor}" data-id="{@id}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}"
+            contenteditable="false"  >
+          <xsl:if test="@digit">
+            <xsl:attribute name="data-type">number</xsl:attribute>
+            <xsl:attribute name="placeholder">Enter Text Here</xsl:attribute>
+          </xsl:if>
+          --><!--<xsl:if test="@preview">
+            <xsl:attribute name="onclick">cell_preview('<xsl:value-of select="@preview" />', '<xsl:value-of select="../../@code" />', '<xsl:value-of select="../../@GUID" />', null)</xsl:attribute>
+          </xsl:if>--><!--
+          <xsl:attribute name="align">
+            <xsl:choose>
+              <xsl:when test="@align=0">left</xsl:when>
+              <xsl:when test="@align=1">center</xsl:when>
+              <xsl:when test="@align=2">right</xsl:when>
+            </xsl:choose>
+          </xsl:attribute>
+          <xsl:value-of select="$tbContent"/>
+        </td>-->
+
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>

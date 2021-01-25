@@ -2152,14 +2152,14 @@ function sideShowReport(title, user) {
                 title: "Download Report",
                 text: "This two button is generate different type of report just like its name. Now is the time to download your report.",
                 subject: "#reportButton",
-                targets: "#btnPDF #btnXLS",
+                targets: "#btnPDF #btnXLS #btnHTM #btnXML",
                 skipIf: function () {
-                    if ($("#btnPDF").length == 0 || $("#btnXLS").length == 0) return true;
+                    if ($("#btnPDF").length == 0 || $("#btnXLS").length == 0 || $("#btnHTM").length == 0 || $("#btnXML").length == 0) return true;
                     else return false;
                 },
                 listeners: {
                     afterStep: function () {
-                        if ($("#btnPDF").length == 1 && $("#btnXLS").length == 1) Sideshow.gotoStep('finish');
+                        if ($("#btnPDF").length == 1 && $("#btnXLS").length == 1 || $("#btnHTM").length == 1 || $("#btnXML").length == 1) Sideshow.gotoStep('finish');
                     }
                 }
             },

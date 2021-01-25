@@ -279,6 +279,10 @@
 							or (@isEditable=3 and $parentState&lt;400)
 							or (@isEditable=4 and ($parentState&lt;500)))">
         <td class="cell cell-editor-{@editor}" data-id="{@guid}" data-field="{@caption}" data-preview="{@preview}" data-wf1="{@wf1}" data-wf2="{@wf2}" data-radiooptions="{@radioOptions}">
+          <xsl:if test="@digit">
+            <xsl:attribute name="data-type">number</xsl:attribute>
+            <xsl:attribute name="placeholder">Enter Number Here</xsl:attribute>
+          </xsl:if>								
           <xsl:attribute name="align">
             <xsl:choose>
               <xsl:when test="@align=0">left</xsl:when>

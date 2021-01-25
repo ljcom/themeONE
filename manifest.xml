@@ -20,6 +20,14 @@
     <cssFile>OPHContent/themes/themeONE/custom-me.css</cssFile>
 	<cssFile>OPHContent/cdn/ophelements/ophupload/ophupload.css</cssFile>
 	
+    <jsFile>OPHContent/cdn/ophelements/autosuggest/autosuggest.js</jsFile>
+    <jsFile>OPHContent/cdn/ophelements/dashboard/dashboard.js</jsFile>
+    <jsFile>OPHContent/cdn/ophelements/ophconnect/ophconnect.js?v=29</jsFile>
+    <jsFile>OPHContent/cdn/ophelements/doctalk/doctalk.js</jsFile> 
+	<jsFile>OPHContent/cdn/ophelements/studio/studio.js</jsFile> 
+	
+	<jsFile>https://apis.google.com/js/platform.js?onload=init</jsFile>	
+	
     <jsFile>OPHContent/cdn/bootstrap/js/bootstrap.min.js</jsFile>
     <jsFile>OPHContent/cdn/input-mask/jquery.inputmask.js</jsFile>
     <jsFile>OPHContent/cdn/input-mask/jquery.inputmask.date.extensions.js</jsFile>
