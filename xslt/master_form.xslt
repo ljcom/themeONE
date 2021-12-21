@@ -43,6 +43,7 @@
       cell_defer(deferreds);
 
       $(function () {
+
       <!--//Date picker-->
 
       <!--//Date time picker-->
@@ -76,47 +77,51 @@
       });
 
       <!--//Colorpicker--><!--
-    $(".my-colorpicker1").colorpicker();
-    --><!--//color picker with addon--><!--
-    $(".my-colorpicker2").colorpicker();
+      $(".my-colorpicker1").colorpicker();
+      --><!--//color picker with addon--><!--
+      $(".my-colorpicker2").colorpicker();
 
-    --><!--//Timepicker--><!--
-    $(".timepicker").timepicker({
-    showInputs: false
-    });-->
+      --><!--//Timepicker--><!--
+      $(".timepicker").timepicker({
+      showInputs: false
+      });-->
       });
       setCookie('<xsl:value-of select="translate(/sqroot/body/bodyContent/form/info/code/., $uppercase, $smallcase)"/>_curstateid', '<xsl:value-of select="$docState"/>');
-	  
-	function <xsl:value-of select="$lowerCode" />_save(location) {
-		$('#button_save').button('loading');
-		$('#button_save2').button('loading');
-		$('#button_cancel').button('loading');
-		$('#button_cancel2').button('loading');
-		saveThemeONE('<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/." />','<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/." />', location, '', 
-		(function(d) {<xsl:value-of select="$lowerCode" />_saveafter(d);
-		$('#button_save').button('reset');
-		$('#button_save2').button('reset');
-		$('#button_cancel').button('reset');
-		$('#button_cancel2').button('reset');
+	
+    </script>
+    
+    <script>
 
-		}), (function(d) {<xsl:value-of select="$lowerCode" />_savebefore(d)}));
-	}
-	
-	
-	function <xsl:value-of select="$lowerCode" />_saveafter(d) {}
-	function <xsl:value-of select="$lowerCode" />_savebefore(d) {}
-	<xsl:if test="sqroot/body/bodyContent/form/info/buttons">
-	buttons=<xsl:value-of select="sqroot/body/bodyContent/form/info/buttons"/>;
-    loadExtraButton(buttons, 'form-action-button', 20);	
-	</xsl:if>
+      function <xsl:value-of select="$lowerCode" />_save(location) {
+        $('#button_save').button('loading');
+        $('#button_save2').button('loading');
+        $('#button_cancel').button('loading');
+        $('#button_cancel2').button('loading');
+        saveThemeONE('<xsl:value-of select="/sqroot/body/bodyContent/form/info/code/." />','<xsl:value-of select="/sqroot/body/bodyContent/form/info/GUID/." />', location, '', 
+        (function(d) {<xsl:value-of select="$lowerCode" />_saveafter(d);
+        $('#button_save').button('reset');
+        $('#button_save2').button('reset');
+        $('#button_cancel').button('reset');
+        $('#button_cancel2').button('reset');
 
-	var docno='<xsl:value-of select="/sqroot/body/bodyContent/form/info/docNo/."/>';
-	if (docno!='') $('#docNo').html(docno);
-	var docrefno='<xsl:value-of select="/sqroot/body/bodyContent/form/info/refNo/."/>';
-	if (docrefno!='') $('#docRefNo').html(docrefno);
-	var docdate='<xsl:value-of select="/sqroot/body/bodyContent/form/info/docDate/."/>';
-	if (docdate!='') $('#docDate').html(docdate);
+        }), (function(d) {<xsl:value-of select="$lowerCode" />_savebefore(d)}));
+      }
+    
 	
+      function <xsl:value-of select="$lowerCode" />_saveafter(d) {}
+      function <xsl:value-of select="$lowerCode" />_savebefore(d) {}
+      <xsl:if test="sqroot/body/bodyContent/form/info/buttons">
+        buttons=<xsl:value-of select="sqroot/body/bodyContent/form/info/buttons"/>;
+        loadExtraButton(buttons, 'form-action-button', 20);	
+      </xsl:if>
+
+      var docno='<xsl:value-of select="/sqroot/body/bodyContent/form/info/docNo/."/>';
+      if (docno!='') $('#docNo').html(docno);
+      var docrefno='<xsl:value-of select="/sqroot/body/bodyContent/form/info/refNo/."/>';
+      if (docrefno!='') $('#docRefNo').html(docrefno);
+      var docdate='<xsl:value-of select="/sqroot/body/bodyContent/form/info/docDate/."/>';
+      if (docdate!='') $('#docDate').html(docdate);
+      
 	
     </script>
 
@@ -140,22 +145,22 @@
     <section class="content-header">
 
       <h1 data-toggle="collapse" data-target="#header" id="header_title">
-	  <a href="javascript: loadBrowse('{sqroot/body/bodyContent/form/info/code/.}');">
-	    <span>
-	       <ix class="fa fa-arrow-left"></ix>
-	    </span>
-	  </a>	  
-        <xsl:choose>
-          <xsl:when test="sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
-            <xsl:value-of select="$head" />&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>
-          </xsl:when>
-          <xsl:when test="(sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000' and $settingMode='T'">
-            <xsl:value-of select="$head" />&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="$head" />&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
-          </xsl:otherwise>
-        </xsl:choose>
+        <a href="javascript: loadBrowse('{sqroot/body/bodyContent/form/info/code/.}');">
+          <span>
+            <ix class="fa fa-arrow-left"></ix>
+          </span>
+        </a>	  
+          <xsl:choose>
+            <xsl:when test="sqroot/body/bodyContent/form/info/GUID='00000000-0000-0000-0000-000000000000'">
+              <xsl:value-of select="$head" />&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>
+            </xsl:when>
+            <xsl:when test="(sqroot/body/bodyContent/form/info/GUID)!='00000000-0000-0000-0000-000000000000' and $settingMode='T'">
+              <xsl:value-of select="$head" />&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/docNo/."/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="$head" />&#160;<xsl:value-of select="translate(sqroot/body/bodyContent/form/info/Description/., $smallcase, $uppercase)"/>&#160;<xsl:value-of select="sqroot/body/bodyContent/form/info/id/."/>
+            </xsl:otherwise>
+          </xsl:choose>
 
       </h1>
       <ol class="breadcrumb">
@@ -351,7 +356,7 @@
 	  
       <form role="form" id="formheader" enctype="multipart/form-data">
       
-		<input type="hidden" id="cid" name="cid" value="{$cid}" />
+		    <input type="hidden" id="cid" name="cid" value="{$cid}" />
         <input type="hidden" name ="{info/code/.}requiredname"/>
         <input type="hidden" name ="{info/code/.}requiredtblvalue"/>
 
@@ -387,8 +392,8 @@
         var browsemode='<xsl:value-of select ="browseMode/."/>';
         loadChild(code, parentKey, GUID, 1, browsemode);
       </script>
-
-      <div class="box box-solid box-default" style="box-shadow:0px;border:none" id="child{code/.}{$cid}">
+      
+      <div class="box box-solid box-default" style="box-shadow:0px;border:none" id="child{code/.}{translate($cid, $uppercase, $smallcase)}">
         &#160;
       </div>
 

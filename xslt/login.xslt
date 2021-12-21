@@ -4,113 +4,154 @@
 
   <xsl:template match="/">
 
-    <script>
-	  //loadScript('https://apis.google.com/js/platform.js?onload=init');
-      var meta = document.createElement('meta');
-      meta.charset = "UTF-8";
-      loadMeta(meta);
+	<script>
+		//loadScript('https://apis.google.com/js/platform.js?onload=init');
+		var meta = document.createElement('meta');
+		meta.charset = "UTF-8";
+		loadMeta(meta);
 
-      var meta = document.createElement('meta');
-      meta.httpEquiv = "X-UA-Compatible";
-      meta.content = "IE=edge";
-      loadMeta(meta);
+		var meta = document.createElement('meta');
+		meta.httpEquiv = "X-UA-Compatible";
+		meta.content = "IE=edge";
+		loadMeta(meta);
 
-      var meta = document.createElement('meta');
-      meta.name = "viewport";
-      meta.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
-      loadMeta(meta);
+		var meta = document.createElement('meta');
+		meta.name = "viewport";
+		meta.content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
+		loadMeta(meta);
 
 
 	
-      changeSkinColor();
-      //$("body").addClass("skin-blue");
-      $("body").addClass("hold-transition");
-      //$("body").addClass("sidebar-collapse");
-      $("body").addClass("layout-top-nav");
-      $("body").addClass("fixed");	  
-	  $("body").css("height:100%");
-	  $("html").css("height:100%");
+		changeSkinColor();
+		//$("body").addClass("skin-blue");
+		$("body").addClass("hold-transition");
+		//$("body").addClass("sidebar-collapse");
+		$("body").addClass("layout-top-nav");
+		$("body").addClass("fixed");	  
+		$("body").css("height:100%");
+		$("html").css("height:100%");
 
-      loadScript('OPHContent/cdn/admin-LTE/js/app.min.js');
-      document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
+		loadScript('OPHContent/cdn/admin-LTE/js/app.min.js');
+		document.title='<xsl:value-of select="/sqroot/header/info/title"/>';
 
 
-      if (getCookie('isWhiteAddress') == '0' || getCookie('isWhiteAddress') == undefined || getCookie('isWhiteAddress') == '') {
-      loadScript('https://www.google.com/recaptcha/api.js');
-      loadScript('https://apis.google.com/js/platform.js');
-
-      }
-
-      //signoff();
-
-      if (getCookie("AutoUser")) {
-      $('#autologin').css('display','block');
-      $('#autoUser').html(getCookie("AutoUser"));
-      }
-      else {
-      }
-
-      $('.sidebar-toggle').click(function() {
-      if ($('body').hasClass('sidebar-collapse')) $('body').removeClass('sidebar-collapse');
-      else $('body').addClass('sidebar-collapse');
-      });
-	  
-	  setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '<xsl:value-of select="/sqroot/header/info/suba"/>', 365,0,0);
-	  var mode=getQueryVariable("mode");
-	  if (mode=='' || mode==undefined) mode=2;
-	  var gmode='';
-      if (mode=="1") {
-		setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 365,0,0);
-		$(".mode-createaccount").removeClass('hide');
-		//$(".gsignup").addClass('g-signin2');
-		gmode='gsignup';
-	
-		
-      }
-      else if (mode=="4" &amp;&amp; getQueryVariable("email")!='' &amp;&amp; getQueryVariable("email")!=undefined) $(".mode-verifyemail").removeClass('hide');
-      else if (mode=="3" || (mode=="4" &amp;&amp; (getQueryVariable("email")=='' || getQueryVariable("email")==undefined))) $(".mode-forgotpassword").removeClass('hide');
-      else if (mode=="5" &amp;&amp; (getQueryVariable("expired")=='1' || (getQueryVariable("email")!='' &amp;&amp; getQueryVariable("secret")!='' 
-		&amp;&amp; getQueryVariable("email")!=undefined &amp;&amp; getQueryVariable("secret")!=undefined))) $(".mode-resetpassword").removeClass('hide');
-      else if ((mode=="6" &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0')) {
-			
-		  setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 365,0,0);
-		  $(".mode-chooseaccount").removeClass('hide');
-		  
-      }
-      else {
-		$(".mode-login").removeClass('hide');
-		//$(".gsignin").addClass('g-signin2');
-		//renderGButton('gsignin');
-		gmode='gsignin';
-	  }
-      if (getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0') $('#chooseLink').removeClass('hide');
-
-      if (getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')!='') $('.box-title').html('<xsl:value-of select="sqroot/header/info/company"/> '+getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid'));
-
-		var n=new Date(Date.now());
-		$('#cp').html($('#cp').html().split('#year#').join(n.getFullYear()));
-
-	//google signin
-	
-	//window.onLoadCallback = function(){	  
-	  /*
-	  gSigninInit('##gsigninclientid##', function() {
-		var a2 = gapi.auth2.getAuthInstance();
-		if (a2.isSignedIn.get()) {
-			a2.signOut().then(function () {
-				//a2.disconnect();		
-				if (gmode!='')	  renderGButton(gmode);
-			});	
+		if (getCookie('isWhiteAddress') == '0' || getCookie('isWhiteAddress') == undefined || getCookie('isWhiteAddress') == '') {
+			loadScript('https://www.google.com/recaptcha/api.js');
+			loadScript('https://apis.google.com/js/platform.js');
 		}
-		else if (gmode!='')	  renderGButton(gmode);
-		
-	  });
-	  */
-	  
-	//}
-	//google signin - end
+	
+		if (getCookie('isWhiteAddress') == '1') {
+			$('#formlogin .g-recaptcha').remove();
+		}
 
-    </script>
+
+		//signoff();
+
+		if (getCookie("AutoUser")) {
+			$('#autologin').css('display','block');
+			$('#autoUser').html(getCookie("AutoUser"));
+		}
+		else {
+		}
+
+		$('.sidebar-toggle').click(function() {
+			if ($('body').hasClass('sidebar-collapse')) $('body').removeClass('sidebar-collapse');
+			else $('body').addClass('sidebar-collapse');
+		});
+	  
+		setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '<xsl:value-of select="/sqroot/header/info/suba"/>', 365,0,0);
+		var mode=getQueryVariable("mode");
+		if (mode=='' || mode==undefined) mode=2;
+		var gmode='';
+		if (mode=="1" &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0') {
+			setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 365,0,0);
+			$(".mode-createaccount").removeClass('hide');
+			//$(".gsignup").addClass('g-signin2');
+			gmode='gsignup';
+		}
+		if (mode=="1") {
+			$(".mode-createuser").removeClass('hide');
+		}
+	  
+		else if (mode=="4" &amp;&amp; getQueryVariable("email")!='' &amp;&amp; getQueryVariable("email")!=undefined) $(".mode-verifyemail").removeClass('hide');
+		else if (mode=="3" || (mode=="4" &amp;&amp; (getQueryVariable("email")=='' || getQueryVariable("email")==undefined))) $(".mode-forgotpassword").removeClass('hide');
+		else if (mode=="5" &amp;&amp; (getQueryVariable("expired")=='1' || (getQueryVariable("email")!='' &amp;&amp; getQueryVariable("secret")!='' 
+			&amp;&amp; getQueryVariable("email")!=undefined &amp;&amp; getQueryVariable("secret")!=undefined))) $(".mode-resetpassword").removeClass('hide');
+		else if ((mode=="6" &amp;&amp; getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0')) {
+			
+			setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 365,0,0);
+			$(".mode-chooseaccount").removeClass('hide');
+		  
+		}
+		else {
+			$(".mode-login").removeClass('hide');
+			//$(".gsignin").addClass('g-signin2');
+			//renderGButton('gsignin');
+			gmode='gsignin';
+		}
+		if (getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_multiAccount')!='0') $('#chooseLink').removeClass('hide');
+
+		if (getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid')!='') $('.box-title').html('<xsl:value-of select="sqroot/header/info/company"/> '+getCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid'));
+
+			var n=new Date(Date.now());
+			$('#cp').html($('#cp').html().split('#year#').join(n.getFullYear()));
+
+		//google signin
+	
+		//window.onLoadCallback = function(){	  
+		/*
+		gSigninInit('##gsigninclientid##', function() {
+			var a2 = gapi.auth2.getAuthInstance();
+			if (a2.isSignedIn.get()) {
+				a2.signOut().then(function () {
+					//a2.disconnect();		
+					if (gmode!='')	  renderGButton(gmode);
+				});	
+			}
+			else if (gmode!='')	  renderGButton(gmode);
+		
+		});
+		*/
+	  
+		//}
+		//google signin - end
+
+
+      function checkEnterSignIn(e) {
+      if (e.keyCode == 13) {
+      signIn('<xsl:value-of select="/sqroot/header/info/account"/>');
+      }}
+
+      function checkEnterSignUp(e) {
+      if (e.keyCode == 13) {
+      signUp('<xsl:value-of select="/sqroot/header/info/account"/>');
+      }}
+
+      function checkEnterForgot(e) {
+      if (e.keyCode == 13) {
+      checkForgot('<xsl:value-of select="/sqroot/header/info/account"/>', $('#forgotemailaddress').val());
+      }}
+
+      function checkEnterVerify(e) {
+      if (e.keyCode == 13) {
+      checkCode('<xsl:value-of select="/sqroot/header/info/account"/>', $('#entercode').val());
+      }}
+
+      function checkEnterReset(e) {
+      if (e.keyCode == 13) {
+      resetPwd('<xsl:value-of select="/sqroot/header/info/account"/>', $('#resetnewpwd').val(), $('#resetconfirmpwd').val());
+      }}
+
+      function checkEnterChoose(e) {
+      if (e.keyCode == 13) {
+      chooseAccount('<xsl:value-of select="/sqroot/header/info/account"/>', $('#accountid').val());
+      }}
+
+      function goToChoose() {
+        setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 1, 1, 0);
+        goTo('?code=login&amp;mode=6');
+      }
+    </script>																				   
 
     <div class="wrapper" style="background: rgba(38, 44, 44, 0.1);height:100%">
 
@@ -244,14 +285,14 @@
                 <div class="box-body">
                   <!--h3>You can use a local account to sign in</h3-->
                   <form id="formcreateaccount">
-                    <h4 style="color:gray">Please enter your username and password</h4>
+                    <h4 style="color:gray">Please enter Account ID and Organization Name</h4>
                     <div class="form-group enabled-input">
                       <label>Account ID</label>
                       <input type="text" class="form-control" name ="newaccountid" id ="newaccountid" autofocus="autofocus" onkeypress="return checkEnterSignUp(event)"/>
                       <label>Organization Name</label>
                       <input type="text" class="form-control" name ="companyname" id ="companyname" autofocus="autofocus" onkeypress="return checkEnterSignUp(event)"/>
                     </div>
-                    <h4 style="color:gray">Please enter your Administrator User</h4>
+                    <h4 style="color:gray">Please enter your Administrator Name and Email Address</h4>
                     <div class="form-group enabled-input">
                       <label>Your Name</label>
                       <input type="text" class="form-control" name ="adminname" id ="adminname" autofocus="autofocus" onkeypress="return checkEnterSignUp(event)"/>
@@ -264,7 +305,7 @@
                     </div>
 					
                     <div class="g-recaptcha" data-sitekey="##recaptchakey##"></div>
-                    <a href="?code=login&amp;mode=2">Choose existing account</a>
+                    <a href="?code=login&amp;mode=6">Choose existing account</a>
                   </form>
                 </div>
                 <div class="box-footer clearfix">
@@ -432,47 +473,7 @@
       </footer>
     </div>
 
-    <script>
-      if (getCookie('isWhiteAddress') == '1') {
-        $('#formlogin .g-recaptcha').remove();
-      }
-
-
-      function checkEnterSignIn(e) {
-      if (e.keyCode == 13) {
-      signIn('<xsl:value-of select="/sqroot/header/info/account"/>');
-      }}
-
-      function checkEnterSignUp(e) {
-      if (e.keyCode == 13) {
-      signUp('<xsl:value-of select="/sqroot/header/info/account"/>');
-      }}
-
-      function checkEnterForgot(e) {
-      if (e.keyCode == 13) {
-      checkForgot('<xsl:value-of select="/sqroot/header/info/account"/>', $('#forgotemailaddress').val());
-      }}
-
-      function checkEnterVerify(e) {
-      if (e.keyCode == 13) {
-      checkCode('<xsl:value-of select="/sqroot/header/info/account"/>', $('#entercode').val());
-      }}
-
-      function checkEnterReset(e) {
-      if (e.keyCode == 13) {
-      resetPwd('<xsl:value-of select="/sqroot/header/info/account"/>', $('#resetnewpwd').val(), $('#resetconfirmpwd').val());
-      }}
-
-      function checkEnterChoose(e) {
-      if (e.keyCode == 13) {
-      chooseAccount('<xsl:value-of select="/sqroot/header/info/account"/>', $('#accountid').val());
-      }}
-
-      function goToChoose() {
-        setCookie('<xsl:value-of select="/sqroot/header/info/account"/>_accountid', '', 1, 1, 0);
-        goTo('?code=login&amp;mode=6');
-      }
-    </script>
+    
 
   </xsl:template>
 </xsl:stylesheet>

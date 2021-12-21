@@ -711,7 +711,7 @@
       </script>
 
 
-      <div class="box box-solid box-default" data-code="{code/.}" data-parentKey="{parentkey/.}" data-guid="{$cid}" data-mode="{browseMode/.}" style="box-shadow:0px;border:none" id="child{code/.}{$cid}">
+      <div class="box box-solid box-default" data-code="{code/.}" data-parentKey="{parentkey/.}" data-guid="{$cid}" data-mode="{browseMode/.}" style="box-shadow:0px;border:none" id="child{code/.}{translate($cid, $uppercase, $smallcase)}">
         &#160;
       </div>
 

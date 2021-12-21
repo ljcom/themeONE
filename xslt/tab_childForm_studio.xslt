@@ -1207,7 +1207,7 @@
           </h3>
         </div>
       </div-->
-    <div class="box box-solid box-default visible-phone" style="box-shadow:0px;border:none;" id="child{code/.}{/sqroot/body/bodyContent/form/info/GUID/.}" data-parentguid="{/sqroot/body/bodyContent/form/info/GUID/.}">
+    <div class="box box-solid box-default visible-phone" style="box-shadow:0px;border:none;" id="child{code/.}{translate(/sqroot/body/bodyContent/form/info/GUID/., $uppercase, $smallcase)}" data-parentguid="{/sqroot/body/bodyContent/form/info/GUID/.}">
       &#160;
     </div>
     <!--/div-->

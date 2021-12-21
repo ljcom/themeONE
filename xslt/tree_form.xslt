@@ -388,7 +388,7 @@
         loadChild(code, parentKey, GUID, 1, browsemode);
       </script>
 
-      <div class="box box-solid box-default" style="box-shadow:0px;border:none" id="child{code/.}{$cid}">
+      <div class="box box-solid box-default" style="box-shadow:0px;border:none" id="child{code/.}{translate($cid, $uppercase, $smallcase)}">
         &#160;
       </div>
 

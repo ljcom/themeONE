@@ -87,13 +87,13 @@
         <div>
           <input style="width:200px; position:absolute; right:25px; top:5px; padding-right:25px;visibility:hidden" type="text" id="searchBox_{$lowerCode}" name="searchBox_{$lowerCode}"
             class="form-control" placeholder="Enter search key..." value="{sqroot/body/bodyContent/browse/info/search}"
-              onkeypress="searchTextChild(event, this.value, '{$lowerCode}');" />
+              onkeypress="searchTextChild(event, this.value, '{$lowerCode}', $(this).parent().parent().parent().parent().data('parentguid'));" />
           <button id="clear{$lowerCode}" type="button" class="btn btn-flat" style="position:absolute; right:25px; top:5px; background:none; border:none; display:none" >
             <span aria-hidden="true">&#215;</span>
           </button>
           <script>
             $('#clear<xsl:value-of select="$lowerCode"/>').click(function(event) {
-            searchTextChild(event, '', '<xsl:value-of select="$lowerCode"/>', true);
+            searchTextChild(event, '', '<xsl:value-of select="$lowerCode"/>', $(this).parent().parent().parent().parent().data('parentguid'), true);
             });
 
             $(document).ready(function() {

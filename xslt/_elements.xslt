@@ -146,7 +146,7 @@
                         or (../@isEditable='6' 
                               and (/sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300)
                               and not(/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=300) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400))
+                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=100) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;200))
                         or (../@isEditable='8' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=400) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500))
                     )
             ">
@@ -164,7 +164,7 @@
                         or (../@isEditable='6' 
                               and (/sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300)
                               and not(/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=300) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400))
+                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=100) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;200))
                         or (../@isEditable='8' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=400) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500)))">enabled</xsl:when>
         <xsl:otherwise>disabled</xsl:otherwise>
       </xsl:choose>
@@ -295,7 +295,7 @@
                         or (../@isEditable='6' 
                               and (/sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300)
                               and not(/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=300) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400))
+                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=100) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;200))
                         or (../@isEditable='8' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=400) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500))
                     )
             ">
@@ -320,7 +320,7 @@
                         or (../@isEditable='6' 
                               and (/sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300)
                               and not(/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=300) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400))
+                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=100) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;200))
                         or (../@isEditable='8' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=400) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500))
                     )
             ">
@@ -406,7 +406,7 @@
                         or (../@isEditable='6' 
                               and (/sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300)
                               and not(/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=300) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400))
+                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=100) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;200))
                         or (../@isEditable='8' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=400) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500))
                     )
             ">
@@ -458,9 +458,9 @@
       </xsl:choose>
     </xsl:variable>
 
-    <input type="text" class="form-control" Value="{$thisvalue}" data-type="textBox" data-old="{$thisvalue}" name="{../@fieldName}"
+	<input type="text" class="form-control" Value="{$thisvalue}" data-type="textBox" data-old="{$thisvalue}" name="{../@fieldName}"
            onblur="preview('{preview/.}',getCode(), '{/sqroot/body/bodyContent/form/info/GUID/.}','', this);" id ="{../@fieldName}"
-           oninput="javascript:checkChanges(this)">
+           oninput="javascript:checkChanges(this,false,'{digit}')">
       <xsl:attribute name="style">
         text-align:<xsl:value-of select="$align"/>
       </xsl:attribute>
@@ -482,7 +482,7 @@
                         or (../@isEditable='6' 
                               and (/sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300)
                               and not(/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=300) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400))
+                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=100) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;200))
                         or (../@isEditable='8' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=400) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500))
                     )
             ">
@@ -532,7 +532,7 @@
                         or (../@isEditable='6' 
                               and (/sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300)
                               and not(/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=300) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400))
+                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=100) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;200))
                         or (../@isEditable='8' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=400) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500))
                     )
             ">
@@ -565,7 +565,7 @@
                         or (../@isEditable='6' 
                               and (/sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300)
                               and not(/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=300) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400))
+                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=100) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;200))
                         or (../@isEditable='8' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=400) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500))
                     )
             ">
@@ -655,7 +655,7 @@
                         or (../@isEditable='6' 
                               and (/sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300)
                               and not(/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=300) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400))
+                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=100) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;200))
                         or (../@isEditable='8' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=400) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500))
                     )
             ">
@@ -684,7 +684,7 @@
                         or (../@isEditable='6' 
                               and (/sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300)
                               and not(/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=300) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400))
+                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=100) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;200))
                         or (../@isEditable='8' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=400) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500))
                     )
             ">
@@ -718,7 +718,7 @@
                         or (../@isEditable='6' 
                               and (/sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300)
                               and not(/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=300) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400))
+                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=100) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;200))
                         or (../@isEditable='8' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=400) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500))
                     )
             ">
@@ -765,7 +765,7 @@
                         or (../@isEditable='6' 
                               and (/sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300)
                               and not(/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=300) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400))
+                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=100) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;200))
                         or (../@isEditable='8' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=400) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500))
                     )
             ">
@@ -1066,7 +1066,7 @@
                         or (../@isEditable='6' 
                               and (/sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300)
                               and not(/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=300) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400))
+                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=100) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;200))
                         or (../@isEditable='8' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=400) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500))
                     )
             ">
@@ -1151,7 +1151,7 @@
                         or (../@isEditable='6' 
                               and (/sqroot/body/bodyContent/form/info/state/status/.=0 or /sqroot/body/bodyContent/form/info/state/status/.=300)
                               and not(/sqroot/body/bodyContent/form/info/GUID/. = '00000000-0000-0000-0000-000000000000'))
-                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=300) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;400))
+                        or (../@isEditable='7' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=100) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;200))
                         or (../@isEditable='8' and (/sqroot/body/bodyContent/form/info/state/status/.&gt;=400) and (/sqroot/body/bodyContent/form/info/state/status/.&lt;500))
                     )
             ">
@@ -1270,7 +1270,7 @@
       </script>
 
       <div class="box box-solid box-default child" data-code="{code/.}" data-parentKey="{parentkey/.}" data-guid="{$cid}" data-mode="{browseMode/.}" 
-		style="box-shadow:0px;border:none" id="child{translate(code/., $uppercase, $smallcase)}{$cid}">
+		style="box-shadow:0px;border:none" id="child{translate(code/., $uppercase, $smallcase)}{translate($cid, $uppercase, $smallcase)}">
         &#160;
       </div>
 

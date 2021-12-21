@@ -38,12 +38,12 @@ function saveThemeONE(code, guid, location, formId, afterSuccess, beforeStart) {
             if (msg != "") {
                 showMessage(msg, 3);
             }
-            loadChild(code, pkey, pkvalue, 1)
+            loadChild(code, pkey, pkvalue, pageNo)
             preview('1', getCode(), getGUID(), '', this);
         }
         else if (retguid !== "" && retguid !== guid && location === 41) {
             //preview(1, code, guid, formId + code);
-            $.when(loadChild(code, pkey, pkvalue, 1)).done(function () {
+            $.when(loadChild(code, pkey, pkvalue, pageNo)).done(function () {
                 $('#' + code + '00000000-0000-0000-0000-000000000000').hide();
                 showChildForm(code, '00000000-0000-0000-0000-000000000000');
             });
@@ -57,11 +57,11 @@ function saveThemeONE(code, guid, location, formId, afterSuccess, beforeStart) {
             //compatible with load version
             else if (isGuid(msg) && location == 40) {
                 preview(1, code, msg, formId + code);
-                loadChild(code, pkey, pkvalue, 1);
+                loadChild(code, pkey, pkvalue, pageNo);
             }
             else if (isGuid(msg) && location == 41) {
                 //preview(1, code, guid, formId + code);
-                $.when(loadChild(code, pkey, pkvalue, 1)).done(function () {
+                $.when(loadChild(code, pkey, pkvalue, pageNo)).done(function () {
                     $('#' + code + '00000000-0000-0000-0000-000000000000').hide();
                     showChildForm(code, '00000000-0000-0000-0000-000000000000');
                 });
@@ -75,12 +75,12 @@ function saveThemeONE(code, guid, location, formId, afterSuccess, beforeStart) {
                 saveConfirm();
             } else {
                 if (location == 41) {
-                    $.when(loadChild(code, pkey, pkvalue, 1)).done(function () {
+                    $.when(loadChild(code, pkey, pkvalue, pageNo)).done(function () {
                         $('#' + code + '00000000-0000-0000-0000-000000000000').hide();
                         showChildForm(code, '00000000-0000-0000-0000-000000000000');
                     });
                 } else {
-                    loadChild(code, pkey, pkvalue, 1);
+                    loadChild(code, pkey, pkvalue, pageNo);
                     preview('1', getCode(), getGUID(), '', this);
                 }
             }
