@@ -69,7 +69,7 @@
 			//$(".gsignup").addClass('g-signin2');
 			gmode='gsignup';
 		}
-		if (mode=="1") {
+		else if (mode=="7") {
 			$(".mode-createuser").removeClass('hide');
 		}
 	  

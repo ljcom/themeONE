@@ -29,7 +29,7 @@ function saveThemeONE(code, guid, location, formId, afterSuccess, beforeStart) {
             var pkey = $('#parent' + code).val();
             var childKey = $('#childKey' + code).val();
         }
-
+		pageNo=1;
         //insert new form
         if (retguid != "" && retguid != guid && location === 20) window.location = 'index.aspx?env=back&code=' + getCode() + '&guid=' + retguid;
         //insert child
